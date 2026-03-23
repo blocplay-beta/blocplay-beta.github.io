@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlocPlay</title>
 <link rel="icon" href="logo.ico">
 
@@ -18,8 +19,23 @@ header {
     padding: 15px;
 }
 
-header img {
+/* NOUVEAU HEADER FLEX */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* LOGO */
+.logo img {
     height: 40px;
+}
+
+/* ACTIONS HEADER */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* CONTAINER */
@@ -81,9 +97,18 @@ h1 {
 <body>
 
 <header>
-<a href="https://blocplay-beta.github.io">
-<img src="logo.ico">
-</a>
+  <div class="header-content">
+    
+    <a href="https://blocplay-beta.github.io" class="logo">
+      <img src="logo.ico">
+    </a>
+
+    <div class="header-actions">
+      <a href="/login" class="btn btn-dark">Se connecter</a>
+      <a href="/signup" class="btn btn-dark">Créer un compte</a>
+    </div>
+
+  </div>
 </header>
 
 <div class="container">
@@ -97,11 +122,6 @@ h1 {
     </p>
 
     <div id="download-container"></div>
-
-    <br>
-
-    <a href="/login" class="btn btn-dark">Se connecter</a>
-    <a href="/signup" class="btn btn-dark">Créer un compte</a>
 </div>
 
 <!-- VOIR SITE -->
