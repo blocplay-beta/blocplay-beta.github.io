@@ -1,19 +1,65 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <title>BlocPlay Bêta</title>
-        <link rel="icon" type="image/x-icon" href="icon.ico">
-    </head>
-    <body>
-        <a class="GAuSPc" jsname="jIujaf" href="https://blocplay-beta.github.io/home">
-        <h2>Page 404. Ceci est une erreur. Par contre :</h2>
-        <span class="QTKDff p46B7e">Allez sur notre page d'accueil</span>
-        <a class="GAuSPc" jsname="jIujaf" href="https://blocplay-beta.github.io/download-blocplaysetupinstaller-windows">
-        <h2>Ou sinon :</h2>
-        <span class="QTKDff p46B7e">Télécharger BlocPlay Bêta pour Windows</span>
-        
-    </body>
+<!DOCTYPE html><html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlocPlay — La plateforme de jeux créée par et pour les gamers</title>  <!-- Favicon depuis le repo -->  <link rel="icon" type="image/x-icon" href="logo.ico">  <style>
+    body{margin:0;font-family:Inter,system-ui;background:#0b0f1a;color:#fff}
+    .container{width:min(1100px,90%);margin:auto}
+    header{padding:15px 0;border-bottom:1px solid #222}
+    .logo-link{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:bold}
+    .logo-img{width:40px;height:40px;border-radius:10px}
+    .hero{padding:40px 0}
+    .card{background:#141a2a;padding:20px;border-radius:16px;margin-top:20px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:12px;font-weight:bold;text-decoration:none}
+    .btn-primary{background:linear-gradient(135deg,#8b5cf6,#22d3ee);color:#000}
+    .btn-secondary{background:#222;color:#fff}
+    .section{margin-top:40px}
+  </style></head>
+<body><header>
+  <div class="container">
+    <a class="logo-link" href="https://blocplay-beta.github.io">
+      <img class="logo-img" src="logo.ico" alt="BlocPlay">
+      BlocPlay
+    </a>
+  </div>
+</header><main class="container">  <section class="hero">
+    <div class="card">
+      <h2>La plateforme de jeux créée par et pour les gamers</h2>
+      <p>BlocPlay est actuellement en bêta. Accédez à la plateforme, installez-la sur Windows ou Android et découvrez les expériences disponibles.</p><!-- Bouton téléchargement dynamique -->
+  <div id="download"></div>
+</div>
 
+  </section>  <!-- SECTION VOIR LE SITE -->  <section class="section">
+    <div class="card">
+      <h2>Voir le site BlocPlay</h2>
+      <p>Accédez directement à la version officielle du site BlocPlay.</p>
+      <a class="btn btn-secondary" href="https://sites.google.com/view/blocplay-beta/accueil" target="_blank">
+        🌐 Voir le site BlocPlay
+      </a>
+    </div>
+  </section></main><script>
+  const container = document.getElementById("download");
+  const ua = navigator.userAgent.toLowerCase();
+
+  let html = "";
+
+  const windowsIcon = "https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg";
+  const androidIcon = "https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg";
+
+  if (ua.includes("windows")) {
+    html = `<a class="btn btn-primary" href="https://blocplay-beta.github.io/download-blocplaysetupinstaller-windows">
+      <img src="${windowsIcon}" style="width:20px;height:20px"> Télécharger BlocPlay
+    </a>`;
+  } else if (ua.includes("android")) {
+    html = `<a class="btn btn-primary" href="https://blocplay-beta.github.io/download-blocplayinstaller-android">
+      <img src="${androidIcon}" style="width:20px;height:20px"> Télécharger BlocPlay
+    </a>`;
+  } else {
+    html = `<span class="btn btn-secondary" style="cursor:not-allowed;opacity:0.6">
+      ❌ Téléchargement indisponible sur cet appareil
+    </span>`;
+  }
+
+  container.innerHTML = html;
+</script></body>
 </html>
-
-
