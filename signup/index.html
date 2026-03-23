@@ -71,25 +71,35 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
     authDomain: "blocplay-a9417.firebaseapp.com",
     projectId: "blocplay-a9417",
+    storageBucket: "blocplay-a9417.firebasestorage.app",
+    messagingSenderId: "540161549188",
+    appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  window.login = async function () {
+  // ⚠️ RENDRE ACCESSIBLE AU BOUTON
+  window.signup = async function () {
+    const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert("Connexion réussie !");
-      window.location.href = "/";
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      await updateProfile(userCredential.user, {
+        displayName: username
+      });
+
+      alert("Compte créé !");
+      window.location.href = "/login";
     } catch (error) {
       alert(error.message);
     }
