@@ -1,65 +1,159 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BlocPlay — La plateforme de jeux créée par et pour les gamers</title>  <!-- Favicon depuis le repo -->  <link rel="icon" type="image/x-icon" href="logo.ico">  <style>
-    body{margin:0;font-family:Inter,system-ui;background:#0b0f1a;color:#fff}
-    .container{width:min(1100px,90%);margin:auto}
-    header{padding:15px 0;border-bottom:1px solid #222}
-    .logo-link{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:bold}
-    .logo-img{width:40px;height:40px;border-radius:10px}
-    .hero{padding:40px 0}
-    .card{background:#141a2a;padding:20px;border-radius:16px;margin-top:20px}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:12px;font-weight:bold;text-decoration:none}
-    .btn-primary{background:linear-gradient(135deg,#8b5cf6,#22d3ee);color:#000}
-    .btn-secondary{background:#222;color:#fff}
-    .section{margin-top:40px}
-  </style></head>
-<body><header>
-  <div class="container">
-    <a class="logo-link" href="https://blocplay-beta.github.io">
-      <img class="logo-img" src="logo.ico" alt="BlocPlay">
-      BlocPlay
-    </a>
-  </div>
-</header><main class="container">  <section class="hero">
-    <div class="card">
-      <h2>La plateforme de jeux créée par et pour les gamers</h2>
-      <p>BlocPlay est actuellement en bêta. Accédez à la plateforme, installez-la sur Windows ou Android et découvrez les expériences disponibles.</p><!-- Bouton téléchargement dynamique -->
-  <div id="download"></div>
+<meta charset="UTF-8">
+<title>BlocPlay</title>
+<link rel="icon" href="logo.ico">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b1220;
+    color: white;
+}
+
+/* HEADER */
+header {
+    padding: 15px;
+}
+
+header img {
+    height: 40px;
+}
+
+/* CONTAINER */
+.container {
+    padding: 20px;
+}
+
+/* CARDS */
+.card {
+    background: #111827;
+    border-radius: 20px;
+    padding: 25px;
+    margin: 20px 0;
+}
+
+/* TITRES */
+h1 {
+    margin-bottom: 10px;
+}
+
+/* BOUTONS */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Bouton dégradé principal */
+.btn-gradient {
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    color: white;
+}
+
+/* Bouton simple */
+.btn-dark {
+    background: #1f2937;
+    color: white;
+}
+
+/* Discord */
+.btn-discord {
+    background: #5865F2;
+    color: white;
+}
+
+/* ICONES */
+.icon {
+    width: 20px;
+    filter: invert(1);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<a href="https://blocplay-beta.github.io">
+<img src="logo.ico">
+</a>
+</header>
+
+<div class="container">
+
+<!-- CARD PRINCIPALE -->
+<div class="card">
+    <h1>La plateforme de jeux créée par et pour les gamers</h1>
+    <p>
+        BlocPlay est actuellement en bêta. Accédez à la plateforme,
+        installez-la sur Windows ou Android et découvrez les expériences disponibles.
+    </p>
+
+    <div id="download-container"></div>
+
+    <br>
+
+    <a href="/login" class="btn btn-dark">Se connecter</a>
+    <a href="/signup" class="btn btn-dark">Créer un compte</a>
 </div>
 
-  </section>  <!-- SECTION VOIR LE SITE -->  <section class="section">
-    <div class="card">
-      <h2>Voir le site BlocPlay</h2>
-      <p>Accédez directement à la version officielle du site BlocPlay.</p>
-      <a class="btn btn-secondary" href="https://sites.google.com/view/blocplay-beta/accueil" target="_blank">
-        🌐 Voir le site BlocPlay
-      </a>
-    </div>
-  </section></main><script>
-  const container = document.getElementById("download");
-  const ua = navigator.userAgent.toLowerCase();
+<!-- VOIR SITE -->
+<div class="card">
+    <h2>Voir le site BlocPlay</h2>
+    <p>Accédez directement à la version officielle du site BlocPlay.</p>
 
-  let html = "";
+    <a href="https://sites.google.com/view/blocplay-beta/accueil" class="btn btn-dark">
+        Voir le site BlocPlay
+    </a>
+</div>
 
-  const windowsIcon = "https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg";
-  const androidIcon = "https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg";
+<!-- DISCORD -->
+<div class="card">
+    <h2>Rejoindre le Discord</h2>
 
-  if (ua.includes("windows")) {
-    html = `<a class="btn btn-primary" href="https://blocplay-beta.github.io/download-blocplaysetupinstaller-windows">
-      <img src="${windowsIcon}" style="width:20px;height:20px"> Télécharger BlocPlay
-    </a>`;
-  } else if (ua.includes("android")) {
-    html = `<a class="btn btn-primary" href="https://blocplay-beta.github.io/download-blocplayinstaller-android">
-      <img src="${androidIcon}" style="width:20px;height:20px"> Télécharger BlocPlay
-    </a>`;
-  } else {
-    html = `<span class="btn btn-secondary" style="cursor:not-allowed;opacity:0.6">
-      ❌ Téléchargement indisponible sur cet appareil
-    </span>`;
-  }
+    <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" class="icon">
+        Rejoindre
+    </a>
+</div>
 
-  container.innerHTML = html;
-</script></body>
+</div>
+
+<script>
+const container = document.getElementById("download-container");
+const userAgent = navigator.userAgent.toLowerCase();
+
+let text = "";
+let link = "";
+let icon = "";
+
+if (userAgent.includes("android")) {
+    text = "Télécharger BlocPlay";
+    link = "https://blocplay-beta.github.io/download-blocplayinstaller-android";
+    icon = '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg" class="icon">';
+} else if (userAgent.includes("windows")) {
+    text = "Télécharger BlocPlay";
+    link = "https://blocplay-beta.github.io/download-blocplaysetupinstaller-windows";
+    icon = '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg" class="icon">';
+} else {
+    text = "Téléchargement indisponible";
+    link = "#";
+    icon = "❌";
+}
+
+container.innerHTML = `
+<a href="${link}" class="btn btn-gradient">
+${icon} ${text}
+</a>
+`;
+</script>
+
+</body>
 </html>
