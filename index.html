@@ -175,5 +175,27 @@ ${icon} ${text}
 `;
 </script>
 
+<script>
+const cards = document.querySelectorAll(".card");
+
+cards.forEach(card => {
+    card.addEventListener("click", (e) => {
+        // empêche les liens de casser le comportement
+        e.stopPropagation();
+
+        // enlève active sur toutes les autres cartes
+        cards.forEach(c => c.classList.remove("active"));
+
+        // active celle cliquée
+        card.classList.add("active");
+    });
+});
+
+// clic ailleurs = reset
+document.addEventListener("click", () => {
+    cards.forEach(c => c.classList.remove("active"));
+});
+</script>
+
 </body>
 </html>
