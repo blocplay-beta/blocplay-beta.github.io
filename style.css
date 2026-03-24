@@ -1,16 +1,22 @@
-/* Animation fluide */
+/* CARDS */
 .card {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: #111827;
+    border-radius: 20px;
+    padding: 25px;
+    margin: 20px 0;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: scale(1);
 }
 
-/* Effet hover PC */
+/* Effet PC */
 .card:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
 
-/* Effet actif (mobile + clic) */
+/* Effet mobile */
 .card.active {
     transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
