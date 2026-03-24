@@ -179,20 +179,19 @@ ${icon} ${text}
 const cards = document.querySelectorAll(".card");
 
 cards.forEach(card => {
-    card.addEventListener("click", (e) => {
-        // empêche les liens de casser le comportement
+    card.addEventListener("click", function(e) {
         e.stopPropagation();
 
-        // enlève active sur toutes les autres cartes
-        cards.forEach(c => c.classList.remove("active"));
-
-        // active celle cliquée
-        card.classList.add("active");
+        if (card.classList.contains("active")) {
+            card.classList.remove("active");
+        } else {
+            cards.forEach(c => c.classList.remove("active"));
+            card.classList.add("active");
+        }
     });
 });
 
-// clic ailleurs = reset
-document.addEventListener("click", () => {
+document.addEventListener("click", function() {
     cards.forEach(c => c.classList.remove("active"));
 });
 </script>
