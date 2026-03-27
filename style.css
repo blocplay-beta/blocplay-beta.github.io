@@ -1,13 +1,14 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0f0f0f;
+
+    background: #0b1b3a; /* bleu foncé */
     color: white;
 }
 
 /* HEADER */
 header {
-    background: #111;
+    background: #0e2347;
     padding: 10px 20px;
 }
 
@@ -22,12 +23,11 @@ header {
     height: 40px;
 }
 
-/* PROFIL */
+/* AVATAR */
 .profile-menu {
     position: relative;
 }
 
-/* AVATAR */
 .avatar {
     width: 42px;
     height: 42px;
@@ -35,7 +35,6 @@ header {
     cursor: pointer;
     object-fit: cover;
     border: 2px solid white;
-    transition: 0.2s;
 }
 
 .avatar:hover {
@@ -52,21 +51,19 @@ header {
     flex-direction: column;
     gap: 10px;
 
-    background: #121212;
+    background: #102a52;
     padding: 12px;
     border-radius: 12px;
 
     min-width: 220px;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
-/* AFFICHAGE */
+/* affichage */
 .dropdown.show {
     display: flex;
 }
 
-/* BOUTONS STYLE BLOCPLAY */
+/* BOUTONS MENU */
 .dropdown a {
     display: flex;
     justify-content: center;
@@ -77,25 +74,22 @@ header {
 
     font-weight: bold;
     text-decoration: none;
-
     color: white;
+
+    background: #1c3f7a;
 
     transition: 0.2s;
 }
 
-/* PRINCIPAL (Installer / Se connecter) */
 .dropdown a:first-child {
     background: linear-gradient(45deg, #00c6ff, #0072ff);
 }
 
-/* SECONDAIRE */
 .dropdown a:last-child {
     background: #2a2a2a;
 }
 
-/* HOVER */
 .dropdown a:hover {
-    transform: scale(1.05);
     filter: brightness(1.1);
 }
 
@@ -106,7 +100,7 @@ header {
 
 /* CARD */
 .card {
-    background: #1a1a1a;
+    background: #122a4a;
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 12px;
@@ -120,30 +114,40 @@ header {
 
 /* BOUTONS */
 .btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+
     padding: 12px 18px;
     border-radius: 10px;
+
     text-decoration: none;
     font-weight: bold;
-    transition: 0.2s;
+
+    color: white;
 }
 
-.btn:hover {
-    transform: scale(1.05);
+/* ❌ PAS DE ZOOM AU TOUCH */
+.btn:hover,
+.btn:active {
+    transform: none;
+}
+
+/* ICONES */
+.btn img {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
 }
 
 /* STYLES */
 .btn-dark {
     background: #333;
-    color: white;
 }
 
 .btn-discord {
     background: #5865F2;
-    color: white;
 }
 
 .btn-gradient {
     background: linear-gradient(45deg, #00c6ff, #0072ff);
-    color: white;
 }
