@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Profil - BlocPlay</title>
+<title>BlocPlay</title>
 
-<img src="/logo.ico">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="/logo.ico">
 
 </head>
 
@@ -17,30 +17,43 @@
   <div class="header-content">
 
     <a href="/" class="logo">
-      <img src="logo.ico">
+      <img src="/logo.ico">
     </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
 
   </div>
 </header>
 
 <div class="container">
 
-  <div class="card profile-card">
+  <div class="card">
+      <h1>La plateforme de jeux créée par et pour les gamers</h1>
+      <p>BlocPlay est actuellement en bêta.</p>
 
-    <h1>Mon profil</h1>
+      <div id="download-container"></div>
+  </div>
 
-    <img id="profilePic"
-         class="profile-pic"
-         src="https://ui-avatars.com/api/?name=User&background=222&color=fff&size=128">
+  <div class="card">
+      <h2>Voir le site BlocPlay</h2>
 
-    <h2 id="username">Chargement...</h2>
+      <a href="https://sites.google.com/view/blocplay-beta/accueil" class="btn btn-dark">
+        Voir le site BlocPlay
+      </a>
+  </div>
 
-    <p id="email">Chargement...</p>
+  <div class="card">
+      <h2>Discord</h2>
 
-    <button id="logoutBtn" class="btn btn-dark">
-      Se déconnecter
-    </button>
-
+      <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg">
+        Rejoindre
+      </a>
   </div>
 
 </div>
@@ -50,6 +63,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+/* 🔥 CONFIG FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -62,29 +76,78 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* 🔐 Vérification connexion */
-onAuthStateChanged(auth, (user) => {
+/* ===================== */
+/* DOWNLOAD */
+/* ===================== */
 
-    if (!user) {
-        window.location.href = "/login";
-        return;
+const container = document.getElementById("download-container");
+const userAgent = navigator.userAgent.toLowerCase();
+
+if (userAgent.includes("android")) {
+    container.innerHTML = `
+    <a href="/download-blocplayinstaller-android" class="btn btn-gradient">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg">
+        Installer BlocPlay
+    </a>`;
+    
+} else if (userAgent.includes("windows")) {
+    container.innerHTML = `
+    <a href="/download-blocplaysetupinstaller-windows" class="btn btn-gradient">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg">
+        Installer BlocPlay
+    </a>`;
+
+} else {
+    container.innerHTML = `
+    <a class="btn btn-gradient">
+        ❌ Non disponible
+    </a>`;
+}
+
+/* ===================== */
+/* MENU PROFIL FIREBASE */
+/* ===================== */
+
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
     }
+}
 
-    /* ✅ Données réelles */
-    document.getElementById("email").textContent = user.email;
-
-    document.getElementById("username").textContent =
-        user.displayName || "Utilisateur";
-
-    document.getElementById("profilePic").src =
-        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName || user.email}`;
-
+/* 🔐 Détection connexion */
+onAuthStateChanged(auth, (user) => {
+    renderMenu(user);
 });
 
-/* 🔓 Déconnexion */
-document.getElementById("logoutBtn").addEventListener("click", () => {
-    signOut(auth);
+/* ouvrir / fermer */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
 });
+
+/* fermer si clic extérieur */
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+/* logout */
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
+
 </script>
 
 </body>
