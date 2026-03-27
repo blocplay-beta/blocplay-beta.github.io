@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BlocPlay</title>
+
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -81,17 +82,49 @@ if (userAgent.includes("android")) {
     </a>`;
 }
 
-/* profil */
+/* ===================== */
+/* MENU PROFIL FIX */
+/* ===================== */
+
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
+let isLoggedIn = false; // 👉 à connecter à Firebase plus tard
+
+function renderMenu() {
+    if (isLoggedIn) {
+        dropdown.innerHTML = `
+            <a href="#">Mon compte</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login.html">Se connecter</a>
+            <a href="/signup.html">Créer un compte</a>
+        `;
+    }
+}
+
+renderMenu();
+
+/* ouvrir/fermer menu */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
 });
 
+/* fermer en cliquant ailleurs */
 document.addEventListener("click", () => {
     dropdown.classList.remove("show");
+});
+
+/* logout exemple */
+document.addEventListener("click", (e) => {
+    if (e.target.id === "logout") {
+        isLoggedIn = false;
+        renderMenu();
+        dropdown.classList.remove("show");
+    }
 });
 </script>
 
