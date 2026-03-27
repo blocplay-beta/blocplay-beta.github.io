@@ -22,11 +22,12 @@ header {
     height: 40px;
 }
 
-/* AVATAR */
+/* PROFIL */
 .profile-menu {
     position: relative;
 }
 
+/* AVATAR */
 .avatar {
     width: 42px;
     height: 42px;
@@ -37,8 +38,9 @@ header {
     transition: 0.2s;
 }
 
+/* PAS DE MOUVEMENT */
 .avatar:hover {
-    transform: scale(1.1);
+    opacity: 0.85;
 }
 
 /* MENU */
@@ -49,38 +51,45 @@ header {
 
     display: none;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 
-    background: #111;
+    background: #1a1a1a;
     padding: 12px;
     border-radius: 12px;
 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    min-width: 180px;
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* BOUTONS MENU */
+/* BOUTONS */
 .dropdown a {
-    text-decoration: none;
+    display: block;
     padding: 10px;
     border-radius: 8px;
     text-align: center;
+
     font-weight: bold;
+    text-decoration: none;
+
+    color: white;
+    background: #2a2a2a;
+
     transition: 0.2s;
 }
 
+/* PRINCIPAL */
 .dropdown a:first-child {
     background: linear-gradient(45deg, #00c6ff, #0072ff);
-    color: white;
 }
 
+/* SECOND */
 .dropdown a:last-child {
-    background: #222;
-    color: white;
+    background: #333;
 }
 
+/* HOVER */
 .dropdown a:hover {
-    transform: scale(1.05);
+    filter: brightness(1.2);
 }
 
 /* CONTAINER */
