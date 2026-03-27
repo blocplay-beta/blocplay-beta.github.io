@@ -1,28 +1,86 @@
 body {
     margin: 0;
-    font-family: Arial;
-    background: #0b1220;
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
     color: white;
 }
 
 /* HEADER */
 header {
-    padding: 15px;
+    background: #111;
+    padding: 10px 20px;
 }
 
 .header-content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 }
 
+/* LOGO */
 .logo img {
     height: 40px;
 }
 
-.header-actions {
-    display: flex;
+/* AVATAR */
+.profile-menu {
+    position: relative;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    border: 2px solid white;
+    transition: 0.2s;
+}
+
+.avatar:hover {
+    transform: scale(1.1);
+}
+
+/* MENU */
+.dropdown {
+    position: absolute;
+    right: 0;
+    top: 55px;
+
+    display: none;
+    flex-direction: column;
     gap: 10px;
+
+    background: #111;
+    padding: 12px;
+    border-radius: 12px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    min-width: 180px;
+}
+
+/* BOUTONS MENU */
+.dropdown a {
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.dropdown a:first-child {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+}
+
+.dropdown a:last-child {
+    background: #222;
+    color: white;
+}
+
+.dropdown a:hover {
+    transform: scale(1.05);
 }
 
 /* CONTAINER */
@@ -30,54 +88,31 @@ header {
     padding: 20px;
 }
 
-/* CARDS */
+/* CARD */
 .card {
-    background: #111827;
-    border-radius: 20px;
-    padding: 25px;
-    margin: 20px 0;
-
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    position: relative;
-}
-
-/* HOVER PC */
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-}
-
-/* CLIC MOBILE */
-.card.active {
-    transform: scale(1.05);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-}
-
-/* TITRES */
-h1 {
-    margin-bottom: 10px;
-}
-
-/* BOUTONS */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 22px;
+    background: #1a1a1a;
+    padding: 20px;
+    margin-bottom: 20px;
     border-radius: 12px;
+
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+/* BUTTONS */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
-    margin-top: 10px;
-}
-
-.btn-gradient {
-    background: linear-gradient(90deg, #7c3aed, #06b6d4);
-    color: white;
 }
 
 .btn-dark {
-    background: #1f2937;
+    background: #333;
     color: white;
 }
 
@@ -86,8 +121,7 @@ h1 {
     color: white;
 }
 
-/* ICONES */
-.icon {
-    width: 20px;
-    filter: invert(1);
+.btn-gradient {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
 }
