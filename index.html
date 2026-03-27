@@ -39,15 +39,17 @@
 
   <div class="card">
       <h2>Voir le site BlocPlay</h2>
+
       <a href="https://sites.google.com/view/blocplay-beta/accueil" class="btn btn-dark">
-          Voir le site BlocPlay
+        Voir le site BlocPlay
       </a>
   </div>
 
   <div class="card">
       <h2>Discord</h2>
+
       <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
-          Rejoindre
+        Rejoindre
       </a>
   </div>
 
@@ -60,9 +62,9 @@ const container = document.getElementById("download-container");
 const userAgent = navigator.userAgent.toLowerCase();
 
 if (userAgent.includes("android")) {
-    container.innerHTML = `<a class="btn btn-gradient" href="#">Télécharger Android</a>`;
+    container.innerHTML = `<a class="btn btn-gradient" href="#">Installer BlocPlay</a>`;
 } else if (userAgent.includes("windows")) {
-    container.innerHTML = `<a class="btn btn-gradient" href="#">Télécharger Windows</a>`;
+    container.innerHTML = `<a class="btn btn-gradient" href="#">Installer BlocPlay</a>`;
 } else {
     container.innerHTML = `<p>Non disponible</p>`;
 }
@@ -90,6 +92,7 @@ const dropdown = document.getElementById("dropdown");
 
 let currentUser = null;
 
+/* USER STATE */
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
 
@@ -102,6 +105,7 @@ onAuthStateChanged(auth, (user) => {
     renderMenu();
 });
 
+/* MENU */
 function renderMenu() {
     if (currentUser) {
         dropdown.innerHTML = `
@@ -116,22 +120,22 @@ function renderMenu() {
     }
 }
 
-/* OUVERTURE */
+/* OUVRIR / FERMER */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
-    dropdown.style.display = "flex";
+    dropdown.classList.toggle("show");
 });
 
-/* FERMETURE */
+/* CLICK OUTSIDE */
 document.addEventListener("click", () => {
-    dropdown.style.display = "none";
+    dropdown.classList.remove("show");
 });
 
-/* DECONNEXION */
+/* LOGOUT */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
-        dropdown.style.display = "none";
+        dropdown.classList.remove("show");
     }
 });
 </script>
