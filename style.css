@@ -22,7 +22,7 @@ header {
     height: 40px;
 }
 
-/* AVATAR */
+/* PROFIL */
 .profile-menu {
     position: relative;
 }
@@ -76,12 +76,13 @@ header {
     margin-bottom: 20px;
     border-radius: 12px;
 
-    transform: none !important;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.card:hover {
-    transform: none !important;
-    filter: brightness(1.05);
+/* agrandissement sections */
+.card:hover,
+.card:active {
+    transform: scale(1.03);
 }
 
 /* BOUTONS */
@@ -114,8 +115,6 @@ header {
     width: 18px;
     height: 18px;
     margin-right: 8px;
-
-    display: inline-block;
 
     filter: brightness(0) invert(1);
 }
