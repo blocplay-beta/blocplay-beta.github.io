@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BlocPlay</title>
-<link rel="icon" href="logo.ico">
-
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -20,11 +18,10 @@
       <img src="logo.ico">
     </a>
 
-    <div class="header-actions">
-      <div class="profile-menu">
-        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="avatar" id="avatar">
-        <div class="dropdown" id="dropdown"></div>
-      </div>
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64" class="avatar" id="avatar">
+      
+      <div class="dropdown" id="dropdown"></div>
     </div>
 
   </div>
@@ -32,67 +29,42 @@
 
 <div class="container">
 
-<!-- CARD PRINCIPALE -->
-<div class="card">
-    <h1>La plateforme de jeux créée par et pour les gamers</h1>
-    <p>
-        BlocPlay est actuellement en bêta. Accédez à la plateforme,
-        installez-la sur Windows ou Android et découvrez les expériences disponibles.
-    </p>
+  <div class="card">
+      <h1>La plateforme de jeux créée par et pour les gamers</h1>
+      <p>BlocPlay est actuellement en bêta.</p>
 
-    <div id="download-container"></div>
-</div>
+      <div id="download-container"></div>
+  </div>
 
-<!-- VOIR SITE -->
-<div class="card">
-    <h2>Voir le site BlocPlay</h2>
-    <p>Accédez directement à la version officielle du site BlocPlay.</p>
+  <div class="card">
+      <h2>Voir le site BlocPlay</h2>
+      <a href="https://sites.google.com/view/blocplay-beta/accueil" class="btn btn-dark">
+          Voir le site BlocPlay
+      </a>
+  </div>
 
-    <a href="https://sites.google.com/view/blocplay-beta/accueil" class="btn btn-dark">
-        Voir le site BlocPlay
-    </a>
-</div>
-
-<!-- DISCORD -->
-<div class="card">
-    <h2>Rejoindre le Discord</h2>
-
-    <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" class="icon">
-        Rejoindre
-    </a>
-</div>
+  <div class="card">
+      <h2>Discord</h2>
+      <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
+          Rejoindre
+      </a>
+  </div>
 
 </div>
 
-<!-- SCRIPT TELECHARGEMENT -->
+<!-- DOWNLOAD -->
 <script>
 const container = document.getElementById("download-container");
+
 const userAgent = navigator.userAgent.toLowerCase();
 
-let text = "";
-let link = "";
-let icon = "";
-
 if (userAgent.includes("android")) {
-    text = "Télécharger BlocPlay";
-    link = "https://blocplay-beta.github.io/download-blocplayinstaller-android";
-    icon = '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg" class="icon">';
+    container.innerHTML = `<a class="btn btn-gradient" href="#">Télécharger Android</a>`;
 } else if (userAgent.includes("windows")) {
-    text = "Télécharger BlocPlay";
-    link = "https://blocplay-beta.github.io/download-blocplaysetupinstaller-windows";
-    icon = '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg" class="icon">';
+    container.innerHTML = `<a class="btn btn-gradient" href="#">Télécharger Windows</a>`;
 } else {
-    text = "Téléchargement indisponible";
-    link = "#";
-    icon = "❌";
+    container.innerHTML = `<p>Non disponible</p>`;
 }
-
-container.innerHTML = `
-<a href="${link}" class="btn btn-gradient">
-${icon} ${text}
-</a>
-`;
 </script>
 
 <!-- FIREBASE -->
@@ -100,7 +72,6 @@ ${icon} ${text}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-/* 🔥 CONFIG FIREBASE (REMPLACE PAR LA TIENNE) */
 const firebaseConfig = {
   apiKey: "TON_API_KEY",
   authDomain: "TON_AUTH_DOMAIN",
@@ -118,13 +89,18 @@ const dropdown = document.getElementById("dropdown");
 
 let currentUser = null;
 
-/* 🔥 DETECT LOGIN */
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
+
+    if (user && user.photoURL) {
+        avatar.src = user.photoURL;
+    } else {
+        avatar.src = "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+    }
+
     renderMenu();
 });
 
-/* 🔥 MENU */
 function renderMenu() {
     if (currentUser) {
         dropdown.innerHTML = `
@@ -139,22 +115,18 @@ function renderMenu() {
     }
 }
 
-/* 🔥 OUVRIR MENU */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
 });
 
-/* 🔥 FERMER */
 document.addEventListener("click", () => {
     dropdown.style.display = "none";
 });
 
-/* 🔥 DECONNEXION */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
-        dropdown.style.display = "none";
     }
 });
 </script>
