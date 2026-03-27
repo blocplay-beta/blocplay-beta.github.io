@@ -62,16 +62,18 @@ const userAgent = navigator.userAgent.toLowerCase();
 
 if (userAgent.includes("android")) {
     container.innerHTML = `
-    <a href="#" class="btn btn-gradient" id="installBtn">
+    <a href="/download-blocplayinstaller-android" class="btn btn-gradient">
         <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg">
         Installer BlocPlay
     </a>`;
+    
 } else if (userAgent.includes("windows")) {
     container.innerHTML = `
-    <a href="#" class="btn btn-gradient" id="installBtn">
+    <a href="/download-blocplaysetupinstaller-windows" class="btn btn-gradient">
         <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg">
         Installer BlocPlay
     </a>`;
+
 } else {
     container.innerHTML = `
     <a class="btn btn-gradient">
@@ -79,11 +81,17 @@ if (userAgent.includes("android")) {
     </a>`;
 }
 
-/* téléchargement */
-document.addEventListener("click", function(e) {
-    if (e.target.id === "installBtn") {
-        window.location.href = "/download";
-    }
+/* profil */
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
 });
 </script>
 
