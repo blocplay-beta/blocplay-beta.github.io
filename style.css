@@ -64,10 +64,6 @@ header {
     text-align: center;
 }
 
-.dropdown a:hover {
-    filter: brightness(1.1);
-}
-
 /* CONTAINER */
 .container {
     padding: 20px;
@@ -79,6 +75,13 @@ header {
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 12px;
+
+    transform: none !important;
+}
+
+.card:hover {
+    transform: none !important;
+    filter: brightness(1.05);
 }
 
 /* BOUTONS */
@@ -94,13 +97,12 @@ header {
 
     color: white;
 
-    /* IMPORTANT : pas de zoom */
     transform: none !important;
+
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
 }
 
-/* FORCER ABSENCE DE ZOOM */
 .btn:hover,
 .btn:active,
 .btn:focus {
@@ -114,7 +116,8 @@ header {
     margin-right: 8px;
 
     display: inline-block;
-    vertical-align: middle;
+
+    filter: brightness(0) invert(1);
 }
 
 /* COULEURS */
