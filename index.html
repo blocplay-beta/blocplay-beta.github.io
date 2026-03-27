@@ -3,23 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>BlocPlay</title>
 <link rel="icon" href="logo.ico">
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
 <header>
   <div class="header-content">
-    
+
     <a href="https://blocplay-beta.github.io" class="logo">
       <img src="logo.ico">
     </a>
 
     <div class="header-actions">
-      <a href="/login" class="btn btn-dark">Se connecter</a>
-      <a href="/signup" class="btn btn-dark">Créer un compte</a>
+      <div class="profile-menu">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="avatar" id="avatar">
+        <div class="dropdown" id="dropdown"></div>
+      </div>
     </div>
 
   </div>
@@ -60,6 +65,7 @@
 
 </div>
 
+<!-- SCRIPT TELECHARGEMENT -->
 <script>
 const container = document.getElementById("download-container");
 const userAgent = navigator.userAgent.toLowerCase();
@@ -89,24 +95,67 @@ ${icon} ${text}
 `;
 </script>
 
-<script>
-const cards = document.querySelectorAll(".card");
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-cards.forEach(card => {
-    card.addEventListener("click", function(e) {
-        e.stopPropagation();
+/* 🔥 CONFIG FIREBASE (REMPLACE PAR LA TIENNE) */
+const firebaseConfig = {
+  apiKey: "TON_API_KEY",
+  authDomain: "TON_AUTH_DOMAIN",
+  projectId: "TON_PROJECT_ID",
+  storageBucket: "TON_STORAGE_BUCKET",
+  messagingSenderId: "TON_SENDER_ID",
+  appId: "TON_APP_ID"
+};
 
-        if (card.classList.contains("active")) {
-            card.classList.remove("active");
-        } else {
-            cards.forEach(c => c.classList.remove("active"));
-            card.classList.add("active");
-        }
-    });
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+let currentUser = null;
+
+/* 🔥 DETECT LOGIN */
+onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    renderMenu();
 });
 
-document.addEventListener("click", function() {
-    cards.forEach(c => c.classList.remove("active"));
+/* 🔥 MENU */
+function renderMenu() {
+    if (currentUser) {
+        dropdown.innerHTML = `
+            <a href="#">Changer de compte</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
+/* 🔥 OUVRIR MENU */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+});
+
+/* 🔥 FERMER */
+document.addEventListener("click", () => {
+    dropdown.style.display = "none";
+});
+
+/* 🔥 DECONNEXION */
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+        dropdown.style.display = "none";
+    }
 });
 </script>
 
