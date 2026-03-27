@@ -49,6 +49,7 @@
       <h2>Discord</h2>
 
       <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg">
         Rejoindre
       </a>
   </div>
@@ -58,15 +59,25 @@
 <!-- DOWNLOAD -->
 <script>
 const container = document.getElementById("download-container");
-
 const userAgent = navigator.userAgent.toLowerCase();
 
 if (userAgent.includes("android")) {
-    container.innerHTML = `<a class="btn btn-gradient" href="#">Installer BlocPlay</a>`;
+    container.innerHTML = `
+    <a class="btn btn-gradient">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg">
+        Installer BlocPlay
+    </a>`;
 } else if (userAgent.includes("windows")) {
-    container.innerHTML = `<a class="btn btn-gradient" href="#">Installer BlocPlay</a>`;
+    container.innerHTML = `
+    <a class="btn btn-gradient">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg">
+        Installer BlocPlay
+    </a>`;
 } else {
-    container.innerHTML = `<p>Non disponible</p>`;
+    container.innerHTML = `
+    <a class="btn btn-gradient">
+        ❌ Non disponible
+    </a>`;
 }
 </script>
 
@@ -92,7 +103,6 @@ const dropdown = document.getElementById("dropdown");
 
 let currentUser = null;
 
-/* USER STATE */
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
 
@@ -105,7 +115,6 @@ onAuthStateChanged(auth, (user) => {
     renderMenu();
 });
 
-/* MENU */
 function renderMenu() {
     if (currentUser) {
         dropdown.innerHTML = `
@@ -114,24 +123,24 @@ function renderMenu() {
         `;
     } else {
         dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
+            <a href="/login.html">Se connecter</a>
+            <a href="/signup.html">Créer un compte</a>
         `;
     }
 }
 
-/* OUVRIR / FERMER */
+/* toggle menu */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
 });
 
-/* CLICK OUTSIDE */
+/* fermer en cliquant ailleurs */
 document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
-/* LOGOUT */
+/* logout */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
