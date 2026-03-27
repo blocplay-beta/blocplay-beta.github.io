@@ -19,8 +19,9 @@
     </a>
 
     <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64" class="avatar" id="avatar">
-      
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
       <div class="dropdown" id="dropdown"></div>
     </div>
 
@@ -115,18 +116,22 @@ function renderMenu() {
     }
 }
 
+/* OUVERTURE */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
-    dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    dropdown.style.display = "flex";
 });
 
+/* FERMETURE */
 document.addEventListener("click", () => {
     dropdown.style.display = "none";
 });
 
+/* DECONNEXION */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
+        dropdown.style.display = "none";
     }
 });
 </script>
