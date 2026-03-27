@@ -108,8 +108,6 @@ onAuthStateChanged(auth, (user) => {
 
     if (user && user.photoURL) {
         avatar.src = user.photoURL;
-    } else {
-        avatar.src = "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
     }
 
     renderMenu();
@@ -129,18 +127,15 @@ function renderMenu() {
     }
 }
 
-/* toggle menu */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
 });
 
-/* fermer en cliquant ailleurs */
 document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
-/* logout */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
