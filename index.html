@@ -7,6 +7,7 @@
 <title>BlocPlay</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="/logo.ico">
 
 </head>
 
@@ -15,8 +16,8 @@
 <header>
   <div class="header-content">
 
-    <a href="https://blocplay-beta.github.io" class="logo">
-      <img src="logo.ico">
+    <a href="/" class="logo">
+      <img src="/logo.ico">
     </a>
 
     <div class="profile-menu">
@@ -57,7 +58,28 @@
 
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* 🔥 CONFIG FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* ===================== */
+/* DOWNLOAD */
+/* ===================== */
+
 const container = document.getElementById("download-container");
 const userAgent = navigator.userAgent.toLowerCase();
 
@@ -83,18 +105,16 @@ if (userAgent.includes("android")) {
 }
 
 /* ===================== */
-/* MENU PROFIL FIX */
+/* MENU PROFIL FIREBASE */
 /* ===================== */
 
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
-let isLoggedIn = false; // 👉 à connecter à Firebase plus tard
-
-function renderMenu() {
-    if (isLoggedIn) {
+function renderMenu(user) {
+    if (user) {
         dropdown.innerHTML = `
-            <a href="#">Mon compte</a>
+            <a href="/profile">Profil</a>
             <a href="#" id="logout">Se déconnecter</a>
         `;
     } else {
@@ -105,27 +125,29 @@ function renderMenu() {
     }
 }
 
-renderMenu();
+/* 🔐 Détection connexion */
+onAuthStateChanged(auth, (user) => {
+    renderMenu(user);
+});
 
-/* ouvrir/fermer menu */
+/* ouvrir / fermer */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
 });
 
-/* fermer en cliquant ailleurs */
+/* fermer si clic extérieur */
 document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
-/* logout exemple */
-document.addEventListener("click", (e) => {
+/* logout */
+document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
-        isLoggedIn = false;
-        renderMenu();
-        dropdown.classList.remove("show");
+        await signOut(auth);
     }
 });
+
 </script>
 
 </body>
