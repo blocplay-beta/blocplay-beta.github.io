@@ -10,6 +10,42 @@
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/logo.ico">
 
+<style>
+
+/* POPUP */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #111827;
+    padding: 25px;
+    border-radius: 15px;
+    width: 300px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal input {
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -21,6 +57,12 @@
       <img src="/logo.ico">
     </a>
 
+    <!-- PROFIL -->
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar">
+    </div>
+
   </div>
 </header>
 
@@ -30,38 +72,38 @@
 
     <h1>Paramètres</h1>
 
-    <!-- MOT DE PASSE ACTUEL -->
-    <h3>Mot de passe actuel</h3>
-    <input type="password" id="currentPassword" placeholder="Mot de passe actuel">
+    <button class="btn btn-dark" onclick="openModal('username')">
+      Modifier le pseudo
+    </button>
 
     <br><br>
 
-    <!-- PSEUDO -->
-    <h3>Pseudo</h3>
-    <input type="text" id="username" placeholder="Nouveau pseudo">
-    <button onclick="updateUsername()" class="btn btn-dark">Modifier le pseudo</button>
+    <button class="btn btn-dark" onclick="openModal('email')">
+      Modifier l'email
+    </button>
 
     <br><br>
 
-    <!-- EMAIL -->
-    <h3>Email</h3>
-    <input type="email" id="email" placeholder="Nouvel email">
-    <button onclick="updateEmailUser()" class="btn btn-dark">Modifier l'email</button>
-
-    <br><br>
-
-    <!-- PASSWORD -->
-    <h3>Nouveau mot de passe</h3>
-    <input type="password" id="password" placeholder="Nouveau mot de passe">
-    <button onclick="updatePasswordUser()" class="btn btn-dark">Modifier le mot de passe</button>
-
-    <br><br>
-
-    <!-- LOGOUT -->
-    <button id="logoutBtn" class="btn btn-gradient">Se déconnecter</button>
+    <button class="btn btn-dark" onclick="openModal('password')">
+      Modifier le mot de passe
+    </button>
 
   </div>
 
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content" onclick="event.stopPropagation()">
+
+    <h3 id="modalTitle"></h3>
+
+    <input type="text" id="inputField" placeholder="">
+    <input type="password" id="currentPassword" placeholder="Mot de passe actuel">
+
+    <button class="btn btn-gradient" onclick="confirmAction()">Valider</button>
+
+  </div>
 </div>
 
 <script type="module">
@@ -71,13 +113,12 @@ import {
   onAuthStateChanged, 
   updateProfile, 
   updateEmail, 
-  updatePassword, 
-  signOut,
+  updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* 🔥 CONFIG FIREBASE */
+/* CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -91,8 +132,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 let currentUser;
+let currentAction = "";
 
-/* 🔐 Vérif connexion */
+/* CHECK USER */
 onAuthStateChanged(auth, (user) => {
     if (!user) {
         window.location.href = "/login";
@@ -101,7 +143,41 @@ onAuthStateChanged(auth, (user) => {
     currentUser = user;
 });
 
-/* 🔑 Re-authentification */
+/* OPEN MODAL */
+window.openModal = function(action) {
+    currentAction = action;
+
+    const modal = document.getElementById("modal");
+    const title = document.getElementById("modalTitle");
+    const input = document.getElementById("inputField");
+
+    modal.classList.add("show");
+
+    if (action === "username") {
+        title.textContent = "Changer le pseudo";
+        input.type = "text";
+        input.placeholder = "Nouveau pseudo";
+    }
+
+    if (action === "email") {
+        title.textContent = "Changer l'email";
+        input.type = "email";
+        input.placeholder = "Nouvel email";
+    }
+
+    if (action === "password") {
+        title.textContent = "Changer le mot de passe";
+        input.type = "password";
+        input.placeholder = "Nouveau mot de passe";
+    }
+}
+
+/* CLOSE MODAL */
+document.getElementById("modal").addEventListener("click", () => {
+    document.getElementById("modal").classList.remove("show");
+});
+
+/* REAUTH */
 async function reAuth(password) {
     const credential = EmailAuthProvider.credential(
         currentUser.email,
@@ -111,52 +187,35 @@ async function reAuth(password) {
     await reauthenticateWithCredential(currentUser, credential);
 }
 
-/* ✏️ Modifier pseudo */
-window.updateUsername = async function() {
-    const username = document.getElementById("username").value;
-
-    try {
-        await updateProfile(currentUser, {
-            displayName: username
-        });
-        alert("Pseudo modifié !");
-    } catch (err) {
-        alert(err.message);
-    }
-}
-
-/* 📧 Modifier email */
-window.updateEmailUser = async function() {
-    const email = document.getElementById("email").value;
+/* CONFIRM ACTION */
+window.confirmAction = async function() {
+    const value = document.getElementById("inputField").value;
     const password = document.getElementById("currentPassword").value;
 
     try {
         await reAuth(password);
-        await updateEmail(currentUser, email);
-        alert("Email modifié !");
+
+        if (currentAction === "username") {
+            await updateProfile(currentUser, { displayName: value });
+            alert("Pseudo modifié !");
+        }
+
+        if (currentAction === "email") {
+            await updateEmail(currentUser, value);
+            alert("Email modifié !");
+        }
+
+        if (currentAction === "password") {
+            await updatePassword(currentUser, value);
+            alert("Mot de passe modifié !");
+        }
+
+        document.getElementById("modal").classList.remove("show");
+
     } catch (err) {
         alert(err.message);
     }
 }
-
-/* 🔒 Modifier mot de passe */
-window.updatePasswordUser = async function() {
-    const newPassword = document.getElementById("password").value;
-    const password = document.getElementById("currentPassword").value;
-
-    try {
-        await reAuth(password);
-        await updatePassword(currentUser, newPassword);
-        alert("Mot de passe modifié !");
-    } catch (err) {
-        alert(err.message);
-    }
-}
-
-/* 🚪 Déconnexion */
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-    await signOut(auth);
-});
 </script>
 
 </body>
