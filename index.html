@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BlocPlay</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/logo.ico">
 
 </head>
@@ -33,27 +34,8 @@
 <div class="container">
 
   <div class="card">
-      <h1>La plateforme de jeux créée par et pour les gamers</h1>
-      <p>BlocPlay est actuellement en bêta.</p>
-
-      <div id="download-container"></div>
-  </div>
-
-  <div class="card">
-      <h2>Voir le site BlocPlay</h2>
-
-      <a href="https://sites.google.com/view/blocplay-beta/accueil" class="btn btn-dark">
-        Voir le site BlocPlay
-      </a>
-  </div>
-
-  <div class="card">
-      <h2>Discord</h2>
-
-      <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg">
-        Rejoindre
-      </a>
+    <h1>La plateforme de jeux créée par et pour les gamers</h1>
+    <div id="download-container"></div>
   </div>
 
 </div>
@@ -63,7 +45,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* 🔥 CONFIG FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -76,38 +57,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* ===================== */
-/* DOWNLOAD */
-/* ===================== */
-
-const container = document.getElementById("download-container");
-const userAgent = navigator.userAgent.toLowerCase();
-
-if (userAgent.includes("android")) {
-    container.innerHTML = `
-    <a href="/download-blocplayinstaller-android" class="btn btn-gradient">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg">
-        Installer BlocPlay
-    </a>`;
-    
-} else if (userAgent.includes("windows")) {
-    container.innerHTML = `
-    <a href="/download-blocplaysetupinstaller-windows" class="btn btn-gradient">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg">
-        Installer BlocPlay
-    </a>`;
-
-} else {
-    container.innerHTML = `
-    <a class="btn btn-gradient">
-        ❌ Non disponible
-    </a>`;
-}
-
-/* ===================== */
-/* MENU PROFIL FIREBASE */
-/* ===================== */
-
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
@@ -115,6 +64,7 @@ function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
             <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
             <a href="#" id="logout">Se déconnecter</a>
         `;
     } else {
@@ -125,29 +75,24 @@ function renderMenu(user) {
     }
 }
 
-/* 🔐 Détection connexion */
 onAuthStateChanged(auth, (user) => {
     renderMenu(user);
 });
 
-/* ouvrir / fermer */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
 });
 
-/* fermer si clic extérieur */
 document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
-/* logout */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
     }
 });
-
 </script>
 
 </body>
