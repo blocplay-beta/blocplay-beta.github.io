@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>404 - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/logo.ico">
+    </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card" style="text-align:center;">
+
+      <h1 style="font-size:60px;">404</h1>
+      <p>Oups... cette page n'existe pas.</p>
+
+      <a href="/" class="btn btn-gradient">
+        Retour à l'accueil
+      </a>
+
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
+onAuthStateChanged(auth, (user) => {
+    renderMenu(user);
+});
+
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
+</script>
+
+</body>
+</html>
