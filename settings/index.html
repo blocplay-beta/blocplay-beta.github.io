@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Paramètres - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/logo.ico">
+    </a>
+
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>Paramètres</h1>
+
+    <!-- MOT DE PASSE ACTUEL -->
+    <h3>Mot de passe actuel</h3>
+    <input type="password" id="currentPassword" placeholder="Mot de passe actuel">
+
+    <br><br>
+
+    <!-- PSEUDO -->
+    <h3>Pseudo</h3>
+    <input type="text" id="username" placeholder="Nouveau pseudo">
+    <button onclick="updateUsername()" class="btn btn-dark">Modifier le pseudo</button>
+
+    <br><br>
+
+    <!-- EMAIL -->
+    <h3>Email</h3>
+    <input type="email" id="email" placeholder="Nouvel email">
+    <button onclick="updateEmailUser()" class="btn btn-dark">Modifier l'email</button>
+
+    <br><br>
+
+    <!-- PASSWORD -->
+    <h3>Nouveau mot de passe</h3>
+    <input type="password" id="password" placeholder="Nouveau mot de passe">
+    <button onclick="updatePasswordUser()" class="btn btn-dark">Modifier le mot de passe</button>
+
+    <br><br>
+
+    <!-- LOGOUT -->
+    <button id="logoutBtn" class="btn btn-gradient">Se déconnecter</button>
+
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  updateProfile, 
+  updateEmail, 
+  updatePassword, 
+  signOut,
+  EmailAuthProvider,
+  reauthenticateWithCredential
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* 🔥 CONFIG FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+let currentUser;
+
+/* 🔐 Vérif connexion */
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "/login";
+        return;
+    }
+    currentUser = user;
+});
+
+/* 🔑 Re-authentification */
+async function reAuth(password) {
+    const credential = EmailAuthProvider.credential(
+        currentUser.email,
+        password
+    );
+
+    await reauthenticateWithCredential(currentUser, credential);
+}
+
+/* ✏️ Modifier pseudo */
+window.updateUsername = async function() {
+    const username = document.getElementById("username").value;
+
+    try {
+        await updateProfile(currentUser, {
+            displayName: username
+        });
+        alert("Pseudo modifié !");
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+/* 📧 Modifier email */
+window.updateEmailUser = async function() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("currentPassword").value;
+
+    try {
+        await reAuth(password);
+        await updateEmail(currentUser, email);
+        alert("Email modifié !");
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+/* 🔒 Modifier mot de passe */
+window.updatePasswordUser = async function() {
+    const newPassword = document.getElementById("password").value;
+    const password = document.getElementById("currentPassword").value;
+
+    try {
+        await reAuth(password);
+        await updatePassword(currentUser, newPassword);
+        alert("Mot de passe modifié !");
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+/* 🚪 Déconnexion */
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await signOut(auth);
+});
+</script>
+
+</body>
+</html>
