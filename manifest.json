@@ -1,0 +1,16 @@
+{
+  "name": "BlocPlay",
+  "short_name": "BlocPlay",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f1a",
+  "theme_color": "#0b0f1a",
+  "description": "BlocPlay, une plateforme de jeux crée par des gamers pour des gamers.",
+  "icons": [
+    {
+      "src": "/logo.ico",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
