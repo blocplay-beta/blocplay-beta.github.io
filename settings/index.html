@@ -12,7 +12,7 @@
 
 <style>
 
-/* POPUP */
+/* MODAL */
 .modal {
     position: fixed;
     top: 0;
@@ -25,15 +25,15 @@
     align-items: center;
 }
 
+.modal.show {
+    display: flex;
+}
+
 .modal-content {
     background: #111827;
     padding: 25px;
     border-radius: 15px;
     width: 300px;
-}
-
-.modal.show {
-    display: flex;
 }
 
 .modal input {
@@ -57,10 +57,11 @@
       <img src="/logo.ico">
     </a>
 
-    <!-- PROFIL -->
     <div class="profile-menu">
       <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar">
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
     </div>
 
   </div>
@@ -115,10 +116,11 @@ import {
   updateEmail, 
   updatePassword,
   EmailAuthProvider,
-  reauthenticateWithCredential
+  reauthenticateWithCredential,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* CONFIG */
+/* CONFIG FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -134,16 +136,56 @@ const auth = getAuth(app);
 let currentUser;
 let currentAction = "";
 
-/* CHECK USER */
+/* MENU PROFIL */
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
+/* AUTH */
 onAuthStateChanged(auth, (user) => {
+
     if (!user) {
         window.location.href = "/login";
         return;
     }
+
     currentUser = user;
+    renderMenu(user);
 });
 
-/* OPEN MODAL */
+/* MENU OUVERTURE */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+/* MENU FERMETURE */
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+/* LOGOUT */
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
+
+/* MODAL */
 window.openModal = function(action) {
     currentAction = action;
 
@@ -170,9 +212,9 @@ window.openModal = function(action) {
         input.type = "password";
         input.placeholder = "Nouveau mot de passe";
     }
-}
+};
 
-/* CLOSE MODAL */
+/* FERMER MODAL */
 document.getElementById("modal").addEventListener("click", () => {
     document.getElementById("modal").classList.remove("show");
 });
@@ -215,7 +257,7 @@ window.confirmAction = async function() {
     } catch (err) {
         alert(err.message);
     }
-}
+};
 </script>
 
 </body>
