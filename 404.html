@@ -33,15 +33,11 @@
 
 <div class="container">
 
-  <div class="card" style="text-align:center;">
+  <div class="card">
+    <h1>404</h1>
+    <p>Cette page n'existe pas.</p>
 
-      <h1 style="font-size:60px;">404</h1>
-      <p>Oups... cette page n'existe pas.</p>
-
-      <a href="/" class="btn btn-gradient">
-        Retour à l'accueil
-      </a>
-
+    <a href="/" class="btn btn-gradient">Retour à l'accueil</a>
   </div>
 
 </div>
@@ -70,6 +66,7 @@ function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
             <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
             <a href="#" id="logout">Se déconnecter</a>
         `;
     } else {
