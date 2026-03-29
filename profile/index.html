@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Profil - BlocPlay</title>
 
 <link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
 
 </head>
 
@@ -21,11 +23,12 @@
 
     <div class="profile-menu">
       <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar">
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
     </div>
 
   </div>
-
 </header>
 
 <div class="container">
@@ -34,17 +37,10 @@
 
     <h1>Mon profil</h1>
 
-    <img id="profilePic"
-         class="profile-pic"
-         src="https://ui-avatars.com/api/?name=User&background=222&color=fff&size=128">
+    <img id="profilePic" class="profile-pic">
 
-    <h2 id="username">Chargement...</h2>
-
-    <p id="email">Chargement...</p>
-
-    <button id="logoutBtn" class="btn btn-dark">
-      Se déconnecter
-    </button>
+    <h2 id="username"></h2>
+    <p id="email"></p>
 
   </div>
 
@@ -67,7 +63,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* 🔐 Vérification connexion */
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
 onAuthStateChanged(auth, (user) => {
 
     if (!user) {
@@ -75,20 +88,28 @@ onAuthStateChanged(auth, (user) => {
         return;
     }
 
-    /* ✅ Données réelles */
-    document.getElementById("email").textContent = user.email;
+    renderMenu(user);
 
-    document.getElementById("username").textContent =
-        user.displayName || "Utilisateur";
+    document.getElementById("email").textContent = user.email;
+    document.getElementById("username").textContent = user.displayName;
 
     document.getElementById("profilePic").src =
-        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName || user.email}`;
-
+        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 });
 
-/* 🔓 Déconnexion */
-document.getElementById("logoutBtn").addEventListener("click", () => {
-    signOut(auth);
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
 });
 </script>
 
