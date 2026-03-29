@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+      <h1>📡 Pas de connexion</h1>
+      <p>Veuillez activer votre réseau pour continuer.</p>
+
+      <button onclick="goSettings()">Activer le réseau</button>
+  </div>
+
+</div>
+
+<script>
+function goSettings() {
+  if (navigator.userAgent.includes("Android")) {
+    alert("Va dans les paramètres WiFi de ton téléphone.");
+  } else {
+    location.reload();
+  }
+}
+</script>
+
+</body>
+</html>
