@@ -148,3 +148,12 @@ header {
   align-items: center;
   justify-content: space-between;
 }
+
+.profile-menu {
+  display: flex;
+  align-items: center;
+}
+
+.search-btn {
+  margin-right: 10px;
+}
