@@ -8,9 +8,9 @@
   "description": "BlocPlay, une plateforme de jeux crée par des gamers pour des gamers.",
   "icons": [
     {
-      "src": "/logo.ico",
+      "src": "/icon png",
       "sizes": "512x512",
-      "type": "image/x-icon"
+      "type": "image/png"
     }
   ]
 }
