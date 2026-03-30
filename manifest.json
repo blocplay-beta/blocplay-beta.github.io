@@ -8,10 +8,15 @@
   "theme_color": "#0b0f1a",
   "description": "BlocPlay, une plateforme de jeux créée par des gamers pour des gamers.",
   "icons": [
-    {
-      "src": "/icon.png",
-      "sizes": "256x256",
-      "type": "image/png"
-    }
-  ]
+  {
+    "src": "/icon-192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  },
+  {
+    "src": "/icon-512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }
+]
 }
