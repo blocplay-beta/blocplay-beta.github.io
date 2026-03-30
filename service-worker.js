@@ -6,12 +6,9 @@ const FILES_TO_CACHE = [
   "/index.html",
   "/style.css",
   "/logo.ico",
-  "/icon.png",
-  "/offline.html",
-  "/login",
-  "/signup",
-  "/profile",
-  "/settings"
+  "/icon-192.png",
+  "/icon-512.png",
+  "/offline.html"
 ];
 
 /* ===================== */
