@@ -47,6 +47,11 @@
     </p>
 
     <div id="download-container"></div>
+
+    <!-- ✅ BOUTON INSTALL PWA -->
+    <button id="installBtn" class="btn btn-gradient" style="display:none;">
+      Installer BlocPlay
+    </button>
 </div>
 
 <!-- VOIR SITE -->
@@ -128,7 +133,7 @@ document.addEventListener("click", async (e) => {
     }
 });
 
-/* DOWNLOAD BUTTON */
+/* DOWNLOAD BUTTON (TON CODE EXISTANT) */
 const container = document.getElementById("download-container");
 const userAgent = navigator.userAgent.toLowerCase();
 
@@ -155,24 +160,50 @@ container.innerHTML = `
 ${icon} ${text}
 </a>
 `;
-</script>
 
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
+/* ✅ INSTALL PWA */
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const btn = document.getElementById("installBtn");
+  if (btn) btn.style.display = "inline-block";
+});
+
+document.getElementById("installBtn").addEventListener("click", async () => {
+
+  const isWindows = navigator.userAgent.includes("Windows");
+
+  // 📱 Android (PWA)
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+
+    const result = await deferredPrompt.userChoice;
+
+    if (result.outcome === "accepted") {
+      console.log("Installé 👍");
+    }
+
+    deferredPrompt = null;
+    return;
+  }
+
+  // 💻 Windows → ton installateur
+  if (isWindows) {
+    window.location.href = "/download-blocplaysetupinstaller-windows";
+    return;
+  }
+
+  alert("Installation non disponible sur cet appareil.");
+});
 </script>
 
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js")
-      .then((reg) => {
-        console.log("Service Worker OK :", reg.scope);
-      })
-      .catch((err) => {
-        console.log("Service Worker ERROR :", err);
-      });
+    navigator.serviceWorker.register("/service-worker.js");
   });
 }
 </script>
