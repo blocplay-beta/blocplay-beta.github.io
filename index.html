@@ -48,10 +48,6 @@
 
     <div id="download-container"></div>
 
-    <!-- ✅ BOUTON INSTALL PWA -->
-    <button id="installBtn" class="btn btn-gradient" style="display:none;">
-      Installer BlocPlay
-    </button>
 </div>
 
 <!-- VOIR SITE -->
@@ -116,7 +112,7 @@ onAuthStateChanged(auth, (user) => {
     renderMenu(user);
 });
 
-/* MENU INTERACTION */
+/* MENU */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -133,71 +129,61 @@ document.addEventListener("click", async (e) => {
     }
 });
 
-/* DOWNLOAD BUTTON (TON CODE EXISTANT) */
+/* 🔥 BOUTON UNIQUE */
 const container = document.getElementById("download-container");
 const userAgent = navigator.userAgent.toLowerCase();
 
-let text = "";
-let link = "";
-let icon = "";
-
-if (userAgent.includes("android")) {
-    text = "Télécharger BlocPlay";
-    link = "/download-blocplayinstaller-android";
-    icon = '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg" class="icon">';
-} else if (userAgent.includes("windows")) {
-    text = "Télécharger BlocPlay";
-    link = "/download-blocplaysetupinstaller-windows";
-    icon = '<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg" class="icon">';
-} else {
-    text = "Téléchargement indisponible";
-    link = "#";
-    icon = "❌";
-}
-
-container.innerHTML = `
-<a href="${link}" class="btn btn-gradient">
-${icon} ${text}
-</a>
-`;
-
-/* ✅ INSTALL PWA */
-let deferredPrompt;
+let deferredPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-
-  const btn = document.getElementById("installBtn");
-  if (btn) btn.style.display = "inline-block";
+    e.preventDefault();
+    deferredPrompt = e;
 });
 
-document.getElementById("installBtn").addEventListener("click", async () => {
+const isAndroid = userAgent.includes("android");
+const isWindows = userAgent.includes("windows");
 
-  const isWindows = navigator.userAgent.includes("Windows");
+if (isAndroid) {
 
-  // 📱 Android (PWA)
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
+    container.innerHTML = `
+        <button id="installBtn" class="btn btn-gradient">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg" class="icon">
+            Installer BlocPlay
+        </button>
+    `;
 
-    const result = await deferredPrompt.userChoice;
+    document.getElementById("installBtn").addEventListener("click", async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
 
-    if (result.outcome === "accepted") {
-      console.log("Installé 👍");
-    }
+            const result = await deferredPrompt.userChoice;
 
-    deferredPrompt = null;
-    return;
-  }
+            if (result.outcome === "accepted") {
+                console.log("Installé 👍");
+            }
 
-  // 💻 Windows → ton installateur
-  if (isWindows) {
-    window.location.href = "/download-blocplaysetupinstaller-windows";
-    return;
-  }
+            deferredPrompt = null;
+        } else {
+            alert("Installation non disponible.");
+        }
+    });
 
-  alert("Installation non disponible sur cet appareil.");
-});
+} else if (isWindows) {
+
+    container.innerHTML = `
+        <a href="/download-blocplaysetupinstaller-windows" class="btn btn-gradient">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg" class="icon">
+            Télécharger BlocPlay
+        </a>
+    `;
+
+} else {
+
+    container.innerHTML = `
+        <div class="btn btn-gradient">❌ Téléchargement indisponible</div>
+    `;
+}
+
 </script>
 
 <script>
