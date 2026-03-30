@@ -157,3 +157,11 @@ header {
 .search-btn {
   margin-right: 10px;
 }
+
+.search-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
