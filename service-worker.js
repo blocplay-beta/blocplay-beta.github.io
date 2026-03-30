@@ -6,6 +6,7 @@ const FILES_TO_CACHE = [
   "/index.html",
   "/style.css",
   "/logo.ico",
+  "/icon.png",
   "/offline.html",
   "/login",
   "/signup",
