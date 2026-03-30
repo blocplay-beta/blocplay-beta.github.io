@@ -142,3 +142,9 @@ header {
     margin: 20px 0;
     border: 3px solid white;
 }
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
