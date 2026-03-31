@@ -312,6 +312,35 @@ if (token) {
 } else {
   console.log("Aucun token trouvé dans le hash");
 }
+
+const discordBtn = document.getElementById("discordBtn");
+
+function updateDiscordButton() {
+  const data = JSON.parse(localStorage.getItem("discordUser"));
+
+  if (data) {
+    discordBtn.textContent = "Dissocier Discord";
+  } else {
+    discordBtn.textContent = "Lier Discord";
+  }
+}
+
+updateDiscordButton();
+
+discordBtn.addEventListener("click", () => {
+  const data = JSON.parse(localStorage.getItem("discordUser"));
+
+  // ✅ Lier Discord
+  if (!data) {
+    window.location.href = "https://discord.com/oauth2/authorize?client_id=1471824801088802879&response_type=code&redirect_uri=https%3A%2F%2Fblocplay-beta.github.io%2Fsettings&scope=identify";
+  } 
+  // ❌ Dissocier Discord
+  else {
+    localStorage.removeItem("discordUser");
+    alert("Compte Discord dissocié !");
+    updateDiscordButton();
+  }
+});
 </script>
 
 </body>
