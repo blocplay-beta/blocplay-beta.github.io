@@ -122,5 +122,23 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
+<div id="discordProfile"></div>
+
+<script>
+const data = JSON.parse(localStorage.getItem("discordUser"));
+
+if (data) {
+  document.getElementById("discordProfile").innerHTML = `
+    <img src="${data.avatar}" width="80" style="border-radius:50%;">
+    <h3>${data.username}</h3>
+    <p>@${data.id}</p>
+  `;
+} else {
+  document.getElementById("discordProfile").innerHTML = `
+    <p>Aucun compte Discord lié</p>
+  `;
+}
+</script>
+
 </body>
 </html>
