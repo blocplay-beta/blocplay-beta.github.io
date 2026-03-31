@@ -116,12 +116,6 @@ document.addEventListener("click", async (e) => {
 });
 </script>
 
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
-</script>
-
 <div class="container">
 
   <div class="card discord-card">
@@ -164,6 +158,12 @@ if (discordContainer) {
     `;
   }
 
+}
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
 }
 </script>
 
