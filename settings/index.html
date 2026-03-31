@@ -130,7 +130,6 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -261,10 +260,12 @@ if (token) {
   });
 }
 
-/* BOUTON DISCORD */
-const discordBtn = document.getElementById("discordBtn");
+/* DISCORD BUTTON SAFE */
+document.addEventListener("DOMContentLoaded", () => {
 
-if (discordBtn) {
+  const discordBtn = document.getElementById("discordBtn");
+
+  if (!discordBtn) return;
 
   function updateDiscordButton() {
     const data = JSON.parse(localStorage.getItem("discordUser"));
@@ -290,7 +291,7 @@ if (discordBtn) {
     }
   });
 
-}
+});
 </script>
 
 </body>
