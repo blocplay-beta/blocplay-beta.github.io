@@ -276,5 +276,81 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
+<script>
+let deferredPrompt;
+
+// 🔹 Détection installation PWA
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const btn = document.getElementById("installBtn");
+  if (btn) btn.style.display = "inline-block";
+});
+
+// 🔹 Clique sur "Installer BlocPlay"
+document.getElementById("installBtn")?.addEventListener("click", async () => {
+
+  const isWindows = navigator.userAgent.includes("Windows");
+
+  // 📱 Android / PWA
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+
+    const result = await deferredPrompt.userChoice;
+
+    if (result.outcome === "accepted") {
+      console.log("Installé 👍");
+    }
+
+    deferredPrompt = null;
+    return;
+  }
+
+  // 💻 Windows → ton installateur
+  if (isWindows) {
+    window.location.href = "/download-blocplaysetupinstaller-windows";
+    return;
+  }
+
+  alert("Installation non disponible sur cet appareil.");
+});
+
+
+// 🔍 BARRE DE RECHERCHE
+
+const searchBtn = document.getElementById("searchBtn");
+const searchOverlay = document.getElementById("searchOverlay");
+const searchInput = document.getElementById("searchInput");
+
+if (searchBtn) {
+  searchBtn.addEventListener("click", () => {
+    searchOverlay.style.display = "flex";
+    searchInput.focus();
+  });
+}
+
+// 📥 Appui sur Entrée
+searchInput?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const query = searchInput.value.trim();
+
+    if (query === "") return;
+
+    // 👉 Ici tu peux gérer les résultats
+    console.log("Recherche :", query);
+
+    searchOverlay.style.display = "none";
+  }
+});
+
+// ❌ Clic en dehors pour fermer
+searchOverlay?.addEventListener("click", (e) => {
+  if (e.target === searchOverlay) {
+    searchOverlay.style.display = "none";
+  }
+});
+</script>
+
 </body>
 </html>
