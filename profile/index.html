@@ -125,18 +125,36 @@ if ("serviceWorker" in navigator) {
 <div id="discordProfile"></div>
 
 <script>
-const data = JSON.parse(localStorage.getItem("discordUser"));
+const discordData = JSON.parse(localStorage.getItem("discordUser"));
 
-if (data) {
-  document.getElementById("discordProfile").innerHTML = `
-    <img src="${data.avatar}" width="80" style="border-radius:50%;">
-    <h3>${data.username}</h3>
-    <p>@${data.id}</p>
-  `;
-} else {
-  document.getElementById("discordProfile").innerHTML = `
-    <p>Aucun compte Discord lié</p>
-  `;
+const discordContainer = document.getElementById("discordProfile");
+
+if (discordContainer) {
+
+  if (discordData) {
+    const username = discordData.username || "Utilisateur";
+    const avatar = discordData.avatar || "";
+    const id = discordData.id || "";
+
+    discordContainer.innerHTML = `
+      <div class="discord-card">
+        <h2>Compte Discord</h2>
+
+        <img src="${avatar}" 
+             style="width:80px;border-radius:50%;">
+
+        <p class="discord-name">${username}</p>
+        <p class="discord-id">@${id}</p>
+      </div>
+    `;
+  } else {
+    discordContainer.innerHTML = `
+      <div class="discord-card">
+        <p>Aucun compte Discord lié</p>
+      </div>
+    `;
+  }
+
 }
 </script>
 
