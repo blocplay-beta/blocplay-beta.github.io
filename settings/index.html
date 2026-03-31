@@ -275,6 +275,7 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
+<script>
 const hash = window.location.hash.substring(1);
 
 const params = new URLSearchParams(hash);
@@ -311,6 +312,7 @@ if (token) {
 } else {
   console.log("Aucun token trouvé dans le hash");
 }
+</script>
 
 </body>
 </html>
