@@ -275,36 +275,25 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const code = params.get("code");
+const hash = window.location.hash.substring(1);
 
-if (code) {
-  fetch("https://discord.com/api/oauth2/token", {
-    method: "POST",
+const params = new URLSearchParams(hash);
+
+const token = params.get("access_token");
+
+console.log("Token :", token);
+
+if (token) {
+  fetch("https://discord.com/api/users/@me", {
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: new URLSearchParams({
-      client_id: "TON_CLIENT_ID",
-      client_secret: "TON_CLIENT_SECRET",
-      grant_type: "authorization_code",
-      code: code,
-      redirect_uri: "https://blocplay-beta.github.io/settings"
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    return fetch("https://discord.com/api/users/@me", {
-      headers: {
-        Authorization: `${data.token_type} ${data.access_token}`
-      }
-    });
+      Authorization: `Bearer ${token}`
+    }
   })
   .then(res => res.json())
   .then(user => {
 
-    // 💾 stockage local (TEMPORAIRE)
+    console.log("User :", user);
+
     localStorage.setItem("discordUser", JSON.stringify({
       id: user.id,
       username: user.username,
@@ -316,10 +305,12 @@ if (code) {
   })
   .catch(err => {
     console.error(err);
-    alert("Erreur lors du lien Discord");
+    alert("Erreur API Discord");
   });
+
+} else {
+  console.log("Aucun token trouvé dans le hash");
 }
-</script>
 
 </body>
 </html>
