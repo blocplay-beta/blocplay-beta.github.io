@@ -94,7 +94,8 @@
 
     <br><br>
 
-    <button class="btn btn-dark" onclick="window.location.href='https://discord.com/api/oauth2/authorize?client_id=1471824801088802879&response_type=token&redirect_uri=https%3A%2F%2Fblocplay-beta.github.io%2Fsettings&scope=identify'">
+    <!-- 🔥 BOUTON DISCORD -->
+    <button id="discordBtn" class="btn btn-dark">
       Lier Discord
     </button>
 
@@ -129,7 +130,7 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* CONFIG FIREBASE */
+/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -145,53 +146,14 @@ const auth = getAuth(app);
 let currentUser;
 let currentAction = "";
 
-/* MENU PROFIL */
-const avatar = document.getElementById("avatar");
-const dropdown = document.getElementById("dropdown");
-
-function renderMenu(user) {
-    if (user) {
-        dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
-            <a href="#" id="logout">Se déconnecter</a>
-        `;
-    } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
-    }
-}
-
 /* AUTH */
 onAuthStateChanged(auth, (user) => {
-
     if (!user) {
         window.location.href = "/login";
         return;
     }
 
     currentUser = user;
-    renderMenu(user);
-});
-
-/* MENU OUVERTURE */
-avatar.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("show");
-});
-
-/* MENU FERMETURE */
-document.addEventListener("click", () => {
-    dropdown.classList.remove("show");
-});
-
-/* LOGOUT */
-document.addEventListener("click", async (e) => {
-    if (e.target.id === "logout") {
-        await signOut(auth);
-    }
 });
 
 /* MODAL */
@@ -206,19 +168,16 @@ window.openModal = function(action) {
 
     if (action === "username") {
         title.textContent = "Changer le pseudo";
-        input.type = "text";
         input.placeholder = "Nouveau pseudo";
     }
 
     if (action === "email") {
         title.textContent = "Changer l'email";
-        input.type = "email";
         input.placeholder = "Nouvel email";
     }
 
     if (action === "password") {
         title.textContent = "Changer le mot de passe";
-        input.type = "password";
         input.placeholder = "Nouveau mot de passe";
     }
 };
@@ -238,7 +197,7 @@ async function reAuth(password) {
     await reauthenticateWithCredential(currentUser, credential);
 }
 
-/* CONFIRM ACTION */
+/* CONFIRM */
 window.confirmAction = async function() {
     const value = document.getElementById("inputField").value;
     const password = document.getElementById("currentPassword").value;
@@ -270,19 +229,17 @@ window.confirmAction = async function() {
 </script>
 
 <script>
+/* SERVICE WORKER */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js");
 }
 </script>
 
 <script>
+/* DISCORD OAUTH */
 const hash = window.location.hash.substring(1);
-
 const params = new URLSearchParams(hash);
-
 const token = params.get("access_token");
-
-console.log("Token :", token);
 
 if (token) {
   fetch("https://discord.com/api/users/@me", {
@@ -293,8 +250,6 @@ if (token) {
   .then(res => res.json())
   .then(user => {
 
-    console.log("User :", user);
-
     localStorage.setItem("discordUser", JSON.stringify({
       id: user.id,
       username: user.username,
@@ -303,44 +258,39 @@ if (token) {
 
     alert("Discord lié !");
     window.location.href = "/profile";
-  })
-  .catch(err => {
-    console.error(err);
-    alert("Erreur API Discord");
   });
-
-} else {
-  console.log("Aucun token trouvé dans le hash");
 }
 
+/* BOUTON DISCORD */
 const discordBtn = document.getElementById("discordBtn");
 
-function updateDiscordButton() {
-  const data = JSON.parse(localStorage.getItem("discordUser"));
+if (discordBtn) {
 
-  if (data) {
-    discordBtn.textContent = "Dissocier Discord";
-  } else {
-    discordBtn.textContent = "Lier Discord";
+  function updateDiscordButton() {
+    const data = JSON.parse(localStorage.getItem("discordUser"));
+
+    if (data) {
+      discordBtn.textContent = "Dissocier Discord";
+    } else {
+      discordBtn.textContent = "Lier Discord";
+    }
   }
+
+  updateDiscordButton();
+
+  discordBtn.addEventListener("click", () => {
+    const data = JSON.parse(localStorage.getItem("discordUser"));
+
+    if (!data) {
+      window.location.href = "https://discord.com/oauth2/authorize?client_id=1471824801088802879&response_type=token&redirect_uri=https%3A%2F%2Fblocplay-beta.github.io%2Fsettings&scope=identify";
+    } else {
+      localStorage.removeItem("discordUser");
+      alert("Compte Discord dissocié !");
+      updateDiscordButton();
+    }
+  });
+
 }
-
-updateDiscordButton();
-
-discordBtn.addEventListener("click", () => {
-  const data = JSON.parse(localStorage.getItem("discordUser"));
-
-  // ✅ Lier Discord
-  if (!data) {
-    window.location.href = "https://discord.com/oauth2/authorize?client_id=1471824801088802879&response_type=code&redirect_uri=https%3A%2F%2Fblocplay-beta.github.io%2Fsettings&scope=identify";
-  } 
-  // ❌ Dissocier Discord
-  else {
-    localStorage.removeItem("discordUser");
-    alert("Compte Discord dissocié !");
-    updateDiscordButton();
-  }
-});
 </script>
 
 </body>
