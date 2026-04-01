@@ -118,6 +118,55 @@
 </div>
 
 <script type="module">
+/* MENU PROFIL */
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+        window.location.href = "/login";
+        return;
+    }
+
+    currentUser = user;
+    renderMenu(user);
+});
+
+/* MENU INTERACTION */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+/* LOGOUT */
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
+</script>
+
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
   getAuth, 
