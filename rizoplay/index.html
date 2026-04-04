@@ -43,8 +43,8 @@
 
 <body>
 
-<!-- 👤 PROFIL -->
-<button class="profile-btn" onclick="window.location.href='/profile'">👤</button>
+<!-- 👤 PROFIL (CORRIGÉ) -->
+<button class="profile-btn" id="profileBtn">👤</button>
 
 <header>
   <div class="header-content">
@@ -72,13 +72,19 @@
 </div>
 
 <script>
-const price = document.getElementById("price");
-const lang = navigator.language;
+/* PROFIL */
+document.getElementById("profileBtn").addEventListener("click", () => {
+  alert("Menu profil à ouvrir ici (ou redirection vers settings)");
+});
 
-if (lang.startsWith("en")) {
+/* LANGUE */
+const price = document.getElementById("price");
+
+if (navigator.language.startsWith("en")) {
   price.textContent = "$1.99";
 }
 
+/* ACHAT */
 document.getElementById("buyBtn").addEventListener("click", (e) => {
   e.preventDefault();
 
