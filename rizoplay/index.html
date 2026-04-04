@@ -13,6 +13,27 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b0f1a">
 
+<style>
+
+/* BOUTON RIZOPLAY */
+.btn-rizo {
+    background: linear-gradient(135deg, #ff7a00, #ff3c00);
+    color: white;
+    padding: 14px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: 0.2s;
+}
+
+.btn-rizo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,120,0,0.6);
+}
+
+</style>
+
 </head>
 
 <body>
@@ -43,7 +64,7 @@
 
     <h2 id="price">1,99€</h2>
 
-    <a href="#" class="btn btn-gradient" style="margin-top:15px; display:inline-block;">
+    <a href="#" id="buyBtn" class="btn-rizo" style="margin-top:15px;">
       Payer RizoPlay
     </a>
 
@@ -54,7 +75,6 @@
 <script>
 /* 🌍 PRIX DYNAMIQUE */
 const priceElement = document.getElementById("price");
-
 const language = navigator.language || navigator.userLanguage;
 
 if (language.startsWith("en")) {
@@ -62,6 +82,23 @@ if (language.startsWith("en")) {
 } else {
   priceElement.textContent = "1,99€";
 }
+</script>
+
+<script>
+/* 🔥 REDIRECTION ACHAT */
+const buyBtn = document.getElementById("buyBtn");
+
+buyBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const language = navigator.language || navigator.userLanguage;
+
+  if (language.startsWith("en")) {
+    window.location.href = "/rizoplay/buy-en";
+  } else {
+    window.location.href = "/rizoplay/buy-fr";
+  }
+});
 </script>
 
 <script>
