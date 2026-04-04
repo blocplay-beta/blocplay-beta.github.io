@@ -71,10 +71,8 @@ input {
 
 <body>
 
-<!-- 🔥 LOADING -->
 <div id="loadingScreen">Chargement...</div>
 
-<!-- 🔥 CONTENU -->
 <div id="content">
 
   <h1>Paiement RizoPlay</h1>
@@ -109,14 +107,19 @@ import { getAuth, onAuthStateChanged }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const app = initializeApp({
-  apiKey: "AIzaSy...",
-  authDomain: "blocplay-a9417.firebaseapp.com",
-  projectId: "blocplay-a9417",
+  apiKey: "TA_API_KEY",
+  authDomain: "TON_AUTH_DOMAIN",
+  projectId: "TON_PROJECT_ID",
+  appId: "TON_APP_ID"
 });
 
 const auth = getAuth(app);
 
+let checked = false;
+
 onAuthStateChanged(auth, (user) => {
+
+  checked = true;
 
   document.getElementById("loadingScreen").style.display = "none";
 
