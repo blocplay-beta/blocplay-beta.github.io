@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Paiement RizoPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+
+<style>
+.pay-option {
+    display: block;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    background: #1f2937;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pay-option:hover {
+    background: #374151;
+}
+
+.hidden {
+    display: none;
+}
+
+input {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+}
+
+.pay-btn {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #00c853, #00e676);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/icon.png">
+    </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>Paiement RizoPlay</h1>
+    <h2>1,99€</h2>
+
+    <!-- CHOIX -->
+    <div class="pay-option" onclick="selectMethod('card')">
+      💳 Carte bancaire
+    </div>
+
+    <div class="pay-option" onclick="selectMethod('gift')">
+      🎁 Carte cadeau RizoPlay
+    </div>
+
+    <!-- CARTE -->
+    <div id="cardSection" class="hidden">
+      <p>Paiement sécurisé (Stripe à venir)</p>
+      <button class="pay-btn" onclick="fakePay()">Payer</button>
+    </div>
+
+    <!-- CARTE CADEAU -->
+    <div id="giftSection" class="hidden">
+      <input type="text" id="giftCode" placeholder="Code carte cadeau">
+      <button class="pay-btn" onclick="redeemCode()">Valider</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSy...",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
+onAuthStateChanged(auth, (user) => renderMenu(user));
+
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
+</script>
+
+<script>
+function selectMethod(method) {
+  document.getElementById("cardSection").classList.add("hidden");
+  document.getElementById("giftSection").classList.add("hidden");
+
+  if (method === "card") {
+    document.getElementById("cardSection").classList.remove("hidden");
+  }
+
+  if (method === "gift") {
+    document.getElementById("giftSection").classList.remove("hidden");
+  }
+}
+
+function fakePay() {
+  alert("💳 Paiement simulé (Stripe à venir)");
+}
+
+function redeemCode() {
+  const code = document.getElementById("giftCode").value;
+
+  if (code === "RIZO-1234") {
+    alert("🎉 Code valide !");
+  } else {
+    alert("❌ Code invalide");
+  }
+}
+</script>
+
+</body>
+</html>
