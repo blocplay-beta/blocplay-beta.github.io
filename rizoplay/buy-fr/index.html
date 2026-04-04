@@ -39,11 +39,18 @@ input {
     border:none;
     width:100%;
 }
+
+#loading {
+    text-align:center;
+    margin-top:50px;
+}
 </style>
 
 </head>
 
 <body>
+
+<div id="loading">Chargement...</div>
 
 <header>
   <div class="header-content">
@@ -69,7 +76,7 @@ input {
     </div>
 
     <div class="pay-option" onclick="selectMethod('gift')">
-      🎁 Carte cadeau RizoPlay
+      🎁 Carte cadeau
     </div>
 
     <div id="cardSection" class="hidden">
@@ -78,7 +85,7 @@ input {
     </div>
 
     <div id="giftSection" class="hidden">
-      <input type="text" id="giftCode" placeholder="Code carte cadeau">
+      <input type="text" id="giftCode" placeholder="Code">
       <button class="pay-btn" onclick="redeemCode()">Valider</button>
     </div>
 
@@ -100,11 +107,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* 🔥 BLOQUER SI NON CONNECTÉ */
+/* 🔥 ATTENDRE FIREBASE */
 onAuthStateChanged(auth, (user) => {
+
+  document.getElementById("loading").style.display = "none";
+
   if (!user) {
     window.location.href = "/login";
   }
+
 });
 </script>
 
@@ -122,17 +133,15 @@ function selectMethod(method) {
   }
 }
 
-/* 💳 FAKE PAYMENT */
 function fakePay() {
-  alert("💳 Paiement simulé (à connecter plus tard)");
+  alert("💳 Paiement simulé");
 }
 
-/* 🎁 CODE CADEAU */
 function redeemCode() {
   const code = document.getElementById("giftCode").value;
 
   if (code === "BP_CREATE-rizoplay") {
-    alert("🎉 Code valide ! RizoPlay activé");
+    alert("🎉 Code valide !");
   } else {
     alert("❌ Code invalide");
   }
