@@ -1,48 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Paiement RizoPlay</title>
 
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/logo.ico">
-
 <style>
-.hidden { display:none; }
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
+
+#loadingScreen {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:20px;
+  z-index:9999;
+}
+
+#content {
+  display:none;
+  padding:20px;
+}
+
+.card {
+  background:#1f2937;
+  padding:20px;
+  border-radius:10px;
+}
 
 .pay-option {
-    display:block;
-    margin:10px 0;
-    padding:15px;
-    border-radius:10px;
-    background:#1f2937;
-    cursor:pointer;
+  margin:10px 0;
+  padding:15px;
+  border-radius:10px;
+  background:#374151;
+  cursor:pointer;
 }
 
 .pay-btn {
-    margin-top:10px;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:linear-gradient(135deg,#00c853,#00e676);
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
+  margin-top:10px;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#00c853;
+  color:white;
+  font-weight:bold;
 }
+
+.hidden { display:none; }
 
 input {
-    padding:10px;
-    border-radius:8px;
-    border:none;
-    width:100%;
-}
-
-#loading {
-    text-align:center;
-    margin-top:50px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  width:100%;
 }
 </style>
 
@@ -50,26 +71,16 @@ input {
 
 <body>
 
-<div id="loading">Chargement...</div>
+<!-- 🔥 LOADING -->
+<div id="loadingScreen">Chargement...</div>
 
-<header>
-  <div class="header-content">
-    <a href="/" class="logo"><img src="/icon.png"></a>
+<!-- 🔥 CONTENU -->
+<div id="content">
 
-    <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar" id="avatar">
-      <div class="dropdown" id="dropdown"></div>
-    </div>
-  </div>
-</header>
-
-<div class="container">
+  <h1>Paiement RizoPlay</h1>
+  <h2>1,99€</h2>
 
   <div class="card">
-
-    <h1>Paiement RizoPlay</h1>
-    <h2>1,99€</h2>
 
     <div class="pay-option" onclick="selectMethod('card')">
       💳 Carte bancaire
@@ -80,7 +91,6 @@ input {
     </div>
 
     <div id="cardSection" class="hidden">
-      <p>Paiement sécurisé</p>
       <button class="pay-btn" onclick="fakePay()">Payer</button>
     </div>
 
@@ -98,29 +108,30 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = {
+const app = initializeApp({
   apiKey: "AIzaSy...",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-};
+});
 
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* 🔥 ATTENDRE FIREBASE */
 onAuthStateChanged(auth, (user) => {
 
-  document.getElementById("loading").style.display = "none";
+  document.getElementById("loadingScreen").style.display = "none";
 
   if (!user) {
     window.location.href = "/login";
+    return;
   }
 
+  document.getElementById("content").style.display = "block";
 });
 </script>
 
 <script>
 function selectMethod(method) {
+
   document.getElementById("cardSection").classList.add("hidden");
   document.getElementById("giftSection").classList.add("hidden");
 
