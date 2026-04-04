@@ -10,12 +10,22 @@
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/logo.ico">
 
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
-
 <style>
 
-/* BOUTON RIZOPLAY */
+.profile-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #222;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
 .btn-rizo {
     background: linear-gradient(135deg, #ff7a00, #ff3c00);
     color: white;
@@ -27,84 +37,57 @@
     transition: 0.2s;
 }
 
-.btn-rizo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255,120,0,0.6);
-}
-
 </style>
 
 </head>
 
 <body>
 
+<!-- 👤 PROFIL -->
+<button class="profile-btn" onclick="window.location.href='/profile'">👤</button>
+
 <header>
   <div class="header-content">
-
     <a href="/" class="logo">
       <img src="/icon.png">
     </a>
-
   </div>
 </header>
 
 <div class="container">
 
-  <!-- SECTION LOGO -->
   <div class="card" style="text-align:center;">
-
-    <img src="/rizo-play.png" style="width:120px; margin-bottom:20px;">
-
+    <img src="/rizo-play.png" style="width:120px;">
     <h1>RizoPlay</h1>
-
   </div>
 
-  <!-- SECTION PRIX -->
   <div class="card" style="text-align:center;">
-
     <h2 id="price">1,99€</h2>
 
-    <a href="#" id="buyBtn" class="btn-rizo" style="margin-top:15px;">
+    <a href="#" id="buyBtn" class="btn-rizo">
       Payer RizoPlay
     </a>
-
   </div>
 
 </div>
 
 <script>
-/* 🌍 PRIX DYNAMIQUE */
-const priceElement = document.getElementById("price");
-const language = navigator.language || navigator.userLanguage;
+const price = document.getElementById("price");
+const lang = navigator.language;
 
-if (language.startsWith("en")) {
-  priceElement.textContent = "$1.99";
-} else {
-  priceElement.textContent = "1,99€";
+if (lang.startsWith("en")) {
+  price.textContent = "$1.99";
 }
-</script>
 
-<script>
-/* 🔥 REDIRECTION ACHAT */
-const buyBtn = document.getElementById("buyBtn");
-
-buyBtn.addEventListener("click", (e) => {
+document.getElementById("buyBtn").addEventListener("click", (e) => {
   e.preventDefault();
 
-  const language = navigator.language || navigator.userLanguage;
-
-  if (language.startsWith("en")) {
+  if (navigator.language.startsWith("en")) {
     window.location.href = "/rizoplay/buy-en";
   } else {
     window.location.href = "/rizoplay/buy-fr";
   }
 });
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
 </script>
 
 </body>
