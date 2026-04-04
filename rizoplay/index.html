@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RizoPlay - Premium</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+<style>
+
+/* SECTION */
+.section {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* LOGO */
+.rizo-logo {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+/* TITRE */
+.rizo-title {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+/* PRIX */
+.price {
+    font-size: 28px;
+    margin: 20px 0;
+}
+
+/* BOUTON PREMIUM */
+.btn-rizo {
+    background: linear-gradient(135deg, #ff7a00, #ff3c00);
+    color: white;
+    padding: 14px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: 0.2s;
+}
+
+.btn-rizo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255,120,0,0.5);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/icon.png">
+    </a>
+
+  </div>
+</header>
+
+<!-- SECTION 1 -->
+<div class="section">
+
+  <img src="/rizo-play.png" class="rizo-logo">
+
+  <div class="rizo-title">RizoPlay</div>
+
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+
+  <div class="price" id="price">1,99€</div>
+
+  <a href="#" class="btn-rizo">
+    Payer RizoPlay
+  </a>
+
+</div>
+
+<script>
+
+/* 🌍 PRIX DYNAMIQUE */
+const priceElement = document.getElementById("price");
+
+const language = navigator.language || navigator.userLanguage;
+
+if (language.startsWith("en")) {
+  priceElement.textContent = "$1.99";
+} else {
+  priceElement.textContent = "1,99€";
+}
+
+</script>
+
+</body>
+</html>
