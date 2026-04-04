@@ -15,7 +15,6 @@
 
 <style>
 
-/* BOUTON PROFIL */
 .profile-btn {
     position: fixed;
     top: 15px;
@@ -31,7 +30,6 @@
     z-index: 1000;
 }
 
-/* MODAL */
 .modal {
     position: fixed;
     top: 0;
@@ -69,23 +67,14 @@
 
 <body>
 
-<!-- 👤 BOUTON PROFIL -->
-<button class="profile-btn" onclick="window.location.href='/profile'">👤</button>
+<!-- 👤 PROFIL (CORRIGÉ) -->
+<button class="profile-btn" id="profileBtn">👤</button>
 
 <header>
   <div class="header-content">
-
     <a href="/" class="logo">
       <img src="/icon.png">
     </a>
-
-    <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar" id="avatar">
-
-      <div class="dropdown" id="dropdown"></div>
-    </div>
-
   </div>
 </header>
 
@@ -113,14 +102,13 @@
 
     <br><br>
 
-    <!-- 🔥 BOUTON DISCORD -->
     <button id="discordBtn" class="btn btn-dark">
       Lier Discord
     </button>
 
     <br><br>
 
-    <!-- 🟠 BOUTON RIZOPLAY (FIXÉ) -->
+    <!-- 🟠 RIZOPLAY (REMIS) -->
     <button class="btn btn-dark" onclick="window.location.href='/rizoplay'">
       RizoPlay
     </button>
@@ -143,37 +131,14 @@
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { 
-  getAuth, 
-  onAuthStateChanged, 
-  updateProfile, 
-  updateEmail, 
-  updatePassword,
-  EmailAuthProvider,
-  reauthenticateWithCredential
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-  authDomain: "blocplay-a9417.firebaseapp.com",
-  projectId: "blocplay-a9417",
-  storageBucket: "blocplay-a9417.firebasestorage.app",
-  messagingSenderId: "540161549188",
-  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-let currentUser;
-let currentAction = "";
-
-onAuthStateChanged(auth, (user) => {
-    if (!user) window.location.href = "/login";
-    currentUser = user;
+<script>
+/* PROFIL */
+document.getElementById("profileBtn").addEventListener("click", () => {
+  alert("Menu profil (à personnaliser)");
 });
+
+/* MODAL */
+let currentAction = "";
 
 window.openModal = function(action) {
     currentAction = action;
