@@ -31,11 +31,25 @@
     color:white;
     font-weight:bold;
 }
+
+input {
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    width:100%;
+}
+
+#loading {
+    text-align:center;
+    margin-top:50px;
+}
 </style>
 
 </head>
 
 <body>
+
+<div id="loading">Loading...</div>
 
 <header>
   <div class="header-content">
@@ -69,7 +83,7 @@
     </div>
 
     <div id="giftSection" class="hidden">
-      <input type="text" id="giftCode" placeholder="Gift code">
+      <input type="text" id="giftCode" placeholder="Code">
       <button class="pay-btn" onclick="redeemCode()">Redeem</button>
     </div>
 
@@ -91,11 +105,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* 🔥 BLOQUER SI NON CONNECTÉ */
+/* 🔥 ATTENDRE FIREBASE */
 onAuthStateChanged(auth, (user) => {
+
+  document.getElementById("loading").style.display = "none";
+
   if (!user) {
     window.location.href = "/login";
   }
+
 });
 </script>
 
