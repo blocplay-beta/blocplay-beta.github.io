@@ -14,7 +14,7 @@
 <div class="container">
 
   <div class="card">
-      <h1>📡 Pas de connexion</h1>
+      <h1>Pas de connexion</h1>
       <p>Veuillez activer votre réseau pour continuer.</p>
 
       <button onclick="goSettings()">Activer le réseau</button>
@@ -25,7 +25,7 @@
 <script>
 function goSettings() {
   if (navigator.userAgent.includes("Android")) {
-    alert("Va dans les paramètres WiFi de ton téléphone.");
+    alert("Veuillez vous connecter à un réseau Wi-Fi ou activer vos Données Mobiles ");
   } else {
     location.reload();
   }
