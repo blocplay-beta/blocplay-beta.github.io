@@ -14,22 +14,6 @@
 <meta name="theme-color" content="#0b0f1a">
 
 <style>
-
-.profile-btn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: #222;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    z-index: 1000;
-}
-
 .modal {
     position: fixed;
     top: 0;
@@ -45,36 +29,26 @@
 .modal.show {
     display: flex;
 }
-
-.modal-content {
-    background: #111827;
-    padding: 25px;
-    border-radius: 15px;
-    width: 300px;
-}
-
-.modal input {
-    width: 100%;
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-}
-
 </style>
 
 </head>
 
 <body>
 
-<!-- 👤 PROFIL (CORRIGÉ) -->
-<button class="profile-btn" id="profileBtn">👤</button>
-
 <header>
   <div class="header-content">
+
     <a href="/" class="logo">
       <img src="/icon.png">
     </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
   </div>
 </header>
 
@@ -108,7 +82,7 @@
 
     <br><br>
 
-    <!-- 🟠 RIZOPLAY (REMIS) -->
+    <!-- ✅ RIZOPLAY -->
     <button class="btn btn-dark" onclick="window.location.href='/rizoplay'">
       RizoPlay
     </button>
@@ -117,41 +91,63 @@
 
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-content" onclick="event.stopPropagation()">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    <h3 id="modalTitle"></h3>
+/* FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
 
-    <input type="text" id="inputField">
-    <input type="password" id="currentPassword" placeholder="Mot de passe actuel">
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    <button class="btn btn-gradient" onclick="confirmAction()">Valider</button>
+/* MENU PROFIL */
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
 
-  </div>
-</div>
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
 
-<script>
-/* PROFIL */
-document.getElementById("profileBtn").addEventListener("click", () => {
-  alert("Menu profil (à personnaliser)");
+onAuthStateChanged(auth, (user) => {
+    renderMenu(user);
 });
 
-/* MODAL */
-let currentAction = "";
+/* MENU */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
 
-window.openModal = function(action) {
-    currentAction = action;
-    document.getElementById("modal").classList.add("show");
-};
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
 
-document.getElementById("modal").onclick = () => {
-    document.getElementById("modal").classList.remove("show");
-};
-
-window.confirmAction = async function() {
-    alert("Action exécutée");
-};
+/* LOGOUT */
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
 </script>
 
 </body>
