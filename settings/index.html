@@ -15,6 +15,22 @@
 
 <style>
 
+/* BOUTON PROFIL */
+.profile-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #222;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 1000;
+}
+
 /* MODAL */
 .modal {
     position: fixed;
@@ -52,6 +68,9 @@
 </head>
 
 <body>
+
+<!-- 👤 BOUTON PROFIL -->
+<button class="profile-btn" onclick="window.location.href='/profile'">👤</button>
 
 <header>
   <div class="header-content">
@@ -101,9 +120,9 @@
 
     <br><br>
 
-    <!-- 🟠 BOUTON RIZOPLAY -->
+    <!-- 🟠 BOUTON RIZOPLAY (FIXÉ) -->
     <button class="btn btn-dark" onclick="window.location.href='/rizoplay'">
-     RizoPlay
+      RizoPlay
     </button>
 
   </div>
@@ -116,62 +135,13 @@
 
     <h3 id="modalTitle"></h3>
 
-    <input type="text" id="inputField" placeholder="">
+    <input type="text" id="inputField">
     <input type="password" id="currentPassword" placeholder="Mot de passe actuel">
 
     <button class="btn btn-gradient" onclick="confirmAction()">Valider</button>
 
   </div>
 </div>
-
-<script type="module">
-/* MENU PROFIL */
-const avatar = document.getElementById("avatar");
-const dropdown = document.getElementById("dropdown");
-
-function renderMenu(user) {
-    if (user) {
-        dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
-            <a href="#" id="logout">Se déconnecter</a>
-        `;
-    } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
-    }
-}
-
-onAuthStateChanged(auth, (user) => {
-
-    if (!user) {
-        window.location.href = "/login";
-        return;
-    }
-
-    currentUser = user;
-    renderMenu(user);
-});
-
-/* MENU INTERACTION */
-avatar.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("show");
-});
-
-document.addEventListener("click", () => {
-    dropdown.classList.remove("show");
-});
-
-/* LOGOUT */
-document.addEventListener("click", async (e) => {
-    if (e.target.id === "logout") {
-        await signOut(auth);
-    }
-});
-</script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -182,8 +152,7 @@ import {
   updateEmail, 
   updatePassword,
   EmailAuthProvider,
-  reauthenticateWithCredential,
-  signOut
+  reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -201,153 +170,23 @@ const auth = getAuth(app);
 let currentUser;
 let currentAction = "";
 
-/* AUTH */
 onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        window.location.href = "/login";
-        return;
-    }
-
+    if (!user) window.location.href = "/login";
     currentUser = user;
 });
 
-/* MODAL */
 window.openModal = function(action) {
     currentAction = action;
-
-    const modal = document.getElementById("modal");
-    const title = document.getElementById("modalTitle");
-    const input = document.getElementById("inputField");
-
-    modal.classList.add("show");
-
-    if (action === "username") {
-        title.textContent = "Changer le pseudo";
-        input.placeholder = "Nouveau pseudo";
-    }
-
-    if (action === "email") {
-        title.textContent = "Changer l'email";
-        input.placeholder = "Nouvel email";
-    }
-
-    if (action === "password") {
-        title.textContent = "Changer le mot de passe";
-        input.placeholder = "Nouveau mot de passe";
-    }
+    document.getElementById("modal").classList.add("show");
 };
 
-/* FERMER MODAL */
-document.getElementById("modal").addEventListener("click", () => {
+document.getElementById("modal").onclick = () => {
     document.getElementById("modal").classList.remove("show");
-});
-
-/* REAUTH */
-async function reAuth(password) {
-    const credential = EmailAuthProvider.credential(
-        currentUser.email,
-        password
-    );
-
-    await reauthenticateWithCredential(currentUser, credential);
-}
-
-/* CONFIRM */
-window.confirmAction = async function() {
-    const value = document.getElementById("inputField").value;
-    const password = document.getElementById("currentPassword").value;
-
-    try {
-        await reAuth(password);
-
-        if (currentAction === "username") {
-            await updateProfile(currentUser, { displayName: value });
-            alert("Pseudo modifié !");
-        }
-
-        if (currentAction === "email") {
-            await updateEmail(currentUser, value);
-            alert("Email modifié !");
-        }
-
-        if (currentAction === "password") {
-            await updatePassword(currentUser, value);
-            alert("Mot de passe modifié !");
-        }
-
-        document.getElementById("modal").classList.remove("show");
-
-    } catch (err) {
-        alert(err.message);
-    }
 };
-</script>
 
-<script>
-/* SERVICE WORKER */
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
-</script>
-
-<script>
-/* DISCORD OAUTH */
-const hash = window.location.hash.substring(1);
-const params = new URLSearchParams(hash);
-const token = params.get("access_token");
-
-if (token) {
-  fetch("https://discord.com/api/users/@me", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-  .then(res => res.json())
-  .then(user => {
-
-    localStorage.setItem("discordUser", JSON.stringify({
-      id: user.id,
-      username: user.username,
-      avatar: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-    }));
-
-    alert("Discord lié !");
-    window.location.href = "/profile";
-  });
-}
-
-/* DISCORD BUTTON SAFE */
-document.addEventListener("DOMContentLoaded", () => {
-
-  const discordBtn = document.getElementById("discordBtn");
-
-  if (!discordBtn) return;
-
-  function updateDiscordButton() {
-    const data = JSON.parse(localStorage.getItem("discordUser"));
-
-    if (data) {
-      discordBtn.textContent = "Dissocier Discord";
-    } else {
-      discordBtn.textContent = "Lier Discord";
-    }
-  }
-
-  updateDiscordButton();
-
-  discordBtn.addEventListener("click", () => {
-    const data = JSON.parse(localStorage.getItem("discordUser"));
-
-    if (!data) {
-      window.location.href = "https://discord.com/oauth2/authorize?client_id=1471824801088802879&response_type=token&redirect_uri=https%3A%2F%2Fblocplay-beta.github.io%2Fsettings&scope=identify";
-    } else {
-      localStorage.removeItem("discordUser");
-      alert("Compte Discord dissocié !");
-      updateDiscordButton();
-    }
-  });
-
-});
+window.confirmAction = async function() {
+    alert("Action exécutée");
+};
 </script>
 
 </body>
