@@ -10,50 +10,8 @@
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/logo.ico">
 
-<style>
-
-/* SECTION */
-.section {
-    text-align: center;
-    padding: 60px 20px;
-}
-
-/* LOGO */
-.rizo-logo {
-    width: 120px;
-    margin-bottom: 20px;
-}
-
-/* TITRE */
-.rizo-title {
-    font-size: 32px;
-    font-weight: bold;
-}
-
-/* PRIX */
-.price {
-    font-size: 28px;
-    margin: 20px 0;
-}
-
-/* BOUTON PREMIUM */
-.btn-rizo {
-    background: linear-gradient(135deg, #ff7a00, #ff3c00);
-    color: white;
-    padding: 14px 30px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    display: inline-block;
-    transition: 0.2s;
-}
-
-.btn-rizo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255,120,0,0.5);
-}
-
-</style>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
 
 </head>
 
@@ -69,28 +27,31 @@
   </div>
 </header>
 
-<!-- SECTION 1 -->
-<div class="section">
+<div class="container">
 
-  <img src="/rizo-play.png" class="rizo-logo">
+  <!-- SECTION LOGO -->
+  <div class="card" style="text-align:center;">
 
-  <div class="rizo-title">RizoPlay</div>
+    <img src="/rizo-play.png" style="width:120px; margin-bottom:20px;">
 
-</div>
+    <h1>RizoPlay</h1>
 
-<!-- SECTION 2 -->
-<div class="section">
+  </div>
 
-  <div class="price" id="price">1,99€</div>
+  <!-- SECTION PRIX -->
+  <div class="card" style="text-align:center;">
 
-  <a href="#" class="btn-rizo">
-    Payer RizoPlay
-  </a>
+    <h2 id="price">1,99€</h2>
+
+    <a href="#" class="btn btn-gradient" style="margin-top:15px; display:inline-block;">
+      Payer RizoPlay
+    </a>
+
+  </div>
 
 </div>
 
 <script>
-
 /* 🌍 PRIX DYNAMIQUE */
 const priceElement = document.getElementById("price");
 
@@ -101,7 +62,12 @@ if (language.startsWith("en")) {
 } else {
   priceElement.textContent = "1,99€";
 }
+</script>
 
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
 </script>
 
 </body>
