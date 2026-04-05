@@ -2,248 +2,233 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RizoIA Chat</title>
 
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/rizo.ico">
-
 <style>
-
 body {
     margin: 0;
-    background: #0b0f1a;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
     color: white;
-    font-family: Arial;
-}
-
-.container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding-bottom: 20px; /* 🔥 espace en bas */
 }
 
-.header {
+header {
     padding: 15px;
-    background: #111;
+    background: #1e293b;
+    text-align: center;
     font-weight: bold;
 }
 
-.messages {
+#chat {
     flex: 1;
+    padding: 10px;
     overflow-y: auto;
-    padding: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
+/* messages */
 .msg {
-    margin-bottom: 10px;
+    margin: 10px 0;
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;
 }
 
 .user {
-    background: #ff7a00;
-    margin-left: auto;
+    background: #3b82f6;
+    align-self: flex-end;
 }
 
-.bot {
-    background: #222;
+.ai {
+    background: #334155;
+    align-self: flex-start;
 }
 
-.input-box {
+/* input */
+#inputArea {
     display: flex;
     padding: 10px;
-    background: #111;
-    position: sticky;
-    bottom: 10px; /* 🔥 remonté */
-    margin: 10px;
-    border-radius: 10px;
+    background: #1e293b;
 }
 
 input {
     flex: 1;
-    padding: 12px;
+    padding: 10px;
+    border-radius: 8px;
     border: none;
-    border-radius: 10px;
     outline: none;
 }
 
 button {
     margin-left: 10px;
-    padding: 12px 15px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#ff7a00,#ff3c00);
+    border-radius: 8px;
+    background: #22c55e;
     color: white;
     cursor: pointer;
 }
+
+button:hover {
+    background: #16a34a;
+}
+
+/* ===================== */
+/* 🔵 ANIMATION RIZOIA */
+/* ===================== */
+
+#typing {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+}
+
+/* centre */
+.center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* animation orbite */
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg) translateX(25px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg) translateX(25px) rotate(-360deg);
+    }
+}
+
+/* 4 points */
+.d1, .d2, .d3, .d4 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: orbit 1s linear infinite;
+}
+
+.d2 { animation-delay: 0.1s; }
+.d3 { animation-delay: 0.2s; }
+.d4 { animation-delay: 0.3s; }
 
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>🤖 RizoIA</header>
 
-    <div class="header" id="title">RizoIA</div>
+<div id="chat"></div>
 
-    <div class="messages" id="messages"></div>
+<!-- animation typing -->
+<div id="typing" class="hidden">
+    <div class="dot center"></div>
+    <div class="dot d1"></div>
+    <div class="dot d2"></div>
+    <div class="dot d3"></div>
+    <div class="dot d4"></div>
+</div>
 
-    <div class="input-box">
-        <input type="text" id="input" placeholder="Écris un message...">
-        <button onclick="sendMessage()">Envoyer</button>
-    </div>
-
+<div id="inputArea">
+    <input id="messageInput" placeholder="Écris un message..." />
+    <button onclick="sendMessage()">Envoyer</button>
 </div>
 
 <script>
 
-// 🔥 ID du chat
-const urlParams = new URLSearchParams(window.location.search);
-const chatId = urlParams.get("id");
+const chat = document.getElementById("chat");
 
-// 🔥 chats
-let chats = JSON.parse(localStorage.getItem("rizoplay_chats")) || [];
-let chat = chats.find(c => c.id === chatId);
+const userId = localStorage.getItem("rizoid") || crypto.randomUUID();
+localStorage.setItem("rizoid", userId);
 
-// 🔥 sécurité
-if (!chat) {
-    document.body.innerHTML = "<h2 style='color:white'>Chat introuvable ❌</h2>";
-    throw new Error("Chat introuvable");
+// =====================
+// 💬 AJOUT MESSAGE
+// =====================
+function addMessage(text, type) {
+    const div = document.createElement("div");
+    div.classList.add("msg", type);
+    div.textContent = text;
+
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
 }
 
-// 🔥 titre
-document.getElementById("title").innerText = chat.name;
-
-// 🔥 IA RizoIA v2
-function generateAIResponse(text) {
-
-    text = text.toLowerCase();
-
-    if (/(bonjour|salut|hello|hey|yo)/.test(text)) {
-        return "👋 Salut ! Je suis RizoIA.";
-    }
-
-    if (text.includes("ça va")) {
-        return "😄 Oui très bien !";
-    }
-
-    if (text.includes("qui es-tu")) {
-        return "🤖 Je suis RizoIA, ton assistant BlocPlay.";
-    }
-
-    if (text.includes("blocplay")) {
-        return "🎮 BlocPlay est une plateforme de jeux et d'apps.";
-    }
-
-    if (text.includes("rizoplay")) {
-        return "🔥 RizoPlay est la version premium de BlocPlay.";
-    }
-
-    if (text.includes("avantages")) {
-        return "✨ Avantages : contenu exclusif, design amélioré.";
-    }
-
-    if (text.includes("heure")) {
-        return "⏰ " + new Date().toLocaleTimeString();
-    }
-
-    if (text.includes("date")) {
-        return "📅 " + new Date().toLocaleDateString();
-    }
-
-    const calcMatch = text.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
-    if (calcMatch) {
-        const a = parseFloat(calcMatch[1]);
-        const op = calcMatch[2];
-        const b = parseFloat(calcMatch[3]);
-
-        switch(op) {
-            case "+": return "🧮 " + (a + b);
-            case "-": return "🧮 " + (a - b);
-            case "*": return "🧮 " + (a * b);
-            case "/": return b !== 0 ? "🧮 " + (a / b) : "❌ erreur";
-        }
-    }
-
-    if (text.includes("blague")) {
-        const jokes = [
-            "😂 Pourquoi les devs aiment le café ? Parce qu’ils ne peuvent pas fonctionner sans Java !",
-            "😂 Un bug est une feature… jusqu’à ce qu’on le corrige 😄",
-            "😂 Pourquoi les maths sont tristes ? Parce qu’elles ont trop de problèmes !"
-        ];
-        return jokes[Math.floor(Math.random() * jokes.length)];
-    }
-
-    if (text.startsWith("mon nom est")) {
-        const name = text.replace("mon nom est", "").trim();
-        localStorage.setItem("username", name);
-        return "😊 Enchanté " + name + " !";
-    }
-
-    const name = localStorage.getItem("username");
-    if (name && text.includes("bonjour")) {
-        return "👋 Salut " + name + " !";
-    }
-
-    return "🤖 Je ne comprends pas encore.";
+// =====================
+// 🔵 ANIMATION
+// =====================
+function showTyping() {
+    document.getElementById("typing").classList.remove("hidden");
 }
 
-// 🔥 afficher messages
-function render() {
-
-    const container = document.getElementById("messages");
-    container.innerHTML = "";
-
-    chat.messages.forEach(m => {
-
-        const div = document.createElement("div");
-        div.className = "msg " + m.type;
-        div.textContent = m.text;
-
-        container.appendChild(div);
-    });
-
-    container.scrollTop = container.scrollHeight;
+function hideTyping() {
+    document.getElementById("typing").classList.add("hidden");
 }
 
-// 🔥 sauvegarde
-function save() {
-    localStorage.setItem("rizoplay_chats", JSON.stringify(chats));
-}
-
-// 🔥 envoyer message
-function sendMessage() {
-
-    const input = document.getElementById("input");
+// =====================
+// 📩 ENVOI MESSAGE
+// =====================
+async function sendMessage() {
+    const input = document.getElementById("messageInput");
     const text = input.value.trim();
 
     if (!text) return;
 
-    // user
-    chat.messages.push({
-        type: "user",
-        text: text
-    });
-
-    // IA
-    const response = generateAIResponse(text);
-
-    chat.messages.push({
-        type: "bot",
-        text: response
-    });
-
-    save();
-    render();
-
+    addMessage(text, "user");
     input.value = "";
+
+    showTyping();
+
+    try {
+        const res = await fetch("/ai", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: text,
+                userId: userId
+            })
+        });
+
+        const data = await res.json();
+
+        hideTyping();
+
+        addMessage(data.reply || "Erreur IA", "ai");
+
+    } catch (err) {
+        hideTyping();
+        addMessage("❌ Erreur serveur", "ai");
+    }
 }
 
-// 🔥 init
-render();
+// =====================
+// ⌨️ ENTRÉE
+// =====================
+document.getElementById("messageInput")
+.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+});
 
 </script>
 
