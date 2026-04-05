@@ -20,7 +20,6 @@
     align-items: center;
 }
 
-/* bouton restauré */
 .btn-rizo {
     background: linear-gradient(135deg, #ff7a00, #ff3c00);
     color: white;
@@ -29,10 +28,10 @@
     text-decoration: none;
 }
 
-/* profil + badge */
 .profile-box {
-    display: flex;
-    align-items: center;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .profile-wrapper {
@@ -40,19 +39,18 @@
     display: inline-block;
 }
 
-/* image profil */
 .profile-wrapper img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
 }
 
-/* 🔥 badge corrigé */
+/* 🔥 badge petit et bien placé */
 .rizo-badge {
     position: absolute;
-    top: 0px;     /* collé au bord */
+    top: 0px;
     right: 0px;
-    width: 12px;  /* plus petit */
+    width: 12px;
     height: 12px;
 }
 </style>
@@ -85,16 +83,16 @@
     <div class="rizo-header">
       <h2>Mes avantages</h2>
 
-      <!-- bouton restauré -->
       <a href="#" class="btn-rizo">Voir plus</a>
     </div>
 
-    <div class="profile-box">
+    <!-- 🔥 PROFIL CLIQUABLE -->
+    <a href="/profile" class="profile-box">
       <div class="profile-wrapper">
         <img id="profilePic">
         <img src="/rizo-play.png" class="rizo-badge">
       </div>
-    </div>
+    </a>
 
   </div>
 
@@ -144,6 +142,7 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("profilePic").src =
         user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 
+    // 🔥 ADMIN
     const isAdmin =
         user.email === "blocplaystudios@gmail.com" &&
         user.displayName === "BlocPlay Studios";
