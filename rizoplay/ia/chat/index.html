@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RizoIA - Chat</title>
+<title>RizoIA</title>
 
 <style>
 body {
@@ -13,108 +13,46 @@ body {
     color: white;
 }
 
-/* TOP BAR */
-.topbar {
+.container {
     display: flex;
-    align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #1e293b;
+    height: 100vh;
 }
 
-.menu-btn {
-    font-size: 22px;
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-
-.menu-btn:hover {
-    background: #1e293b;
-}
-
-/* CHAT */
-.chat {
-    height: calc(100vh - 130px);
-    overflow-y: auto;
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #0f172a;
     padding: 20px;
+    border-right: 1px solid #1e293b;
 }
 
-.msg {
-    max-width: 70%;
+.create-btn {
+    width: 100%;
     padding: 12px;
-    margin: 10px 0;
-    border-radius: 10px;
-}
-
-.user {
     background: #3b82f6;
-    margin-left: auto;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 20px;
 }
 
-.ai {
+.chat-item {
+    padding: 12px;
     background: #111827;
-    border: 1px solid #1e293b;
-}
-
-/* INPUT */
-.inputBar {
-    display: flex;
-    padding: 15px;
-    border-top: 1px solid #1e293b;
-}
-
-.inputBar input {
-    flex: 1;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #1e293b;
-    background: #0f172a;
-    color: white;
-}
-
-.inputBar button {
-    margin-left: 10px;
-    background: #3b82f6;
-    border: none;
-    padding: 12px 16px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-}
-
-.inputBar button:hover {
-    background: #2563eb;
-}
-
-/* MENU */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: #0f172a;
-    transition: 0.3s;
-    padding: 20px;
-}
-
-.overlay.open {
-    left: 0;
-}
-
-.overlay button {
-    width: 100%;
-    padding: 12px;
     margin-bottom: 10px;
-    background: #1e293b;
-    border: none;
-    color: white;
     border-radius: 8px;
     cursor: pointer;
 }
 
-.overlay button:hover {
-    background: #334155;
+.chat-item:hover {
+    background: #1e293b;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 20px;
 }
 </style>
 
@@ -122,109 +60,58 @@ body {
 
 <body>
 
-<!-- TOP -->
-<div class="topbar">
-    <div class="menu-btn" onclick="openMenu()">☰</div>
-    <h3 style="margin-left:10px;">Chat</h3>
-</div>
+<div class="container">
 
-<!-- CHAT -->
-<div class="chat" id="chat"></div>
+    <div class="sidebar">
 
-<!-- INPUT -->
-<div class="inputBar">
-    <input id="input" placeholder="Écris un message...">
-    <button onclick="send()">Envoyer</button>
-</div>
+        <button class="create-btn" onclick="createChat()">+ Créer un chat</button>
 
-<!-- MENU -->
-<div class="overlay" id="menu">
-    <h2>Menu</h2>
+        <div id="list"></div>
 
-    <button onclick="location.href='/rizoplay/ia/chat'">💬 Chat</button>
-    <button onclick="location.href='/rizoplay/ia/chat/view'">📁 Conversations</button>
+    </div>
 
-    <button onclick="closeMenu()">❌ Fermer</button>
+    <div class="main">
+        <h2>RizoIA</h2>
+        <p>Choisis ou crée un chat.</p>
+    </div>
+
 </div>
 
 <script>
-const chat = document.getElementById("chat");
 
-/* GET CHAT ID */
-const urlParams = new URLSearchParams(window.location.search);
-const chatId = urlParams.get("id") || "default";
-
-/* MENU */
-function openMenu() {
-    document.getElementById("menu").classList.add("open");
+/* CRÉER CHAT */
+function createChat() {
+    const id = Date.now();
+    location.href = "/view?id=" + id;
 }
 
-function closeMenu() {
-    document.getElementById("menu").classList.remove("open");
-}
-
-/* ADD MESSAGE */
-function addMsg(text, cls) {
-    const div = document.createElement("div");
-    div.className = "msg " + cls;
-    div.innerText = text;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-}
-
-/* LOAD CHAT */
-async function loadChat() {
+/* CHARGER CHATS */
+async function loadChats() {
     try {
-        const res = await fetch(`/chat-data?id=${chatId}`);
+        const res = await fetch("/conversations");
         const data = await res.json();
 
-        chat.innerHTML = "";
+        const list = document.getElementById("list");
+        list.innerHTML = "";
 
-        if (data.messages) {
-            data.messages.forEach(m => {
-                addMsg(m.text, m.role);
-            });
-        }
+        Object.keys(data).forEach(id => {
+            const div = document.createElement("div");
+            div.className = "chat-item";
+            div.innerText = "Chat #" + id;
 
-    } catch (err) {
-        console.log("Erreur load chat");
-    }
-}
+            div.onclick = () => {
+                location.href = "/view?id=" + id;
+            };
 
-/* SEND MESSAGE */
-async function send() {
-    const input = document.getElementById("input");
-    const text = input.value;
-    if (!text) return;
-
-    addMsg(text, "user");
-    input.value = "";
-
-    const loading = document.createElement("div");
-    loading.className = "msg ai";
-    loading.innerText = "⏳...";
-    chat.appendChild(loading);
-
-    try {
-        const res = await fetch("/ai", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                message: text,
-                userId: chatId
-            })
+            list.appendChild(div);
         });
 
-        const data = await res.json();
-
-        loading.innerText = data.reply;
-
-    } catch (err) {
-        loading.innerText = "❌ Erreur serveur";
+    } catch (e) {
+        console.log("Erreur");
     }
 }
 
-loadChat();
+loadChats();
 </script>
 
 </body>
