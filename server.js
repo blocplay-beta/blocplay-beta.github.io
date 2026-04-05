@@ -4,16 +4,16 @@ const axios = require("axios");
 
 const app = express();
 
-// ✅ CORS (obligatoire pour GitHub Pages)
+// ✅ CORS
 app.use(cors());
 
 // ✅ JSON
 app.use(express.json());
 
-// 🧠 mémoire des conversations
+// 🧠 mémoire
 const conversations = {};
 
-// 🔒 filtre simple sécurité
+// 🔒 filtre simple
 function isSafe(message) {
     const banned = ["hack", "pirate", "mdp", "password"];
     return !banned.some(word => message.toLowerCase().includes(word));
@@ -28,7 +28,6 @@ app.post("/ai", async (req, res) => {
             return res.status(400).json({ reply: "❌ Données manquantes" });
         }
 
-        // créer conversation si elle n'existe pas
         if (!conversations[userId]) {
             conversations[userId] = [];
         }
@@ -38,7 +37,7 @@ app.post("/ai", async (req, res) => {
             return res.json({ reply: "🚫 Contenu interdit" });
         }
 
-        // 💾 stock message utilisateur
+        // 💾 stock message user
         conversations[userId].push({
             role: "user",
             content: message
@@ -49,11 +48,10 @@ app.post("/ai", async (req, res) => {
         try {
             const HF_TOKEN = process.env.HF_TOKEN;
 
-            // 🧠 envoie à HuggingFace
             const response = await axios.post(
-                "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
+                "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
                 {
-                    inputs: message
+                    inputs: `<s>[INST] ${message} [/INST]`
                 },
                 {
                     headers: {
@@ -62,13 +60,23 @@ app.post("/ai", async (req, res) => {
                 }
             );
 
-            // ✅ récupérer réponse
-            if (response.data && response.data[0]) {
+            // ✅ réponse IA
+            if (response.data?.[0]?.generated_text) {
                 reply = response.data[0].generated_text;
+            } else {
+                reply = "🤖 Réponse vide";
             }
 
         } catch (err) {
-            console.log("Erreur HuggingFace :", err.message);
+            console.log("Erreur IA:", err.message);
+
+            if (err.response?.status === 503) {
+                reply = "⏳ IA en cours de démarrage, réessaie dans quelques secondes";
+            } else if (err.response?.status === 401) {
+                reply = "❌ Token invalide";
+            } else {
+                reply = "⚠️ IA indisponible";
+            }
         }
 
         // 💾 stock réponse IA
@@ -90,7 +98,7 @@ app.get("/conversations", (req, res) => {
     res.json(conversations);
 });
 
-// 👁️ récupérer une conversation
+// 👁️ une conversation
 app.get("/conversation/:id", (req, res) => {
     const id = req.params.id;
 
@@ -101,7 +109,7 @@ app.get("/conversation/:id", (req, res) => {
     res.json(conversations[id]);
 });
 
-// 🧪 route test
+// 🧪 test serveur
 app.get("/", (req, res) => {
     res.send("🚀 RizoIA serveur OK");
 });
