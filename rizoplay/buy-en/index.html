@@ -1,51 +1,49 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RizoPlay - Payment</title>
 
-<title>Profile - BlocPlay</title>
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
 
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/logo.ico">
+#content {
+  padding:20px;
+}
 
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
+.card {
+  background:#1f2937;
+  padding:20px;
+  border-radius:10px;
+}
 
+button {
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#00c853;
+  color:white;
+  cursor:pointer;
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <div class="header-content">
+<div id="content">
 
-    <a href="/" class="logo">
-      <img src="/icon.png">
-    </a>
+  <h1>RizoPlay Payment</h1>
+  <h2>$1.99</h2>
 
-    <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar" id="avatar">
-
-      <div class="dropdown" id="dropdown"></div>
-    </div>
-
-  </div>
-</header>
-
-<div class="container">
-
-  <div class="card profile-card">
-
-    <h1>My profile</h1>
-
-    <img id="profilePic" class="profile-pic">
-
-    <h2 id="username"></h2>
-    <p id="email"></p>
-
+  <div class="card">
+    <p>Choose payment :</p>
+    <button onclick="pay()">Pay</button>
   </div>
 
 </div>
@@ -53,118 +51,32 @@
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
+import { getAuth, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-  storageBucket: "blocplay-a9417.appspot.com",
-  messagingSenderId: "540161549188",
   appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const avatar = document.getElementById("avatar");
-const dropdown = document.getElementById("dropdown");
-
-function renderMenu(user) {
-  if (user) {
-    dropdown.innerHTML = `
-      <a href="/profile">Profile</a>
-      <a href="/settings">Settings</a>
-      <a href="#" id="logout">Logout</a>
-    `;
-  } else {
-    dropdown.innerHTML = `
-      <a href="/login">Login</a>
-      <a href="/signup">Sign up</a>
-    `;
-  }
-}
-
 onAuthStateChanged(auth, (user) => {
 
   if (!user) {
-    window.location.href = "/login";
-    return;
+    window.location.replace("/login");
   }
 
-  renderMenu(user);
-
-  document.getElementById("email").textContent = user.email;
-  document.getElementById("username").textContent = user.displayName;
-
-  document.getElementById("profilePic").src =
-    user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
-});
-
-avatar.addEventListener("click", (e) => {
-  e.stopPropagation();
-  dropdown.classList.toggle("show");
-});
-
-document.addEventListener("click", () => {
-  dropdown.classList.remove("show");
-});
-
-document.addEventListener("click", async (e) => {
-  if (e.target.id === "logout") {
-    await signOut(auth);
-  }
 });
 
 </script>
 
-<div class="container">
-
-  <div class="card discord-card">
-
-    <h2>Discord</h2>
-
-    <div id="discordProfile"></div>
-
-  </div>
-
-</div>
-
 <script>
-const discordData = JSON.parse(localStorage.getItem("discordUser"));
-const discordContainer = document.getElementById("discordProfile");
-
-if (discordContainer) {
-
-  if (discordData) {
-    const username = discordData.username || "User";
-    const avatar = discordData.avatar || "";
-    const id = discordData.id || "";
-
-    discordContainer.innerHTML = `
-      <div class="discord-card">
-
-        <img src="${avatar}" style="width:80px;border-radius:50%;">
-
-        <p class="discord-name">${username}</p>
-        <p class="discord-id">@${id}</p>
-      </div>
-    `;
-  } else {
-    discordContainer.innerHTML = `
-      <div class="discord-card">
-        <p>No Discord account linked</p>
-      </div>
-    `;
-  }
-
-}
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
+function pay() {
+  alert("Fake payment 💳");
 }
 </script>
 
