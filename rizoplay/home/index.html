@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RizoPlay</title>
+<title>RizoPlay - Accueil</title>
 
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/rizo.ico">
@@ -14,44 +14,41 @@
 <meta name="theme-color" content="#0b0f1a">
 
 <style>
+.rizo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-/* PROFIL + BADGE */
 .profile-box {
-    position: relative;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
-.profile-circle {
-    width: 60px;
-    height: 60px;
+.profile-wrapper {
+    position: relative;
+}
+
+.profile-wrapper img {
+    width: 50px;
     border-radius: 50%;
 }
 
-/* 🔥 BADGE RIZOPLAY (FIX PETIT) */
 .rizo-badge {
     position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(255,120,0,0.7);
+    top: -2px;
+    right: -2px;
+    width: 14px;
 }
 
-/* BOUTON RIZO STYLE */
 .btn-rizo {
     background: linear-gradient(135deg, #ff7a00, #ff3c00);
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
     text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
 }
-
 </style>
 
 </head>
@@ -77,24 +74,19 @@
 
 <div class="container">
 
-  <!-- SECTION AVANTAGES -->
   <div class="card">
 
-    <h2>Mes avantages</h2>
+    <div class="rizo-header">
+      <h2>Mes avantages</h2>
+
+      <a href="#" class="btn-rizo">Voir plus</a>
+    </div>
 
     <div class="profile-box">
-
-      <!-- PROFIL -->
-      <div style="position:relative; cursor:pointer;" onclick="window.location.href='/profile'">
-        <img id="profilePic" class="profile-circle">
+      <div class="profile-wrapper">
+        <img id="profilePic">
         <img src="/rizo-play.png" class="rizo-badge">
       </div>
-
-      <!-- BOUTON -->
-      <button class="btn-rizo">
-        Voir plus
-      </button>
-
     </div>
 
   </div>
@@ -106,14 +98,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* FIREBASE (exact comme tes autres pages) */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-  storageBucket: "blocplay-a9417.firebasestorage.app",
-  messagingSenderId: "540161549188",
-  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -122,7 +110,6 @@ const auth = getAuth(app);
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
-/* MENU */
 function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
@@ -131,11 +118,13 @@ function renderMenu(user) {
             <a href="#" id="logout">Se déconnecter</a>
         `;
     } else {
-        window.location.href = "/login";
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
     }
 }
 
-/* AUTH + CHECK RIZOPLAY */
 onAuthStateChanged(auth, (user) => {
 
     if (!user) {
@@ -145,11 +134,17 @@ onAuthStateChanged(auth, (user) => {
 
     renderMenu(user);
 
-    // 🔥 PHOTO PROFIL
     document.getElementById("profilePic").src =
         user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 
-    // 🔥 CHECK RIZOPLAY
+    const isAdmin =
+        user.email === "blocplaystudios@gmail.com" &&
+        user.displayName === "BlocPlayStudios";
+
+    if (isAdmin) {
+        localStorage.setItem("rizoplay", "true");
+    }
+
     const hasRizo = localStorage.getItem("rizoplay");
 
     if (!hasRizo) {
@@ -157,7 +152,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-/* MENU ACTIONS */
+/* MENU */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -172,12 +167,6 @@ document.addEventListener("click", async (e) => {
         await signOut(auth);
     }
 });
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
 </script>
 
 </body>
