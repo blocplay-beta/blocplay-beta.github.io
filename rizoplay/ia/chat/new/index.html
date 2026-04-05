@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nouveau chat</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/rizo.ico">
+
+<style>
+.container { padding:20px; }
+.card {
+  background:#111;
+  padding:20px;
+  border-radius:15px;
+}
+input {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+button {
+  background:linear-gradient(135deg,#ff7a00,#ff3c00);
+  border:none;
+  padding:12px;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Créer une discussion</h1>
+
+    <input type="text" id="chatName" placeholder="Nom de la discussion">
+
+    <button onclick="createChat()">Créer</button>
+  </div>
+</div>
+
+<script>
+function createChat() {
+  const name = document.getElementById("chatName").value || "Nouvelle discussion";
+
+  const id = Date.now().toString();
+
+  const chats = JSON.parse(localStorage.getItem("rizoplay_chats")) || [];
+
+  chats.push({
+    id: id,
+    name: name,
+    messages: []
+  });
+
+  localStorage.setItem("rizoplay_chats", JSON.stringify(chats));
+
+  window.location.href = "/rizoplay/ia/chat/view/?id=" + id;
+}
+</script>
+
+</body>
+</html>
