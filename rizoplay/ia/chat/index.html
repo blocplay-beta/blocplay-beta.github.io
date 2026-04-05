@@ -82,7 +82,7 @@ body {
 /* CRÉER CHAT */
 function createChat() {
     const id = Date.now();
-    location.href = "/view?id=" + id;
+    location.href = "/rizoplay/ia/chat/view?id=" + id;
 }
 
 /* CHARGER CHATS */
@@ -100,7 +100,7 @@ async function loadChats() {
             div.innerText = "Chat #" + id;
 
             div.onclick = () => {
-                location.href = "rizoplay/ia/chat/view?id=" + id;
+                location.href = "/rizoplay/ia/chat/view?id=" + id;
             };
 
             list.appendChild(div);
