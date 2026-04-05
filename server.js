@@ -7,10 +7,10 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// 🧠 mémoire (temporaire)
+// 🧠 mémoire
 const conversations = {};
 
-// 🔒 filtre simple
+// 🔒 filtre
 function isSafe(message) {
     const banned = ["hack", "pirate", "mdp", "password"];
     return !banned.some(word => message.toLowerCase().includes(word));
@@ -34,7 +34,7 @@ app.post("/ai", async (req, res) => {
             return res.json({ reply: "🚫 Contenu interdit." });
         }
 
-        // 💾 stocker message user
+        // 💾 stock user
         conversations[userId].push({ role: "user", content: message });
 
         let reply = "Je réfléchis 🤖...";
@@ -60,6 +60,7 @@ app.post("/ai", async (req, res) => {
             reply = "⚠️ IA indisponible";
         }
 
+        // 💾 stock AI
         conversations[userId].push({ role: "ai", content: reply });
 
         res.json({ reply });
@@ -70,12 +71,12 @@ app.post("/ai", async (req, res) => {
     }
 });
 
-// 📄 récupérer toutes les conversations
+// 📄 toutes les conversations
 app.get("/conversations", (req, res) => {
     res.json(conversations);
 });
 
-// 👁️ voir une conversation
+// 👁️ une conversation
 app.get("/conversation/:id", (req, res) => {
     const id = req.params.id;
 
@@ -84,11 +85,6 @@ app.get("/conversation/:id", (req, res) => {
     }
 
     res.json(conversations[id]);
-});
-
-// 📄 page principale
-app.get("/", (req, res) => {
-    res.send("Serveur RizoIA 🚀");
 });
 
 const PORT = process.env.PORT || 10000;
