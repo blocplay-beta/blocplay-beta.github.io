@@ -2,234 +2,62 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>RizoIA Discussion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Chat</title>
 
 <style>
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f172a;
+    font-family: Arial;
+    background: #020617;
     color: white;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
 }
 
-header {
-    padding: 15px;
-    background: #1e293b;
-    text-align: center;
-    font-weight: bold;
-}
-
-#chat {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-/* messages */
 .msg {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 70%;
-}
-
-.user {
-    background: #3b82f6;
-    align-self: flex-end;
-}
-
-.ai {
-    background: #334155;
-    align-self: flex-start;
-}
-
-/* input */
-#inputArea {
-    display: flex;
-    padding: 10px;
-    background: #1e293b;
-}
-
-input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-}
-
-button {
-    margin-left: 10px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    background: #22c55e;
-    color: white;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #16a34a;
-}
-
-/* ===================== */
-/* 🔵 ANIMATION RIZOIA */
-/* ===================== */
-
-#typing {
-    position: relative;
-    width: 80px;
-    height: 80px;
     margin: 10px;
 }
 
-.hidden {
-    display: none;
+.user {
+    text-align: right;
+    color: #38bdf8;
 }
 
-.dot {
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
+.ai {
+    text-align: left;
+    color: #22c55e;
 }
-
-/* centre */
-.center {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* animation orbite */
-@keyframes orbit {
-    0% {
-        transform: rotate(0deg) translateX(25px) rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg) translateX(25px) rotate(-360deg);
-    }
-}
-
-/* 4 points */
-.d1, .d2, .d3, .d4 {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: orbit 1s linear infinite;
-}
-
-.d2 { animation-delay: 0.1s; }
-.d3 { animation-delay: 0.2s; }
-.d4 { animation-delay: 0.3s; }
-
 </style>
 </head>
 
 <body>
 
-<header>🤖 RizoIA</header>
-
+<h2>👁️ Conversation</h2>
 <div id="chat"></div>
 
-<!-- animation typing -->
-<div id="typing" class="hidden">
-    <div class="dot center"></div>
-    <div class="dot d1"></div>
-    <div class="dot d2"></div>
-    <div class="dot d3"></div>
-    <div class="dot d4"></div>
-</div>
-
-<div id="inputArea">
-    <input id="messageInput" placeholder="Écris un message..." />
-    <button onclick="sendMessage()">Envoyer</button>
-</div>
-
 <script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-const chat = document.getElementById("chat");
+async function loadChat() {
+    const res = await fetch(`https://blocplay-beta-github-io.onrender.com/conversation/${id}`);
+    const data = await res.json();
 
-const userId = localStorage.getItem("rizoid") || crypto.randomUUID();
-localStorage.setItem("rizoid", userId);
+    const chat = document.getElementById("chat");
+    chat.innerHTML = "";
 
-// =====================
-// 💬 AJOUT MESSAGE
-// =====================
-function addMessage(text, type) {
-    const div = document.createElement("div");
-    div.classList.add("msg", type);
-    div.textContent = text;
-
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-}
-
-// =====================
-// 🔵 ANIMATION
-// =====================
-function showTyping() {
-    document.getElementById("typing").classList.remove("hidden");
-}
-
-function hideTyping() {
-    document.getElementById("typing").classList.add("hidden");
-}
-
-// =====================
-// 📩 ENVOI MESSAGE
-// =====================
-async function sendMessage() {
-    const input = document.getElementById("messageInput");
-    const text = input.value.trim();
-
-    if (!text) return;
-
-    addMessage(text, "user");
-    input.value = "";
-
-    showTyping();
-
-    try {
-        const res = await fetch("/ai", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: text,
-                userId: userId
-            })
-        });
-
-        const data = await res.json();
-
-        hideTyping();
-
-        addMessage(data.reply || "Erreur IA", "ai");
-
-    } catch (err) {
-        hideTyping();
-        addMessage("❌ Erreur serveur", "ai");
+    if (data.error) {
+        chat.innerText = "❌ " + data.error;
+        return;
     }
+
+    data.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "msg " + msg.role;
+        div.innerText = msg.content;
+        chat.appendChild(div);
+    });
 }
 
-// =====================
-// ⌨️ ENTRÉE
-// =====================
-document.getElementById("messageInput")
-.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-        sendMessage();
-    }
-});
-
+loadChat();
 </script>
 
 </body>
