@@ -100,8 +100,17 @@ function renderMenu(user) {
     }
 }
 
+/* 🔥 AUTH + CHECK RIZOPLAY */
 onAuthStateChanged(auth, (user) => {
+
     renderMenu(user);
+
+    // 👉 Si l'utilisateur a RizoPlay → redirection directe
+    const hasRizo = localStorage.getItem("rizoplay");
+
+    if (user && hasRizo) {
+        window.location.href = "/rizoplay/home";
+    }
 });
 
 /* MENU */
