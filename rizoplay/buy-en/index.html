@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>RizoPlay - Payment</title>
 
 <style>
@@ -13,14 +14,23 @@ body {
   color:white;
 }
 
-#content {
+.container {
   padding:20px;
 }
 
 .card {
   background:#1f2937;
   padding:20px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+.option {
+  padding:15px;
+  background:#374151;
   border-radius:10px;
+  margin-top:10px;
+  cursor:pointer;
 }
 
 button {
@@ -29,21 +39,51 @@ button {
   border-radius:10px;
   background:#00c853;
   color:white;
+  margin-top:10px;
   cursor:pointer;
 }
+
+input {
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  margin-top:10px;
+}
+
+.hidden {
+  display:none;
+}
 </style>
+
 </head>
 
 <body>
 
-<div id="content">
+<div class="container">
 
   <h1>RizoPlay Payment</h1>
   <h2>$1.99</h2>
 
   <div class="card">
-    <p>Choose payment :</p>
-    <button onclick="pay()">Pay</button>
+
+    <div class="option" onclick="selectMethod('card')">
+      💳 Credit Card
+    </div>
+
+    <div class="option" onclick="selectMethod('gift')">
+      🎁 Gift Code
+    </div>
+
+    <div id="cardSection" class="hidden">
+      <button onclick="fakePay()">Pay</button>
+    </div>
+
+    <div id="giftSection" class="hidden">
+      <input id="code" placeholder="Enter code">
+      <button onclick="checkCode()">Redeem</button>
+    </div>
+
   </div>
 
 </div>
@@ -75,9 +115,36 @@ onAuthStateChanged(auth, (user) => {
 </script>
 
 <script>
-function pay() {
-  alert("Fake payment 💳");
+
+function selectMethod(type) {
+
+  document.getElementById("cardSection").classList.add("hidden");
+  document.getElementById("giftSection").classList.add("hidden");
+
+  if (type === "card") {
+    document.getElementById("cardSection").classList.remove("hidden");
+  }
+
+  if (type === "gift") {
+    document.getElementById("giftSection").classList.remove("hidden");
+  }
+
 }
+
+function fakePay() {
+  alert("💳 Fake payment");
+}
+
+function checkCode() {
+  const code = document.getElementById("code").value;
+
+  if (code === "BP_CREATE-rizoplay") {
+    alert("🎉 Valid code!");
+  } else {
+    alert("❌ Invalid code");
+  }
+}
+
 </script>
 
 </body>
