@@ -4,22 +4,20 @@ const axios = require("axios");
 
 const app = express();
 
-// 🌐 CORS
+// 🌐 Middleware
 app.use(cors());
-
-// 📦 JSON
 app.use(express.json());
 
-// 🧠 Mémoire
+// 🧠 Mémoire des conversations
 const conversations = {};
 
 // 🔒 Filtre simple
 function isSafe(message) {
-    const banned = ["hack", "pirate", "mdp", "password"];
-    return !banned.some(word => message.toLowerCase().includes(word));
+    const bannedWords = ["hack", "pirate", "mdp", "password"];
+    return !bannedWords.some(word => message.toLowerCase().includes(word));
 }
 
-// 🤖 IA
+// 🤖 Route IA
 app.post("/ai", async (req, res) => {
     try {
         const { message, userId } = req.body;
@@ -38,7 +36,7 @@ app.post("/ai", async (req, res) => {
             return res.json({ reply: "🚫 Contenu interdit" });
         }
 
-        // 💾 stock message user
+        // 💾 stock user
         conversations[userId].push({
             role: "user",
             content: message
@@ -48,11 +46,16 @@ app.post("/ai", async (req, res) => {
 
         const HF_TOKEN = process.env.HF_TOKEN;
 
-        console.log("🔑 Token :", HF_TOKEN);
+        if (!HF_TOKEN) {
+            console.log("❌ Token manquant");
+            return res.json({ reply: "❌ Token IA manquant" });
+        }
+
+        console.log("🔑 Token OK");
 
         try {
             const response = await axios.post(
-                "https://api-inference.huggingface.co/models/google/flan-t5-base",
+                "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta",
                 {
                     inputs: message
                 },
@@ -63,7 +66,7 @@ app.post("/ai", async (req, res) => {
                 }
             );
 
-            console.log("📡 HF response :", response.data);
+            console.log("📡 Réponse HF :", response.data);
 
             if (response.data?.[0]?.generated_text) {
                 reply = response.data[0].generated_text;
@@ -74,18 +77,20 @@ app.post("/ai", async (req, res) => {
             }
 
         } catch (err) {
-            console.error("❌ HF ERROR :", err.response?.data || err.message);
+            console.error("❌ ERREUR HF :", err.response?.data || err.message);
 
             if (err.response?.status === 503) {
-                reply = "⏳ IA en cours de chargement";
+                reply = "⏳ IA en chargement";
             } else if (err.response?.status === 401) {
                 reply = "❌ Token invalide";
+            } else if (err.response?.status === 404) {
+                reply = "❌ Modèle introuvable";
             } else {
                 reply = "⚠️ IA indisponible";
             }
         }
 
-        // 💾 stock réponse IA
+        // 💾 stock IA
         conversations[userId].push({
             role: "ai",
             content: reply
@@ -99,7 +104,7 @@ app.post("/ai", async (req, res) => {
     }
 });
 
-// 📄 toutes les conversations
+// 📄 récupérer conversations
 app.get("/conversations", (req, res) => {
     res.json(conversations);
 });
@@ -115,7 +120,7 @@ app.get("/conversation/:id", (req, res) => {
     res.json(conversations[id]);
 });
 
-// 🧪 test serveur
+// 🧪 test
 app.get("/", (req, res) => {
     res.send("🚀 RizoIA serveur OK");
 });
