@@ -35,9 +35,24 @@ h2 {
 <div id="list">Chargement...</div>
 
 <script>
+// 🔴 DEBUG GLOBAL (erreurs JS affichées)
+window.onerror = function(message, source, lineno) {
+    document.getElementById("list").innerText =
+        "❌ Erreur JS:\n" + message + "\nLigne: " + lineno;
+};
+
 async function loadChats() {
     try {
-        const res = await fetch("https://blocplay-beta-github-io.onrender.com/conversations");
+        const url = "https://blocplay-beta-github-io.onrender.com/conversations";
+
+        console.log("Fetch URL:", url);
+
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            throw new Error("HTTP " + res.status);
+        }
+
         const data = await res.json();
 
         const list = document.getElementById("list");
@@ -63,10 +78,13 @@ async function loadChats() {
         });
 
     } catch (e) {
-        document.getElementById("list").innerText = "Erreur ❌";
-        console.error(e);
+        document.getElementById("list").innerText =
+            "❌ Erreur fetch:\n" + e.message;
     }
 }
+
+// test rapide (débug)
+console.log("JS chargé ✅");
 
 loadChats();
 </script>
