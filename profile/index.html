@@ -13,6 +13,23 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b0f1a">
 
+<style>
+.profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+.rizo-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,120,0,0.7);
+}
+</style>
+
 </head>
 
 <body>
@@ -40,7 +57,11 @@
 
     <h1>Mon profil</h1>
 
-    <img id="profilePic" class="profile-pic">
+    <!-- 🔥 PROFIL + BADGE -->
+    <div class="profile-container">
+      <img id="profilePic" class="profile-pic">
+      <img src="/rizo-play.png" id="rizoBadge" class="rizo-badge" style="display:none;">
+    </div>
 
     <h2 id="username"></h2>
     <p id="email"></p>
@@ -98,6 +119,13 @@ onAuthStateChanged(auth, (user) => {
 
     document.getElementById("profilePic").src =
         user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
+
+    // 🔥 BADGE RIZOPLAY
+    const hasRizo = localStorage.getItem("rizoplay");
+
+    if (hasRizo) {
+        document.getElementById("rizoBadge").style.display = "block";
+    }
 });
 
 avatar.addEventListener("click", (e) => {
