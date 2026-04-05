@@ -1,116 +1,56 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>RizoIA Chats</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chats</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: #0f172a;
-            color: white;
-        }
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+}
 
-        #chat {
-            padding: 20px;
-            height: 80vh;
-            overflow-y: auto;
-        }
+.chat {
+    padding: 15px;
+    border-bottom: 1px solid #334155;
+    cursor: pointer;
+}
 
-        .message {
-            margin: 10px 0;
-        }
-
-        .user {
-            text-align: right;
-            color: #38bdf8;
-        }
-
-        .ai {
-            text-align: left;
-            color: #22c55e;
-        }
-
-        #inputBar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            display: flex;
-            padding: 10px;
-            background: #020617;
-        }
-
-        #input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-        }
-
-        button {
-            margin-left: 10px;
-            padding: 10px;
-            background: #7c3aed; /* couleur RizoPlay */
-            border: none;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #6d28d9;
-        }
-    </style>
+.chat:hover {
+    background: #1e293b;
+}
+</style>
 </head>
 
 <body>
 
-<div id="chat"></div>
-
-<div id="inputBar">
-    <input id="input" placeholder="Écris un message..." />
-    <button onclick="sendMessage()">Envoyer</button>
-</div>
+<h2>💬 Conversations</h2>
+<div id="list"></div>
 
 <script>
-const userId = "user123";
-
-async function sendMessage() {
-    const input = document.getElementById("input");
-    const message = input.value;
-
-    if (!message) return;
-
-    addMessage("user", message);
-    input.value = "";
-
-    const res = await fetch("https://blocplay-beta-github-io.onrender.com/ai", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message,
-            userId
-        })
-    });
-
+async function loadChats() {
+    const res = await fetch("https://blocplay-beta-github-io.onrender.com/conversations");
     const data = await res.json();
 
-    addMessage("ai", data.reply);
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+
+    Object.keys(data).forEach(id => {
+        const div = document.createElement("div");
+        div.className = "chat";
+        div.innerText = "🧠 Chat " + id;
+
+        div.onclick = () => {
+            window.location.href = "/rizoplay/ia/chat/view/?id=" + id;
+        };
+
+        list.appendChild(div);
+    });
 }
 
-function addMessage(type, text) {
-    const div = document.createElement("div");
-    div.className = "message " + type;
-    div.innerText = text;
-
-    document.getElementById("chat").appendChild(div);
-
-    window.scrollTo(0, document.body.scrollHeight);
-}
+loadChats();
 </script>
 
 </body>
