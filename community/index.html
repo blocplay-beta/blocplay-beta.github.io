@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Roblox - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/roblox.ico">
+
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* HEADER */
+header {
+  width: 100%;
+  height: 60px;
+  background: #0b0f1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  color: white;
+  box-sizing: border-box;
+}
+
+/* LOGO */
+.logo img {
+  height: 40px;
+}
+
+/* PROFILE */
+.profile-menu {
+  position: relative;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* DROPDOWN */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: #111;
+  border-radius: 8px;
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+}
+
+.dropdown.show {
+  display: flex;
+}
+
+.dropdown a {
+  padding: 10px 15px;
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown a:hover {
+  background: #222;
+}
+
+/* IFRAME */
+iframe {
+  width: 100%;
+  height: calc(100vh - 60px);
+  border: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <!-- LOGO BLOCPLAY -->
+  <a href="/" class="logo">
+    <img src="/icon.png">
+  </a>
+
+  <!-- PROFIL -->
+  <div class="profile-menu">
+    <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+         class="avatar" id="avatar">
+
+    <div class="dropdown" id="dropdown"></div>
+  </div>
+
+</header>
+
+<!-- 🔥 CONTENU ROBLOX COMMUNAUTÉ -->
+<iframe src="https://www.roblox.com/fr/communities/966782400/BlocPlay-Studios#!/about" allowfullscreen></iframe>
+
+<script>
+/* MENU PROFIL */
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
+/* SIMPLE CLICK MENU */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+</script>
+
+</body>
+</html>
