@@ -5,95 +5,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RizoPlay - Avantages</title>
+<title>RizoPlay - Accueil</title>
 
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/rizo.ico">
 
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b0f1a">
 
 <style>
 
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
-
-.card {
-    background: #111;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-}
-
-.btn-back {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: white;
-    text-decoration: none;
-    background: #222;
-    padding: 8px 15px;
-    border-radius: 8px;
-}
-
-h1 {
-    color: #ff7a00;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    margin: 10px 0;
-    padding: 10px;
-    background: #1a1a1a;
-    border-radius: 10px;
-}
-
-/* 🔥 HEADER PROFIL */
-.profile-menu {
-    position: relative;
-}
-
-.avatar {
-    width: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.dropdown {
-    position: absolute;
-    right: 0;
-    top: 50px;
-    background: #111;
-    border-radius: 10px;
-    display: none;
-    flex-direction: column;
-    min-width: 150px;
-}
-
-.dropdown a {
-    padding: 10px;
-    color: white;
-    text-decoration: none;
-}
-
-.dropdown a:hover {
-    background: #222;
-}
-
-.dropdown.show {
-    display: flex;
-}
-
-.header-content {
+.rizo-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+}
+
+.btn-rizo {
+    background: linear-gradient(135deg, #ff7a00, #ff3c00);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* 🔥 centrer le profil */
+.profile-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* 🔥 vrai style du profil */
+.main-profile {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: block;
+}
+
+/* 🔥 badge petit en haut à droite */
+.rizo-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 14px;
+    height: 14px;
 }
 
 </style>
@@ -106,7 +70,7 @@ li {
   <div class="header-content">
 
     <a href="/" class="logo">
-      <img src="/rizo-play.png" height="40">
+      <img src="/rizo-play.png">
     </a>
 
     <div class="profile-menu">
@@ -121,19 +85,27 @@ li {
 
 <div class="container">
 
-    <a href="/rizoplay/home" class="btn-back">← Retour</a>
+  <div class="card">
 
-    <h1>✨ Avantages RizoPlay</h1>
+    <div class="rizo-header">
+      <h2>Mes avantages</h2>
 
-    <div class="card">
-        <ul>
-            <li>🚀 Accès à du contenu exclusif</li>
-            <li>⚡ Expérience améliorée</li>
-            <li>🎮 Fonctionnalités premium</li>
-            <li>🔒 Accès réservé aux membres</li>
-            <li>🎨 Design personnalisé</li>
-        </ul>
+      <a href="#" class="btn-rizo">Voir plus</a>
     </div>
+
+    <!-- 🔥 PROFIL -->
+    <a href="/profile" class="profile-box">
+      <div class="profile-wrapper">
+
+        <img id="profilePic" class="main-profile">
+
+        <!-- badge -->
+        <img src="/rizo-play.png" class="rizo-badge">
+
+      </div>
+    </a>
+
+  </div>
 
 </div>
 
@@ -155,7 +127,6 @@ const auth = getAuth(app);
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
-/* MENU */
 function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
@@ -180,6 +151,18 @@ onAuthStateChanged(auth, (user) => {
 
     renderMenu(user);
 
+    document.getElementById("profilePic").src =
+        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
+
+    // 🔥 ADMIN
+    const isAdmin =
+        user.email === "blocplaystudios@gmail.com" &&
+        user.displayName === "BlocPlay Studios";
+
+    if (isAdmin) {
+        localStorage.setItem("rizoplay", "true");
+    }
+
     const hasRizo = localStorage.getItem("rizoplay");
 
     if (!hasRizo) {
@@ -187,7 +170,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-/* MENU CLICK */
+/* MENU */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
