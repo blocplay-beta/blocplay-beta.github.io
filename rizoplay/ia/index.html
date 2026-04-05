@@ -1,200 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>RizoIA</title>
 
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/rizo.ico">
-
-<meta name="theme-color" content="#0b0f1a">
-
 <style>
-
-/* TA BARRE */
-header {
-    background: #0b0f1a;
-    padding: 10px 20px;
-}
-
-.header-content {
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b0f19;
+    color: white;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: 100vh;
 }
 
-/* LOGO */
-.logo img {
-    height: 40px;
+/* sidebar */
+.sidebar {
+    width: 250px;
+    background: #111827;
+    padding: 15px;
 }
 
-/* PROFIL */
-.profile-menu {
-    position: relative;
+.sidebar h2 {
+    margin-bottom: 20px;
 }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.btn {
+    display: block;
+    padding: 10px;
+    background: #22c55e;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 10px;
     cursor: pointer;
 }
 
-/* DROPDOWN */
-.dropdown {
-    position: absolute;
-    right: 0;
-    top: 50px;
-    background: #111;
-    border-radius: 8px;
-    overflow: hidden;
-    display: none;
-    flex-direction: column;
-}
-
-.dropdown.show {
+/* main */
+.main {
+    flex: 1;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-.dropdown a {
-    padding: 10px 15px;
-    color: white;
-    text-decoration: none;
+h1 {
+    font-size: 28px;
 }
-
-.dropdown a:hover {
-    background: #222;
-}
-
-/* CONTENU */
-.container {
-    padding: 20px;
-    max-width: 800px;
-    margin: auto;
-}
-
-.card {
-    background: #111;
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 20px;
-}
-
-.btn-rizo {
-    background: linear-gradient(135deg, #ff7a00, #ff3c00);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    display: inline-block;
-}
-
 </style>
-
 </head>
 
 <body>
 
-<header>
-  <div class="header-content">
+<div class="sidebar">
+    <h2>RizoIA 🤖</h2>
 
-    <a href="/" class="logo">
-      <img src="/rizo-play.png">
-    </a>
-
-    <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar" id="avatar">
-
-      <div class="dropdown" id="dropdown"></div>
+    <div class="btn" onclick="location.href='/rizoplay/ia/chat/'">
+        💬 Conversations
     </div>
-
-  </div>
-</header>
-
-<div class="container">
-
-  <div class="card">
-    <h1>🤖 RizoIA</h1>
-
-    <p>Bienvenue dans RizoIA, ton assistant intelligent.</p>
-
-    <a href="/rizoplay/ia/chat" class="btn-rizo">Voir les conversations</a>
-    <a href="/rizoplay/ia/chat/new" class="btn-rizo">Nouvelle discussion</a>
-
-  </div>
-
 </div>
 
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-  authDomain: "blocplay-a9417.firebaseapp.com",
-  projectId: "blocplay-a9417",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-const avatar = document.getElementById("avatar");
-const dropdown = document.getElementById("dropdown");
-
-function renderMenu(user) {
-    if (user) {
-        dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
-            <a href="#" id="logout">Se déconnecter</a>
-        `;
-    } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
-    }
-}
-
-onAuthStateChanged(auth, (user) => {
-
-    if (!user) {
-        window.location.href = "/login";
-        return;
-    }
-
-    renderMenu(user);
-
-    const hasRizo = localStorage.getItem("rizoplay");
-
-    if (!hasRizo) {
-        window.location.href = "/rizoplay";
-    }
-});
-
-/* MENU */
-avatar.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("show");
-});
-
-document.addEventListener("click", () => {
-    dropdown.classList.remove("show");
-});
-
-document.addEventListener("click", async (e) => {
-    if (e.target.id === "logout") {
-        await signOut(auth);
-    }
-});
-
-</script>
+<div class="main">
+    <h1>Bienvenue sur RizoIA</h1>
+</div>
 
 </body>
 </html>
