@@ -19,12 +19,13 @@
     display: inline-block;
 }
 
+/* 🔥 badge un peu plus grand + mieux placé */
 .rizo-badge {
     position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 16px;
-    height: 16px;
+    top: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(255,120,0,0.7);
 }
@@ -119,7 +120,7 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("profilePic").src =
         user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 
-    // 🔥 ADMIN + RIZOPLAY
+    // 🔥 ADMIN FIX
     const isAdmin =
         user.email === "blocplaystudios@gmail.com" &&
         user.displayName === "BlocPlay Studios";
