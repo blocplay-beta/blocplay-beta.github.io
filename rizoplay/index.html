@@ -68,7 +68,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -81,7 +80,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* MENU PROFIL */
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
@@ -100,15 +98,25 @@ function renderMenu(user) {
     }
 }
 
-/* 🔥 AUTH + CHECK RIZOPLAY */
 onAuthStateChanged(auth, (user) => {
 
     renderMenu(user);
 
-    // 👉 Si l'utilisateur a RizoPlay → redirection directe
+    if (!user) return;
+
+    // 🔥 ADMIN AUTO
+    const isAdmin =
+        user.email === "blocplaystudios@gmail.com" &&
+        user.displayName === "BlocPlayStudios";
+
+    if (isAdmin) {
+        localStorage.setItem("rizoplay", "true");
+    }
+
     const hasRizo = localStorage.getItem("rizoplay");
 
-    if (user && hasRizo) {
+    // 🔥 REDIRECTION SI PREMIUM
+    if (hasRizo) {
         window.location.href = "/rizoplay/home";
     }
 });
@@ -123,7 +131,6 @@ document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
-/* LOGOUT */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
