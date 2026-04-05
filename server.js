@@ -4,16 +4,16 @@ const axios = require("axios");
 
 const app = express();
 
-// ✅ CORS
+// 🌐 CORS
 app.use(cors());
 
-// ✅ JSON
+// 📦 JSON
 app.use(express.json());
 
-// 🧠 mémoire
+// 🧠 Mémoire
 const conversations = {};
 
-// 🔒 filtre simple
+// 🔒 Filtre simple
 function isSafe(message) {
     const banned = ["hack", "pirate", "mdp", "password"];
     return !banned.some(word => message.toLowerCase().includes(word));
@@ -28,6 +28,7 @@ app.post("/ai", async (req, res) => {
             return res.status(400).json({ reply: "❌ Données manquantes" });
         }
 
+        // init mémoire
         if (!conversations[userId]) {
             conversations[userId] = [];
         }
@@ -45,13 +46,15 @@ app.post("/ai", async (req, res) => {
 
         let reply = "⚠️ IA indisponible";
 
-        try {
-            const HF_TOKEN = process.env.HF_TOKEN;
+        const HF_TOKEN = process.env.HF_TOKEN;
 
+        console.log("🔑 Token :", HF_TOKEN);
+
+        try {
             const response = await axios.post(
-                "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
+                "https://api-inference.huggingface.co/models/google/flan-t5-base",
                 {
-                    inputs: `<s>[INST] ${message} [/INST]`
+                    inputs: message
                 },
                 {
                     headers: {
@@ -60,18 +63,21 @@ app.post("/ai", async (req, res) => {
                 }
             );
 
-            // ✅ réponse IA
+            console.log("📡 HF response :", response.data);
+
             if (response.data?.[0]?.generated_text) {
                 reply = response.data[0].generated_text;
+            } else if (response.data?.generated_text) {
+                reply = response.data.generated_text;
             } else {
                 reply = "🤖 Réponse vide";
             }
 
         } catch (err) {
-            console.log("Erreur IA:", err.message);
+            console.error("❌ HF ERROR :", err.response?.data || err.message);
 
             if (err.response?.status === 503) {
-                reply = "⏳ IA en cours de démarrage, réessaie dans quelques secondes";
+                reply = "⏳ IA en cours de chargement";
             } else if (err.response?.status === 401) {
                 reply = "❌ Token invalide";
             } else {
@@ -88,7 +94,7 @@ app.post("/ai", async (req, res) => {
         res.json({ reply });
 
     } catch (err) {
-        console.error(err);
+        console.error("❌ ERREUR SERVEUR :", err);
         res.status(500).json({ reply: "Erreur serveur ❌" });
     }
 });
