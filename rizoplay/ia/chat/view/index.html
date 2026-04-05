@@ -39,12 +39,31 @@ h2 {
 <div id="chat">Chargement...</div>
 
 <script>
+// 🔴 DEBUG GLOBAL
+window.onerror = function(message, source, lineno) {
+    document.getElementById("chat").innerText =
+        "❌ Erreur JS:\n" + message + "\nLigne: " + lineno;
+};
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
 async function loadChat() {
     try {
-        const res = await fetch(`https://blocplay-beta-github-io.onrender.com/conversation/${id}`);
+        if (!id) {
+            throw new Error("ID manquant dans l'URL");
+        }
+
+        const url = `https://blocplay-beta-github-io.onrender.com/conversation/${id}`;
+
+        console.log("Fetch URL:", url);
+
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            throw new Error("HTTP " + res.status);
+        }
+
         const data = await res.json();
 
         const chat = document.getElementById("chat");
@@ -63,10 +82,12 @@ async function loadChat() {
         });
 
     } catch (e) {
-        document.getElementById("chat").innerText = "Erreur serveur ❌";
-        console.error(e);
+        document.getElementById("chat").innerText =
+            "❌ Erreur:\n" + e.message;
     }
 }
+
+console.log("JS view chargé ✅");
 
 loadChat();
 </script>
