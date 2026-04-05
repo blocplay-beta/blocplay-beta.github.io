@@ -1,105 +1,78 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
-const axios = require("axios");
-const cors = require("cors"); // ✅ AJOUT
 
 const app = express();
 
-// ✅ CORS (IMPORTANT)
+// ✅ CORS (obligatoire)
 app.use(cors());
 
-// middleware
+// ✅ JSON
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
 
 // 🧠 mémoire des conversations
 const conversations = {};
 
-// 🔒 filtre simple
-function isSafe(message) {
-    const banned = ["hack", "pirate", "mdp", "password"];
-    return !banned.some(word => message.toLowerCase().includes(word));
-}
+// 📄 servir fichiers statiques (si besoin)
+app.use(express.static(path.join(__dirname, "public")));
 
-// 🤖 route IA
+// 🤖 route IA (simple et stable)
 app.post("/ai", async (req, res) => {
     try {
         const { message, userId } = req.body;
 
         if (!message || !userId) {
-            return res.json({ reply: "❌ Message ou userId manquant" });
+            return res.status(400).json({ reply: "❌ Données manquantes" });
         }
 
-        // créer user si inexistant
         if (!conversations[userId]) {
             conversations[userId] = [];
         }
 
-        // 🔒 filtre contenu
-        if (!isSafe(message)) {
-            return res.json({ reply: "🚫 Contenu interdit" });
-        }
+        // sauvegarde message user
+        conversations[userId].push({
+            role: "user",
+            content: message
+        });
 
-        // sauvegarde message utilisateur
-        conversations[userId].push({ role: "user", content: message });
+        // 👉 réponse simulée (évite crash)
+        let reply = "🤖 Réponse de RizoIA (mode test)";
 
-        let reply = "Je réfléchis 🤖...";
-
-        try {
-            const HF_TOKEN = process.env.HF_TOKEN;
-
-            const response = await axios.post(
-                "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill",
-                { inputs: message },
-                {
-                    headers: {
-                        Authorization: `Bearer ${HF_TOKEN}`
-                    }
-                }
-            );
-
-            if (response.data?.[0]?.generated_text) {
-                reply = response.data[0].generated_text;
-            }
-
-        } catch (err) {
-            console.error("Erreur HuggingFace :", err.message);
-            reply = "⚠️ IA indisponible";
-        }
-
-        // sauvegarde réponse IA
-        conversations[userId].push({ role: "ai", content: reply });
+        conversations[userId].push({
+            role: "ai",
+            content: reply
+        });
 
         res.json({ reply });
 
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error(err);
         res.status(500).json({ reply: "Erreur serveur ❌" });
     }
 });
 
-// 📄 récupérer toutes les conversations
+// 📄 toutes les conversations
 app.get("/conversations", (req, res) => {
     res.json(conversations);
 });
 
-// 👁️ récupérer une conversation
+// 👁️ une conversation
 app.get("/conversation/:id", (req, res) => {
     const id = req.params.id;
 
     if (!conversations[id]) {
-        return res.json({ error: "Conversation introuvable" });
+        return res.json([]);
     }
 
     res.json(conversations[id]);
 });
 
-// route test
+// 🧪 test serveur
 app.get("/", (req, res) => {
-    res.send("🚀 RizoIA fonctionne !");
+    res.send("🚀 Serveur RizoIA OK");
 });
 
-// lancement serveur
+// 🚀 lancement
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
