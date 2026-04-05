@@ -21,6 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    padding-bottom: 20px; /* 🔥 espace en bas */
 }
 
 .header {
@@ -55,6 +56,10 @@ body {
     display: flex;
     padding: 10px;
     background: #111;
+    position: sticky;
+    bottom: 10px; /* 🔥 remonté */
+    margin: 10px;
+    border-radius: 10px;
 }
 
 input {
@@ -95,11 +100,11 @@ button {
 
 <script>
 
-// 🔥 récupération ID
+// 🔥 ID du chat
 const urlParams = new URLSearchParams(window.location.search);
 const chatId = urlParams.get("id");
 
-// 🔥 stockage
+// 🔥 chats
 let chats = JSON.parse(localStorage.getItem("rizoplay_chats")) || [];
 let chat = chats.find(c => c.id === chatId);
 
@@ -112,33 +117,41 @@ if (!chat) {
 // 🔥 titre
 document.getElementById("title").innerText = chat.name;
 
-// 🔥 IA locale
+// 🔥 IA RizoIA v2
 function generateAIResponse(text) {
 
     text = text.toLowerCase();
 
-    if (/(bonjour|salut|hello|hey)/.test(text)) {
+    if (/(bonjour|salut|hello|hey|yo)/.test(text)) {
         return "👋 Salut ! Je suis RizoIA.";
     }
 
     if (text.includes("ça va")) {
-        return "😄 Oui ça va très bien !";
+        return "😄 Oui très bien !";
+    }
+
+    if (text.includes("qui es-tu")) {
+        return "🤖 Je suis RizoIA, ton assistant BlocPlay.";
     }
 
     if (text.includes("blocplay")) {
-        return "🎮 BlocPlay est une plateforme de jeux.";
+        return "🎮 BlocPlay est une plateforme de jeux et d'apps.";
     }
 
     if (text.includes("rizoplay")) {
         return "🔥 RizoPlay est la version premium de BlocPlay.";
     }
 
+    if (text.includes("avantages")) {
+        return "✨ Avantages : contenu exclusif, design amélioré.";
+    }
+
     if (text.includes("heure")) {
-        return "⏰ Il est " + new Date().toLocaleTimeString();
+        return "⏰ " + new Date().toLocaleTimeString();
     }
 
     if (text.includes("date")) {
-        return "📅 Nous sommes le " + new Date().toLocaleDateString();
+        return "📅 " + new Date().toLocaleDateString();
     }
 
     const calcMatch = text.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
@@ -148,29 +161,34 @@ function generateAIResponse(text) {
         const b = parseFloat(calcMatch[3]);
 
         switch(op) {
-            case "+": return "🧮 Résultat : " + (a + b);
-            case "-": return "🧮 Résultat : " + (a - b);
-            case "*": return "🧮 Résultat : " + (a * b);
-            case "/": return b !== 0 ? "🧮 Résultat : " + (a / b) : "Erreur";
+            case "+": return "🧮 " + (a + b);
+            case "-": return "🧮 " + (a - b);
+            case "*": return "🧮 " + (a * b);
+            case "/": return b !== 0 ? "🧮 " + (a / b) : "❌ erreur";
         }
     }
 
     if (text.includes("blague")) {
-        return "😂 Pourquoi les devs aiment le café ? Parce que Java les réveille !";
+        const jokes = [
+            "😂 Pourquoi les devs aiment le café ? Parce qu’ils ne peuvent pas fonctionner sans Java !",
+            "😂 Un bug est une feature… jusqu’à ce qu’on le corrige 😄",
+            "😂 Pourquoi les maths sont tristes ? Parce qu’elles ont trop de problèmes !"
+        ];
+        return jokes[Math.floor(Math.random() * jokes.length)];
+    }
+
+    if (text.startsWith("mon nom est")) {
+        const name = text.replace("mon nom est", "").trim();
+        localStorage.setItem("username", name);
+        return "😊 Enchanté " + name + " !";
     }
 
     const name = localStorage.getItem("username");
-    if (text.startsWith("mon nom est")) {
-        const n = text.replace("mon nom est", "").trim();
-        localStorage.setItem("username", n);
-        return "😊 Enchanté " + n + " !";
-    }
-
     if (name && text.includes("bonjour")) {
         return "👋 Salut " + name + " !";
     }
 
-    return "🤖 Je ne comprends pas encore, mais j’apprends !";
+    return "🤖 Je ne comprends pas encore.";
 }
 
 // 🔥 afficher messages
@@ -224,7 +242,7 @@ function sendMessage() {
     input.value = "";
 }
 
-// 🔥 initialisation
+// 🔥 init
 render();
 
 </script>
