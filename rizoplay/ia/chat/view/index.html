@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RizoIA Chat</title>
+<title>Chat</title>
 
 <style>
 body {
@@ -15,14 +15,7 @@ body {
     height: 100vh;
 }
 
-/* sidebar */
-.sidebar {
-    width: 260px;
-    background: #111827;
-    padding: 10px;
-}
-
-/* main */
+/* layout */
 .main {
     flex: 1;
     display: flex;
@@ -33,6 +26,7 @@ body {
 .header {
     padding: 15px;
     border-bottom: 1px solid #1f2937;
+    font-weight: bold;
 }
 
 /* chat */
@@ -44,10 +38,10 @@ body {
 
 /* messages */
 .msg {
-    max-width: 70%;
+    max-width: 75%;
     padding: 12px;
     margin: 10px 0;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
 .user {
@@ -60,25 +54,26 @@ body {
 }
 
 /* input */
-.input {
+.input-bar {
+    padding: 15px;
+    background: #111827;
     display: flex;
-    padding: 10px;
-    border-top: 1px solid #1f2937;
+    gap: 10px;
+    margin-bottom: 10px; /* 🔥 remonte la barre */
 }
 
-.input input {
+.input-bar input {
     flex: 1;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 10px;
     border: none;
 }
 
-.input button {
-    margin-left: 10px;
-    padding: 10px 15px;
+.input-bar button {
     background: #22c55e;
     border: none;
-    border-radius: 8px;
+    padding: 12px 15px;
+    border-radius: 10px;
     color: white;
 }
 </style>
@@ -86,18 +81,14 @@ body {
 
 <body>
 
-<div class="sidebar">
-    <h3>RizoIA</h3>
-</div>
-
 <div class="main">
 
-<div class="header" id="title">Chat</div>
+<div class="header" id="title">💬 Chat</div>
 
 <div id="chat"></div>
 
-<div class="input">
-    <input id="input" placeholder="Message...">
+<div class="input-bar">
+    <input id="input" placeholder="Écris ton message...">
     <button onclick="send()">Envoyer</button>
 </div>
 
@@ -106,6 +97,10 @@ body {
 <script>
 const id = new URLSearchParams(location.search).get("id");
 const chat = document.getElementById("chat");
+
+function scrollBottom() {
+    chat.scrollTop = chat.scrollHeight;
+}
 
 async function loadChat() {
     const res = await fetch(`https://blocplay-beta-github-io.onrender.com/conversation/${id}`);
@@ -119,6 +114,10 @@ async function loadChat() {
         div.innerText = msg.content;
         chat.appendChild(div);
     });
+
+    document.getElementById("title").innerText = "💬 Chat " + id;
+
+    scrollBottom();
 }
 
 async function send() {
@@ -133,6 +132,8 @@ async function send() {
     userDiv.className = "msg user";
     userDiv.innerText = message;
     chat.appendChild(userDiv);
+
+    scrollBottom();
 
     const res = await fetch("https://blocplay-beta-github-io.onrender.com/ai", {
         method: "POST",
@@ -149,6 +150,8 @@ async function send() {
     aiDiv.className = "msg ai";
     aiDiv.innerText = data.reply;
     chat.appendChild(aiDiv);
+
+    scrollBottom();
 }
 
 loadChat();
