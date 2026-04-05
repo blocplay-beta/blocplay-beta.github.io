@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BlocPlay - Accueil</title>
+
+<style>
+body {
+  margin:0;
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.loading {
+  text-align:center;
+  font-size:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="loading">
+  Chargement...
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.appspot.com",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+    window.location.replace("/home")
+
+});
+
+</script>
+
+</body>
+</html>
