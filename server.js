@@ -1,40 +1,46 @@
 const express = require("express");
 const path = require("path");
 const axios = require("axios");
+const cors = require("cors"); // ✅ AJOUT
 
 const app = express();
 
+// ✅ CORS (IMPORTANT)
+app.use(cors());
+
+// middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// 🧠 mémoire
+// 🧠 mémoire des conversations
 const conversations = {};
 
-// 🔒 filtre
+// 🔒 filtre simple
 function isSafe(message) {
     const banned = ["hack", "pirate", "mdp", "password"];
     return !banned.some(word => message.toLowerCase().includes(word));
 }
 
-// 🤖 IA
+// 🤖 route IA
 app.post("/ai", async (req, res) => {
     try {
         const { message, userId } = req.body;
 
-        if (!message) {
-            return res.json({ reply: "Message vide ❌" });
+        if (!message || !userId) {
+            return res.json({ reply: "❌ Message ou userId manquant" });
         }
 
+        // créer user si inexistant
         if (!conversations[userId]) {
             conversations[userId] = [];
         }
 
-        // 🔒 filtre
+        // 🔒 filtre contenu
         if (!isSafe(message)) {
-            return res.json({ reply: "🚫 Contenu interdit." });
+            return res.json({ reply: "🚫 Contenu interdit" });
         }
 
-        // 💾 stock user
+        // sauvegarde message utilisateur
         conversations[userId].push({ role: "user", content: message });
 
         let reply = "Je réfléchis 🤖...";
@@ -56,27 +62,28 @@ app.post("/ai", async (req, res) => {
                 reply = response.data[0].generated_text;
             }
 
-        } catch (e) {
+        } catch (err) {
+            console.error("Erreur HuggingFace :", err.message);
             reply = "⚠️ IA indisponible";
         }
 
-        // 💾 stock AI
+        // sauvegarde réponse IA
         conversations[userId].push({ role: "ai", content: reply });
 
         res.json({ reply });
 
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ reply: "Erreur serveur ❌" });
     }
 });
 
-// 📄 toutes les conversations
+// 📄 récupérer toutes les conversations
 app.get("/conversations", (req, res) => {
     res.json(conversations);
 });
 
-// 👁️ une conversation
+// 👁️ récupérer une conversation
 app.get("/conversation/:id", (req, res) => {
     const id = req.params.id;
 
@@ -87,6 +94,12 @@ app.get("/conversation/:id", (req, res) => {
     res.json(conversations[id]);
 });
 
+// route test
+app.get("/", (req, res) => {
+    res.send("🚀 RizoIA fonctionne !");
+});
+
+// lancement serveur
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
