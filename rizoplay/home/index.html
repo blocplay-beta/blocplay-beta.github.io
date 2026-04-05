@@ -15,48 +15,41 @@
 
 <style>
 
-/* SECTION AVANTAGES */
-.rizo-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.rizo-left {
+/* PROFIL + BADGE */
+.profile-box {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-/* PROFIL */
-.rizo-profile {
-    position: relative;
-    cursor: pointer;
-}
-
-.rizo-profile img {
+.profile-circle {
     width: 60px;
     height: 60px;
     border-radius: 50%;
 }
 
-/* LOGO RIZOPLAY PETIT */
+/* 🔥 BADGE RIZOPLAY (FIX PETIT) */
 .rizo-badge {
     position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 22px;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,120,0,0.7);
 }
 
-/* BOUTON VOIR PLUS */
+/* BOUTON RIZO STYLE */
 .btn-rizo {
     background: linear-gradient(135deg, #ff7a00, #ff3c00);
     color: white;
-    padding: 10px 18px;
+    padding: 10px 20px;
     border-radius: 10px;
-    border: none;
-    cursor: pointer;
+    text-decoration: none;
     font-weight: bold;
+    cursor: pointer;
+    border: none;
 }
 
 </style>
@@ -87,28 +80,17 @@
   <!-- SECTION AVANTAGES -->
   <div class="card">
 
-    <div class="rizo-section">
+    <h2>Mes avantages</h2>
 
-      <!-- GAUCHE -->
-      <div class="rizo-left">
+    <div class="profile-box">
 
-        <div>
-          <h2>Mes avantages</h2>
-        </div>
-
-        <!-- PROFIL -->
-        <div class="rizo-profile" onclick="window.location.href='/profile'">
-
-          <img id="userAvatar" src="https://ui-avatars.com/api/?name=User">
-
-          <!-- PETIT LOGO RIZO -->
-          <img src="/rizo-play.png" class="rizo-badge">
-
-        </div>
-
+      <!-- PROFIL -->
+      <div style="position:relative; cursor:pointer;" onclick="window.location.href='/profile'">
+        <img id="profilePic" class="profile-circle">
+        <img src="/rizo-play.png" class="rizo-badge">
       </div>
 
-      <!-- DROITE -->
+      <!-- BOUTON -->
       <button class="btn-rizo">
         Voir plus
       </button>
@@ -120,12 +102,11 @@
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* CONFIG */
+/* FIREBASE (exact comme tes autres pages) */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -150,14 +131,11 @@ function renderMenu(user) {
             <a href="#" id="logout">Se déconnecter</a>
         `;
     } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
+        window.location.href = "/login";
     }
 }
 
-/* 🔒 PROTECTION RIZOPLAY */
+/* AUTH + CHECK RIZOPLAY */
 onAuthStateChanged(auth, (user) => {
 
     if (!user) {
@@ -165,22 +143,21 @@ onAuthStateChanged(auth, (user) => {
         return;
     }
 
-    // 👉 TEMPORAIRE : vérif localStorage (à remplacer plus tard par Firestore)
+    renderMenu(user);
+
+    // 🔥 PHOTO PROFIL
+    document.getElementById("profilePic").src =
+        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
+
+    // 🔥 CHECK RIZOPLAY
     const hasRizo = localStorage.getItem("rizoplay");
 
     if (!hasRizo) {
         window.location.href = "/rizoplay";
-        return;
     }
-
-    renderMenu(user);
-
-    // Avatar dynamique
-    document.getElementById("userAvatar").src =
-        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 });
 
-/* MENU */
+/* MENU ACTIONS */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -190,14 +167,11 @@ document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
-/* LOGOUT */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
-        window.location.href = "/login";
     }
 });
-
 </script>
 
 <script>
