@@ -3,13 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chats</title>
+<title>Discussions</title>
 
 <style>
 body {
     font-family: Arial;
     background: #0f172a;
     color: white;
+    margin: 0;
+}
+
+h2 {
+    padding: 15px;
 }
 
 .chat {
@@ -26,28 +31,41 @@ body {
 
 <body>
 
-<h2>💬 Conversations</h2>
-<div id="list"></div>
+<h2>💬 Discussions</h2>
+<div id="list">Chargement...</div>
 
 <script>
 async function loadChats() {
-    const res = await fetch("https://blocplay-beta-github-io.onrender.com/conversations");
-    const data = await res.json();
+    try {
+        const res = await fetch("https://blocplay-beta-github-io.onrender.com/conversations");
+        const data = await res.json();
 
-    const list = document.getElementById("list");
-    list.innerHTML = "";
+        const list = document.getElementById("list");
+        list.innerHTML = "";
 
-    Object.keys(data).forEach(id => {
-        const div = document.createElement("div");
-        div.className = "chat";
-        div.innerText = "🧠 Chat " + id;
+        const keys = Object.keys(data);
 
-        div.onclick = () => {
-            window.location.href = "/rizoplay/ia/chat/view/?id=" + id;
-        };
+        if (keys.length === 0) {
+            list.innerHTML = "Aucune discussion";
+            return;
+        }
 
-        list.appendChild(div);
-    });
+        keys.forEach(id => {
+            const div = document.createElement("div");
+            div.className = "chat";
+            div.innerText = "🧠 Chat " + id;
+
+            div.onclick = () => {
+                window.location.href = "/rizoplay/ia/chat/view/?id=" + id;
+            };
+
+            list.appendChild(div);
+        });
+
+    } catch (e) {
+        document.getElementById("list").innerText = "Erreur ❌";
+        console.error(e);
+    }
 }
 
 loadChats();
