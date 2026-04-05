@@ -107,7 +107,7 @@ function renderChats() {
 
     chats.forEach(chat => {
         container.innerHTML += `
-            <a class="chat-item" href="/rizoplay/ia/chat/${chat.id}">
+            <a class="chat-item" href="/rizoplay/ia/chat/view/?id{chat.id}">
                 💬 Conversation #${chat.id}
             </a>
         `;
