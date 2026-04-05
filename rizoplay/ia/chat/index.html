@@ -1,122 +1,116 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <title>RizoIA Chats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+        }
 
-<title>RizoIA - Conversations</title>
+        #chat {
+            padding: 20px;
+            height: 80vh;
+            overflow-y: auto;
+        }
 
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/rizo.ico">
+        .message {
+            margin: 10px 0;
+        }
 
-<meta name="theme-color" content="#0b0f1a">
+        .user {
+            text-align: right;
+            color: #38bdf8;
+        }
 
-<style>
+        .ai {
+            text-align: left;
+            color: #22c55e;
+        }
 
-body {
-    background: #0b0f1a;
-    color: white;
-    font-family: Arial, sans-serif;
-}
+        #inputBar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            padding: 10px;
+            background: #020617;
+        }
 
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
+        #input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
 
-.card {
-    background: #111;
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 20px;
-}
+        button {
+            margin-left: 10px;
+            padding: 10px;
+            background: #7c3aed; /* couleur RizoPlay */
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-.btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 15px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: white;
-    background: #333;
-}
-
-.btn-gradient {
-    background: linear-gradient(135deg, #ff7a00, #ff3c00);
-}
-
-.chat-item {
-    display: block;
-    padding: 10px;
-    margin-top: 10px;
-    background: #1a1a1a;
-    border-radius: 8px;
-    text-decoration: none;
-    color: white;
-}
-
-.chat-item:hover {
-    background: #222;
-}
-
-</style>
-
+        button:hover {
+            background: #6d28d9;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+<div id="chat"></div>
 
-    <h1>💬 Conversations RizoIA</h1>
-
-    <a href="/rizoplay/ia/chat/new" class="btn btn-gradient">
-        ➕ Nouvelle discussion
-    </a>
-
-    <div class="card" id="chatList">
-        <!-- chats -->
-    </div>
-
+<div id="inputBar">
+    <input id="input" placeholder="Écris un message..." />
+    <button onclick="sendMessage()">Envoyer</button>
 </div>
 
 <script>
+const userId = "user123";
 
-/* Récupérer les chats depuis le localStorage */
-function getChats() {
-    return JSON.parse(localStorage.getItem("rizoplay_chats") || "[]");
-}
+async function sendMessage() {
+    const input = document.getElementById("input");
+    const message = input.value;
 
-/* Sauvegarder */
-function saveChats(chats) {
-    localStorage.setItem("rizoplay_chats", JSON.stringify(chats));
-}
+    if (!message) return;
 
-/* Affichage */
-function renderChats() {
-    const container = document.getElementById("chatList");
-    const chats = getChats();
+    addMessage("user", message);
+    input.value = "";
 
-    container.innerHTML = "";
-
-    if (chats.length === 0) {
-        container.innerHTML = "<p>Aucune conversation pour le moment.</p>";
-        return;
-    }
-
-    chats.forEach(chat => {
-        container.innerHTML += `
-            <a class="chat-item" href="/rizoplay/ia/chat/view/?id{chat.id}">
-                💬 Conversation #${chat.id}
-            </a>
-        `;
+    const res = await fetch("https://blocplay-beta-github-io.onrender.com/ai", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message,
+            userId
+        })
     });
+
+    const data = await res.json();
+
+    addMessage("ai", data.reply);
 }
 
-/* Initialisation */
-renderChats();
+function addMessage(type, text) {
+    const div = document.createElement("div");
+    div.className = "message " + type;
+    div.innerText = text;
 
+    document.getElementById("chat").appendChild(div);
+
+    window.scrollTo(0, document.body.scrollHeight);
+}
 </script>
 
 </body>
