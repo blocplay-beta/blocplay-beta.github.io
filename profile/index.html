@@ -57,7 +57,6 @@
 
     <h1>Mon profil</h1>
 
-    <!-- 🔥 PROFIL + BADGE -->
     <div class="profile-container">
       <img id="profilePic" class="profile-pic">
       <img src="/rizo-play.png" id="rizoBadge" class="rizo-badge" style="display:none;">
@@ -120,7 +119,15 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("profilePic").src =
         user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 
-    // 🔥 BADGE RIZOPLAY
+    // 🔥 ADMIN + RIZOPLAY
+    const isAdmin =
+        user.email === "blocplaystudios@gmail.com" &&
+        user.displayName === "BlocPlayStudios";
+
+    if (isAdmin) {
+        localStorage.setItem("rizoplay", "true");
+    }
+
     const hasRizo = localStorage.getItem("rizoplay");
 
     if (hasRizo) {
@@ -142,57 +149,6 @@ document.addEventListener("click", async (e) => {
         await signOut(auth);
     }
 });
-</script>
-
-<div class="container">
-
-  <div class="card discord-card">
-
-    <h2>Discord</h2>
-
-    <div id="discordProfile"></div>
-
-  </div>
-
-</div>
-
-<script>
-const discordData = JSON.parse(localStorage.getItem("discordUser"));
-
-const discordContainer = document.getElementById("discordProfile");
-
-if (discordContainer) {
-
-  if (discordData) {
-    const username = discordData.username || "Utilisateur";
-    const avatar = discordData.avatar || "";
-    const id = discordData.id || "";
-
-    discordContainer.innerHTML = `
-      <div class="discord-card">
-
-        <img src="${avatar}" 
-             style="width:80px;border-radius:50%;">
-
-        <p class="discord-name">${username}</p>
-        <p class="discord-id">@${id}</p>
-      </div>
-    `;
-  } else {
-    discordContainer.innerHTML = `
-      <div class="discord-card">
-        <p>Aucun compte Discord lié</p>
-      </div>
-    `;
-  }
-
-}
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
 </script>
 
 </body>
