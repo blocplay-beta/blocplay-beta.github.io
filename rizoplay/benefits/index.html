@@ -14,6 +14,50 @@
 
 <style>
 
+.rizo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-rizo {
+    background: linear-gradient(135deg, #ff7a00, #ff3c00);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* 🔥 profil identique */
+.profile-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.main-profile {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: block;
+}
+
+.rizo-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 14px;
+    height: 14px;
+}
+
+/* contenu */
 .container {
     max-width: 800px;
     margin: auto;
@@ -24,76 +68,7 @@
     background: #111;
     padding: 20px;
     border-radius: 15px;
-    margin-bottom: 15px;
-}
-
-.btn-back {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: white;
-    text-decoration: none;
-    background: #222;
-    padding: 8px 15px;
-    border-radius: 8px;
-}
-
-h1 {
-    color: #ff7a00;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    margin: 10px 0;
-    padding: 10px;
-    background: #1a1a1a;
-    border-radius: 10px;
-}
-
-/* 🔥 HEADER PROFIL */
-.profile-menu {
-    position: relative;
-}
-
-.avatar {
-    width: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.dropdown {
-    position: absolute;
-    right: 0;
-    top: 50px;
-    background: #111;
-    border-radius: 10px;
-    display: none;
-    flex-direction: column;
-    min-width: 150px;
-}
-
-.dropdown a {
-    padding: 10px;
-    color: white;
-    text-decoration: none;
-}
-
-.dropdown a:hover {
-    background: #222;
-}
-
-.dropdown.show {
-    display: flex;
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
+    margin-top: 20px;
 }
 
 </style>
@@ -105,8 +80,8 @@ li {
 <header>
   <div class="header-content">
 
-    <a href="/" class="logo">
-      <img src="/rizo-play.png" height="40">
+    <a href="/rizoplay/home" class="logo">
+      <img src="/rizo-play.png">
     </a>
 
     <div class="profile-menu">
@@ -121,18 +96,20 @@ li {
 
 <div class="container">
 
-    <a href="/rizoplay/home" class="btn-back">← Retour</a>
-
-    <h1>✨ Avantages RizoPlay</h1>
+    <a href="/rizoplay/home" class="btn-rizo">← Retour</a>
 
     <div class="card">
-        <ul>
+
+        <h1 style="color:#ff7a00;">✨ Avantages RizoPlay</h1>
+
+        <ul style="list-style:none; padding:0;">
             <li>🚀 Accès à du contenu exclusif</li>
             <li>⚡ Expérience améliorée</li>
             <li>🎮 Fonctionnalités premium</li>
             <li>🔒 Accès réservé aux membres</li>
             <li>🎨 Design personnalisé</li>
         </ul>
+
     </div>
 
 </div>
@@ -155,7 +132,6 @@ const auth = getAuth(app);
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
-/* MENU */
 function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
@@ -187,7 +163,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-/* MENU CLICK */
+/* MENU */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
