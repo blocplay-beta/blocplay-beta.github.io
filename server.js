@@ -1,146 +1,162 @@
 const express = require("express");
-const app = express();
+const fetch = require("node-fetch");
 
+const app = express();
 app.use(express.json());
 
 // =====================
-// 🧠 MÉMOIRE EN LOCAL
+// 🔐 CONFIG
 // =====================
-let memory = {};
+const HF_API_KEY = process.env.HF_API_KEY;
+
+// Modèle IA (multilingue conversation)
+const MODEL_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill";
 
 // =====================
-// 🚫 FILTRAGE SÉCURITÉ
+// 🛡️ FILTRE DE SÉCURITÉ
 // =====================
-const forbiddenKeywords = [
+const forbiddenWords = [
     "hack",
-    "pirater",
-    "roblox exploit",
-    "minecraft site",
-    "youtube",
-    "wikipedia",
-    "président",
-    "données personnelles",
+    "pirate",
+    "cheat",
+    "exploit",
     "password",
-    "mot de passe"
+    "token",
+    "api key"
 ];
 
 function isSafe(text) {
-    text = text.toLowerCase();
-    return !forbiddenKeywords.some(word => text.includes(word));
+    return !forbiddenWords.some(word =>
+        text.toLowerCase().includes(word)
+    );
 }
 
 // =====================
-// 🧠 MÉMOIRE
+// 🧠 MÉMOIRE UTILISATEUR
 // =====================
-app.post("/memory", (req, res) => {
-    const { userId, message } = req.body;
+let memory = {};
 
-    if (!userId || !message) {
+// Sauvegarde mémoire
+app.post("/memory", (req, res) => {
+    const { userId, data } = req.body;
+
+    if (!userId || !data) {
         return res.json({ error: "Données manquantes" });
     }
 
     if (!memory[userId]) {
-        memory[userId] = [];
+        memory[userId] = {};
     }
 
-    memory[userId].push(message); // mot pour mot
+    // On stocke tout
+    memory[userId] = {
+        ...memory[userId],
+        ...data
+    };
 
-    res.json({ success: true });
+    res.json({ ok: true, memory: memory[userId] });
 });
 
+// Récupérer mémoire
 app.get("/memory/:userId", (req, res) => {
     const userId = req.params.userId;
-    res.json({ messages: memory[userId] || [] });
+
+    res.json({
+        memory: memory[userId] || {}
+    });
 });
 
 // =====================
-// 🌐 RECHERCHE
+// 🤖 ROUTE IA
+// =====================
+app.post("/ai", async (req, res) => {
+    const { message, userId } = req.body;
+
+    if (!message) {
+        return res.json({ reply: "❌ Message vide" });
+    }
+
+    // 🔒 filtre
+    if (!isSafe(message)) {
+        return res.json({
+            reply: "🚫 Ce contenu est interdit."
+        });
+    }
+
+    try {
+        const response = await fetch(MODEL_URL, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${HF_API_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                inputs: message
+            })
+        });
+
+        const data = await response.json();
+
+        let reply = "🤖 Je ne sais pas répondre.";
+
+        if (Array.isArray(data) && data[0]?.generated_text) {
+            reply = data[0].generated_text;
+        }
+
+        // 💾 sauvegarde automatique dans mémoire
+        if (userId) {
+            if (!memory[userId]) memory[userId] = {};
+
+            if (!memory[userId].history) {
+                memory[userId].history = [];
+            }
+
+            memory[userId].history.push({
+                user: message,
+                ai: reply,
+                time: Date.now()
+            });
+        }
+
+        res.json({ reply });
+
+    } catch (error) {
+        console.error(error);
+        res.json({ reply: "❌ Erreur serveur IA" });
+    }
+});
+
+// =====================
+// 🔎 RECHERCHE SIMPLE (SAFE)
 // =====================
 app.get("/search", (req, res) => {
     const query = req.query.q;
 
     if (!query) {
-        return res.json({ error: "Aucune recherche" });
+        return res.json({ error: "Aucune requête" });
     }
 
     if (!isSafe(query)) {
         return res.json({
-            error: "🚫 Recherche bloquée pour raisons de sécurité."
+            error: "🚫 Recherche bloquée"
         });
     }
 
-    // 👉 simulation de recherche
+    // ⚠️ Tu peux brancher une vraie API plus tard
     res.json({
-        result: "🔍 Résultat simulé pour : " + query
+        result: `🔍 Résultat simulé pour : ${query}`
     });
 });
 
 // =====================
-// 🤖 IA SIMPLE
+// ❤️ ROUTE TEST
 // =====================
-app.post("/chat", async (req, res) => {
-    const { userId, message } = req.body;
-
-    if (!message) {
-        return res.json({ reply: "Message vide." });
-    }
-
-    // 🚫 sécurité
-    if (!isSafe(message)) {
-        return res.json({
-            reply: "🚫 Je ne peux pas répondre à ça."
-        });
-    }
-
-    // 🧠 sauvegarde mémoire (mot pour mot)
-    if (!memory[userId]) {
-        memory[userId] = [];
-    }
-
-    memory[userId].push(message);
-
-    // 🧠 logique IA simple
-    let reply = "🤖 Je réfléchis...";
-
-    // prénom
-    if (message.toLowerCase().includes("mon prénom est")) {
-        const name = message.split("mon prénom est")[1].trim();
-
-        memory[userId].push({ type: "name", value: name });
-
-        reply = "😊 Enchanté " + name;
-    }
-
-    // demander prénom
-    else if (message.toLowerCase().includes("quel est mon prénom")) {
-        const nameObj = memory[userId].find(m => m.type === "name");
-
-        reply = nameObj
-            ? "👤 Ton prénom est " + nameObj.value
-            : "Je ne connais pas encore ton prénom.";
-    }
-
-    // recherche
-    else if (message.toLowerCase().startsWith("cherche")) {
-        const query = message.replace("cherche", "").trim();
-
-        if (!isSafe(query)) {
-            reply = "🚫 Recherche bloquée.";
-        } else {
-            reply = "🔍 Recherche pour : " + query;
-        }
-    }
-
-    // réponse générique
-    else {
-        reply = "🤖 Je suis RizoIA, je suis encore en apprentissage.";
-    }
-
-    res.json({ reply });
+app.get("/", (req, res) => {
+    res.send("🚀 RizoIA est en ligne !");
 });
 
 // =====================
-// 🌍 SERVEUR
+// 🚀 DÉMARRAGE SERVEUR
 // =====================
 const PORT = process.env.PORT || 10000;
 
