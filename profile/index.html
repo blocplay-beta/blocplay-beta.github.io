@@ -122,7 +122,7 @@ onAuthStateChanged(auth, (user) => {
     // 🔥 ADMIN + RIZOPLAY
     const isAdmin =
         user.email === "blocplaystudios@gmail.com" &&
-        user.displayName === "BlocPlayStudios";
+        user.displayName === "BlocPlay Studios";
 
     if (isAdmin) {
         localStorage.setItem("rizoplay", "true");
