@@ -5,30 +5,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RizoPlay - Home</title>
+<title>RizoPlay - Accueil</title>
 
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/rizo.ico">
 
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b0f1a">
 
 <style>
+.rizo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* bouton restauré */
+.btn-rizo {
+    background: linear-gradient(135deg, #ff7a00, #ff3c00);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* profil + badge */
 .profile-box {
+    display: flex;
+    align-items: center;
+}
+
+.profile-wrapper {
     position: relative;
     display: inline-block;
 }
 
-.profile-box img {
+/* image profil */
+.profile-wrapper img {
     width: 50px;
+    height: 50px;
     border-radius: 50%;
 }
 
-/* 🔥 badge plus petit ici */
+/* 🔥 badge corrigé */
 .rizo-badge {
     position: absolute;
-    top: 1px;
-    right: 1px;
-    width: 12px;
+    top: 0px;     /* collé au bord */
+    right: 0px;
+    width: 12px;  /* plus petit */
+    height: 12px;
 }
 </style>
 
@@ -39,9 +64,16 @@
 <header>
   <div class="header-content">
 
-    <a href="/">
-      <img src="/rizo-play.png" style="height:40px;">
+    <a href="/" class="logo">
+      <img src="/rizo-play.png">
     </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
 
   </div>
 </header>
@@ -50,14 +82,19 @@
 
   <div class="card">
 
-    <h2>Mes avantages</h2>
+    <div class="rizo-header">
+      <h2>Mes avantages</h2>
 
-    <div class="profile-box">
-      <img id="profilePic">
-      <img src="/rizo-play.png" class="rizo-badge">
+      <!-- bouton restauré -->
+      <a href="#" class="btn-rizo">Voir plus</a>
     </div>
 
-    <button class="btn" style="margin-top:20px;">Voir plus</button>
+    <div class="profile-box">
+      <div class="profile-wrapper">
+        <img id="profilePic">
+        <img src="/rizo-play.png" class="rizo-badge">
+      </div>
+    </div>
 
   </div>
 
@@ -65,7 +102,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } 
+import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -77,12 +114,35 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
 onAuthStateChanged(auth, (user) => {
 
     if (!user) {
         window.location.href = "/login";
         return;
     }
+
+    renderMenu(user);
+
+    document.getElementById("profilePic").src =
+        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 
     const isAdmin =
         user.email === "blocplaystudios@gmail.com" &&
@@ -97,9 +157,22 @@ onAuthStateChanged(auth, (user) => {
     if (!hasRizo) {
         window.location.href = "/rizoplay";
     }
+});
 
-    document.getElementById("profilePic").src =
-        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
+/* MENU */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
 });
 </script>
 
