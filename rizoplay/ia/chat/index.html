@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RizoIA - Conversations</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/rizo.ico">
+
+<meta name="theme-color" content="#0b0f1a">
+
+<style>
+
+body {
+    background: #0b0f1a;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: #111;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    background: #333;
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #ff7a00, #ff3c00);
+}
+
+.chat-item {
+    display: block;
+    padding: 10px;
+    margin-top: 10px;
+    background: #1a1a1a;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+}
+
+.chat-item:hover {
+    background: #222;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>💬 Conversations RizoIA</h1>
+
+    <a href="/rizoplay/ia/chat/new" class="btn btn-gradient">
+        ➕ Nouvelle discussion
+    </a>
+
+    <div class="card" id="chatList">
+        <!-- chats -->
+    </div>
+
+</div>
+
+<script>
+
+/* Récupérer les chats depuis le localStorage */
+function getChats() {
+    return JSON.parse(localStorage.getItem("rizoplay_chats") || "[]");
+}
+
+/* Sauvegarder */
+function saveChats(chats) {
+    localStorage.setItem("rizoplay_chats", JSON.stringify(chats));
+}
+
+/* Affichage */
+function renderChats() {
+    const container = document.getElementById("chatList");
+    const chats = getChats();
+
+    container.innerHTML = "";
+
+    if (chats.length === 0) {
+        container.innerHTML = "<p>Aucune conversation pour le moment.</p>";
+        return;
+    }
+
+    chats.forEach(chat => {
+        container.innerHTML += `
+            <a class="chat-item" href="/rizoplay/ia/chat/${chat.id}">
+                💬 Conversation #${chat.id}
+            </a>
+        `;
+    });
+}
+
+/* Initialisation */
+renderChats();
+
+</script>
+
+</body>
+</html>
