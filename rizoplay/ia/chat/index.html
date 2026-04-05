@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RizoIA Chats</title>
+<title>Chats</title>
 
 <style>
 body {
@@ -15,11 +15,27 @@ body {
     height: 100vh;
 }
 
-/* sidebar */
 .sidebar {
     width: 260px;
     background: #111827;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* bouton new */
+.new-chat {
+    background: #22c55e;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+/* liste */
+#list {
+    flex: 1;
     overflow-y: auto;
 }
 
@@ -34,7 +50,6 @@ body {
     background: #1f2937;
 }
 
-/* main */
 .main {
     flex: 1;
     display: flex;
@@ -47,15 +62,22 @@ body {
 <body>
 
 <div class="sidebar">
-    <h3>💬 Discussions</h3>
+
+    <div class="new-chat" onclick="newChat()">➕ Nouveau chat</div>
+
     <div id="list"></div>
 </div>
 
 <div class="main">
-    <h2>Sélectionne une discussion</h2>
+    <h2>Choisis une discussion</h2>
 </div>
 
 <script>
+function newChat() {
+    const id = Date.now().toString();
+    window.location.href = "/rizoplay/ia/chat/view/?id=" + id;
+}
+
 async function loadChats() {
     const res = await fetch("https://blocplay-beta-github-io.onrender.com/conversations");
     const data = await res.json();
@@ -66,7 +88,7 @@ async function loadChats() {
     Object.keys(data).forEach(id => {
         const div = document.createElement("div");
         div.className = "chat-item";
-        div.innerText = "Chat " + id;
+        div.innerText = "💬 Chat " + id;
 
         div.onclick = () => {
             location.href = "/rizoplay/ia/chat/view/?id=" + id;
