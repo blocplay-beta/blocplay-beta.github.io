@@ -3,167 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conversation</title>
+<title>RizoIA Chat</title>
 
 <style>
 body {
     margin: 0;
     font-family: Arial;
-    background: #020617;
+    background: #0b0f19;
     color: white;
     display: flex;
-    flex-direction: column;
     height: 100vh;
 }
 
-/* 🔝 HEADER */
+/* sidebar */
+.sidebar {
+    width: 260px;
+    background: #111827;
+    padding: 10px;
+}
+
+/* main */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* header */
 .header {
     padding: 15px;
-    background: #0f172a;
-    font-size: 18px;
-    font-weight: bold;
-    border-bottom: 1px solid #1e293b;
+    border-bottom: 1px solid #1f2937;
 }
 
-/* 💬 CHAT */
+/* chat */
 #chat {
     flex: 1;
-    padding: 10px;
     overflow-y: auto;
+    padding: 20px;
 }
 
-/* message */
+/* messages */
 .msg {
-    margin: 8px;
-    padding: 10px;
-    border-radius: 10px;
     max-width: 70%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
 }
 
 .user {
-    background: #38bdf8;
+    background: #2563eb;
     margin-left: auto;
 }
 
 .ai {
-    background: #22c55e;
+    background: #1f2937;
 }
 
-/* ⌨️ INPUT */
-.input-bar {
+/* input */
+.input {
     display: flex;
     padding: 10px;
-    background: #0f172a;
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid #1f2937;
 }
 
-.input-bar input {
+.input input {
     flex: 1;
     padding: 10px;
-    border: none;
     border-radius: 8px;
+    border: none;
 }
 
-.input-bar button {
+.input button {
     margin-left: 10px;
     padding: 10px 15px;
-    background: #22c55e; /* couleur RizoPlay */
+    background: #22c55e;
     border: none;
     border-radius: 8px;
     color: white;
-    font-weight: bold;
-}
-
-/* ⏳ ANIMATION RONDS */
-.loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-}
-
-.circle {
-    width: 10px;
-    height: 10px;
-    margin: 5px;
-    border-radius: 50%;
-    background: white;
-    animation: bounce 1s infinite ease-in-out;
-}
-
-.circle:nth-child(2) { animation-delay: 0.2s; }
-.circle:nth-child(3) { animation-delay: 0.4s; }
-.circle:nth-child(4) { animation-delay: 0.6s; }
-.circle:nth-child(5) { animation-delay: 0.8s; }
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
 }
 </style>
 </head>
 
 <body>
 
-<div class="header" id="title">💬 Conversation</div>
+<div class="sidebar">
+    <h3>RizoIA</h3>
+</div>
+
+<div class="main">
+
+<div class="header" id="title">Chat</div>
 
 <div id="chat"></div>
 
-<!-- ⏳ Loader -->
-<div id="loader" class="loader" style="display:none;">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-
-<!-- INPUT -->
-<div class="input-bar">
-    <input id="input" placeholder="Écris un message...">
+<div class="input">
+    <input id="input" placeholder="Message...">
     <button onclick="send()">Envoyer</button>
 </div>
 
+</div>
+
 <script>
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
+const id = new URLSearchParams(location.search).get("id");
 const chat = document.getElementById("chat");
-const loader = document.getElementById("loader");
-const title = document.getElementById("title");
 
-/* 🔴 DEBUG */
-window.onerror = function(message) {
-    alert("Erreur JS: " + message);
-};
-
-/* 💬 CHARGER CHAT */
 async function loadChat() {
-    try {
-        loader.style.display = "flex";
+    const res = await fetch(`https://blocplay-beta-github-io.onrender.com/conversation/${id}`);
+    const data = await res.json();
 
-        const res = await fetch(`https://blocplay-beta-github-io.onrender.com/conversation/${id}`);
-        const data = await res.json();
+    chat.innerHTML = "";
 
-        chat.innerHTML = "";
-
-        data.forEach(msg => {
-            const div = document.createElement("div");
-            div.className = "msg " + msg.role;
-            div.innerText = msg.content;
-            chat.appendChild(div);
-        });
-
-        title.innerText = "💬 Chat " + id;
-
-    } catch (e) {
-        chat.innerText = "❌ Erreur chargement";
-    } finally {
-        loader.style.display = "none";
-    }
+    data.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "msg " + msg.role;
+        div.innerText = msg.content;
+        chat.appendChild(div);
+    });
 }
 
-/* 📤 ENVOYER MESSAGE */
 async function send() {
     const input = document.getElementById("input");
     const message = input.value;
@@ -172,40 +129,26 @@ async function send() {
 
     input.value = "";
 
-    // afficher message utilisateur
-    const div = document.createElement("div");
-    div.className = "msg user";
-    div.innerText = message;
-    chat.appendChild(div);
+    const userDiv = document.createElement("div");
+    userDiv.className = "msg user";
+    userDiv.innerText = message;
+    chat.appendChild(userDiv);
 
-    // loader IA
-    loader.style.display = "flex";
+    const res = await fetch("https://blocplay-beta-github-io.onrender.com/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            message: message,
+            userId: id
+        })
+    });
 
-    try {
-        const res = await fetch("https://blocplay-beta-github-io.onrender.com/ai", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: message,
-                userId: id
-            })
-        });
+    const data = await res.json();
 
-        const data = await res.json();
-
-        const aiDiv = document.createElement("div");
-        aiDiv.className = "msg ai";
-        aiDiv.innerText = data.reply;
-
-        chat.appendChild(aiDiv);
-
-    } catch (e) {
-        alert("Erreur envoi");
-    } finally {
-        loader.style.display = "none";
-    }
+    const aiDiv = document.createElement("div");
+    aiDiv.className = "msg ai";
+    aiDiv.innerText = data.reply;
+    chat.appendChild(aiDiv);
 }
 
 loadChat();
