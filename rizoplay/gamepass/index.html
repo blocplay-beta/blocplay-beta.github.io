@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RizoPlay - Avantages</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/rizo.ico">
+
+<meta name="theme-color" content="#0b0f1a">
+
+<style>
+.btn-rizo {
+    background: linear-gradient(135deg, #ff7a00, #ff3c00);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* PROFIL */
+.profile-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.profile-wrapper {
+    position: relative;
+    transition: 0.2s;
+}
+
+.profile-wrapper:hover {
+    transform: scale(1.05);
+}
+
+.main-profile {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.rizo-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 14px;
+    height: 14px;
+}
+
+/* LAYOUT */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: #111827; /* ✅ corrigé */
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    border: 1px solid #1e293b;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 8px 0;
+    opacity: 0.8;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+
+    <a href="/rizoplay/home" class="logo">
+      <img src="/rizo-play.png">
+    </a>
+
+    <div class="profile-menu">
+      <img id="avatar" class="avatar">
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+  </div>
+</header>
+
+<div class="container">
+
+    <a href="/rizoplay/home" class="btn-rizo">← Retour</a>
+
+    <div class="card">
+
+        <h1>Mes avantages</h1>
+        <h3>Jeux inclut dans le RizoPass :</h3>
+        <p>Aucun jeu disponible pour le moment.</p>
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+});
+
+const auth = getAuth(app);
+
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+        window.location.href = "/login";
+        return;
+    }
+
+    // 🔥 Avatar header
+    avatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
+
+    // 🔥 Profil central
+    document.getElementById("profilePic").src =
+        user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
+
+    // 🔥 Menu
+    dropdown.innerHTML = `
+        <a href="/profile">Profil</a>
+        <a href="/settings">Paramètres</a>
+        <a href="#" id="logout">Se déconnecter</a>
+    `;
+
+    // 🔥 accès RizoPlay
+    if (!localStorage.getItem("rizoplay")) {
+        window.location.href = "/rizoplay";
+    }
+});
+
+/* MENU */
+avatar.onclick = (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+};
+
+document.onclick = () => dropdown.classList.remove("show");
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
+
+</script>
+
+</body>
+</html>
