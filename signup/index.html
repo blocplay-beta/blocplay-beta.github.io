@@ -54,11 +54,8 @@
       text-decoration: none;
     }
   </style>
-
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
-
 </head>
+
 <body>
 
 <div class="box">
@@ -76,20 +73,18 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
     authDomain: "blocplay-a9417.firebaseapp.com",
     projectId: "blocplay-a9417",
-    storageBucket: "blocplay-a9417.firebasestorage.app",
-    messagingSenderId: "540161549188",
-    appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  // ⚠️ RENDRE ACCESSIBLE AU BOUTON
   window.signup = async function () {
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
@@ -97,23 +92,27 @@
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      await updateProfile(userCredential.user, {
+      await updateProfile(user, {
         displayName: username
+      });
+
+      // 🔥 Création du profil Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        id: Math.floor(Math.random() * 100000000),
+        displayName: username,
+        email: email,
+        photoURL: ""
       });
 
       alert("Compte créé !");
       window.location.href = "/login";
+
     } catch (error) {
       alert(error.message);
     }
   }
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
-}
 </script>
 
 </body>
