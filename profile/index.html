@@ -5,54 +5,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Profil</title>
+<title>Profil - BlocPlay</title>
 
 <link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
 
 <style>
-body {
-    background: #0a0f1c;
-    color: white;
-    font-family: "Segoe UI", sans-serif;
+.profile-container {
+    position: relative;
+    display: inline-block;
 }
 
-.container {
-    max-width: 700px;
-    margin: auto;
-    padding: 20px;
-}
-
-.card {
-    background: #111827;
-    border: 1px solid #1e293b;
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-}
-
-.avatar {
-    width: 90px;
-    height: 90px;
+/* 🔥 badge */
+.rizo-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    margin-bottom: 10px;
-}
-
-.username {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.userid {
-    opacity: 0.6;
-    margin-bottom: 15px;
-}
-
-.btn {
-    background: #3b82f6;
-    padding: 10px 15px;
-    border-radius: 10px;
-    color: white;
-    text-decoration: none;
+    box-shadow: 0 0 6px rgba(255,120,0,0.7);
 }
 </style>
 
@@ -60,97 +35,140 @@ body {
 
 <body>
 
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/icon.png">
+    </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+  </div>
+</header>
+
 <div class="container">
 
-    <div class="card">
+  <div class="card profile-card">
 
-        <img id="avatar" class="avatar">
+    <h1>Mon profil</h1>
 
-        <div id="username" class="username">Chargement...</div>
-        <div id="userid" class="userid"></div>
-
-        <a href="/rizoplay/home" class="btn">Retour</a>
-
+    <div class="profile-container">
+      <img id="profilePic" class="profile-pic">
+      <img src="/rizo-play.png" id="rizoBadge" class="rizo-badge" style="display:none;">
     </div>
+
+    <h2 id="username"></h2>
+    <p id="email"></p>
+
+  </div>
 
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import { getAuth, onAuthStateChanged } 
+import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+import { getFirestore, doc, getDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 /* 🔥 CONFIG */
-const app = initializeApp({
+const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-});
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
 
-const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-/* 🔎 PARAMS */
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
 
-/* 🔥 LOAD PROFILE */
-async function loadProfile(user) {
-
-    let found = null;
-
-    // ✅ CAS 1 : via ID
-    if (id) {
-
-        const q = query(collection(db, "users"), where("id", "==", Number(id)));
-        const snapshot = await getDocs(q);
-
-        if (!snapshot.empty) {
-            found = snapshot.docs[0].data();
-        }
-
-    } 
-
-    // ✅ CAS 2 : utilisateur connecté
-    else {
-
-        if (!user) {
-            document.getElementById("username").innerText = "Non connecté";
-            return;
-        }
-
-        const q = query(collection(db, "users"), where("email", "==", user.email));
-        const snapshot = await getDocs(q);
-
-        if (!snapshot.empty) {
-            found = snapshot.docs[0].data();
-        }
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
     }
+}
 
-    // ❌ introuvable
-    if (!found) {
-        document.getElementById("username").innerText = "Utilisateur introuvable";
+/* 🔐 AUTH */
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+        window.location.href = "/login";
         return;
     }
 
+    renderMenu(user);
+
+    // 🔥 RÉCUP FIRESTORE (IMPORTANT)
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+        document.getElementById("username").textContent = "Utilisateur introuvable";
+        return;
+    }
+
+    const data = docSnap.data();
+
     // ✅ affichage
-    document.getElementById("avatar").src =
-        found.photoURL || `https://ui-avatars.com/api/?name=${found.displayName}`;
+    document.getElementById("email").textContent = data.email;
+    document.getElementById("username").textContent = data.displayName;
 
-    document.getElementById("username").innerText = found.displayName;
-    document.getElementById("userid").innerText = "ID: " + found.id;
+    document.getElementById("profilePic").src =
+        data.photoURL || `https://ui-avatars.com/api/?name=${data.displayName}`;
 
-    // 🔥 titre dynamique
-    document.title = id ? "Profil de " + found.displayName : "Mon profil";
-}
+    // 🔥 ADMIN
+    const isAdmin =
+        data.email === "blocplaystudios@gmail.com" &&
+        data.displayName === "BlocPlay Studios";
 
-/* 🔐 auth */
-onAuthStateChanged(auth, (user) => {
-    loadProfile(user);
+    if (isAdmin) {
+        localStorage.setItem("rizoplay", "true");
+    }
+
+    if (localStorage.getItem("rizoplay")) {
+        document.getElementById("rizoBadge").style.display = "block";
+    }
+
+});
+
+/* 👤 menu */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+/* 🚪 logout */
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
 });
 
 </script>
