@@ -71,48 +71,71 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-    authDomain: "blocplay-a9417.firebaseapp.com",
-    projectId: "blocplay-a9417",
-  };
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  updateProfile 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+import { 
+  getFirestore, 
+  doc, 
+  setDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  window.signup = async function () {
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+};
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-      await updateProfile(user, {
-        displayName: username
-      });
+window.signup = async function () {
 
-      // 🔥 Création du profil Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        id: Math.floor(Math.random() * 100000000),
-        displayName: username,
-        email: email,
-        photoURL: ""
-      });
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-      alert("Compte créé !");
-      window.location.href = "/login";
-
-    } catch (error) {
-      alert(error.message);
-    }
+  if (!username || !email || !password) {
+    alert("Remplis tous les champs !");
+    return;
   }
+
+  try {
+
+    // 🔐 1. Création du compte Auth
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // 🔥 2. Mise à jour du displayName Firebase Auth
+    await updateProfile(user, {
+      displayName: username
+    });
+
+    // 🔥 3. Création du profil Firestore (ULTRA IMPORTANT)
+    await setDoc(doc(db, "users", user.uid), {
+      id: Math.floor(Math.random() * 100000000),
+      displayName: username,
+      email: email,
+      photoURL: "",
+      createdAt: Date.now()
+    });
+
+    alert("Compte créé avec succès !");
+    window.location.href = "/login";
+
+  } catch (error) {
+    console.error(error);
+    alert("Erreur : " + error.message);
+  }
+
+};
+
 </script>
 
 </body>
