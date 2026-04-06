@@ -73,6 +73,7 @@
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 
@@ -108,25 +109,26 @@ window.signup = async function () {
 
   try {
 
-    // 🔐 1. Création du compte Auth
+    // 🔐 Création du compte
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // 🔥 2. Mise à jour du displayName Firebase Auth
+    // 🔥 Mise à jour du displayName Firebase Auth
     await updateProfile(user, {
       displayName: username
     });
 
-    // 🔥 3. Création du profil Firestore (ULTRA IMPORTANT)
+    // 🔥 Création du profil Firestore
     await setDoc(doc(db, "users", user.uid), {
       id: Math.floor(Math.random() * 100000000),
       displayName: username,
       email: email,
       photoURL: "",
+      rizoplay: false, // 🔥 IMPORTANT (booléen)
       createdAt: Date.now()
     });
 
-    alert("Compte créé avec succès !");
+    alert("Compte créé !");
     window.location.href = "/login";
 
   } catch (error) {
