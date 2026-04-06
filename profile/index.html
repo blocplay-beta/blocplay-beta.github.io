@@ -78,7 +78,7 @@ body {
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } 
+import { getFirestore, collection, query, where, getDocs } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } 
@@ -101,23 +101,21 @@ const id = params.get("id");
 /* 🔥 LOAD PROFILE */
 async function loadProfile(user) {
 
-    const querySnapshot = await getDocs(collection(db, "users"));
-
     let found = null;
 
-    // ✅ CAS 1 : profil via ID
+    // ✅ CAS 1 : via ID
     if (id) {
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.id == id) {
-                found = data;
-            }
-        });
+        const q = query(collection(db, "users"), where("id", "==", Number(id)));
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+            found = snapshot.docs[0].data();
+        }
 
     } 
-    
-    // ✅ CAS 2 : profil utilisateur connecté
+
+    // ✅ CAS 2 : utilisateur connecté
     else {
 
         if (!user) {
@@ -125,13 +123,12 @@ async function loadProfile(user) {
             return;
         }
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
+        const q = query(collection(db, "users"), where("email", "==", user.email));
+        const snapshot = await getDocs(q);
 
-            if (data.email === user.email) {
-                found = data;
-            }
-        });
+        if (!snapshot.empty) {
+            found = snapshot.docs[0].data();
+        }
     }
 
     // ❌ introuvable
@@ -151,7 +148,7 @@ async function loadProfile(user) {
     document.title = id ? "Profil de " + found.displayName : "Mon profil";
 }
 
-/* 🔐 attendre auth */
+/* 🔐 auth */
 onAuthStateChanged(auth, (user) => {
     loadProfile(user);
 });
