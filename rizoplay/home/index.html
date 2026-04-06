@@ -14,7 +14,6 @@
 <meta name="theme-color" content="#0b0f1a">
 
 <style>
-
 .rizo-header {
     display: flex;
     justify-content: space-between;
@@ -29,7 +28,6 @@
     text-decoration: none;
 }
 
-/* 🔥 centrer le profil */
 .profile-box {
     display: flex;
     justify-content: center;
@@ -43,15 +41,12 @@
     display: inline-block;
 }
 
-/* 🔥 vrai style du profil */
 .main-profile {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    display: block;
 }
 
-/* 🔥 badge petit en haut à droite */
 .rizo-badge {
     position: absolute;
     top: -4px;
@@ -59,7 +54,6 @@
     width: 14px;
     height: 14px;
 }
-
 </style>
 
 </head>
@@ -76,7 +70,6 @@
     <div class="profile-menu">
       <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
            class="avatar" id="avatar">
-
       <div class="dropdown" id="dropdown"></div>
     </div>
 
@@ -89,19 +82,14 @@
 
     <div class="rizo-header">
       <h2>Mes avantages</h2>
-
       <a href="/rizoplay/benefits" class="btn-rizo">Voir plus</a>
     </div>
 
-    <!-- 🔥 PROFIL -->
+    <!-- PROFIL -->
     <a href="/profile" class="profile-box">
       <div class="profile-wrapper">
-
         <img id="profilePic" class="main-profile">
-
-        <!-- badge -->
         <img src="/rizo-play.png" class="rizo-badge">
-
       </div>
     </a>
 
@@ -115,42 +103,36 @@
     <h1>RizoIA</h1>
     <p>L'IA artificiellement intelligente.</p>
 
-    <a href="/rizoplay/home" class="btn btn-rizo">Fonctionnalité en cours de création</a>
+    <a href="#" class="btn btn-rizo">Fonctionnalité en pause</a>
   </div>
 
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = {
+const app = initializeApp({
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-};
+});
 
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
 function renderMenu(user) {
-    if (user) {
-        dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
-            <a href="#" id="logout">Se déconnecter</a>
-        `;
-    } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
-    }
+    dropdown.innerHTML = user ? `
+        <a href="/profile">Profil</a>
+        <a href="/settings">Paramètres</a>
+        <a href="#" id="logout">Se déconnecter</a>
+    ` : `
+        <a href="/login">Se connecter</a>
+        <a href="/signup">Créer un compte</a>
+    `;
 }
 
 onAuthStateChanged(auth, (user) => {
@@ -162,10 +144,11 @@ onAuthStateChanged(auth, (user) => {
 
     renderMenu(user);
 
+    // 🔥 PROFIL IMAGE
     document.getElementById("profilePic").src =
         user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`;
 
-    // 🔥 ADMIN
+    // ADMIN
     const isAdmin =
         user.email === "blocplaystudios@gmail.com" &&
         user.displayName === "BlocPlay Studios";
@@ -174,29 +157,22 @@ onAuthStateChanged(auth, (user) => {
         localStorage.setItem("rizoplay", "true");
     }
 
-    const hasRizo = localStorage.getItem("rizoplay");
-
-    if (!hasRizo) {
+    if (!localStorage.getItem("rizoplay")) {
         window.location.href = "/rizoplay";
     }
 });
 
 /* MENU */
-avatar.addEventListener("click", (e) => {
+avatar.onclick = (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
-});
+};
 
-document.addEventListener("click", () => {
-    dropdown.classList.remove("show");
-});
+document.onclick = () => dropdown.classList.remove("show");
 
 document.addEventListener("click", async (e) => {
-    if (e.target.id === "logout") {
-        await signOut(auth);
-    }
+    if (e.target.id === "logout") await signOut(auth);
 });
-
 </script>
 
 </body>
