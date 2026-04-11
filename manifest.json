@@ -10,7 +10,7 @@
   "icons": [
   {
     "src": "/icon.png",
-    "sizes": "cacaxcaca",
+    "sizes": "512x215",
     "type": "image/png"
   }
 ]
