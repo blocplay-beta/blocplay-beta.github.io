@@ -29,6 +29,13 @@
 .modal.show {
     display: flex;
 }
+
+.modal-box {
+    background: #111827;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
 </style>
 
 </head>
@@ -58,6 +65,13 @@
 
     <h1>Paramètres</h1>
 
+    <!-- 🔥 NOUVEAU -->
+    <button class="btn btn-dark" onclick="openProfileModal()">
+      Modifier le profil
+    </button>
+
+    <br><br>
+
     <button class="btn btn-dark" onclick="openModal('username')">
       Modifier le pseudo
     </button>
@@ -82,7 +96,6 @@
 
     <br><br>
 
-    <!-- ✅ RIZOPLAY -->
     <button class="btn btn-dark" onclick="window.location.href='/rizoplay'">
       RizoPlay
     </button>
@@ -91,25 +104,36 @@
 
 </div>
 
+<!-- 🔥 MODAL PROFIL -->
+<div id="profileModal" class="modal">
+  <div class="modal-box">
+    <h2>Modifier la photo</h2>
+
+    <input type="file" id="fileInput" accept="image/*">
+
+    <br><br>
+
+    <button class="btn" onclick="saveProfilePic()">Enregistrer</button>
+    <button class="btn btn-dark" onclick="closeProfileModal()">Annuler</button>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
+import { getAuth, onAuthStateChanged, signOut, updateProfile } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* FIREBASE */
 const firebaseConfig = {
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  apiKey: "AIzaSy...",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-  storageBucket: "blocplay-a9417.firebasestorage.app",
-  messagingSenderId: "540161549188",
-  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* MENU PROFIL */
+/* MENU */
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
@@ -120,11 +144,6 @@ function renderMenu(user) {
             <a href="/settings">Paramètres</a>
             <a href="#" id="logout">Se déconnecter</a>
         `;
-    } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
     }
 }
 
@@ -132,7 +151,7 @@ onAuthStateChanged(auth, (user) => {
     renderMenu(user);
 });
 
-/* MENU */
+/* MENU UI */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -148,6 +167,42 @@ document.addEventListener("click", async (e) => {
         await signOut(auth);
     }
 });
+
+/* 🔥 MODAL */
+window.openProfileModal = () => {
+    document.getElementById("profileModal").classList.add("show");
+};
+
+window.closeProfileModal = () => {
+    document.getElementById("profileModal").classList.remove("show");
+};
+
+/* 🔥 UPLOAD PHOTO */
+window.saveProfilePic = async () => {
+
+    const file = document.getElementById("fileInput").files[0];
+    if (!file) return alert("Choisis une image");
+
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // ⚠️ version simple (base64)
+    const reader = new FileReader();
+
+    reader.onload = async function () {
+        const base64 = reader.result;
+
+        await updateProfile(user, {
+            photoURL: base64
+        });
+
+        alert("Photo mise à jour !");
+        closeProfileModal();
+        location.reload();
+    };
+
+    reader.readAsDataURL(file);
+};
 </script>
 
 </body>
