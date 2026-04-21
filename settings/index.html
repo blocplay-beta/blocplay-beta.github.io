@@ -72,6 +72,7 @@
     <div class="profile-menu">
       <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
            class="avatar" id="avatar">
+
       <div class="dropdown" id="dropdown"></div>
     </div>
 
@@ -104,12 +105,6 @@
 
     <button class="btn btn-dark" onclick="openModal('password')">
       Modifier le mot de passe
-    </button>
-
-    <br><br>
-
-    <button id="discordBtn" class="btn btn-dark">
-      Lier Discord
     </button>
 
     <br><br>
@@ -189,7 +184,6 @@ function renderMenu(user){
 
 onAuthStateChanged(auth, renderMenu);
 
-/* MENU CLICK */
 avatar.onclick = (e)=>{
     e.stopPropagation();
     dropdown.classList.toggle("show");
