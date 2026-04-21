@@ -65,6 +65,7 @@
 
     <h1>Paramètres</h1>
 
+    <!-- 🔥 MODIFIER PROFIL -->
     <button class="btn btn-dark" onclick="openProfileModal()">
       Modifier le profil
     </button>
@@ -103,7 +104,7 @@
 
 </div>
 
-<!-- MODAL -->
+<!-- 🔥 MODAL PHOTO -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
     <h2>Modifier la photo</h2>
@@ -119,12 +120,16 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, updateProfile } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* CONFIG */
+import { 
+  getAuth, onAuthStateChanged, signOut, updateProfile 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { 
+  getFirestore, doc, setDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* 🔥 CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -135,7 +140,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* MENU */
+/* 🔥 MENU */
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
@@ -158,6 +163,7 @@ onAuthStateChanged(auth, (user) => {
     renderMenu(user);
 });
 
+/* MENU CLICK */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -167,6 +173,7 @@ document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
+/* LOGOUT */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
@@ -182,7 +189,7 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-/* UPLOAD IMAGE FIX */
+/* 🔥 SAVE IMAGE (FINAL FIX) */
 window.saveProfilePic = async () => {
 
     const file = document.getElementById("fileInput").files[0];
@@ -207,11 +214,11 @@ window.saveProfilePic = async () => {
         canvas.width = size;
         canvas.height = size;
 
-        // 🔥 fond noir (important pour toi)
+        // 🔥 fond noir
         ctx.fillStyle = "#000";
         ctx.fillRect(0, 0, size, size);
 
-        // 🔥 centrer l'image correctement
+        // 🔥 centrage image
         const ratio = Math.min(size / img.width, size / img.height);
         const newWidth = img.width * ratio;
         const newHeight = img.height * ratio;
@@ -225,10 +232,12 @@ window.saveProfilePic = async () => {
 
         try {
 
+            // 🔥 IMPORTANT : PAS de base64 dans Auth
             await updateProfile(user, {
-                photoURL: base64
+                photoURL: "custom"
             });
 
+            // 🔥 Firestore (vraie image)
             await setDoc(doc(db, "users", user.uid), {
                 photoURL: base64
             }, { merge: true });
