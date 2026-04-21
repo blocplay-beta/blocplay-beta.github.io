@@ -113,27 +113,34 @@
 
     <br><br>
 
-    <button class="btn" onclick="saveProfilePic()">Enregistrer</button>
-    <button class="btn btn-dark" onclick="closeProfileModal()">Annuler</button>
+    <button onclick="saveProfilePic()">Enregistrer</button>
+    <button onclick="closeProfileModal()">Annuler</button>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, updateProfile } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* FIREBASE */
+import { 
+  getAuth, onAuthStateChanged, signOut, updateProfile 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { 
+  getFirestore, doc, updateDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* 🔥 CONFIG */
 const firebaseConfig = {
-  apiKey: "AIzaSy...",
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-/* MENU */
+/* 🔥 MENU PROFIL */
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
@@ -144,6 +151,11 @@ function renderMenu(user) {
             <a href="/settings">Paramètres</a>
             <a href="#" id="logout">Se déconnecter</a>
         `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
     }
 }
 
@@ -151,7 +163,7 @@ onAuthStateChanged(auth, (user) => {
     renderMenu(user);
 });
 
-/* MENU UI */
+/* MENU */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -177,28 +189,40 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-/* 🔥 UPLOAD PHOTO */
+/* 🔥 UPDATE PHOTO (AUTH + FIRESTORE) */
 window.saveProfilePic = async () => {
 
     const file = document.getElementById("fileInput").files[0];
     if (!file) return alert("Choisis une image");
 
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) return alert("Non connecté");
 
-    // ⚠️ version simple (base64)
     const reader = new FileReader();
 
     reader.onload = async function () {
         const base64 = reader.result;
 
-        await updateProfile(user, {
-            photoURL: base64
-        });
+        try {
 
-        alert("Photo mise à jour !");
-        closeProfileModal();
-        location.reload();
+            // 🔥 Auth
+            await updateProfile(user, {
+                photoURL: base64
+            });
+
+            // 🔥 Firestore (ton format)
+            await updateDoc(doc(db, "users", user.uid), {
+                photoURL: base64
+            });
+
+            alert("Photo mise à jour !");
+            closeProfileModal();
+            location.reload();
+
+        } catch (err) {
+            console.error(err);
+            alert("Erreur lors de la mise à jour");
+        }
     };
 
     reader.readAsDataURL(file);
