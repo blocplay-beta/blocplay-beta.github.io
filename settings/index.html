@@ -72,7 +72,6 @@
     <div class="profile-menu">
       <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
            class="avatar" id="avatar">
-
       <div class="dropdown" id="dropdown"></div>
     </div>
 
@@ -131,7 +130,7 @@
   </div>
 </div>
 
-<!-- MODAL PROFIL -->
+<!-- PROFIL MODAL -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
     <h2>Modifier la photo</h2>
@@ -159,6 +158,7 @@ import {
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -189,6 +189,7 @@ function renderMenu(user){
 
 onAuthStateChanged(auth, renderMenu);
 
+/* MENU CLICK */
 avatar.onclick = (e)=>{
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -200,13 +201,23 @@ document.addEventListener("click", async (e)=>{
     if(e.target.id==="logout") await signOut(auth);
 });
 
-/* MODALS TEXT */
+/* NOTIF */
+window.showNotif = (msg)=>{
+    document.getElementById("notifText").innerText = msg;
+    document.getElementById("notif").classList.add("show");
+};
+
+window.closeNotif = ()=>{
+    document.getElementById("notif").classList.remove("show");
+};
+
+/* MODAL TEXT */
 window.openModal = async (type)=>{
     const value = prompt("Nouvelle valeur");
     if(!value) return;
 
     const user = auth.currentUser;
-    if(!user) return;
+    if(!user) return showNotif("Non connecté");
 
     try{
         if(type==="username") await updateProfile(user,{displayName:value});
@@ -224,16 +235,6 @@ window.openModal = async (type)=>{
     }
 };
 
-/* NOTIF */
-window.showNotif = (msg)=>{
-    document.getElementById("notifText").innerText = msg;
-    document.getElementById("notif").classList.add("show");
-};
-
-window.closeNotif = ()=>{
-    document.getElementById("notif").classList.remove("show");
-};
-
 /* PROFIL */
 window.openProfileModal = ()=>{
     document.getElementById("profileModal").classList.add("show");
@@ -246,10 +247,10 @@ window.closeProfileModal = ()=>{
 window.saveProfilePic = async ()=>{
 
     const file = document.getElementById("fileInput").files[0];
-    if(!file) return;
+    if(!file) return showNotif("Aucune image");
 
     const user = auth.currentUser;
-    if(!user) return;
+    if(!user) return showNotif("Non connecté");
 
     const reader = new FileReader();
 
