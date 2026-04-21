@@ -65,7 +65,6 @@
 
     <h1>Paramètres</h1>
 
-    <!-- 🔥 NOUVEAU -->
     <button class="btn btn-dark" onclick="openProfileModal()">
       Modifier le profil
     </button>
@@ -104,7 +103,7 @@
 
 </div>
 
-<!-- 🔥 MODAL PROFIL -->
+<!-- MODAL -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
     <h2>Modifier la photo</h2>
@@ -120,16 +119,12 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, updateProfile } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { 
-  getAuth, onAuthStateChanged, signOut, updateProfile 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import { 
-  getFirestore, doc, setDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-/* 🔥 CONFIG */
+/* CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -140,7 +135,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* 🔥 MENU PROFIL */
+/* MENU */
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
@@ -163,7 +158,6 @@ onAuthStateChanged(auth, (user) => {
     renderMenu(user);
 });
 
-/* MENU */
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -173,14 +167,13 @@ document.addEventListener("click", () => {
     dropdown.classList.remove("show");
 });
 
-/* LOGOUT */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
         await signOut(auth);
     }
 });
 
-/* 🔥 MODAL */
+/* MODAL */
 window.openProfileModal = () => {
     document.getElementById("profileModal").classList.add("show");
 };
@@ -189,7 +182,7 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-/* 🔥 COMPRESS + SAVE IMAGE */
+/* UPLOAD IMAGE FIX */
 window.saveProfilePic = async () => {
 
     const file = document.getElementById("fileInput").files[0];
@@ -201,47 +194,41 @@ window.saveProfilePic = async () => {
     const img = new Image();
     const reader = new FileReader();
 
-    reader.onload = function (e) {
+    reader.onload = (e) => {
         img.src = e.target.result;
     };
 
-    img.onload = async function () {
+    img.onload = async () => {
 
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
-        const MAX_SIZE = 300;
+        const size = 300;
+        canvas.width = size;
+        canvas.height = size;
 
-        let width = img.width;
-        let height = img.height;
+        // 🔥 fond noir (important pour toi)
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, size, size);
 
-        if (width > height) {
-            if (width > MAX_SIZE) {
-                height *= MAX_SIZE / width;
-                width = MAX_SIZE;
-            }
-        } else {
-            if (height > MAX_SIZE) {
-                width *= MAX_SIZE / height;
-                height = MAX_SIZE;
-            }
-        }
+        // 🔥 centrer l'image correctement
+        const ratio = Math.min(size / img.width, size / img.height);
+        const newWidth = img.width * ratio;
+        const newHeight = img.height * ratio;
 
-        canvas.width = width;
-        canvas.height = height;
+        const x = (size - newWidth) / 2;
+        const y = (size - newHeight) / 2;
 
-        ctx.drawImage(img, 0, 0, width, height);
+        ctx.drawImage(img, x, y, newWidth, newHeight);
 
-        const base64 = canvas.toDataURL("image/jpeg", 0.7);
+        const base64 = canvas.toDataURL("image/jpeg", 0.8);
 
         try {
 
-            // 🔥 AUTH
             await updateProfile(user, {
                 photoURL: base64
             });
 
-            // 🔥 FIRESTORE
             await setDoc(doc(db, "users", user.uid), {
                 photoURL: base64
             }, { merge: true });
