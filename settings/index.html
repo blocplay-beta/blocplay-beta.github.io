@@ -12,31 +12,52 @@
 <meta name="theme-color" content="#0b0f1a">
 
 <style>
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
+.modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(6px);
 }
 
-.modal.show {
-    display: flex;
+.modal.show{
+    display:flex;
 }
 
-.modal-box {
-    background: #0b0f1a !important;
-    border: 1px solid #3b82f6;
-    padding: 20px;
-    border-radius: 12px;
-    color: white;
-    box-shadow: 0 0 20px rgba(59,130,246,0.4);
+.modal-box{
+    background:linear-gradient(145deg,#0b0f1a,#0f172a);
+    border:1px solid #3b82f6;
+    padding:22px;
+    border-radius:14px;
+    color:white;
+    min-width:280px;
+    text-align:center;
+    box-shadow:0 0 25px rgba(59,130,246,0.35);
+    animation:pop .18s ease-out;
+}
+
+@keyframes pop{
+    from{transform:scale(0.9);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+
+.modal-box button{
+    margin-top:10px;
+    background:#3b82f6;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+}
+
+.modal-box button:hover{
+    background:#2563eb;
 }
 </style>
+
 </head>
 
 <body>
@@ -51,6 +72,7 @@
     <div class="profile-menu">
       <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
            class="avatar" id="avatar">
+
       <div class="dropdown" id="dropdown"></div>
     </div>
 
@@ -58,11 +80,11 @@
 </header>
 
 <div class="container">
+
   <div class="card">
 
     <h1>Paramètres</h1>
 
-    <!-- PROFIL -->
     <button class="btn btn-dark" onclick="openProfileModal()">
       Modifier le profil
     </button>
@@ -98,6 +120,15 @@
     </button>
 
   </div>
+
+</div>
+
+<!-- POPUP -->
+<div id="notif" class="modal">
+  <div class="modal-box">
+    <p id="notifText"></p>
+    <button onclick="closeNotif()">OK</button>
+  </div>
 </div>
 
 <!-- MODAL PROFIL -->
@@ -108,15 +139,6 @@
     <br><br>
     <button onclick="saveProfilePic()">Enregistrer</button>
     <button onclick="closeProfileModal()">Annuler</button>
-  </div>
-</div>
-
-<!-- NOTIF POPUP -->
-<div id="notif" class="modal">
-  <div class="modal-box">
-    <p id="notifText"></p>
-    <br>
-    <button onclick="closeNotif()">OK</button>
   </div>
 </div>
 
@@ -137,7 +159,6 @@ import {
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -168,20 +189,19 @@ function renderMenu(user){
 
 onAuthStateChanged(auth, renderMenu);
 
-/* MENU */
-avatar.onclick = (e) => {
+avatar.onclick = (e)=>{
     e.stopPropagation();
     dropdown.classList.toggle("show");
 };
 
-document.addEventListener("click", () => dropdown.classList.remove("show"));
+document.addEventListener("click", ()=>dropdown.classList.remove("show"));
 
 document.addEventListener("click", async (e)=>{
-    if(e.target.id === "logout") await signOut(auth);
+    if(e.target.id==="logout") await signOut(auth);
 });
 
-/* MODAL OPEN */
-window.openModal = async (type) => {
+/* MODALS TEXT */
+window.openModal = async (type)=>{
     const value = prompt("Nouvelle valeur");
     if(!value) return;
 
@@ -189,9 +209,9 @@ window.openModal = async (type) => {
     if(!user) return;
 
     try{
-        if(type === "username") await updateProfile(user,{displayName:value});
-        if(type === "email") await updateEmail(user,value);
-        if(type === "password") await updatePassword(user,value);
+        if(type==="username") await updateProfile(user,{displayName:value});
+        if(type==="email") await updateEmail(user,value);
+        if(type==="password") await updatePassword(user,value);
 
         await setDoc(doc(db,"users",user.uid),{
             displayName:user.displayName,
