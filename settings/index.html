@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -76,6 +75,7 @@
 
     <br><br>
 
+    <!-- 🔥 AJOUT -->
     <button class="btn btn-dark" onclick="openProfileModal()">
       Modifier le profil
     </button>
@@ -83,7 +83,7 @@
     <br><br>
 
     <button id="discordBtn" class="btn btn-dark">
-      Lier Discord
+      Lier Discord  
     </button>
 
     <br><br>
@@ -96,12 +96,15 @@
 
 </div>
 
-<!-- MODAL PROFIL -->
+<!-- 🔥 AJOUT MODAL PROFIL -->
 <div id="profileModal" class="modal">
-  <div class="modal-box">
+  <div class="modal-box" style="background:#111;padding:20px;border-radius:10px;color:white;">
     <h2>Modifier la photo</h2>
+
     <input type="file" id="fileInput" accept="image/*">
+
     <br><br>
+
     <button onclick="saveProfilePic()">Enregistrer</button>
     <button onclick="closeProfileModal()">Annuler</button>
   </div>
@@ -109,15 +112,8 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-  updateProfile,
-  updateEmail,
-  updatePassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut, updateProfile } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   getFirestore,
@@ -125,17 +121,21 @@ import {
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* FIREBASE */
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* 🔥 MENU */
+/* MENU */
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
@@ -158,6 +158,16 @@ onAuthStateChanged(auth, (user) => {
     renderMenu(user);
 });
 
+/* MENU CLICK */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
 /* LOGOUT */
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
@@ -165,42 +175,8 @@ document.addEventListener("click", async (e) => {
     }
 });
 
-/* 🔥 MODIF INFOS */
-window.openModal = async (type) => {
+/* ====== 🔥 AJOUT PROFIL ====== */
 
-    const value = prompt("Nouvelle valeur :");
-    if (!value) return;
-
-    const user = auth.currentUser;
-    if (!user) return alert("Non connecté");
-
-    try {
-
-        if (type === "username") {
-            await updateProfile(user, { displayName: value });
-        }
-
-        if (type === "email") {
-            await updateEmail(user, value);
-        }
-
-        if (type === "password") {
-            await updatePassword(user, value);
-        }
-
-        await setDoc(doc(db, "users", user.uid), {
-            displayName: user.displayName,
-            email: user.email
-        }, { merge: true });
-
-        alert("Mis à jour");
-
-    } catch (e) {
-        alert(e.message);
-    }
-};
-
-/* 🔥 PROFIL MODAL */
 window.openProfileModal = () => {
     document.getElementById("profileModal").classList.add("show");
 };
@@ -209,11 +185,10 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-/* 🔥 PHOTO */
 window.saveProfilePic = async () => {
 
     const file = document.getElementById("fileInput").files[0];
-    if (!file) return;
+    if (!file) return alert("Aucune image");
 
     const user = auth.currentUser;
     if (!user) return;
@@ -230,18 +205,10 @@ window.saveProfilePic = async () => {
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
 
-            const size = 300;
-            canvas.width = size;
-            canvas.height = size;
+            canvas.width = 300;
+            canvas.height = 300;
 
-            ctx.fillStyle = "#000";
-            ctx.fillRect(0,0,size,size);
-
-            const ratio = Math.min(size / img.width, size / img.height);
-            const w = img.width * ratio;
-            const h = img.height * ratio;
-
-            ctx.drawImage(img, 0, 0, w, h);
+            ctx.drawImage(img, 0, 0, 300, 300);
 
             const base64 = canvas.toDataURL("image/jpeg", 0.8);
 
