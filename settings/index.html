@@ -22,9 +22,7 @@
     backdrop-filter:blur(6px);
 }
 
-.modal.show{
-    display:flex;
-}
+.modal.show{ display:flex; }
 
 .modal-box{
     background:linear-gradient(145deg,#0b0f1a,#0f172a);
@@ -53,9 +51,7 @@
     cursor:pointer;
 }
 
-.modal-box button:hover{
-    background:#2563eb;
-}
+.modal-box button:hover{ background:#2563eb; }
 </style>
 
 </head>
@@ -64,7 +60,6 @@
 
 <header>
   <div class="header-content">
-
     <a href="/" class="logo">
       <img src="/icon.png">
     </a>
@@ -72,15 +67,12 @@
     <div class="profile-menu">
       <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
            class="avatar" id="avatar">
-
       <div class="dropdown" id="dropdown"></div>
     </div>
-
   </div>
 </header>
 
 <div class="container">
-
   <div class="card">
 
     <h1>Paramètres</h1>
@@ -114,10 +106,9 @@
     </button>
 
   </div>
-
 </div>
 
-<!-- POPUP -->
+<!-- POPUP UNIQUE -->
 <div id="notif" class="modal">
   <div class="modal-box">
     <p id="notifText"></p>
@@ -125,7 +116,7 @@
   </div>
 </div>
 
-<!-- PROFIL MODAL -->
+<!-- MODAL PROFIL -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
     <h2>Modifier la photo</h2>
@@ -153,7 +144,6 @@ import {
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
@@ -172,109 +162,106 @@ const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
 function renderMenu(user){
-    dropdown.innerHTML = user ? `
-        <a href="/profile">Profil</a>
-        <a href="/settings">Paramètres</a>
-        <a href="#" id="logout">Se déconnecter</a>
-    ` : `
-        <a href="/login">Connexion</a>
-        <a href="/signup">Inscription</a>
-    `;
+  dropdown.innerHTML = user ? `
+    <a href="/profile">Profil</a>
+    <a href="/settings">Paramètres</a>
+    <a href="#" id="logout">Se déconnecter</a>
+  ` : `
+    <a href="/login">Connexion</a>
+    <a href="/signup">Inscription</a>
+  `;
 }
 
 onAuthStateChanged(auth, renderMenu);
 
 avatar.onclick = (e)=>{
-    e.stopPropagation();
-    dropdown.classList.toggle("show");
+  e.stopPropagation();
+  dropdown.classList.toggle("show");
 };
 
 document.addEventListener("click", ()=>dropdown.classList.remove("show"));
 
 document.addEventListener("click", async (e)=>{
-    if(e.target.id==="logout") await signOut(auth);
+  if(e.target.id==="logout") await signOut(auth);
 });
 
-/* NOTIF */
+/* POPUP UNIFIÉ (PLUS AUCUN ALERT) */
 window.showNotif = (msg)=>{
-    document.getElementById("notifText").innerText = msg;
-    document.getElementById("notif").classList.add("show");
+  document.getElementById("notifText").innerText = msg;
+  document.getElementById("notif").classList.add("show");
 };
 
 window.closeNotif = ()=>{
-    document.getElementById("notif").classList.remove("show");
+  document.getElementById("notif").classList.remove("show");
 };
 
-/* MODAL TEXT */
+/* MODALS TEXT */
 window.openModal = async (type)=>{
-    const value = prompt("Nouvelle valeur");
-    if(!value) return;
+  const value = prompt("Nouvelle valeur");
+  if(!value) return;
 
-    const user = auth.currentUser;
-    if(!user) return showNotif("Non connecté");
+  const user = auth.currentUser;
+  if(!user) return showNotif("Non connecté");
 
-    try{
-        if(type==="username") await updateProfile(user,{displayName:value});
-        if(type==="email") await updateEmail(user,value);
-        if(type==="password") await updatePassword(user,value);
+  try{
+    if(type==="username") await updateProfile(user,{displayName:value});
+    if(type==="email") await updateEmail(user,value);
+    if(type==="password") await updatePassword(user,value);
 
-        await setDoc(doc(db,"users",user.uid),{
-            displayName:user.displayName,
-            email:user.email
-        },{merge:true});
+    await setDoc(doc(db,"users",user.uid),{
+      displayName:user.displayName,
+      email:user.email
+    },{merge:true});
 
-        showNotif("Mis à jour !");
-    }catch(e){
-        showNotif(e.message);
-    }
+    showNotif("Mis à jour !");
+  }catch(e){
+    showNotif(e.message);
+  }
 };
 
 /* PROFIL */
 window.openProfileModal = ()=>{
-    document.getElementById("profileModal").classList.add("show");
+  document.getElementById("profileModal").classList.add("show");
 };
 
 window.closeProfileModal = ()=>{
-    document.getElementById("profileModal").classList.remove("show");
+  document.getElementById("profileModal").classList.remove("show");
 };
 
 window.saveProfilePic = async ()=>{
+  const file = document.getElementById("fileInput").files[0];
+  if(!file) return showNotif("Aucune image");
 
-    const file = document.getElementById("fileInput").files[0];
-    if(!file) return showNotif("Aucune image");
+  const user = auth.currentUser;
+  if(!user) return showNotif("Non connecté");
 
-    const user = auth.currentUser;
-    if(!user) return showNotif("Non connecté");
+  const reader = new FileReader();
 
-    const reader = new FileReader();
+  reader.onload = async ()=>{
+    const img = new Image();
+    img.src = reader.result;
 
-    reader.onload = async ()=>{
+    img.onload = async ()=>{
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-        const img = new Image();
-        img.src = reader.result;
+      canvas.width = 300;
+      canvas.height = 300;
 
-        img.onload = async ()=>{
+      ctx.drawImage(img,0,0,300,300);
 
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
+      const base64 = canvas.toDataURL("image/jpeg",0.8);
 
-            canvas.width = 300;
-            canvas.height = 300;
+      await setDoc(doc(db,"users",user.uid),{
+        photoURL:base64
+      },{merge:true});
 
-            ctx.drawImage(img,0,0,300,300);
-
-            const base64 = canvas.toDataURL("image/jpeg",0.8);
-
-            await setDoc(doc(db,"users",user.uid),{
-                photoURL:base64
-            },{merge:true});
-
-            showNotif("Photo mise à jour !");
-            closeProfileModal();
-        };
+      showNotif("Photo mise à jour !");
+      closeProfileModal();
     };
+  };
 
-    reader.readAsDataURL(file);
+  reader.readAsDataURL(file);
 };
 </script>
 
