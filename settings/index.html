@@ -28,8 +28,14 @@
 .modal.show {
     display: flex;
 }
-</style>
 
+.modal-box{
+    background:#111;
+    padding:20px;
+    border-radius:10px;
+    color:white;
+}
+</style>
 </head>
 
 <body>
@@ -83,7 +89,7 @@
     <br><br>
 
     <button id="discordBtn" class="btn btn-dark">
-      Lier Discord  
+      Lier Discord
     </button>
 
     <br><br>
@@ -96,9 +102,10 @@
 
 </div>
 
-<!-- 🔥 AJOUT MODAL PROFIL -->
+<!-- 🔥 MODAL PROFIL -->
 <div id="profileModal" class="modal">
-  <div class="modal-box" style="background:#111;padding:20px;border-radius:10px;color:white;">
+  <div class="modal-box">
+
     <h2>Modifier la photo</h2>
 
     <input type="file" id="fileInput" accept="image/*">
@@ -107,12 +114,13 @@
 
     <button onclick="saveProfilePic()">Enregistrer</button>
     <button onclick="closeProfileModal()">Annuler</button>
+
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, updateProfile } 
+import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
@@ -175,8 +183,7 @@ document.addEventListener("click", async (e) => {
     }
 });
 
-/* ====== 🔥 AJOUT PROFIL ====== */
-
+/* ===== MODAL ===== */
 window.openProfileModal = () => {
     document.getElementById("profileModal").classList.add("show");
 };
@@ -185,10 +192,11 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
+/* ===== SAVE PHOTO ===== */
 window.saveProfilePic = async () => {
 
     const file = document.getElementById("fileInput").files[0];
-    if (!file) return alert("Aucune image");
+    if (!file) return;
 
     const user = auth.currentUser;
     if (!user) return;
@@ -211,10 +219,6 @@ window.saveProfilePic = async () => {
             ctx.drawImage(img, 0, 0, 300, 300);
 
             const base64 = canvas.toDataURL("image/jpeg", 0.8);
-
-            await updateProfile(user, {
-                photoURL: "custom"
-            });
 
             await setDoc(doc(db, "users", user.uid), {
                 photoURL: base64
