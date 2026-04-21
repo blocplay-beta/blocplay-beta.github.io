@@ -29,13 +29,15 @@
     display: flex;
 }
 
-.modal-box{
-    background:#111;
-    padding:20px;
-    border-radius:10px;
-    color:white;
+.modal-box {
+    background: #0b0f1a;
+    border: 1px solid #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
 }
 </style>
+
 </head>
 
 <body>
@@ -63,6 +65,13 @@
 
     <h1>Paramètres</h1>
 
+    <!-- 🔥 PROFIL (PLACÉ EN PREMIER COMME TU VEUX) -->
+    <button class="btn btn-dark" onclick="openProfileModal()">
+      Modifier le profil
+    </button>
+
+    <br><br>
+
     <button class="btn btn-dark" onclick="openModal('username')">
       Modifier le pseudo
     </button>
@@ -81,13 +90,6 @@
 
     <br><br>
 
-    <!-- 🔥 AJOUT -->
-    <button class="btn btn-dark" onclick="openProfileModal()">
-      Modifier le profil
-    </button>
-
-    <br><br>
-
     <button id="discordBtn" class="btn btn-dark">
       Lier Discord
     </button>
@@ -102,10 +104,9 @@
 
 </div>
 
-<!-- 🔥 MODAL PROFIL -->
+<!-- MODAL PROFIL -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
-
     <h2>Modifier la photo</h2>
 
     <input type="file" id="fileInput" accept="image/*">
@@ -114,14 +115,19 @@
 
     <button onclick="saveProfilePic()">Enregistrer</button>
     <button onclick="closeProfileModal()">Annuler</button>
-
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  updateProfile,
+  updateEmail,
+  updatePassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   getFirestore,
@@ -134,9 +140,6 @@ const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-  storageBucket: "blocplay-a9417.firebasestorage.app",
-  messagingSenderId: "540161549188",
-  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -183,7 +186,41 @@ document.addEventListener("click", async (e) => {
     }
 });
 
-/* ===== MODAL ===== */
+/* 🔥 MODAL TEXTE */
+window.openModal = async (type) => {
+
+    const value = prompt("Nouvelle valeur :");
+    if (!value) return;
+
+    const user = auth.currentUser;
+    if (!user) return alert("Non connecté");
+
+    try {
+
+        if (type === "username") {
+            await updateProfile(user, { displayName: value });
+        }
+
+        if (type === "email") {
+            await updateEmail(user, value);
+        }
+
+        if (type === "password") {
+            await updatePassword(user, value);
+        }
+
+        await setDoc(doc(db, "users", user.uid), {
+            displayName: user.displayName,
+            email: user.email
+        }, { merge: true });
+
+        alert("Mis à jour !");
+    } catch (e) {
+        alert(e.message);
+    }
+};
+
+/* 🔥 PROFIL */
 window.openProfileModal = () => {
     document.getElementById("profileModal").classList.add("show");
 };
@@ -192,7 +229,7 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-/* ===== SAVE PHOTO ===== */
+/* 🔥 PHOTO */
 window.saveProfilePic = async () => {
 
     const file = document.getElementById("fileInput").files[0];
