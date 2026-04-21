@@ -126,7 +126,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import { 
-  getFirestore, doc, updateDoc 
+  getFirestore, doc, setDoc 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* 🔥 CONFIG */
@@ -189,7 +189,7 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-/* 🔥 UPDATE PHOTO (AUTH + FIRESTORE) */
+/* 🔥 COMPRESS + SAVE IMAGE */
 window.saveProfilePic = async () => {
 
     const file = document.getElementById("fileInput").files[0];
@@ -198,22 +198,53 @@ window.saveProfilePic = async () => {
     const user = auth.currentUser;
     if (!user) return alert("Non connecté");
 
+    const img = new Image();
     const reader = new FileReader();
 
-    reader.onload = async function () {
-        const base64 = reader.result;
+    reader.onload = function (e) {
+        img.src = e.target.result;
+    };
+
+    img.onload = async function () {
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const MAX_SIZE = 300;
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+            if (width > MAX_SIZE) {
+                height *= MAX_SIZE / width;
+                width = MAX_SIZE;
+            }
+        } else {
+            if (height > MAX_SIZE) {
+                width *= MAX_SIZE / height;
+                height = MAX_SIZE;
+            }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const base64 = canvas.toDataURL("image/jpeg", 0.7);
 
         try {
 
-            // 🔥 Auth
+            // 🔥 AUTH
             await updateProfile(user, {
                 photoURL: base64
             });
 
-            // 🔥 Firestore (ton format)
-            await updateDoc(doc(db, "users", user.uid), {
+            // 🔥 FIRESTORE
+            await setDoc(doc(db, "users", user.uid), {
                 photoURL: base64
-            });
+            }, { merge: true });
 
             alert("Photo mise à jour !");
             closeProfileModal();
@@ -221,7 +252,7 @@ window.saveProfilePic = async () => {
 
         } catch (err) {
             console.error(err);
-            alert("Erreur lors de la mise à jour");
+            alert("Erreur : " + err.message);
         }
     };
 
