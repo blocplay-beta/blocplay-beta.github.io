@@ -10,16 +10,10 @@
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/logo.ico">
 
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
-
 <style>
 .modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
@@ -33,8 +27,16 @@
 .modal-box {
     background: #111827;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 12px;
     text-align: center;
+}
+button {
+    margin: 6px 0;
+    padding: 10px;
+    width: 200px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
 }
 </style>
 
@@ -44,94 +46,52 @@
 
 <header>
   <div class="header-content">
-
-    <a href="/" class="logo">
-      <img src="/icon.png">
-    </a>
-
-    <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar" id="avatar">
-
-      <div class="dropdown" id="dropdown"></div>
-    </div>
-
+    <a href="/">BlocPlay</a>
   </div>
 </header>
 
 <div class="container">
 
-  <div class="card">
+  <h1>Paramètres</h1>
 
-    <h1>Paramètres</h1>
+  <button onclick="openAction('username')">Modifier le pseudo</button>
+  <button onclick="openAction('email')">Modifier l'email</button>
+  <button onclick="openAction('password')">Modifier le mot de passe</button>
 
-    <!-- 🔥 MODIFIER PROFIL -->
-    <button class="btn btn-dark" onclick="openProfileModal()">
-      Modifier le profil
-    </button>
+  <br><br>
 
-    <br><br>
-
-    <button class="btn btn-dark" onclick="openModal('username')">
-      Modifier le pseudo
-    </button>
-
-    <br><br>
-
-    <button class="btn btn-dark" onclick="openModal('email')">
-      Modifier l'email
-    </button>
-
-    <br><br>
-
-    <button class="btn btn-dark" onclick="openModal('password')">
-      Modifier le mot de passe
-    </button>
-
-    <br><br>
-
-    <button id="discordBtn" class="btn btn-dark">
-      Lier Discord
-    </button>
-
-    <br><br>
-
-    <button class="btn btn-dark" onclick="window.location.href='/rizoplay'">
-      RizoPlay
-    </button>
-
-  </div>
+  <button onclick="openProfileModal()">Modifier le profil</button>
 
 </div>
 
-<!-- 🔥 MODAL PHOTO -->
+<!-- MODAL PHOTO -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
-    <h2>Modifier la photo</h2>
-
+    <h3>Changer photo</h3>
     <input type="file" id="fileInput" accept="image/*">
-
     <br><br>
-
-    <button onclick="saveProfilePic()">Enregistrer</button>
+    <button onclick="savePhoto()">Valider</button>
     <button onclick="closeProfileModal()">Annuler</button>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import { 
-  getAuth, onAuthStateChanged, signOut, updateProfile 
+import {
+  getAuth,
+  updateProfile,
+  updateEmail,
+  updatePassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { 
-  getFirestore, doc, setDoc 
+import {
+  getFirestore,
+  doc,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔥 CONFIG */
 const firebaseConfig = {
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  apiKey: "XXX",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
 };
@@ -140,47 +100,37 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* 🔥 MENU */
-const avatar = document.getElementById("avatar");
-const dropdown = document.getElementById("dropdown");
+/* 🔥 ACTIONS SETTINGS */
+window.openAction = async (type) => {
+    const value = prompt("Nouvelle valeur :");
+    if (!value) return;
 
-function renderMenu(user) {
-    if (user) {
-        dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
-            <a href="#" id="logout">Se déconnecter</a>
-        `;
-    } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
+    const user = auth.currentUser;
+    if (!user) return alert("Non connecté");
+
+    try {
+
+        if (type === "username") {
+            await updateProfile(user, { displayName: value });
+            alert("Pseudo modifié");
+        }
+
+        if (type === "email") {
+            await updateEmail(user, value);
+            alert("Email modifié");
+        }
+
+        if (type === "password") {
+            await updatePassword(user, value);
+            alert("Mot de passe modifié");
+        }
+
+    } catch (e) {
+        alert(e.message);
     }
-}
+};
 
-onAuthStateChanged(auth, (user) => {
-    renderMenu(user);
-});
-
-/* MENU CLICK */
-avatar.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("show");
-});
-
-document.addEventListener("click", () => {
-    dropdown.classList.remove("show");
-});
-
-/* LOGOUT */
-document.addEventListener("click", async (e) => {
-    if (e.target.id === "logout") {
-        await signOut(auth);
-    }
-});
-
-/* MODAL */
+/* 🔥 PHOTO PROFIL */
 window.openProfileModal = () => {
     document.getElementById("profileModal").classList.add("show");
 };
@@ -189,67 +139,61 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-/* 🔥 SAVE IMAGE (FINAL FIX) */
-window.saveProfilePic = async () => {
+window.savePhoto = async () => {
 
     const file = document.getElementById("fileInput").files[0];
-    if (!file) return alert("Choisis une image");
+    if (!file) return alert("Image requise");
 
     const user = auth.currentUser;
-    if (!user) return alert("Non connecté");
+    if (!user) return;
 
-    const img = new Image();
     const reader = new FileReader();
 
-    reader.onload = (e) => {
-        img.src = e.target.result;
-    };
+    reader.onload = async () => {
+        const img = new Image();
+        img.src = reader.result;
 
-    img.onload = async () => {
+        img.onload = async () => {
 
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
 
-        const size = 300;
-        canvas.width = size;
-        canvas.height = size;
+            const size = 300;
+            canvas.width = size;
+            canvas.height = size;
 
-        // 🔥 fond noir
-        ctx.fillStyle = "#000";
-        ctx.fillRect(0, 0, size, size);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0,0,size,size);
 
-        // 🔥 centrage image
-        const ratio = Math.min(size / img.width, size / img.height);
-        const newWidth = img.width * ratio;
-        const newHeight = img.height * ratio;
+            const ratio = Math.min(size / img.width, size / img.height);
+            const w = img.width * ratio;
+            const h = img.height * ratio;
 
-        const x = (size - newWidth) / 2;
-        const y = (size - newHeight) / 2;
+            const x = (size - w)/2;
+            const y = (size - h)/2;
 
-        ctx.drawImage(img, x, y, newWidth, newHeight);
+            ctx.drawImage(img, x, y, w, h);
 
-        const base64 = canvas.toDataURL("image/jpeg", 0.8);
+            const base64 = canvas.toDataURL("image/jpeg", 0.8);
 
-        try {
+            try {
 
-            // 🔥 IMPORTANT : PAS de base64 dans Auth
-            await updateProfile(user, {
-                photoURL: "custom"
-            });
+                // ⚠️ PAS base64 dans Auth
+                await updateProfile(user, {
+                    photoURL: "custom"
+                });
 
-            // 🔥 Firestore (vraie image)
-            await setDoc(doc(db, "users", user.uid), {
-                photoURL: base64
-            }, { merge: true });
+                await setDoc(doc(db, "users", user.uid), {
+                    photoURL: base64
+                }, { merge: true });
 
-            alert("Photo mise à jour !");
-            closeProfileModal();
-            location.reload();
+                alert("Photo mise à jour");
+                closeProfileModal();
 
-        } catch (err) {
-            console.error(err);
-            alert("Erreur : " + err.message);
-        }
+            } catch (e) {
+                alert(e.message);
+            }
+        };
     };
 
     reader.readAsDataURL(file);
