@@ -10,6 +10,9 @@
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/logo.ico">
 
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+
 <style>
 .modal {
     position: fixed;
@@ -27,16 +30,7 @@
 .modal-box {
     background: #111827;
     padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-}
-button {
-    margin: 6px 0;
-    padding: 10px;
-    width: 200px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
+    border-radius: 15px;
 }
 </style>
 
@@ -46,31 +40,70 @@ button {
 
 <header>
   <div class="header-content">
-    <a href="/">BlocPlay</a>
+
+    <a href="/" class="logo">
+      <img src="/icon.png">
+    </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
   </div>
 </header>
 
 <div class="container">
 
-  <h1>Paramètres</h1>
+  <div class="card">
 
-  <button onclick="openAction('username')">Modifier le pseudo</button>
-  <button onclick="openAction('email')">Modifier l'email</button>
-  <button onclick="openAction('password')">Modifier le mot de passe</button>
+    <h1>Paramètres</h1>
 
-  <br><br>
+    <!-- TES BOUTONS ORIGINAUX -->
+    <button class="btn btn-dark" onclick="openAction('username')">
+      Modifier le pseudo
+    </button>
 
-  <button onclick="openProfileModal()">Modifier le profil</button>
+    <br><br>
+
+    <button class="btn btn-dark" onclick="openAction('email')">
+      Modifier l'email
+    </button>
+
+    <br><br>
+
+    <button class="btn btn-dark" onclick="openAction('password')">
+      Modifier le mot de passe
+    </button>
+
+    <br><br>
+
+    <button class="btn btn-dark" onclick="openProfileModal()">
+      Modifier le profil
+    </button>
+
+    <br><br>
+
+    <button class="btn btn-dark" onclick="window.location.href='/rizoplay'">
+      RizoPlay
+    </button>
+
+  </div>
 
 </div>
 
-<!-- MODAL PHOTO -->
+<!-- MODAL IMAGE -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
-    <h3>Changer photo</h3>
+    <h2>Modifier la photo</h2>
+
     <input type="file" id="fileInput" accept="image/*">
+
     <br><br>
-    <button onclick="savePhoto()">Valider</button>
+
+    <button onclick="savePhoto()">Enregistrer</button>
     <button onclick="closeProfileModal()">Annuler</button>
   </div>
 </div>
@@ -100,8 +133,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* 🔥 ACTIONS SETTINGS */
+/* 🔥 ACTIONS ORIGINALES */
 window.openAction = async (type) => {
+
     const value = prompt("Nouvelle valeur :");
     if (!value) return;
 
@@ -130,7 +164,7 @@ window.openAction = async (type) => {
     }
 };
 
-/* 🔥 PHOTO PROFIL */
+/* 🔥 MODAL */
 window.openProfileModal = () => {
     document.getElementById("profileModal").classList.add("show");
 };
@@ -139,10 +173,11 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
+/* 🔥 PHOTO FIX */
 window.savePhoto = async () => {
 
     const file = document.getElementById("fileInput").files[0];
-    if (!file) return alert("Image requise");
+    if (!file) return;
 
     const user = auth.currentUser;
     if (!user) return;
@@ -150,6 +185,7 @@ window.savePhoto = async () => {
     const reader = new FileReader();
 
     reader.onload = async () => {
+
         const img = new Image();
         img.src = reader.result;
 
@@ -178,7 +214,6 @@ window.savePhoto = async () => {
 
             try {
 
-                // ⚠️ PAS base64 dans Auth
                 await updateProfile(user, {
                     photoURL: "custom"
                 });
