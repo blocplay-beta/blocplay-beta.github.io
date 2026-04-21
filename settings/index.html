@@ -10,16 +10,10 @@
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" href="/logo.ico">
 
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
-
 <style>
 .modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
@@ -29,6 +23,13 @@
 .modal.show {
     display: flex;
 }
+
+.modal-box {
+    background: #111827;
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+}
 </style>
 
 </head>
@@ -37,18 +38,9 @@
 
 <header>
   <div class="header-content">
-
     <a href="/" class="logo">
       <img src="/icon.png">
     </a>
-
-    <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar" id="avatar">
-
-      <div class="dropdown" id="dropdown"></div>
-    </div>
-
   </div>
 </header>
 
@@ -58,19 +50,19 @@
 
     <h1>Paramètres</h1>
 
-    <button class="btn btn-dark" onclick="openModal('username')">
+    <button class="btn btn-dark" onclick="openAction('username')">
       Modifier le pseudo
     </button>
 
     <br><br>
 
-    <button class="btn btn-dark" onclick="openModal('email')">
+    <button class="btn btn-dark" onclick="openAction('email')">
       Modifier l'email
     </button>
 
     <br><br>
 
-    <button class="btn btn-dark" onclick="openModal('password')">
+    <button class="btn btn-dark" onclick="openAction('password')">
       Modifier le mot de passe
     </button>
 
@@ -78,12 +70,6 @@
 
     <button class="btn btn-dark" onclick="openProfileModal()">
       Modifier le profil
-    </button>
-
-    <br><br>
-
-    <button id="discordBtn" class="btn btn-dark">
-      Lier Discord
     </button>
 
     <br><br>
@@ -96,17 +82,19 @@
 
 </div>
 
-<!-- MODAL PHOTO -->
+<!-- MODAL -->
 <div id="profileModal" class="modal">
   <div class="modal-box">
+
     <h2>Modifier la photo</h2>
 
     <input type="file" id="fileInput" accept="image/*">
 
     <br><br>
 
-    <button onclick="saveProfilePic()">Enregistrer</button>
+    <button onclick="savePhoto()">Enregistrer</button>
     <button onclick="closeProfileModal()">Annuler</button>
+
   </div>
 </div>
 
@@ -114,8 +102,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getAuth,
-  onAuthStateChanged,
-  signOut,
   updateProfile,
   updateEmail,
   updatePassword
@@ -128,7 +114,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  apiKey: "YOUR_KEY",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
 };
@@ -137,38 +123,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* MENU */
-const avatar = document.getElementById("avatar");
-const dropdown = document.getElementById("dropdown");
-
-function renderMenu(user) {
-    if (user) {
-        dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
-            <a href="#" id="logout">Se déconnecter</a>
-        `;
-    } else {
-        dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
-        `;
-    }
-}
-
-onAuthStateChanged(auth, (user) => {
-    renderMenu(user);
-});
-
-/* LOGOUT */
-document.addEventListener("click", async (e) => {
-    if (e.target.id === "logout") {
-        await signOut(auth);
-    }
-});
-
-/* MODAL ACTIONS */
-window.openModal = async (type) => {
+/* 🔥 MODIF TEXT */
+window.openAction = async (type) => {
 
     const value = prompt("Nouvelle valeur :");
     if (!value) return;
@@ -180,26 +136,29 @@ window.openModal = async (type) => {
 
         if (type === "username") {
             await updateProfile(user, { displayName: value });
-            await setDoc(doc(db, "users", user.uid), { displayName: value }, { merge: true });
         }
 
         if (type === "email") {
             await updateEmail(user, value);
-            await setDoc(doc(db, "users", user.uid), { email: value }, { merge: true });
         }
 
         if (type === "password") {
             await updatePassword(user, value);
         }
 
-        alert("Modifié avec succès");
+        await setDoc(doc(db, "users", user.uid), {
+            displayName: user.displayName,
+            email: user.email
+        }, { merge: true });
+
+        alert("Mis à jour");
 
     } catch (e) {
         alert(e.message);
     }
 };
 
-/* PHOTO PROFIL */
+/* 🔥 MODAL */
 window.openProfileModal = () => {
     document.getElementById("profileModal").classList.add("show");
 };
@@ -208,7 +167,8 @@ window.closeProfileModal = () => {
     document.getElementById("profileModal").classList.remove("show");
 };
 
-window.saveProfilePic = async () => {
+/* 🔥 PHOTO */
+window.savePhoto = async () => {
 
     const file = document.getElementById("fileInput").files[0];
     if (!file) return;
@@ -228,21 +188,13 @@ window.saveProfilePic = async () => {
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
 
-            const size = 300;
-            canvas.width = size;
-            canvas.height = size;
+            canvas.width = 300;
+            canvas.height = 300;
 
             ctx.fillStyle = "#000";
-            ctx.fillRect(0, 0, size, size);
+            ctx.fillRect(0,0,300,300);
 
-            const ratio = Math.min(size / img.width, size / img.height);
-            const w = img.width * ratio;
-            const h = img.height * ratio;
-
-            const x = (size - w) / 2;
-            const y = (size - h) / 2;
-
-            ctx.drawImage(img, x, y, w, h);
+            ctx.drawImage(img, 0, 0, 300, 300);
 
             const base64 = canvas.toDataURL("image/jpeg", 0.8);
 
@@ -256,7 +208,7 @@ window.saveProfilePic = async () => {
                     photoURL: base64
                 }, { merge: true });
 
-                alert("Photo mise à jour !");
+                alert("Photo mise à jour");
                 closeProfileModal();
 
             } catch (e) {
