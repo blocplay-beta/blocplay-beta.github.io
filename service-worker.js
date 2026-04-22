@@ -1,6 +1,8 @@
+/* ============================================================
+   CONFIGURATION
+   ============================================================ */
 const CACHE_NAME = "blocplay-cache-v2";
 
-// Fichiers essentiels à mettre en cache
 const FILES_TO_CACHE = [
   "/",
   "/index.html",
@@ -10,11 +12,12 @@ const FILES_TO_CACHE = [
   "/offline.html"
 ];
 
-/* ===================== */
-/* INSTALL */
-/* ===================== */
+
+/* ============================================================
+   INSTALLATION DU SERVICE WORKER
+   ============================================================ */
 self.addEventListener("install", (event) => {
-  self.skipWaiting(); // activation directe
+  self.skipWaiting(); // Activation immédiate
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -23,9 +26,10 @@ self.addEventListener("install", (event) => {
   );
 });
 
-/* ===================== */
-/* ACTIVATE */
-/* ===================== */
+
+/* ============================================================
+   ACTIVATION + NETTOYAGE DES ANCIENS CACHES
+   ============================================================ */
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -39,54 +43,58 @@ self.addEventListener("activate", (event) => {
     })
   );
 
-  self.clients.claim();
+  self.clients.claim(); // Contrôle immédiat des pages
 });
 
-/* ===================== */
-/* FETCH (le plus important) */
-/* ===================== */
+
+/* ============================================================
+   FETCH UNIQUE (PATCH DISCORD + CACHE + OFFLINE)
+   ============================================================ */
 self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+
+  /* ------------------------------------------------------------
+     1) PATCH DISCORD ACTIVITIES
+     ------------------------------------------------------------ */
+  if (url.origin.includes("discord.com")) {
+
+    // Discord ajoute /proxy/ID → on le supprime
+    const path = url.pathname.replace(/^\/proxy\/[^/]+/, "");
+
+    // On reconstruit l'URL correcte vers GitHub Pages
+    const fixedUrl = "https://blocplay-beta.github.io" + path;
+
+    event.respondWith(fetch(fixedUrl));
+    return;
+  }
+
+
+  /* ------------------------------------------------------------
+     2) COMPORTEMENT NORMAL (réseau → cache)
+     ------------------------------------------------------------ */
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // On met en cache une copie des nouvelles ressources
-        const responseClone = response.clone();
-
+        // On met en cache une copie de la ressource
+        const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseClone);
+          cache.put(event.request, clone);
         });
 
         return response;
       })
-      .catch(() => {
-        // Si pas de réseau → fallback cache
-        return caches.match(event.request).then((cachedResponse) => {
-          // Si la ressource existe dans le cache
-          if (cachedResponse) {
-            return cachedResponse;
-          }
 
-          // Sinon → page offline
+      /* --------------------------------------------------------
+         3) MODE OFFLINE (fallback intelligent)
+         -------------------------------------------------------- */
+      .catch(() => {
+        return caches.match(event.request).then((cached) => {
+          // Si la ressource existe dans le cache → on la renvoie
+          if (cached) return cached;
+
+          // Sinon → page offline (ton système de redirection)
           return caches.match("/offline.html");
         });
       })
   );
-});
-
-// PATCH DISCORD ACTIVITIES (version ultime)
-self.addEventListener("fetch", event => {
-    const url = new URL(event.request.url);
-
-    // On détecte les requêtes venant du proxy Discord
-    if (url.origin.includes("discord.com")) {
-
-        // Discord ajoute /proxy/ID avant ton chemin → on le supprime
-        const path = url.pathname.replace(/^\/proxy\/[^/]+/, "");
-
-        // On reconstruit l'URL correcte vers GitHub Pages
-        const fixedUrl = "https://blocplay-beta.github.io" + path;
-
-        event.respondWith(fetch(fixedUrl));
-        return;
-    }
 });
