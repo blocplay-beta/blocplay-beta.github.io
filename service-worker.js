@@ -73,11 +73,12 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// PATCH DISCORD ACTIVITIES
+// PATCH DISCORD ACTIVITIES (version finale)
 self.addEventListener("fetch", event => {
     const url = new URL(event.request.url);
 
-    if (url.origin.includes("discordactivities") && url.pathname.startsWith("/")) {
+    // Si la requête passe par le proxy Discord
+    if (url.origin.includes("discord.com")) {
         const fixedUrl = "https://blocplay-beta.github.io" + url.pathname;
         event.respondWith(fetch(fixedUrl));
         return;
