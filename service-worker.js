@@ -72,3 +72,14 @@ self.addEventListener("fetch", (event) => {
       })
   );
 });
+
+// PATCH DISCORD ACTIVITIES
+self.addEventListener("fetch", event => {
+    const url = new URL(event.request.url);
+
+    if (url.origin.includes("discordactivities") && url.pathname.startsWith("/")) {
+        const fixedUrl = "https://blocplay-beta.github.io" + url.pathname;
+        event.respondWith(fetch(fixedUrl));
+        return;
+    }
+});
