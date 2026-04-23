@@ -108,8 +108,8 @@
 <div class="card">
     <h2>Rejoindre le Discord</h2>
 
-    <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord">
-        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" class="icon">
+    <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord/">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg/" class="icon">
         Rejoindre
     </a>
 </div>
@@ -149,14 +149,14 @@ const dropdown = document.getElementById("dropdown");
 function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
+            <a href="/profile/">Profil</a>
+            <a href="/settings/">Paramètres</a>
             <a href="#" id="logout">Se déconnecter</a>
         `;
     } else {
         dropdown.innerHTML = `
-            <a href="/login">Se connecter</a>
-            <a href="/signup">Créer un compte</a>
+            <a href="/login/">Se connecter</a>
+            <a href="/signup/">Créer un compte</a>
         `;
     }
 }
@@ -200,7 +200,7 @@ if (isAndroid) {
 
     container.innerHTML = `
         <a id="installBtn" class="btn btn-gradient">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg" class="icon">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg/" class="icon">
             Installer BlocPlay
         </a>
     `;
@@ -224,8 +224,8 @@ if (isAndroid) {
 } else if (isWindows) {
 
     container.innerHTML = `
-        <a href="/download-blocplaysetupinstaller-windows" class="btn btn-gradient">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg" class="icon">
+        <a href="/download-blocplaysetupinstaller-windows/" class="btn btn-gradient">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg/" class="icon">
             Télécharger BlocPlay
         </a>
     `;
