@@ -6,7 +6,7 @@
 
 ### Proprietary License: Source-Available for Transparency & Intellectual Property Protection
 
-Copyright (c) 2026 [Your Username/Pseudo] & [Your Partner's Username/Pseudo]. All rights reserved.
+Copyright (c) 2026 MathisB11 & In--Addict. All rights reserved.
 
 #### 1. Purpose & Absolute Transparency
 This repository is made public exclusively in the spirit of **transparency, security auditing, and educational review**. Because we value user trust and data protection, the source code is openly visible so that anyone can audit, inspect, and verify that the platform functions safely, without malicious scripts, and with respect to user privacy. 
@@ -29,7 +29,7 @@ We encourage legitimate security researchers and users to inspect our code. If y
 
 ### Licence Propriétaire : Code Accessible pour Transparence et Protection de la Propriété Intellectuelle
 
-Copyright (c) 2026 [Ton Pseudo] & [Pseudo de ton ami]. Tous droits réservés.
+Copyright (c) 2026 MathisB11 & In--Addict. Tous droits réservés.
 
 #### 1. Objectif de Transparence Totale
 Ce dépôt est rendu public dans l'unique but de garantir une **transparence absolue, de permettre des audits de sécurité et de servir de support pédagogique**. Parce que la confiance de nos utilisateurs et la protection des données sont nos priorités, le code source est ouvert à la lecture afin que chacun puisse inspecter, auditer et vérifier que la plateforme fonctionne de manière totalement sûre, sans script malveillant.
