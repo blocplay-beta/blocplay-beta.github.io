@@ -1,3 +1,4 @@
+// Please read COPYRIGHT.md
 import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 import { app } from "/js/firebase.js";
 
