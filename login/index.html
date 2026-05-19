@@ -10,21 +10,22 @@
 
   <style>
     body {
-      margin: 0;
       font-family: Arial;
       background: #0b0f1a;
       color: white;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      padding: 10px;
     }
 
     .box {
       background: #141a2a;
       padding: 30px;
       border-radius: 15px;
-      width: 300px;
+      width: 280px;
     }
 
     h2 { text-align: center; }
@@ -54,6 +55,29 @@
       margin-top: 10px;
       text-decoration: none;
     }
+    #color-status {
+      width: 280px;
+      min-height: 50px;
+      background-color: #2293aa;
+      border-radius: 5px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+    #status {
+      display: flex;
+      width: calc(100% - 6px);
+      background-color: #1e293b;
+      margin-left: auto;
+      border-radius: 5px;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 5px;
+    }
+    #status-txt {
+      font-family: Arial, sans-serif;
+      color: #90faff;
+      margin: 0;
+    }
   </style>
 </head>
 
@@ -69,8 +93,16 @@
 
   <a href="/signup">Créer un compte</a>
 </div>
-
+<div id="color-status" style="display: none"><div id="status"><p id="status-txt">text</p></div></div>
 <script type="module">
+  function status(text, color) {
+    const statusColor = document.getElementById("color-status")
+    const status = document.getElementById("status")
+    const statusTxt = document.getElementById("status-txt")
+    statusColor.style.backgroundColor = color;
+    statusColor.style.display = "flex";
+    statusTxt.textContent = text;
+  }
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -90,11 +122,11 @@
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      alert("Connexion réussie !");
+      status("Connexion réussi !", "#00ff00");
       window.location.href = "/";
 
     } catch (error) {
-      alert(error.message);
+      status("Email ou mot de passe incorrect", "#ff0000");
     }
   }
 </script>
