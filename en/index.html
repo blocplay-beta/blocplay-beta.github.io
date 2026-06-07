@@ -115,7 +115,7 @@
 
     <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord/">
         <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg/" class="icon">
-        Rejoindre
+        Join
     </a>
 </div>
 
@@ -233,12 +233,12 @@ if (isAndroid) {
             const result = await deferredPrompt.userChoice;
 
             if (result.outcome === "accepted") {
-                console.log("Installé 👍");
+                console.log("Installed 👍");
             }
 
             deferredPrompt = null;
         } else {
-            alert("Installation non disponible.");
+            alert("Installation not available.");
         }
     });
 
@@ -247,14 +247,14 @@ if (isAndroid) {
     container.innerHTML = `
         <a href="/download-blocplaysetupinstaller-windows/" class="btn btn-gradient">
             <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg/" class="icon">
-            Télécharger BlocPlay
+            Download BlocPlay
         </a>
     `;
 
 } else {
 
     container.innerHTML = `
-        <div class="btn btn-gradient">❌ Téléchargement indisponible</div>
+        <div class="btn btn-gradient">❌ Download unavailable</div>
     `;
 }
 
@@ -321,7 +321,7 @@ document.getElementById("installBtn")?.addEventListener("click", async () => {
     const result = await deferredPrompt.userChoice;
 
     if (result.outcome === "accepted") {
-      console.log("Installé 👍");
+      console.log("Installed 👍");
     }
 
     deferredPrompt = null;
@@ -334,7 +334,7 @@ document.getElementById("installBtn")?.addEventListener("click", async () => {
     return;
   }
 
-  alert("Installation non disponible sur cet appareil.");
+  alert("Installation not available on this device.");
 });
 
 
