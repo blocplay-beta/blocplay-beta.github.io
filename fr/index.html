@@ -1,0 +1,379 @@
+<!-- Please read COPYRIGHT.md -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+
+<!-- TrustBox script -->
+<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+<!-- End TrustBox script -->
+
+<style>
+/* 🔍 bouton recherche */
+.search-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* overlay */
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+  z-index: 999;
+}
+
+/* input */
+#searchInput {
+  width: 80%;
+  max-width: 500px;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+}
+
+/* résultats */
+#searchResults {
+  margin-top: 20px;
+  color: white;
+  text-align: center;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/icon.png">
+    </a>
+
+    <!-- 🔍 BOUTON RECHERCHE -->
+    <button id="searchBtn" class="search-btn">🔍</button>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+  </div>
+</header>
+
+<div class="container">
+
+<!-- CARD PRINCIPALE -->
+<div class="card">
+    <h1>La plateforme de jeux créée par et pour les gamers</h1>
+
+    <p>
+        BlocPlay est actuellement en bêta. Accédez à la plateforme,
+        installez-la sur Windows ou Android et découvrez les expériences disponibles.
+    </p>
+
+    <div id="download-container"></div>
+</div>
+
+<!-- VOIR SITE -->
+<div class="card">
+    <h2>Voir le site BlocPlay</h2>
+
+    <a href="https://sites.google.com/view/blocplay-beta/accueil" class="btn btn-dark">
+        Voir le site BlocPlay
+    </a>
+</div>
+
+<!-- DISCORD -->
+<div class="card">
+    <h2>Rejoindre le Discord</h2>
+
+    <a href="https://discord.gg/TcK65JDaaC" class="btn btn-discord/">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg/" class="icon">
+        Rejoindre
+    </a>
+</div>
+
+<div class="card">
+    <h2>BlocPlay</h2>
+
+<!-- TrustBox widget - Review Collector -->
+    <div class="trustpilot-widget" data-locale="fr-FR" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="69e5edab578365b8b40538de" data-style-height="52px" data-style-width="100%" data-token="7ce23432-3795-41bd-ba19-3c6a3865b8bd">
+    <a href="https://fr.trustpilot.com/review/blocplay-beta.github.io" target="_blank" rel="noopener">Trustpilot</a>
+    </div>
+<!-- End TrustBox widget -->
+
+    <a href="/github" class=btn btn-dark>Licences</a>
+
+    <p>Ce projet est en développement.
+
+2026 © BlocPlay Studios | MathisB11 & In--Addict</p>
+</div>
+
+</div>
+
+<!-- 🔍 OVERLAY RECHERCHE -->
+<div id="searchOverlay" class="search-overlay">
+  <div>
+    <input type="text" id="searchInput" placeholder="Rechercher..." />
+    <div id="searchResults"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* MENU PROFIL */
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile/">Profil</a>
+            <a href="/settings/">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login/">Se connecter</a>
+            <a href="/signup/">Créer un compte</a>
+        `;
+    }
+}
+
+onAuthStateChanged(auth, (user) => {
+    renderMenu(user);
+});
+
+/* MENU */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+/* LOGOUT */
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        await signOut(auth);
+    }
+});
+
+/* 🔥 BOUTON UNIQUE INSTALL */
+const container = document.getElementById("download-container");
+const userAgent = navigator.userAgent.toLowerCase();
+
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+const isAndroid = userAgent.includes("android");
+const isWindows = userAgent.includes("windows");
+
+if (isAndroid) {
+
+    container.innerHTML = `
+        <button id="installBtn" class="btn btn-gradient">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg/" class="icon">
+            Installer BlocPlay
+        </button>
+    `;
+
+    document.getElementById("installBtn").addEventListener("click", async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+
+            const result = await deferredPrompt.userChoice;
+
+            if (result.outcome === "accepted") {
+                console.log("Installé 👍");
+            }
+
+            deferredPrompt = null;
+        } else {
+            alert("Installation non disponible.");
+        }
+    });
+
+} else if (isWindows) {
+
+    container.innerHTML = `
+        <a href="/download-blocplaysetupinstaller-windows/" class="btn btn-gradient">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/windows.svg/" class="icon">
+            Télécharger BlocPlay
+        </a>
+    `;
+
+} else {
+
+    container.innerHTML = `
+        <div class="btn btn-gradient">❌ Téléchargement indisponible</div>
+    `;
+}
+
+/* 🔍 RECHERCHE */
+const searchBtn = document.getElementById("searchBtn");
+const overlay = document.getElementById("searchOverlay");
+const input = document.getElementById("searchInput");
+const results = document.getElementById("searchResults");
+
+searchBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  overlay.style.display = "flex";
+  input.focus();
+});
+
+overlay.addEventListener("click", (e) => {
+  if (e.target === overlay) {
+    overlay.style.display = "none";
+    input.value = "";
+    results.innerHTML = "";
+  }
+});
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const query = input.value.trim();
+
+    if (!query) return;
+
+    results.innerHTML = `<p>Aucun résultat trouvé pour "${query}"</p>`;
+  }
+});
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js");
+  });
+}
+</script>
+
+<script>
+let deferredPrompt;
+
+// 🔹 Détection installation PWA
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const btn = document.getElementById("installBtn");
+  if (btn) btn.style.display = "inline-block";
+});
+
+// 🔹 Clique sur "Installer BlocPlay"
+document.getElementById("installBtn")?.addEventListener("click", async () => {
+
+  const isWindows = navigator.userAgent.includes("Windows");
+
+  // 📱 Android / PWA
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+
+    const result = await deferredPrompt.userChoice;
+
+    if (result.outcome === "accepted") {
+      console.log("Installé 👍");
+    }
+
+    deferredPrompt = null;
+    return;
+  }
+
+  // 💻 Windows → ton installateur
+  if (isWindows) {
+    window.location.href = "/download-blocplaysetupinstaller-windows";
+    return;
+  }
+
+  alert("Installation non disponible sur cet appareil.");
+});
+
+
+// 🔍 BARRE DE RECHERCHE
+
+const searchBtn = document.getElementById("searchBtn");
+const searchOverlay = document.getElementById("searchOverlay");
+const searchInput = document.getElementById("searchInput");
+
+if (searchBtn) {
+  searchBtn.addEventListener("click", () => {
+    searchOverlay.style.display = "flex";
+    searchInput.focus();
+  });
+}
+
+// 📥 Appui sur Entrée
+searchInput?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const query = searchInput.value.trim();
+
+    if (query === "") return;
+
+    // 👉 Ici tu peux gérer les résultats
+    console.log("Recherche :", query);
+
+    searchOverlay.style.display = "none";
+  }
+});
+
+// ❌ Clic en dehors pour fermer
+searchOverlay?.addEventListener("click", (e) => {
+  if (e.target === searchOverlay) {
+    searchOverlay.style.display = "none";
+  }
+});
+</script>
+
+<script type="module" src="/login/firebase-auth.js"></script>
+
+</body>
+</html>
