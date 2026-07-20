@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clicker 2.0 - Skins & Décor</title>
+    <title>Clicker 2.0 - Édition Ultime</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -20,172 +20,125 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            height: 100vh;
+            width: 100vw;
             overflow: hidden;
             user-select: none;
-            /* Fond animé */
-            background: linear-gradient(45deg, #0b0f19, #131b2f, #0b0f19);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            transition: background 0.5s ease;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Particules de fond */
+        /* Décors & Fonds */
         .particles {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
-            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: drift 20s linear infinite;
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 400% 400%;
         }
 
-        @keyframes drift {
-            from { background-position: 0 0; }
-            to { background-position: 100px 100px; }
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin: 0 0 20px 0;
-            background: linear-gradient(45deg, var(--accent-neon), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-            z-index: 1;
-            animation: pulseText 2s infinite alternate;
-        }
-
-        @keyframes pulseText {
-            from { filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4)); }
-            to { filter: drop-shadow(0 0 25px rgba(254, 9, 121, 0.6)); }
-        }
-
-        .container {
-            display: flex;
-            gap: 30px;
-            max-width: 1000px;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 1;
-        }
-
-        /* Section Clicker */
+        /* --- STRUCTURE PRINCIPALE --- */
+        
+        /* Zone de clic prenant tout le reste de l'écran */
         .clicker-section {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(26, 35, 50, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            z-index: 1;
+            padding: 20px;
+        }
+
+        /* Panneau de droite fixe et propre */
+        .right-panel {
+            width: 380px;
+            height: 100vh;
+            background: rgba(26, 35, 50, 0.95);
+            backdrop-filter: blur(15px);
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 2;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+        }
+
+        .scrollable-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .scrollable-content::-webkit-scrollbar { width: 6px; }
+        .scrollable-content::-webkit-scrollbar-thumb { background: var(--accent-neon); border-radius: 3px; }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0 0 20px 0;
+            text-align: center;
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .stats-display {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
         }
 
         .score-val {
-            font-size: 4.5rem;
-            font-weight: bold;
+            font-size: 4rem;
+            font-weight: 900;
             color: #ffffff;
-            margin: 0;
-            text-shadow: 0 0 15px rgba(255,255,255,0.4);
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
         }
 
         .sps-val {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--accent-neon);
-            margin: 5px 0 0 0;
-            letter-spacing: 1px;
+            margin-top: 5px;
         }
 
-        /* Le Bouton Principal Customisable */
+        /* Bouton Principal */
         #main-clicker {
-            width: 250px;
-            height: 250px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
             background-color: #111827;
             background-size: cover;
             background-position: center;
             border: 6px solid var(--accent-neon);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0,0,0,0.8);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
             cursor: pointer;
             outline: none;
-            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.05s;
+            font-size: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 100px; /* Pour les emojis */
-            color: white;
-            position: relative;
-            animation: floatBtn 4s ease-in-out infinite;
         }
 
-        @keyframes floatBtn {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
+        #main-clicker:active { transform: scale(0.92); }
 
-        #main-clicker:active {
-            transform: scale(0.9) !important;
-            box-shadow: 0 0 15px var(--accent-neon);
-        }
-
-        /* Section Boutique & Skins */
-        .right-panel {
-            width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .shop-section {
-            background: rgba(26, 35, 50, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-
-        .shop-section::-webkit-scrollbar { width: 8px; }
-        .shop-section::-webkit-scrollbar-thumb { background: var(--accent-neon); border-radius: 4px; }
-
+        /* --- BOUTIQUE CONTENUS --- */
         .shop-title {
-            font-size: 1.4rem;
-            margin: 0 0 15px 0;
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
+            padding-bottom: 5px;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+        .shop-title:first-of-type { margin-top: 0; }
 
         .shop-item {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -195,63 +148,100 @@
 
         .shop-item:hover:not(.disabled) {
             border-color: var(--accent-neon);
-            transform: translateX(-5px);
-            background: rgba(0, 242, 254, 0.1);
+            background: rgba(0, 242, 254, 0.05);
         }
 
-        .shop-item.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
+        .shop-item.disabled { opacity: 0.4; cursor: not-allowed; }
+        .shop-item.equipped { border-color: var(--accent-pink); background: rgba(254, 9, 121, 0.1); }
 
-        .shop-item.equipped {
-            border-color: var(--accent-pink);
-            background: rgba(254, 9, 121, 0.1);
-            cursor: default;
-        }
+        .item-info h4 { margin: 0; color: #ffffff; font-size: 1rem; }
+        .item-info p { margin: 3px 0 0 0; font-size: 0.8rem; color: #94a3b8; }
+        .item-cost { font-weight: bold; color: var(--accent-neon); }
+        .item-status { font-size: 0.8rem; color: #94a3b8; text-align: right; }
 
-        .item-info h4 { margin: 0; color: #ffffff; font-size: 1.1rem; }
-        .item-info p { margin: 5px 0 0 0; font-size: 0.9rem; color: #94a3b8; }
-        
-        .item-action { text-align: right; }
-        .item-cost { font-weight: bold; color: var(--accent-neon); font-size: 1.1rem; }
-        .item-count { font-size: 0.85rem; color: #94a3b8; display: block; margin-top: 3px; }
-
-        /* Notifications & Autosave */
-        #notification-zone {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(90deg, var(--accent-neon), var(--accent-pink));
-            color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.4s, transform 0.4s;
-            pointer-events: none;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        /* Animation des chiffres flottants (Agrandis) */
+        /* --- TEXTE FLOTTANT AGRANDI --- */
         .floating-number {
-            position: absolute; /* Rendu relatif à clicker-section */
+            position: absolute;
             color: #ffffff;
             font-weight: 900;
-            font-size: 3rem; /* Beaucoup plus grand */
+            font-size: 3.5rem;
             pointer-events: none;
-            animation: floatRandom 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            z-index: 9999;
-            text-shadow: 0 0 15px var(--accent-pink), 0 0 5px #000;
+            animation: floatUpRandom 0.8s ease-out forwards;
+            z-index: 10;
+            text-shadow: 0 0 15px var(--accent-pink), 0 0 4px #000;
         }
 
-        @keyframes floatRandom {
-            0% { transform: scale(0.5) translateY(0); opacity: 0; }
-            20% { transform: scale(1.2) translateY(-20px); opacity: 1; }
-            100% { transform: scale(1) translateY(-100px); opacity: 0; }
+        @keyframes floatUpRandom {
+            0% { transform: scale(0.4) translateY(0); opacity: 0; }
+            20% { transform: scale(1.1) translateY(-10px); opacity: 1; }
+            100% { transform: scale(1) translateY(-80px); opacity: 0; }
+        }
+
+        /* --- CLIC DROIT & POPUPS --- */
+        #custom-menu {
+            position: fixed;
+            display: none;
+            background: #1a2332;
+            border: 2px solid var(--accent-neon);
+            border-radius: 8px;
+            z-index: 10000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        #custom-menu button {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        #custom-menu button:hover { background: var(--accent-neon); color: #000; }
+
+        /* Fenêtre de Chat Flottante */
+        #chat-window {
+            position: fixed;
+            top: 15%; left: 15%;
+            width: 400px; height: 500px;
+            min-width: 250px; min-height: 250px;
+            background: #0f172a;
+            border: 2px solid var(--accent-pink);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            resize: both;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #1e293b;
+            padding: 10px;
+            cursor: move;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .chat-close {
+            background: none; border: none; color: var(--accent-pink);
+            font-weight: bold; cursor: pointer; font-size: 1.1rem;
+        }
+
+        .chat-body { flex: 1; width: 100%; height: 100%; border: none; }
+
+        #notif {
+            position: fixed; bottom: 20px; left: 20px;
+            background: var(--accent-neon); color: black;
+            padding: 8px 16px; border-radius: 20px; font-weight: bold;
+            opacity: 0; transition: opacity 0.3s; z-index: 100;
         }
     </style>
 </head>
@@ -259,86 +249,49 @@
 
     <div class="particles"></div>
 
-    <h1>Clicker 2.0</h1>
-
-    <div class="container">
-        <div class="clicker-section" id="click-zone">
-            <div class="stats-display">
-                <div class="score-val" id="score-display">0</div>
-                <div class="sps-val" id="sps-display">Génération Auto: 0/s</div>
-            </div>
-            <button id="main-clicker">🍪</button>
+    <div class="clicker-section" id="game-zone">
+        <div class="stats-display">
+            <div class="score-val" id="score-display">0</div>
+            <div class="sps-val" id="sps-display">Génération Auto: 0/s</div>
         </div>
+        <button id="main-clicker">🍪</button>
+    </div>
 
-        <div class="right-panel">
+    <div class="right-panel">
+        <div class="scrollable-content">
+            <h1>Clicker 2.0</h1>
             
-            <div class="shop-section">
-                <div class="shop-title">⚡ Puissance</div>
-                
-                <div class="shop-item" id="buy-clicker">
-                    <div class="item-info">
-                        <h4>Clic Boost</h4>
-                        <p>+1 score par clic</p>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost" id="cost-clicker">15</div>
-                        <span class="item-count" id="count-clicker">Niv. 0</span>
-                    </div>
-                </div>
-
-                <div class="shop-item" id="buy-miner">
-                    <div class="item-info">
-                        <h4>Auto-Clic</h4>
-                        <p>+1 score / seconde</p>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost" id="cost-miner">100</div>
-                        <span class="item-count" id="count-miner">Qté: 0</span>
-                    </div>
-                </div>
+            <div class="shop-title">⚡ Améliorations</div>
+            <div class="shop-item" id="buy-clicker">
+                <div class="item-info"><h4>Clic Boost</h4><p>+1 base / clic</p></div>
+                <div><div class="item-cost" id="cost-clicker">15</div><span class="item-status" id="count-clicker">Niv. 0</span></div>
+            </div>
+            <div class="shop-item" id="buy-miner">
+                <div class="item-info"><h4>Auto-Clic</h4><p>+1 / seconde</p></div>
+                <div><div class="item-cost" id="cost-miner">100</div><span class="item-status" id="count-miner">Qté: 0</span></div>
             </div>
 
-            <div class="shop-section">
-                <div class="shop-title">🎨 Cosmétiques (Skins)</div>
-                
-                <div class="shop-item" id="skin-wood" data-id="wood">
-                    <div class="item-info">
-                        <h4>Planche de bois</h4>
-                        <p>Style rustique 🪵</p>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost" id="cost-wood">500</div>
-                        <span class="item-count status">Acheter</span>
-                    </div>
-                </div>
+            <div class="shop-title">🎨 Skins (+ Multiplicateurs)</div>
+            <div id="skins-container"></div>
 
-                <div class="shop-item" id="skin-dice" data-id="dice">
-                    <div class="item-info">
-                        <h4>Dés de la chance</h4>
-                        <p>Roule vers la gloire 🎲</p>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost" id="cost-dice">2000</div>
-                        <span class="item-count status">Acheter</span>
-                    </div>
-                </div>
-
-                <div class="shop-item" id="skin-blocplay" data-id="blocplay">
-                    <div class="item-info">
-                        <h4>Logo BlocPlay</h4>
-                        <p>Le skin ultime ! 🏆</p>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost" id="cost-blocplay">10000</div>
-                        <span class="item-count status">Acheter</span>
-                    </div>
-                </div>
-
-            </div>
+            <div class="shop-title">🖼️ Fonds d'écran</div>
+            <div id="bg-container"></div>
         </div>
     </div>
 
-    <div id="notification-zone">Jeu sauvegardé</div>
+    <div id="custom-menu">
+        <button id="open-chat-btn">💬 Ouvrir le menu de chat privé</button>
+    </div>
+
+    <div id="chat-window">
+        <div class="chat-header" id="chat-header">
+            <span>Chat Privé BlocPlay</span>
+            <button class="chat-close" id="close-chat-btn">✕</button>
+        </div>
+        <iframe class="chat-body" src="https://bp-contact.github.io/"></iframe>
+    </div>
+
+    <div id="notif">Sauvegarde...</div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
@@ -359,161 +312,195 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        // Définition des skins
+        // Données étendues des SKINS avec avantages multiplicateurs
         const skinsData = {
-            cookie: { cost: 0, content: "🍪", isImage: false },
-            wood: { cost: 500, content: "🪵", isImage: false },
-            dice: { cost: 2000, content: "🎲", isImage: false },
-            blocplay: { cost: 10000, content: "https://blocplay-beta.github.io/icon.png", isImage: true }
+            cookie: { name: "Cookie de base", cost: 0, content: "🍪", mult: 1, isImg: false },
+            wood: { name: "Planche de bois", cost: 250, content: "🪵", mult: 2, isImg: false },
+            dice: { name: "Dé Chanceux", cost: 1000, content: "🎲", mult: 4, isImg: false },
+            diamond: { name: "Diamant Pur", cost: 5000, content: "💎", mult: 8, isImg: false },
+            fire: { name: "Boule de Feu", cost: 15000, content: "🔥", mult: 15, isImg: false },
+            blocplay: { name: "Logo BlocPlay", cost: 50000, content: "https://blocplay-beta.github.io/icon.png", mult: 50, isImg: true }
         };
 
-        // État initial du Jeu
+        // Données des FONDS D'ÉCRAN
+        const bgData = {
+            dark: { name: "Espace Sombre", cost: 0, style: "linear-gradient(45deg, #0b0f19, #131b2f)" },
+            neon: { name: "Cyber Cyberpunk", cost: 500, style: "linear-gradient(135deg, #2e0854, #0b0f19)" },
+            sunset: { name: "Coucher de soleil", cost: 2500, style: "linear-gradient(180deg, #fdba74, #3b0764)" },
+            matrix: { name: "Code Matrix", cost: 10000, style: "linear-gradient(0deg, #064e3b, #022c22)" }
+        };
+
         let game = {
-            score: 0,
-            clickPower: 1,
-            autoPower: 0,
-            clickerLevel: 0,
-            minerCount: 0,
-            clickerCost: 15,
-            minerCost: 100,
-            skinsOwned: ['cookie'],
-            activeSkin: 'cookie'
+            score: 0, clickPower: 1, autoPower: 0, clickerLevel: 0, minerCount: 0,
+            clickerCost: 15, minerCost: 100,
+            skinsOwned: ['cookie'], activeSkin: 'cookie',
+            bgOwned: ['dark'], activeBg: 'dark'
         };
 
         let currentUser = null;
 
-        // DOM
+        // Dom Elements
         const scoreDisplay = document.getElementById("score-display");
         const spsDisplay = document.getElementById("sps-display");
         const mainClicker = document.getElementById("main-clicker");
-        const clickZone = document.getElementById("click-zone");
-        const notifZone = document.getElementById("notification-zone");
-        
-        // --- AUTHENTIFICATION ---
+        const gameZone = document.getElementById("game-zone");
+        const customMenu = document.getElementById("custom-menu");
+        const chatWindow = document.getElementById("chat-window");
+
+        // --- ENTRÉE JEU & AUTHENTIFICATION ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
                 loadGameData(user.uid);
-                
-                setInterval(() => {
-                    if (game.autoPower > 0) {
-                        game.score += game.autoPower;
-                        updateUI();
-                    }
-                }, 1000);
-
+                setInterval(() => { if (game.autoPower > 0) { game.score += game.autoPower; updateUI(); } }, 1000);
                 setInterval(() => saveGameData(false), 10000);
             } else {
                 window.location.href = "https://blocplay-beta.github.io/login";
             }
         });
 
-        // --- GESTION DU CLIC ET TEXTE FLOTTANT ---
-        mainClicker.addEventListener("click", () => {
-            game.score += game.clickPower;
-            updateUI();
-            spawnFloatingNumber(`+${game.clickPower}`);
+        // --- GESTION DU CLIC DROIT & DE LA FENÊTRE DE CHAT ---
+        window.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            customMenu.style.left = `${e.clientX}px`;
+            customMenu.style.top = `${e.clientY}px`;
+            customMenu.style.display = "block";
         });
 
-        function spawnFloatingNumber(text) {
-            // Créer l'élément
+        // Ferme le menu au clic n'importe où
+        window.addEventListener("click", () => { customMenu.style.display = "none"; });
+
+        document.getElementById("open-chat-btn").addEventListener("click", (e) => {
+            e.stopPropagation(); // Évite les conflits de fermeture soudaine
+            customMenu.style.display = "none";
+            chatWindow.style.display = "flex";
+        });
+
+        document.getElementById("close-chat-btn").addEventListener("click", () => {
+            chatWindow.style.display = "none";
+        });
+
+        // Système de Drag & Drop de la fenêtre de chat
+        const chatHeader = document.getElementById("chat-header");
+        let isDragging = false, offsetX, offsetY;
+        chatHeader.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            offsetX = e.clientX - chatWindow.offsetLeft;
+            offsetY = e.clientY - chatWindow.offsetTop;
+        });
+        window.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                chatWindow.style.left = `${e.clientX - offsetX}px`;
+                chatWindow.style.top = `${e.clientY - offsetY}px`;
+            }
+        });
+        window.addEventListener("mouseup", () => isDragging = false);
+
+        // --- CALCULS DE CLIC & TEXTE FLOTTANT ALÉATOIRE ---
+        mainClicker.addEventListener("click", () => {
+            const currentMult = skinsData[game.activeSkin]?.mult || 1;
+            const finalGain = game.clickPower * currentMult;
+            
+            game.score += finalGain;
+            updateUI();
+            
+            // Placement strict dans la zone de clic (sans toucher au panneau droit)
+            const zoneW = gameZone.clientWidth;
+            const zoneH = gameZone.clientHeight;
+            const rx = Math.floor(Math.random() * (zoneW - 160)) + 40;
+            const ry = Math.floor(Math.random() * (zoneH - 160)) + 80;
+
             const el = document.createElement("div");
             el.className = "floating-number";
-            el.textContent = text;
-
-            // Calcul pour un placement aléatoire dans la `clicker-section`
-            // en évitant que ça déborde du conteneur (marge de sécurité)
-            const zoneWidth = clickZone.clientWidth;
-            const zoneHeight = clickZone.clientHeight;
-            
-            // Marge pour ne pas coller aux bords (et ne pas aller sur le panneau de droite)
-            const paddingX = 80; 
-            const paddingY = 80;
-
-            const randomX = Math.floor(Math.random() * (zoneWidth - paddingX * 2)) + paddingX;
-            const randomY = Math.floor(Math.random() * (zoneHeight - paddingY * 2)) + paddingY;
-
-            el.style.left = `${randomX}px`;
-            el.style.top = `${randomY}px`;
-
-            clickZone.appendChild(el);
-            
-            // Supprimer l'élément après l'animation
+            el.textContent = `+${finalGain}`;
+            el.style.left = `${rx}px`;
+            el.style.top = `${ry}px`;
+            gameZone.appendChild(el);
             el.addEventListener("animationend", () => el.remove());
-        }
+        });
 
-        // --- GESTION DE LA BOUTIQUE (Améliorations) ---
+        // --- AMÉLIORATIONS BASIQUES ---
         document.getElementById("buy-clicker").addEventListener("click", () => {
             if (game.score >= game.clickerCost) {
-                game.score -= game.clickerCost;
-                game.clickerLevel++;
-                game.clickPower += 1;
-                game.clickerCost = Math.round(15 * Math.pow(1.5, game.clickerLevel));
-                updateUI();
+                game.score -= game.clickerCost; game.clickerLevel++; game.clickPower += 1;
+                game.clickerCost = Math.round(15 * Math.pow(1.5, game.clickerLevel)); updateUI();
             }
         });
 
         document.getElementById("buy-miner").addEventListener("click", () => {
             if (game.score >= game.minerCost) {
-                game.score -= game.minerCost;
-                game.minerCount++;
-                game.autoPower += 1;
-                game.minerCost = Math.round(100 * Math.pow(1.15, game.minerCount));
-                updateUI();
+                game.score -= game.minerCost; game.minerCount++; game.autoPower += 1;
+                game.minerCost = Math.round(100 * Math.pow(1.15, game.minerCount)); updateUI();
             }
         });
 
-        // --- GESTION DES SKINS ---
-        const skinElements = ['wood', 'dice', 'blocplay'].map(id => ({
-            id: id,
-            elem: document.getElementById(`skin-${id}`),
-            costElem: document.getElementById(`cost-${id}`),
-            statusElem: document.getElementById(`skin-${id}`).querySelector('.status')
-        }));
-
-        skinElements.forEach(skinObj => {
-            skinObj.elem.addEventListener("click", () => {
-                const skinId = skinObj.id;
-                
-                // Si on le possède déjà -> Équiper
-                if (game.skinsOwned.includes(skinId)) {
-                    game.activeSkin = skinId;
-                    applySkin();
-                    updateUI();
-                } 
-                // Sinon on essaie d'acheter
-                else if (game.score >= skinsData[skinId].cost) {
-                    game.score -= skinsData[skinId].cost;
-                    game.skinsOwned.push(skinId);
-                    game.activeSkin = skinId;
-                    triggerNotification(`Skin débloqué !`);
-                    applySkin();
-                    updateUI();
-                }
+        // --- GÉNÉRATION DYNAMIQUE DES SKINS ET FONDS ---
+        function setupShopLists() {
+            const skinCont = document.getElementById("skins-container");
+            skinCont.innerHTML = "";
+            Object.keys(skinsData).forEach(id => {
+                if(id === 'cookie') return;
+                skinCont.innerHTML += `
+                    <div class="shop-item" id="sk-${id}">
+                        <div class="item-info"><h4>${skinsData[id].name}</h4><p>Avantage: Clic x${skinsData[id].mult}</p></div>
+                        <div><div class="item-cost class-cost">${skinsData[id].cost}</div><span class="item-status class-status">Acheter</span></div>
+                    </div>`;
             });
-        });
 
-        function applySkin() {
-            const skin = skinsData[game.activeSkin];
-            if (skin.isImage) {
-                mainClicker.textContent = "";
-                mainClicker.style.backgroundImage = `url('${skin.content}')`;
-                mainClicker.style.backgroundColor = "transparent";
-                mainClicker.style.border = "none";
+            const bgCont = document.getElementById("bg-container");
+            bgCont.innerHTML = "";
+            Object.keys(bgData).forEach(id => {
+                if(id === 'dark') return;
+                bgCont.innerHTML += `
+                    <div class="shop-item" id="bg-${id}">
+                        <div class="item-info"><h4>${bgData[id].name}</h4><p>Ambiance visuelle</p></div>
+                        <div><div class="item-cost class-cost">${bgData[id].cost}</div><span class="item-status class-status">Acheter</span></div>
+                    </div>`;
+            });
+
+            // Evenements
+            Object.keys(skinsData).forEach(id => {
+                if(id === 'cookie') return;
+                document.getElementById(`sk-${id}`).addEventListener("click", () => handleBuy("skin", id));
+            });
+            Object.keys(bgData).forEach(id => {
+                if(id === 'dark') return;
+                document.getElementById(`bg-${id}`).addEventListener("click", () => handleBuy("bg", id));
+            });
+        }
+
+        function handleBuy(type, id) {
+            if(type === "skin") {
+                if (game.skinsOwned.includes(id)) { game.activeSkin = id; }
+                else if (game.score >= skinsData[id].cost) {
+                    game.score -= skinsData[id].cost; game.skinsOwned.push(id); game.activeSkin = id;
+                }
+                applyVisuals(); updateUI();
             } else {
-                mainClicker.style.backgroundImage = "none";
-                mainClicker.style.backgroundColor = "#111827";
-                mainClicker.style.border = "6px solid var(--accent-neon)";
-                mainClicker.textContent = skin.content;
+                if (game.bgOwned.includes(id)) { game.activeBg = id; }
+                else if (game.score >= bgData[id].cost) {
+                    game.score -= bgData[id].cost; game.bgOwned.push(id); game.activeBg = id;
+                }
+                applyVisuals(); updateUI();
             }
         }
 
-        // --- MISE À JOUR DE L'INTERFACE ---
+        function applyVisuals() {
+            const skin = skinsData[game.activeSkin];
+            if (skin.isImg) {
+                mainClicker.textContent = ""; mainClicker.style.backgroundImage = `url('${skin.content}')`;
+                mainClicker.style.border = "none"; mainClicker.style.backgroundColor = "transparent";
+            } else {
+                mainClicker.style.backgroundImage = "none"; mainClicker.style.backgroundColor = "#111827";
+                mainClicker.style.border = "6px solid var(--accent-neon)"; mainClicker.textContent = skin.content;
+            }
+            document.body.style.background = bgData[game.activeBg].style;
+        }
+
         function updateUI() {
             scoreDisplay.textContent = Math.floor(game.score);
             spsDisplay.textContent = `Génération Auto: ${game.autoPower}/s`;
             
-            // Boutique améliorations
             document.getElementById("cost-clicker").textContent = game.clickerCost;
             document.getElementById("count-clicker").textContent = `Niv. ${game.clickerLevel}`;
             document.getElementById("buy-clicker").classList.toggle("disabled", game.score < game.clickerCost);
@@ -522,53 +509,41 @@
             document.getElementById("count-miner").textContent = `Qté: ${game.minerCount}`;
             document.getElementById("buy-miner").classList.toggle("disabled", game.score < game.minerCost);
 
-            // Boutique skins
-            skinElements.forEach(skinObj => {
-                const isOwned = game.skinsOwned.includes(skinObj.id);
-                const isEquipped = game.activeSkin === skinObj.id;
+            // Statuts Skins
+            Object.keys(skinsData).forEach(id => {
+                if(id === 'cookie') return;
+                const itemEl = document.getElementById(`sk-${id}`);
+                const statusEl = itemEl.querySelector(".class-status");
+                const costEl = itemEl.querySelector(".class-cost");
+                if (game.activeSkin === id) { itemEl.className = "shop-item equipped"; statusEl.textContent = "Équipé"; costEl.textContent = ""; }
+                else if (game.skinsOwned.includes(id)) { itemEl.className = "shop-item"; statusEl.textContent = "Équiper"; costEl.textContent = ""; }
+                else { itemEl.className = "shop-item" + (game.score < skinsData[id].cost ? " disabled" : ""); statusEl.textContent = "Acheter"; costEl.textContent = skinsData[id].cost; }
+            });
 
-                if (isEquipped) {
-                    skinObj.statusElem.textContent = "Équipé";
-                    skinObj.costElem.textContent = "";
-                    skinObj.elem.className = "shop-item equipped";
-                } else if (isOwned) {
-                    skinObj.statusElem.textContent = "Équiper";
-                    skinObj.costElem.textContent = "";
-                    skinObj.elem.className = "shop-item";
-                } else {
-                    skinObj.statusElem.textContent = "Acheter";
-                    skinObj.costElem.textContent = skinsData[skinObj.id].cost;
-                    skinObj.elem.className = "shop-item" + (game.score < skinsData[skinObj.id].cost ? " disabled" : "");
-                }
+            // Statuts Fonds
+            Object.keys(bgData).forEach(id => {
+                if(id === 'dark') return;
+                const itemEl = document.getElementById(`bg-${id}`);
+                const statusEl = itemEl.querySelector(".class-status");
+                const costEl = itemEl.querySelector(".class-cost");
+                if (game.activeBg === id) { itemEl.className = "shop-item equipped"; statusEl.textContent = "Équipé"; costEl.textContent = ""; }
+                else if (game.bgOwned.includes(id)) { itemEl.className = "shop-item"; statusEl.textContent = "Équiper"; costEl.textContent = ""; }
+                else { itemEl.className = "shop-item" + (game.score < bgData[id].cost ? " disabled" : ""); statusEl.textContent = "Acheter"; costEl.textContent = bgData[id].cost; }
             });
         }
 
-        function triggerNotification(message) {
-            notifZone.textContent = message;
-            notifZone.style.opacity = "1";
-            notifZone.style.transform = "translate(-50%, -10px)";
-            setTimeout(() => { 
-                notifZone.style.opacity = "0"; 
-                notifZone.style.transform = "translate(-50%, 0)";
-            }, 2000);
-        }
-
-        // --- SAUVEGARDE ET CHARGEMENT ---
-        function saveGameData(showNotif = true) {
+        // --- FIREBASE SYNC ---
+        function saveGameData(show = true) {
             if (!currentUser) return;
-            set(ref(db, 'clicker2_saves/' + currentUser.uid), { game: game })
-            .then(() => { if(showNotif) triggerNotification("💾 Sauvegarde Cloud réussie !"); });
+            set(ref(db, 'clicker2_saves/' + currentUser.uid), { game: game });
         }
 
         function loadGameData(uid) {
-            get(child(ref(db), `clicker2_saves/${uid}`)).then((snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    if(data.game) game = { ...game, ...data.game }; // Fusionne pour éviter les erreurs si ajout de nouveaux paramètres
-                }
-                applySkin();
-                updateUI();
-            });
+            setupShopLists();
+            get(child(ref(db), `clicker2_saves/${uid}`)).then((snap) => {
+                if (snap.exists() && snap.val().game) game = { ...game, ...snap.val().game };
+                applyVisuals(); updateUI();
+            }).catch(() => { applyVisuals(); updateUI(); });
         }
 
         window.addEventListener("beforeunload", () => saveGameData(false));
