@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neon Rider</title>
+    <title>Neon Rider - Play.Works Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
 
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background-color: #0b0c10;
+            overflow: hidden; background-color: #030308;
             font-family: 'Orbitron', sans-serif; user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
         #game-container {
@@ -20,60 +19,66 @@
 
         canvas {
             display: block; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1f2833 0%, #0b0c10 100%);
+            background: radial-gradient(circle at center, #0f1026 0%, #030308 100%);
         }
 
-        /* --- UI EN JEU --- */
+        /* HUD EN JEU */
         .hud {
             position: absolute; top: 20px; left: 20px; right: 20px;
             display: flex; justify-content: space-between;
-            font-size: 1.2rem; pointer-events: none; z-index: 5;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            font-size: 1.3rem; pointer-events: none; z-index: 5;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
         }
 
-        .hud-item {
-            color: #fff; display: flex; align-items: center; gap: 8px;
-        }
+        .hud-item { color: #fff; display: flex; align-items: center; gap: 8px; }
+        .hud-gem { color: #ff007f; text-shadow: 0 0 10px #ff007f; }
 
-        .hud-gem { color: #66fcf1; text-shadow: 0 0 15px #66fcf1; }
-
-        /* --- PAGE D'ACCUEIL (MENU) --- */
+        /* MENU STYLE PLAY.WORKS */
         .menu-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 12, 16, 0.85);
+            background: rgba(3, 3, 8, 0.9);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(5px); z-index: 10;
+            z-index: 10;
         }
 
         h1.game-title {
-            font-size: 5rem; margin: 0 0 40px 0; letter-spacing: 2px;
-            color: transparent; -webkit-text-stroke: 2px #66fcf1;
-            text-shadow: 0 0 20px rgba(102, 252, 241, 0.6), 0 0 40px rgba(102, 252, 241, 0.4);
+            font-size: 4.5rem; margin: 0 0 10px 0; letter-spacing: 3px;
+            color: #00f2fe;
+            text-shadow: 0 0 20px #00f2fe, 0 0 40px #00f2fe;
             text-align: center; font-weight: 900;
         }
 
+        .subtitle {
+            color: #ff007f; font-size: 1.1rem; letter-spacing: 4px; margin-bottom: 30px;
+            text-shadow: 0 0 10px #ff007f;
+        }
+
+        .stats-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 12px; padding: 15px 30px; margin-bottom: 30px;
+            color: #a0a0c0; font-size: 1.1rem; text-align: center; line-height: 1.8;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
         .play-btn {
-            background: #66fcf1; color: #0b0c10; border: none;
-            padding: 15px 60px; font-size: 1.8rem; font-weight: 900;
+            background: #ff007f; color: #fff; border: none;
+            padding: 16px 70px; font-size: 1.8rem; font-weight: 900;
             border-radius: 50px; cursor: pointer; transition: all 0.2s ease;
-            box-shadow: 0 0 20px rgba(102, 252, 241, 0.5);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
             font-family: 'Orbitron', sans-serif;
             text-transform: uppercase; letter-spacing: 2px;
         }
 
         .play-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px rgba(102, 252, 241, 0.8);
-            background: #fff;
+            transform: scale(1.08);
+            box-shadow: 0 0 40px rgba(255, 0, 127, 0.9);
+            background: #ff3399;
         }
 
         .controls-tip {
-            margin-top: 40px; color: #c5c6c7; font-size: 1rem;
-            text-align: center; letter-spacing: 1px; font-family: sans-serif;
-        }
-
-        .stats-panel {
-            margin-bottom: 30px; color: #45a29e; font-size: 1.2rem; text-align: center;
+            margin-top: 35px; color: #606080; font-size: 0.9rem;
+            text-align: center; font-family: sans-serif; line-height: 1.5;
         }
     </style>
 </head>
@@ -89,23 +94,23 @@
 
     <div id="menu-overlay" class="menu-overlay">
         <h1 class="game-title">NEON RIDER</h1>
+        <div class="subtitle">PLAY.WORKS EDITION</div>
         
         <div class="stats-panel">
-            MEILLEUR SCORE : <span id="best-score" style="color:#fff;">0</span><br>
-            CRISTAUX TOTAUX : <span id="total-gems" style="color:#66fcf1;">0</span>
+            MEILLEUR SCORE : <span id="best-score" style="color:#00f2fe;">0</span><br>
+            CRISTAUX : <span id="total-gems" style="color:#ff007f;">0</span>
         </div>
 
         <button id="play-btn" class="play-btn">JOUER</button>
 
         <div class="controls-tip">
-            Maintenir <b>ESPACE</b> pour Accélérer<br>
-            <b>FLÈCHES GAUCHE / DROITE</b> pour faire des saltos
+            Maintenir <b>ESPACE</b> ou <b>FLÈCHE HAUT</b> pour accélérer<br>
+            <b>FLÈCHES GAUCHE / DROITE</b> pour contrôler l'équilibre et faire des flips
         </div>
     </div>
 </div>
 
 <script type="module">
-// --- CONFIGURATION FIREBASE ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -124,11 +129,10 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 let uId = null, highscore = 0, totalGemsDB = 0;
 
-// Chargement des données Firebase au démarrage
 onAuthStateChanged(auth, (u) => {
     if (u) {
         uId = u.uid;
-        get(child(ref(db), `neon_rider_playworks/${uId}`)).then((s) => {
+        get(child(ref(db), `neon_rider_v7/${uId}`)).then((s) => {
             if (s.exists()) {
                 highscore = s.val().best || 0;
                 totalGemsDB = s.val().gems || 0;
@@ -139,7 +143,6 @@ onAuthStateChanged(auth, (u) => {
     }
 });
 
-// --- MOTEUR DU JEU ---
 const canvas = document.getElementById('neonCanvas');
 const ctx = canvas.getContext('2d');
 const menuOverlay = document.getElementById('menu-overlay');
@@ -147,29 +150,24 @@ const gameHud = document.getElementById('game-hud');
 
 let isPlaying = false;
 let score = 0;
-let sessionGems = 0;
 let cameraX = 0, cameraY = 0;
-let terrain = [];
-let gems = [];
+let segments = [];
+let diamonds = [];
 
-const THEME_COLOR = '#66fcf1'; // Bleu cyan néon caractéristique
-
-// Physique de la moto (souple, réactive, arcade)
 const bike = {
-    x: 200, y: 0,
+    x: 100, y: 0,
     vx: 0, vy: 0,
     speed: 0,
-    maxSpeed: 14, // Vitesse max élevée pour l'aspect flow
-    accel: 0.4,
-    friction: 0.98,
-    gravity: 0.35,
+    maxSpeed: 12,
+    accel: 0.35,
+    friction: 0.985,
+    gravity: 0.3,
     angle: 0,
     isGrounded: false,
     radius: 12,
     flipTracker: 0
 };
 
-// Redimensionnement fluide
 function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -177,96 +175,96 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// --- GÉNÉRATION DE TERRAIN FLUIDE (COURBES) ---
-function generateTerrain() {
-    terrain = [];
-    gems = [];
+// GENERATION DE PARCOURS SECURISEE (PAS DE SPAWN DANS LE VIDE)
+function buildMap() {
+    segments = [];
+    diamonds = [];
+    
     let cx = 0;
-    let cy = canvas.height / 2;
+    let cy = canvas.height * 0.55;
 
-    // Point de départ plat
-    terrain.push({ x: cx, y: cy });
-    cx += 800;
-    terrain.push({ x: cx, y: cy });
+    // 1. ZONE DE DEPART CONTINU DE 1200px (Garantit qu'on ne tombe jamais dans le vide au spawn)
+    segments.push({ x1: cx, y1: cy, x2: cx + 1200, y2: cy });
+    cx += 1200;
 
-    for (let i = 0; i < 50; i++) {
-        // Plat pour prendre de la vitesse
-        let flatDist = 300 + Math.random() * 400;
-        cx += flatDist;
+    for (let i = 0; i < 40; i++) {
+        // Plat / Descente douce pour prendre de l'élan
+        let runLength = 500 + Math.random() * 300;
+        let nextY = cy + (Math.random() * 40 - 20);
+        segments.push({ x1: cx, y1: cy, x2: cx + runLength, y2: nextY });
         
-        // Tremplin (kicker) doux
-        let rampUpX = 150 + Math.random() * 100;
-        let rampUpY = -(50 + Math.random() * 80);
+        // Cristaux sur le chemin
+        for (let j = 1; j <= 3; j++) {
+            diamonds.push({ x: cx + (j * 120), y: nextY - 20, picked: false });
+        }
         
-        // Division du tremplin en sous-segments pour simuler une courbe
-        terrain.push({ x: cx - flatDist/2, y: cy }); 
-        terrain.push({ x: cx, y: cy });
-        
-        cx += rampUpX;
-        cy += rampUpY;
-        terrain.push({ x: cx, y: cy });
+        cx += runLength;
+        cy = nextY;
 
-        // Gouffre (vide) - On génère des pièces en arc de cercle
-        let gap = 300 + Math.random() * 200;
-        
-        // Placement des cristaux dans le vide
-        gems.push({ x: cx + gap * 0.3, y: cy - 60, picked: false });
-        gems.push({ x: cx + gap * 0.5, y: cy - 100, picked: false });
-        gems.push({ x: cx + gap * 0.7, y: cy - 60, picked: false });
+        // Kicker / Tremplin adouci
+        let rampWidth = 120;
+        let rampHeight = 35 + Math.random() * 20;
+        segments.push({ x1: cx, y1: cy, x2: cx + rampWidth, y2: cy - rampHeight });
+        cx += rampWidth;
+        cy -= rampHeight;
 
-        cx += gap;
-        cy += 150; // Réception beaucoup plus basse pour atterrir confortablement
+        // TROU RAPPROCHÉ + PLATEFORME DE RÉCEPTION BASSE ET LARGE
+        let safeGap = 130 + Math.random() * 50; // Trou très court
+        let dropHeight = 90; // Réception rabaissée pour toujours arriver par le dessus
 
-        // Point de réception
-        terrain.push({ x: cx, y: cy });
+        diamonds.push({ x: cx + (safeGap / 2), y: cy + 10, picked: false });
+
+        cx += safeGap;
+        cy += dropHeight;
+
+        // Plateforme d'atterrissage très longue pour ne pas rater
+        let landWidth = 600;
+        segments.push({ x1: cx, y1: cy, x2: cx + landWidth, y2: cy });
+        cx += landWidth;
     }
+
+    // Fin sans fin
+    segments.push({ x1: cx, y1: cy, x2: cx + 20000, y2: cy });
 }
 
-// --- CONTRÔLES ---
 const keys = {};
 window.addEventListener('keydown', (e) => { keys[e.code] = true; });
 window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
-// Démarrer la partie
-function startGame() {
-    generateTerrain();
+function start() {
+    buildMap();
     
+    // Placer la moto exactement sur le sol de départ
     bike.x = 200; 
-    bike.y = terrain[0].y - 50;
-    bike.vx = 5; bike.vy = 0; bike.speed = 2;
-    bike.angle = 0; bike.isGrounded = false; bike.flipTracker = 0;
+    bike.y = canvas.height * 0.55 - bike.radius - 5;
+    bike.vx = 4; bike.vy = 0; bike.speed = 2;
+    bike.angle = 0;
+    bike.isGrounded = true;
+    bike.flipTracker = 0;
     
     score = 0;
-    sessionGems = 0;
     document.getElementById('score').textContent = '0';
     document.getElementById('gems').textContent = totalGemsDB;
-    
+
     menuOverlay.style.display = 'none';
     gameHud.style.display = 'flex';
     isPlaying = true;
     
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(loop);
 }
 
-// Trouver le segment de terrain sous la moto
-function getGround(x) {
-    for (let i = 0; i < terrain.length - 1; i++) {
-        let p1 = terrain[i];
-        let p2 = terrain[i+1];
-        if (x >= p1.x && x < p2.x) {
-            // Empêcher les distances trop grandes d'être considérées comme le sol (les trous)
-            if (p2.x - p1.x > 250) return null; // C'est un trou !
-            
-            let t = (x - p1.x) / (p2.x - p1.x);
-            let y = p1.y + t * (p2.y - p1.y);
-            let angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-            return { y, angle, p1, p2 };
+function getSurface(x) {
+    for (let seg of segments) {
+        if (x >= seg.x1 && x <= seg.x2) {
+            let t = (x - seg.x1) / (seg.x2 - seg.x1);
+            let y = seg.y1 + t * (seg.y2 - seg.y1);
+            let angle = Math.atan2(seg.y2 - seg.y1, seg.x2 - seg.x1);
+            return { y, angle };
         }
     }
     return null;
 }
 
-// Math utilitaire pour les angles
 function normalizeAngle(a) {
     while (a > Math.PI) a -= Math.PI * 2;
     while (a < -Math.PI) a += Math.PI * 2;
@@ -274,35 +272,30 @@ function normalizeAngle(a) {
 }
 
 function update() {
-    // Accélération (Espace ou auto)
-    if (keys['Space'] || keys['ArrowUp']) {
+    if (keys['Space'] || keys['KeyW'] || keys['ArrowUp']) {
         bike.speed = Math.min(bike.speed + bike.accel, bike.maxSpeed);
     } else {
         bike.speed *= bike.friction;
     }
 
-    // Rotation et saltos (Très sensible en l'air)
     if (!bike.isGrounded) {
-        let rotationSpeed = 0.12;
-        if (keys['ArrowLeft']) {
-            bike.angle -= rotationSpeed;
-            bike.flipTracker -= rotationSpeed;
+        if (keys['ArrowLeft'] || keys['KeyA']) {
+            bike.angle -= 0.1;
+            bike.flipTracker -= 0.1;
         }
-        if (keys['ArrowRight']) {
-            bike.angle += rotationSpeed;
-            bike.flipTracker += rotationSpeed;
+        if (keys['ArrowRight'] || keys['KeyD']) {
+            bike.angle += 0.1;
+            bike.flipTracker += 0.1;
         }
 
-        // Récompense salto
         if (Math.abs(bike.flipTracker) >= Math.PI * 2) {
-            score += 500; 
+            score += 1000;
             bike.flipTracker = 0;
         }
     } else {
         bike.flipTracker = 0;
     }
 
-    // Vecteurs de mouvement
     if (bike.isGrounded) {
         bike.vx = Math.cos(bike.angle) * bike.speed;
         bike.vy = Math.sin(bike.angle) * bike.speed;
@@ -313,21 +306,18 @@ function update() {
     bike.x += bike.vx;
     bike.y += bike.vy;
 
-    // Gestion du terrain et atterrissage
-    let ground = getGround(bike.x);
-    if (ground) {
-        if (bike.y + bike.radius >= ground.y && bike.vy >= -0.5) {
-            // Vérif du crash (si atterrissage sur le dos ou trop incliné)
-            let diff = Math.abs(normalizeAngle(bike.angle - ground.angle));
+    let surface = getSurface(bike.x);
+    if (surface) {
+        if (bike.y + bike.radius >= surface.y && bike.vy >= -0.2) {
+            let diff = Math.abs(normalizeAngle(bike.angle - surface.angle));
             if (!bike.isGrounded && diff > 1.2) {
-                gameOver();
+                crash();
                 return;
             }
 
-            bike.y = ground.y - bike.radius;
+            bike.y = surface.y - bike.radius;
             bike.isGrounded = true;
-            // Adoucir la transition d'angle pour coller à la piste
-            bike.angle = bike.angle * 0.4 + ground.angle * 0.6;
+            bike.angle = bike.angle * 0.3 + surface.angle * 0.7;
         } else {
             bike.isGrounded = false;
         }
@@ -335,155 +325,115 @@ function update() {
         bike.isGrounded = false;
     }
 
-    // Collecte des cristaux
-    gems.forEach(g => {
-        if (!g.picked) {
-            let dist = Math.hypot(bike.x - g.x, bike.y - g.y);
-            if (dist < bike.radius + 20) {
-                g.picked = true;
-                sessionGems++;
-                totalGemsDB++;
-                score += 100;
-                document.getElementById('gems').textContent = totalGemsDB;
-            }
+    diamonds.forEach(d => {
+        if (!d.picked && Math.hypot(bike.x - d.x, bike.y - d.y) < bike.radius + 18) {
+            d.picked = true;
+            totalGemsDB++;
+            score += 250;
+            document.getElementById('gems').textContent = totalGemsDB;
         }
     });
 
-    // Caméra centrée et dynamique
-    cameraX = bike.x - (canvas.width * 0.3);
-    cameraY = cameraY * 0.9 + (bike.y - (canvas.height * 0.5)) * 0.1;
+    cameraX = bike.x - (canvas.width * 0.25);
+    cameraY = cameraY * 0.88 + (bike.y - (canvas.height * 0.55)) * 0.12;
 
-    // Score basé sur la distance
-    score += bike.vx * 0.2;
+    score += bike.vx * 0.15;
     document.getElementById('score').textContent = Math.floor(score);
 
-    // Chute mortelle
-    if (bike.y > cameraY + canvas.height + 200) {
-        gameOver();
-    }
+    if (bike.y > cameraY + canvas.height + 300) crash();
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     ctx.save();
     ctx.translate(-cameraX, -cameraY);
 
-    // --- DESSIN DU TERRAIN (Néon) ---
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = THEME_COLOR;
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = THEME_COLOR;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    ctx.beginPath();
-    for (let i = 0; i < terrain.length - 1; i++) {
-        let p1 = terrain[i];
-        let p2 = terrain[i+1];
-        
-        // Optimisation : ne dessiner que ce qui est à l'écran
-        if (p2.x >= cameraX - 200 && p1.x <= cameraX + canvas.width + 200) {
-            // Dessiner seulement si ce n'est pas un trou (distance courte)
-            if (p2.x - p1.x <= 250) {
-                ctx.moveTo(p1.x, p1.y);
-                ctx.lineTo(p2.x, p2.y);
-            }
+    // PISTES NEON BLEUES
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#00f2fe';
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = '#00f2fe';
+    
+    segments.forEach(seg => {
+        if (seg.x2 >= cameraX - 200 && seg.x1 <= cameraX + canvas.width + 200) {
+            ctx.beginPath();
+            ctx.moveTo(seg.x1, seg.y1);
+            ctx.lineTo(seg.x2, seg.y2);
+            ctx.stroke();
         }
-    }
-    ctx.stroke();
+    });
     ctx.shadowBlur = 0;
 
-    // --- DESSIN DES CRISTAUX ---
-    ctx.fillStyle = '#fff';
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = '#fff';
-    gems.forEach(g => {
-        if (!g.picked && g.x > cameraX && g.x < cameraX + canvas.width) {
+    // CRISTAUX ROSES
+    diamonds.forEach(d => {
+        if (!d.picked && d.x >= cameraX - 100 && d.x <= cameraX + canvas.width + 100) {
             ctx.save();
-            ctx.translate(g.x, g.y);
-            // Animation de flottement simple
-            ctx.rotate(Date.now() / 500); 
+            ctx.translate(d.x, d.y);
+            ctx.fillStyle = '#ff007f';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ff007f';
             ctx.beginPath();
-            ctx.moveTo(0, -10); ctx.lineTo(10, 0); ctx.lineTo(0, 10); ctx.lineTo(-10, 0);
+            ctx.moveTo(0, -9); ctx.lineTo(6, 0); ctx.lineTo(0, 9); ctx.lineTo(-6, 0);
+            ctx.closePath();
             ctx.fill();
             ctx.restore();
         }
     });
     ctx.shadowBlur = 0;
 
-    // --- DESSIN DE LA MOTO (Design Play.Works : Cyber, épuré) ---
+    // MOTO
     ctx.save();
     ctx.translate(bike.x, bike.y);
     ctx.rotate(bike.angle);
 
-    // Halo lumineux
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = THEME_COLOR;
-    
-    // Roues lumineuses
-    ctx.fillStyle = THEME_COLOR;
-    ctx.beginPath(); ctx.arc(-15, 6, 6, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(15, 6, 6, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#00f2fe';
+    ctx.fillStyle = '#00f2fe';
 
-    // Châssis (Polygone lisse)
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = '#111';
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(-20, 6); // Arrière bas
-    ctx.lineTo(-10, -5); // Queue
-    ctx.lineTo(5, -5);  // Siège
-    ctx.lineTo(15, 6);  // Avant bas
-    ctx.lineTo(-20, 6);
-    ctx.fill();
-    ctx.stroke();
-    
-    // Ligne néon sur la moto
-    ctx.strokeStyle = THEME_COLOR;
+    // Roues
+    ctx.beginPath(); ctx.arc(-15, 5, 7, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(15, 5, 7, 0, Math.PI * 2); ctx.fill();
+
+    // Corps
+    ctx.strokeStyle = '#ffffff';
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(-10, -1);
-    ctx.lineTo(8, -1);
+    ctx.moveTo(-15, 5); ctx.lineTo(-4, -6); ctx.lineTo(8, -6); ctx.lineTo(15, 5);
+    ctx.moveTo(-4, -6); ctx.lineTo(2, -12); ctx.lineTo(7, -6);
     ctx.stroke();
 
     ctx.restore();
     ctx.restore();
 }
 
-function gameLoop() {
+function loop() {
     if (!isPlaying) return;
     update();
     draw();
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(loop);
 }
 
-function gameOver() {
+function crash() {
     isPlaying = false;
     
-    // Sauvegarde Firebase
     let finalScore = Math.floor(score);
     if (finalScore > highscore) highscore = finalScore;
-    
+
     if (uId) {
-        set(ref(db, `neon_rider_playworks/${uId}`), { 
-            best: highscore, 
-            gems: totalGemsDB 
-        });
+        set(ref(db, `neon_rider_v7/${uId}`), { best: highscore, gems: totalGemsDB });
     }
 
-    // Mise à jour de l'UI du menu
     document.getElementById('best-score').textContent = highscore;
     document.getElementById('total-gems').textContent = totalGemsDB;
     document.querySelector('.game-title').textContent = "CRASH !";
     document.getElementById('play-btn').textContent = "REJOUER";
-    
+
     gameHud.style.display = 'none';
     menuOverlay.style.display = 'flex';
 }
 
-document.getElementById('play-btn').addEventListener('click', startGame);
+document.getElementById('play-btn').addEventListener('click', start);
 </script>
 </body>
 </html>
