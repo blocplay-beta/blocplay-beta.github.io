@@ -1,1 +1,371 @@
-test
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Rider - BlocPlay</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --neon-blue: #00f2fe;
+            --neon-pink: #fe0979;
+            --text-color: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* --- CONTENEUR DU JEU --- */
+        #game-container {
+            position: relative;
+            width: 800px;
+            max-width: 100vw;
+            height: 450px;
+            background: #0a0a0a;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- INTERFACE UTILISATEUR --- */
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        #game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 0 20px 0;
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px var(--neon-pink);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-restart {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-restart:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 25px var(--neon-blue);
+        }
+
+        #auth-status {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        #controls-hint {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="450"></canvas>
+        
+        <div id="ui-layer">
+            <div class="hud">
+                <div>SCORE: <span id="scoreVal">0</span></div>
+                <div>BEST: <span id="bestScoreVal">0</span></div>
+            </div>
+            
+            <div id="auth-status">Connexion Firebase en cours...</div>
+            <div id="controls-hint">ESPACE ou CLIC GAUCHE pour sauter</div>
+        </div>
+
+        <div id="game-over-screen">
+            <h1>CRASHED</h1>
+            <p style="font-size: 1.5rem; margin-bottom: 30px;">Score Final: <span id="finalScore">0</span></p>
+            <button class="btn-restart" id="btn-restart">Rejouer</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // 1. CONFIGURATION FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+            authDomain: "blocplay-a9417.firebaseapp.com",
+            projectId: "blocplay-a9417",
+            storageBucket: "blocplay-a9417.firebasestorage.app",
+            messagingSenderId: "540161549188",
+            appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        let currentUser = null;
+        let dbHighScore = 0;
+
+        const authStatus = document.getElementById('auth-status');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                authStatus.textContent = `Connecté en tant que ${user.displayName || 'Joueur'} - Sauvegarde Cloud Activée`;
+                loadHighScore();
+            } else {
+                authStatus.textContent = "Non connecté - Progression locale uniquement";
+                authStatus.style.color = "#fe0979";
+            }
+        });
+
+        function loadHighScore() {
+            if (!currentUser) return;
+            get(child(ref(db), `neon_rider_saves/${currentUser.uid}`)).then((snap) => {
+                if (snap.exists() && snap.val().highScore) {
+                    dbHighScore = snap.val().highScore;
+                    document.getElementById('bestScoreVal').textContent = dbHighScore;
+                }
+            });
+        }
+
+        function saveHighScore(newScore) {
+            if (!currentUser || newScore <= dbHighScore) return;
+            dbHighScore = newScore;
+            document.getElementById('bestScoreVal').textContent = dbHighScore;
+            set(ref(db, 'neon_rider_saves/' + currentUser.uid), { highScore: dbHighScore });
+        }
+
+        // 2. MOTEUR DU JEU (HTML5 Canvas)
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const scoreDisplay = document.getElementById('scoreVal');
+        const finalScoreDisplay = document.getElementById('finalScore');
+        
+        let frames = 0;
+        let score = 0;
+        let gameSpeed = 5;
+        let isGameOver = false;
+        let animationId;
+
+        // Entité Joueur (Le "Rider")
+        const player = {
+            x: 100,
+            y: 200,
+            size: 20,
+            vy: 0,
+            gravity: 0.6,
+            jumpPower: -10,
+            color: '#00f2fe',
+            jump: function() {
+                // On permet le saut uniquement si le joueur est sur le sol
+                if (this.y >= canvas.height - 50 - this.size) {
+                    this.vy = this.jumpPower;
+                }
+            },
+            update: function() {
+                this.vy += this.gravity;
+                this.y += this.vy;
+
+                // Sol (Plancher à 50px du bas)
+                if (this.y + this.size >= canvas.height - 50) {
+                    this.y = canvas.height - 50 - this.size;
+                    this.vy = 0;
+                }
+            },
+            draw: function() {
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+                ctx.shadowBlur = 0; // Reset pour ne pas affecter les autres éléments
+            }
+        };
+
+        // Obstacles (Murs Néon)
+        const obstacles = [];
+        
+        function handleObstacles() {
+            // Génération toutes les 90 frames (~1.5 sec)
+            if (frames % 90 === 0) {
+                let height = Math.random() * 80 + 30; // Hauteur aléatoire
+                obstacles.push({
+                    x: canvas.width,
+                    y: canvas.height - 50 - height,
+                    width: 20,
+                    height: height,
+                    color: '#fe0979'
+                });
+            }
+
+            for (let i = 0; i < obstacles.length; i++) {
+                let obs = obstacles[i];
+                obs.x -= gameSpeed;
+
+                // Dessin avec effet Néon
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = obs.color;
+                ctx.fillStyle = obs.color;
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                ctx.shadowBlur = 0;
+
+                // Collisions (Rectangle AABB)
+                if (
+                    player.x < obs.x + obs.width &&
+                    player.x + player.size > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.y + player.size > obs.y
+                ) {
+                    triggerGameOver();
+                }
+
+                // Nettoyage et augmentation du score
+                if (obs.x + obs.width < 0) {
+                    obstacles.shift();
+                    score += 10;
+                    scoreDisplay.textContent = score;
+                    if (score % 100 === 0) gameSpeed += 0.5; // Accélération progressive
+                    i--;
+                }
+            }
+        }
+
+        // Décoration : Ligne de sol
+        function drawGround() {
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00f2fe';
+            ctx.strokeStyle = '#00f2fe';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height - 50);
+            ctx.lineTo(canvas.width, canvas.height - 50);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+
+        // Boucle principale
+        function animate() {
+            if (isGameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawGround();
+            player.update();
+            player.draw();
+            handleObstacles();
+            
+            frames++;
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Gestion de la fin de partie
+        function triggerGameOver() {
+            isGameOver = true;
+            cancelAnimationFrame(animationId);
+            saveHighScore(score);
+            finalScoreDisplay.textContent = score;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        function resetGame() {
+            player.y = 200;
+            player.vy = 0;
+            obstacles.length = 0;
+            score = 0;
+            frames = 0;
+            gameSpeed = 5;
+            isGameOver = false;
+            scoreDisplay.textContent = score;
+            gameOverScreen.style.display = 'none';
+            animate();
+        }
+
+        // Contrôles
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                player.jump();
+            }
+        });
+        
+        // Clic sur le canvas pour sauter (mobile/souris)
+        document.getElementById('game-container').addEventListener('mousedown', () => {
+            if (!isGameOver) player.jump();
+        });
+
+        document.getElementById('btn-restart').addEventListener('click', resetGame);
+
+        // Lancement initial
+        animate();
+    </script>
+</body>
+</html>
