@@ -3,100 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Rider - Fullscreen Arcade</title>
+    <title>Neon Rider Classic</title>
     <style>
         html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #020308;
-            color: #fff;
-            font-family: system-ui, sans-serif;
-            user-select: none;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #05050a;
+            color: #fff; font-family: monospace; user-select: none;
         }
 
         #game-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            position: relative; width: 100vw; height: 100vh;
         }
 
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+        canvas { display: block; width: 100%; height: 100%; }
 
         .hud {
-            position: absolute;
-            top: 20px; left: 20px; right: 20px;
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
-            font-family: monospace;
-            font-size: 1.4rem;
-            font-weight: bold;
+            position: absolute; top: 20px; left: 20px; right: 20px;
+            display: flex; justify-content: space-between;
+            font-size: 1.5rem; font-weight: bold; pointer-events: none;
             z-index: 5;
         }
 
         .hud-item {
-            background: rgba(5, 7, 15, 0.85);
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px; border-radius: 4px;
+            border: 1px solid #333;
         }
 
+        .color-indicator {
+            position: absolute; bottom: 80px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px; border-radius: 10px;
+            border: 1px solid #444;
+            pointer-events: none;
+        }
+
+        .color-box {
+            width: 35px; height: 35px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.8rem; color: #000;
+            opacity: 0.3; transition: all 0.1s ease;
+        }
+
+        .color-box.active { opacity: 1; transform: scale(1.15); box-shadow: 0 0 15px currentColor; }
+
         .overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 3, 8, 0.85);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 10, 0.9);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10;
         }
 
-        h1 {
-            font-size: 4.5rem;
-            color: #fff;
-            margin: 0 0 20px 0;
-            letter-spacing: 4px;
-            text-align: center;
-        }
-
+        h1 { font-size: 4rem; margin: 0 0 20px 0; letter-spacing: 5px; text-shadow: 0 0 20px #00f2fe; }
+        
         button {
-            background: transparent;
-            color: #fff;
-            border: 2px solid #fff;
-            padding: 14px 60px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            background: transparent; color: #fff; border: 2px solid #fff;
+            padding: 15px 50px; font-size: 1.2rem; cursor: pointer;
+            transition: 0.2s; font-family: monospace;
         }
+        button:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
 
-        button:hover {
-            background: #fff;
-            color: #000;
-            transform: scale(1.05);
-        }
-
-        .controls {
-            position: absolute;
-            bottom: 25px;
-            width: 100%;
-            text-align: center;
-            color: #64748b;
-            font-size: 1rem;
-            font-weight: 500;
-            pointer-events: none;
+        .controls-tip {
+            position: absolute; bottom: 25px; width: 100%; text-align: center;
+            color: #666; font-size: 1rem; pointer-events: none;
         }
     </style>
 </head>
@@ -106,18 +77,24 @@
     <canvas id="neonCanvas"></canvas>
     
     <div class="hud">
-        <div class="hud-item" id="score-label" style="color: #fff;">SCORE: <span id="score">0</span></div>
-        <div class="hud-item" style="color: #00f2fe;">💎 <span id="gems">0</span></div>
+        <div class="hud-item">SCORE: <span id="score">0</span></div>
         <div class="hud-item" style="color: #fffe00;">BEST: <span id="best">0</span></div>
+    </div>
+
+    <div class="color-indicator">
+        <div class="color-box" id="btn-blue" style="background: #00f2fe; color: #000;">🡩</div>
+        <div class="color-box" id="btn-red" style="background: #fe0979; color: #fff;">🡫</div>
+        <div class="color-box" id="btn-yellow" style="background: #fffe00; color: #000;">🡨</div>
+        <div class="color-box" id="btn-green" style="background: #00ff66; color: #000;">🡪</div>
     </div>
 
     <div id="game-overlay" class="overlay">
         <h1 id="menu-title">NEON RIDER</h1>
-        <button id="actionBtn">RIDE</button>
+        <button id="actionBtn">START LEVEL</button>
     </div>
 
-    <div class="controls">
-        <strong style="color: #fff;">[BARRE ESPACE]</strong> Accélérer | <strong style="color: #fff;">[FLÈCHE GAUCHE / DROITE]</strong> Flips Ultra-Sensibles
+    <div class="controls-tip">
+        [Z / W] Accélérer | [Q / D] Inclinaison | [FLÈCHES CLAVIER] Changer la couleur de la moto
     </div>
 </div>
 
@@ -126,7 +103,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// --- CONFIGURATION CLOUD FIREBASE ---
 const firebaseConfig = {
     apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
     authDomain: "blocplay-a9417.firebaseapp.com",
@@ -138,327 +114,267 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-let uId = null, highscore = 0, totalGems = 0;
+let uId = null, highscore = 0;
 
 onAuthStateChanged(auth, (u) => {
     if (u) {
         uId = u.uid;
-        get(child(ref(db), `neon_rider_v6/${uId}`)).then((s) => {
+        get(child(ref(db), `neon_rider_classic/${uId}`)).then((s) => {
             if (s.exists()) {
                 highscore = s.val().best || 0;
-                totalGems = s.val().gems || 0;
                 document.getElementById('best').textContent = highscore;
-                document.getElementById('gems').textContent = totalGems;
             }
         });
     }
 });
 
-// --- MOTEUR DE JEU PLEIN ÉCRAN ---
 const canvas = document.getElementById('neonCanvas');
 const ctx = canvas.getContext('2d');
 
 let isPlaying = false;
 let score = 0;
 let cameraX = 0, cameraY = 0;
-let segments = [];
-let diamonds = [];
+let tracks = [];
+
+const COLORS = {
+    BLUE: '#00f2fe',
+    RED: '#fe0979',
+    YELLOW: '#fffe00',
+    GREEN: '#00ff66'
+};
 
 const bike = {
-    x: 100, y: 200,
+    x: 100, y: 300,
     vx: 0, vy: 0,
     speed: 0,
-    maxSpeed: 11,       // Un peu plus rapide pour un meilleur flow
-    accel: 0.32,
-    friction: 0.99,
-    gravity: 0.26,      // Gravité légèrement réduite pour planer en toute sécurité
+    maxSpeed: 12,
+    accel: 0.25,
+    friction: 0.985,
+    gravity: 0.3,
     angle: 0,
     isGrounded: false,
-    radius: 14,
+    radius: 12,
+    currentColor: 'BLUE', // Couleur de départ
     flipTracker: 0
 };
 
-const themeColors = ['#00f2fe', '#fe0979', '#fffe00', '#00ff66', '#a855f7'];
-let activeColor = themeColors[0];
-
-// Gestion dynamique du plein écran
-function resizeCanvas() {
+function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
-window.addEventListener('resize', () => {
-    resizeCanvas();
-});
-resizeCanvas();
+window.addEventListener('resize', resize);
+resize();
 
-// Génération de pistes calibrée : moins de sauts, réceptions proches et rabaissées
-function buildMap() {
-    segments = [];
-    diamonds = [];
-    
-    let currentX = 0;
-    let currentY = canvas.height * 0.65; // Position initiale basée sur l'écran
+// Génération d'un vrai parcours à base de lignes de couleurs alternées
+function generateTracks() {
+    tracks = [];
+    let cx = 0, cy = canvas.height * 0.6;
 
-    // Grande zone de départ sécurisée
-    segments.push({ x1: currentX, y1: currentY, x2: 600, y2: currentY });
-    currentX = 600;
+    // 1. Zone bleue de départ (Toujours solide pour tout le monde)
+    tracks.push({ x1: cx, y1: cy, x2: cx + 500, y2: cy, color: 'BLUE' });
+    cx += 500;
 
-    for (let i = 0; i < 30; i++) {
-        // 1. Très longues sections au sol pour profiter de la vitesse
-        let runUpLength = 600 + Math.random() * 300;
-        let targetY = currentY + (Math.random() * 40 - 20);
-        
-        // Limiter l'altitude globale pour pas que ça sorte de l'écran
-        if (targetY > canvas.height * 0.8 || targetY < canvas.height * 0.4) targetY = canvas.height * 0.65;
+    // 2. Premier gros saut avec une ligne de couleur en l'air
+    tracks.push({ x1: cx, y1: cy, x2: cx + 150, y2: cy - 40, color: 'BLUE' }); // Tremplin
+    cx += 150; cy -= 40;
 
-        segments.push({ x1: currentX, y1: currentY, x2: currentX + runUpLength, y2: targetY });
-        currentX += runUpLength;
-        currentY = targetY;
+    // Ligne Jaune suspendue dans le vide (tu passes au travers si tu n'es pas Jaune !)
+    tracks.push({ x1: cx + 100, y1: cy - 20, x2: cx + 400, y2: cy + 30, color: 'YELLOW' });
+    cx += 500; cy += 30;
 
-        // Pièces posées de façon fluide sur la route
-        for (let j = 1; j <= 3; j++) {
-            diamonds.push({ x: currentX - (j * 100), y: currentY - 18, picked: false });
-        }
+    // Plateforme de récupération Rouge
+    tracks.push({ x1: cx, y1: cy + 50, x2: cx + 400, y2: cy + 50, color: 'RED' });
+    cx += 400; cy += 50;
 
-        // 2. KICKER ADOUCI (Montée moins violente pour ne pas être propulsé trop haut)
-        let rampLength = 140;
-        let rampHeight = 45 + Math.random() * 20; 
-        let rampEndX = currentX + rampLength;
-        let rampEndY = currentY - rampHeight;
-
-        segments.push({ x1: currentX, y1: currentY, x2: rampEndX, y2: rampEndY });
-        currentX = rampEndX;
-        currentY = rampEndY;
-
-        // 3. TROU PLUS COURT & RÉCEPTION BASSE (Impossible de rater la plateforme)
-        let safeGap = 200 + Math.random() * 80; 
-        let receptionY = currentY + 160; // Grand drop : la plateforme est très basse, tu arrives forcément par le dessus !
-
-        // Pièces au milieu du vol, faciles à attraper
-        diamonds.push({ x: currentX + (safeGap / 2), y: currentY + 30, picked: false });
-
-        currentX += safeGap;
-        currentY = receptionY;
-
-        // Longue plateforme de réception
-        let landLength = 400;
-        segments.push({ x1: currentX, y1: currentY, x2: currentX + landLength, y2: currentY });
-        currentX += landLength;
+    // 3. Un grand Looping/Toboggan Vert
+    let loopX = cx;
+    let loopY = cy;
+    for(let a = 0; a < Math.PI * 2; a += 0.2) {
+        let nextX = loopX + Math.sin(a) * 120 + 120;
+        let nextY = loopY + Math.cos(a) * 120 - 120;
+        tracks.push({ x1: cx, y1: cy, x2: nextX, y2: nextY, color: 'GREEN' });
+        cx = nextX; cy = nextY;
     }
 
-    // Ligne droite infinie à la fin
-    segments.push({ x1: currentX, y1: currentY, x2: currentX + 10000, y2: currentY });
+    // Ligne droite finale multi-couleurs de test de réflexes
+    const colorsList = ['BLUE', 'RED', 'YELLOW', 'GREEN'];
+    for(let i = 0; i < 20; i++) {
+        let nextColor = colorsList[Math.floor(Math.random() * colorsList.length)];
+        tracks.push({ x1: cx, y1: cy, x2: cx + 300, y2: cy, color: nextColor });
+        cx += 300;
+        if(Math.random() > 0.5) cy += (Math.random() * 40 - 20); // Variations de hauteur
+    }
 }
 
 const keys = {};
-window.addEventListener('keydown', (e) => { keys[e.code] = true; });
+window.addEventListener('keydown', (e) => { 
+    keys[e.code] = true; 
+    
+    // Changement de couleur à l'identique avec les flèches directionnelles
+    if (e.code === 'ArrowUp') bike.currentColor = 'BLUE';
+    if (e.code === 'ArrowDown') bike.currentColor = 'RED';
+    if (e.code === 'ArrowLeft') bike.currentColor = 'YELLOW';
+    if (e.code === 'ArrowRight') bike.currentColor = 'GREEN';
+    updateColorHUD();
+});
 window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
+function updateColorHUD() {
+    document.querySelectorAll('.color-box').forEach(b => b.classList.remove('active'));
+    if(bike.currentColor === 'BLUE') document.getElementById('btn-blue').classList.add('active');
+    if(bike.currentColor === 'RED') document.getElementById('btn-red').classList.add('active');
+    if(bike.currentColor === 'YELLOW') document.getElementById('btn-yellow').classList.add('active');
+    if(bike.currentColor === 'GREEN') document.getElementById('btn-green').classList.add('active');
+}
+
 function start() {
-    resizeCanvas();
-    activeColor = themeColors[Math.floor(Math.random() * themeColors.length)];
-    document.getElementById('game-container').style.setProperty('--neon-theme', activeColor);
-    document.getElementById('score-label').style.color = activeColor;
-    
-    buildMap();
-    
-    bike.x = 150; 
-    bike.y = canvas.height * 0.5;
-    bike.vx = 4; bike.vy = 0; bike.speed = 0;
-    bike.angle = 0;
-    bike.isGrounded = false;
-    bike.flipTracker = 0;
+    generateTracks();
+    bike.x = 100; bike.y = canvas.height * 0.4;
+    bike.vx = 4; bike.vy = 0; bike.speed = 2;
+    bike.angle = 0; bike.isGrounded = false;
+    bike.currentColor = 'BLUE';
+    updateColorHUD();
     score = 0;
     
     document.getElementById('game-overlay').style.display = 'none';
     isPlaying = true;
-    engineLoop();
+    loop();
 }
 
-function getSurface(x) {
-    for (let seg of segments) {
-        if (x >= seg.x1 && x <= seg.x2) {
-            let t = (x - seg.x1) / (seg.x2 - seg.x1);
-            let y = seg.y1 + t * (seg.y2 - seg.y1);
-            let angle = Math.atan2(seg.y2 - seg.y1, seg.x2 - seg.x1);
-            return { y, angle };
-        }
-    }
-    return null; 
-}
-
-function update() {
-    // Barre Espace pour foncer
-    if (keys['Space']) {
+function updatePhysics() {
+    // Propulsion d'origine (W ou Z)
+    if (keys['KeyW'] || keys['KeyZ']) {
         bike.speed = Math.min(bike.speed + bike.accel, bike.maxSpeed);
     } else {
         bike.speed *= bike.friction;
     }
 
-    // Sensibilité maximale instantanée en l'air
+    // Rotation aérienne nerveuse (A/D ou Q/D)
     if (!bike.isGrounded) {
-        if (keys['ArrowLeft'] || keys['KeyA']) {
-            bike.angle -= 0.12; 
-            bike.flipTracker -= 0.12;
-        }
-        if (keys['ArrowRight'] || keys['KeyD']) {
-            bike.angle += 0.12;
-            bike.flipTracker += 0.12;
-        }
-
-        if (Math.abs(bike.flipTracker) >= Math.PI * 2) {
-            score += 1500; 
-            bike.flipTracker = 0;
-        }
-    } else {
-        bike.flipTracker = 0;
+        if (keys['KeyA'] || keys['KeyQ']) bike.angle -= 0.08;
+        if (keys['KeyD']) bike.angle += 0.08;
     }
 
-    // Calcul du mouvement
     if (bike.isGrounded) {
         bike.vx = Math.cos(bike.angle) * bike.speed;
         bike.vy = Math.sin(bike.angle) * bike.speed;
     } else {
-        bike.vy += bike.gravity; 
+        bike.vy += bike.gravity;
     }
 
     bike.x += bike.vx;
     bike.y += bike.vy;
 
-    // Gestion stricte des collisions (Zéro aimant au sol)
-    let surface = getSurface(bike.x);
-    if (surface) {
-        if (bike.y + bike.radius >= surface.y && bike.vy >= -0.1) {
-            
-            // Crash si tu atterris sur la tête
-            let diff = Math.abs(normalizeAngle(bike.angle - surface.angle));
-            if (!bike.isGrounded && diff > 1.1) {
-                crash();
-                return;
-            }
+    // Détection stricte des collisions par couleur
+    let matchSurface = null;
+    for (let t of tracks) {
+        if (bike.x >= t.x1 && bike.x <= t.x2) {
+            // RÈGLE D'OR : La ligne est immatérielle si on n'a pas la bonne couleur (sauf si elle est bleue)
+            if (t.color !== 'BLUE' && t.color !== bike.currentColor) continue;
 
-            bike.y = surface.y - bike.radius;
-            bike.isGrounded = true;
-            bike.angle = bike.angle * 0.3 + surface.angle * 0.7; 
-        } else {
-            bike.isGrounded = false;
+            let pct = (bike.x - t.x1) / (t.x2 - t.x1);
+            let yOnTrack = t.y1 + pct * (t.y2 - t.y1);
+            
+            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.5 && bike.y - bike.radius <= yOnTrack + 10) {
+                matchSurface = { y: yOnTrack, angle: Math.atan2(t.y2 - t.y1, t.x2 - t.x1) };
+                break;
+            }
         }
-    } else {
-        bike.isGrounded = false; 
     }
 
-    // Collecte des cristaux
-    diamonds.forEach(d => {
-        if (!d.picked && Math.hypot(bike.x - d.x, bike.y - d.y) < bike.radius + 20) {
-            d.picked = true;
-            totalGems++;
-            score += 250;
-            document.getElementById('gems').textContent = totalGems;
+    if (matchSurface) {
+        // Crash sur la tête
+        let diff = Math.abs(bike.angle - matchSurface.angle);
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        if (!bike.isGrounded && Math.abs(diff) > 1.3) {
+            crash();
+            return;
         }
-    });
 
-    // Caméra dynamique centrée par rapport au plein écran
-    cameraX = bike.x - (canvas.width * 0.25);
-    cameraY = cameraY * 0.9 + (bike.y - (canvas.height * 0.6)) * 0.1;
+        bike.y = matchSurface.y - bike.radius;
+        bike.isGrounded = true;
+        bike.angle = matchSurface.angle;
+    } else {
+        bike.isGrounded = false;
+    }
 
-    score += bike.vx * 0.15;
+    cameraX = bike.x - (canvas.width * 0.3);
+    cameraY = cameraY * 0.85 + (bike.y - (canvas.height * 0.55)) * 0.15;
+
+    score += bike.vx * 0.1;
     document.getElementById('score').textContent = Math.floor(score);
 
-    // Chute fatale
-    if (bike.y > canvas.height + 500) crash();
+    if (bike.y > canvas.height + 600) crash();
 }
 
 function draw() {
-    ctx.fillStyle = '#03050a';
+    ctx.fillStyle = '#05050c';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
     ctx.translate(-cameraX, -cameraY);
 
-    // 1. Rendu des pistes néon
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = activeColor;
-    ctx.shadowBlur = 16;
-    ctx.shadowColor = activeColor;
-    
-    segments.forEach(seg => {
-        if (seg.x2 >= cameraX - 200 && seg.x1 <= cameraX + canvas.width + 200) {
-            ctx.beginPath();
-            ctx.moveTo(seg.x1, seg.y1);
-            ctx.lineTo(seg.x2, seg.y2);
-            ctx.stroke();
-        }
-    });
-    ctx.shadowBlur = 0;
-
-    // 2. Rendu des pièces (Losanges)
-    diamonds.forEach(d => {
-        if (d.picked) return;
-        ctx.save();
-        ctx.translate(d.x, d.y);
-        ctx.fillStyle = '#00f2fe';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#00f2fe';
+    // Dessin des pistes avec leurs couleurs respectives
+    ctx.lineWidth = 5;
+    tracks.forEach(t => {
+        ctx.strokeStyle = COLORS[t.color];
+        ctx.shadowBlur = bike.currentColor === t.color || t.color === 'BLUE' ? 12 : 0;
+        ctx.shadowColor = COLORS[t.color];
         ctx.beginPath();
-        ctx.moveTo(0, -9); ctx.lineTo(6, 0); ctx.lineTo(0, 9); ctx.lineTo(-6, 0);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
+        ctx.moveTo(t.x1, t.y1);
+        ctx.lineTo(t.x2, t.y2);
+        ctx.stroke();
     });
     ctx.shadowBlur = 0;
 
-    // 3. Rendu de la Moto
+    // Rendu du Véhicule (Châssis bloc d'origine de Neon Rider)
     ctx.save();
     ctx.translate(bike.x, bike.y);
     ctx.rotate(bike.angle);
 
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = activeColor;
-    ctx.fillStyle = activeColor;
+    let bikeColor = COLORS[bike.currentColor];
+    ctx.fillStyle = bikeColor;
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = bikeColor;
 
-    // Deux roues de moto distinctes
-    ctx.beginPath(); ctx.arc(-16, 5, 8, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(16, 5, 8, 0, Math.PI * 2); ctx.fill();
-    ctx.shadowBlur = 0;
-
-    // Châssis blanc
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 3;
+    // Design "Bloc" aérodynamique futuriste original
     ctx.beginPath();
-    ctx.moveTo(-16, 5); ctx.lineTo(-4, -7); ctx.lineTo(8, -7); ctx.lineTo(16, 5);
-    ctx.moveTo(-4, -7); ctx.lineTo(2, -14); ctx.lineTo(7, -7); 
-    ctx.stroke();
+    ctx.moveTo(-18, 6);
+    ctx.lineTo(-22, -4);
+    ctx.lineTo(12, -4);
+    ctx.lineTo(20, 6);
+    ctx.closePath();
+    ctx.fill();
+
+    // Verrière cockpit blanche
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.moveTo(-2, -4); ctx.lineTo(8, -4); ctx.lineTo(4, -9); ctx.lineTo(-4, -9);
+    ctx.closePath();
+    ctx.fill();
 
     ctx.restore();
     ctx.restore();
 }
 
-function normalizeAngle(a) {
-    while (a > Math.PI) a -= Math.PI * 2;
-    while (a < -Math.PI) a += Math.PI * 2;
-    return a;
-}
-
-function engineLoop() {
+function loop() {
     if (!isPlaying) return;
-    update();
+    updatePhysics();
     draw();
-    requestAnimationFrame(engineLoop);
+    requestAnimationFrame(loop);
 }
 
 function crash() {
     isPlaying = false;
-    document.getElementById('menu-title').textContent = "CRASH !";
-    document.getElementById('actionBtn').textContent = "RIDE ENCORE";
+    document.getElementById('menu-title').textContent = "BOOM !";
+    document.getElementById('actionBtn').textContent = "RETRY";
     document.getElementById('game-overlay').style.display = 'flex';
 
     if (score > highscore) {
         highscore = Math.floor(score);
         document.getElementById('best').textContent = highscore;
     }
-    if (uId) {
-        set(ref(db, `neon_rider_v6/${uId}`), { best: highscore, gems: totalGems });
-    }
+    if (uId) set(ref(db, `neon_rider_classic/${uId}`), { best: highscore });
 }
 
 document.getElementById('actionBtn').addEventListener('click', start);
