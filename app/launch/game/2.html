@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEON OVERDRIVE - Arcade</title>
+    <title>Neon Overdrive</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&display=swap');
 
         * { box-sizing: border-box; }
         html, body {
@@ -17,53 +17,56 @@
         #game-container { position: relative; width: 100vw; height: 100vh; }
         canvas { display: block; width: 100%; height: 100%; }
 
+        /* HUD */
         .hud {
-            position: absolute; top: 20px; left: 20px; right: 20px;
+            position: absolute; top: 15px; left: 20px; right: 20px;
             display: flex; justify-content: space-between; align-items: center;
-            pointer-events: none; z-index: 5; font-size: 1.2rem; color: #fff;
-            text-shadow: 0 0 10px #00f2fe;
+            pointer-events: none; z-index: 5; color: #fff; text-shadow: 0 0 10px #00f2fe;
         }
+        .stats-group { display: flex; gap: 20px; align-items: center; }
+        .coin-count { color: #fffe00; text-shadow: 0 0 10px #fffe00; }
 
-        .health-bar-bg {
-            width: 200px; height: 16px; background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #00f2fe; border-radius: 10px; overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
-        }
-        .health-bar-fill {
-            width: 100%; height: 100%; background: #00f2fe;
-            transition: width 0.15s ease, background 0.3s ease;
-        }
-
+        /* MENUS & OVERLAYS */
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 3, 8, 0.88); backdrop-filter: blur(8px);
+            background: rgba(3, 3, 8, 0.92); backdrop-filter: blur(8px);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10;
         }
 
         h1 {
-            font-size: 4.5rem; margin: 0 0 10px 0; letter-spacing: 4px;
+            font-size: 3.8rem; margin: 0 0 5px 0; letter-spacing: 3px;
             color: #00f2fe; text-shadow: 0 0 30px #00f2fe, 0 0 60px #00f2fe;
             text-align: center; font-weight: 900;
         }
 
+        .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+
         .btn {
             background: #ff007f; color: #fff; border: none;
-            padding: 16px 60px; font-size: 1.6rem; font-weight: 900;
-            border-radius: 40px; cursor: pointer; transition: all 0.2s ease;
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+            padding: 14px 40px; font-size: 1.2rem; font-weight: 900;
+            border-radius: 30px; cursor: pointer; transition: all 0.2s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
             font-family: 'Orbitron', sans-serif; text-transform: uppercase;
-            margin-top: 25px;
         }
+        .btn:hover { transform: scale(1.08); background: #ff3399; box-shadow: 0 0 35px rgba(255, 0, 127, 0.8); }
+        .btn-blue { background: #00f2fe; box-shadow: 0 0 20px rgba(0, 242, 254, 0.5); color: #000; }
+        .btn-blue:hover { background: #66fcf1; box-shadow: 0 0 35px rgba(0, 242, 254, 0.8); }
 
-        .btn:hover {
-            transform: scale(1.08); background: #ff3399;
-            box-shadow: 0 0 45px rgba(255, 0, 127, 0.9);
+        /* MODAL BOUTIQUE */
+        .shop-modal {
+            display: none; background: #0c0d1b; border: 2px solid #00f2fe;
+            border-radius: 15px; padding: 25px; width: 90%; max-width: 550px;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3); color: #fff;
+            flex-direction: column; gap: 15px; z-index: 11;
         }
-
-        .controls {
-            margin-top: 30px; color: #8888aa; font-size: 0.95rem;
-            text-align: center; font-family: sans-serif; line-height: 1.6;
+        .shop-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 10px;
+        }
+        .shop-item-btn {
+            background: #fffe00; color: #000; border: none; padding: 8px 18px;
+            border-radius: 20px; font-weight: 900; cursor: pointer; font-family: 'Orbitron';
         }
     </style>
 </head>
@@ -73,26 +76,47 @@
     <canvas id="canvas"></canvas>
 
     <div class="hud" id="hud" style="display:none;">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <span>PV</span>
-            <div class="health-bar-bg"><div class="health-bar-fill" id="hp-fill"></div></div>
+        <div class="stats-group">
+            <div>SCORE: <span id="score-val" style="color:#ff007f;">0</span></div>
+            <div class="coin-count">🪙 <span id="coins-val">0</span></div>
         </div>
-        <div>SCORE: <span id="score-val" style="color:#ff007f;">0</span></div>
     </div>
 
     <div id="menu" class="overlay">
-        <h1 id="main-title">NEON OVERDRIVE</h1>
-        <p style="color:#a0a0d0; letter-spacing: 2px; margin:0;">ARCADE SHOOTER</p>
-        <button id="start-btn" class="btn">LANCER</button>
-        <div class="controls">
-            <b>[Z, Q, S, D] / [FLÈCHES]</b> Déplacer le vaisseau<br>
-            <b>[ESPACE] / [CLIC GAUCHE]</b> Tirer
+        <h1 id="main-title">Neon Overdrive</h1>
+        
+        <div class="btn-group">
+            <button class="btn" onclick="startGame(1)">Solo</button>
+            <button class="btn btn-blue" onclick="startGame(2)">Multijoueur</button>
+                            <button class="btn" style="background:#fffe00; color:#000;" onclick="openShop()">Boutique</button>
+        </div>
+    </div>
+
+    <div id="shop-modal" class="overlay" style="display:none;">
+        <div class="shop-modal" style="display:flex;">
+            <h2 style="margin:0; text-align:center; color:#fffe00;">BOUTIQUE NEON</h2>
+            <div style="text-align:center; margin-bottom:10px;">Tes Pièces : <span id="shop-coins" class="coin-count">0</span> 🪙</div>
+
+            <div class="shop-item">
+                <div><b>Tir Rapide</b><br><small style="color:#aaa">Augmente la cadence</small></div>
+                <button class="shop-item-btn" id="buy-fire" onclick="buyUpgrade('fireRate', 50)">50 🪙</button>
+            </div>
+            <div class="shop-item">
+                <div><b>Coque Renforcée</b><br><small style="color:#aaa">+25 PV Max</small></div>
+                <button class="shop-item-btn" id="buy-hp" onclick="buyUpgrade('maxHp', 75)">75 🪙</button>
+            </div>
+            <div class="shop-item">
+                <div><b>Skin Doré</b><br><small style="color:#aaa">Style personnalisé</small></div>
+                <button class="shop-item-btn" id="buy-skin" onclick="buyUpgrade('goldSkin', 150)">150 🪙</button>
+            </div>
+
+            <button class="btn" style="margin-top:10px; align-self:center;" onclick="closeShop()">RETOUR</button>
         </div>
     </div>
 </div>
 
 <script>
-// --- MOTEUR AUDIO SYNTHÉTISÉ (Web Audio API) ---
+// --- AUDIO SYNTH (Web Audio API) ---
 class SoundSystem {
     constructor() { this.ctx = null; }
     init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
@@ -100,298 +124,240 @@ class SoundSystem {
     playShoot() {
         if (!this.ctx) return;
         let osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(800, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.12);
-        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.15, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
         osc.connect(gain); gain.connect(this.ctx.destination);
-        osc.start(); osc.stop(this.ctx.currentTime + 0.12);
+        osc.start(); osc.stop(this.ctx.currentTime + 0.1);
     }
-
     playExplosion() {
         if (!this.ctx) return;
-        let dur = 0.3, bufferSize = this.ctx.sampleRate * dur;
-        let buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        let data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        let dur = 0.25, bufferSize = this.ctx.sampleRate * dur, buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        let data = buffer.getChannelData(0); for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
         let noise = this.ctx.createBufferSource(); noise.buffer = buffer;
         let filter = this.ctx.createBiquadFilter(); filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(800, this.ctx.currentTime);
-        filter.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + dur);
-        let gain = this.ctx.createGain();
-        gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
+        filter.frequency.setValueAtTime(600, this.ctx.currentTime); filter.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + dur);
+        let gain = this.ctx.createGain(); gain.gain.setValueAtTime(0.3, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
         noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
         noise.start(); noise.stop(this.ctx.currentTime + dur);
     }
-
-    playPowerup() {
-        if (!this.ctx) return;
-        let osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(900, this.ctx.currentTime + 0.25);
-        gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
-        osc.connect(gain); gain.connect(this.ctx.destination);
-        osc.start(); osc.stop(this.ctx.currentTime + 0.25);
-    }
 }
-
 const audio = new SoundSystem();
 
-// --- SETUP CANVAS & VARIABLES ---
+// --- SAVES & SHOP SYSTEM ---
+let saveData = JSON.parse(localStorage.getItem('neon_overdrive_save')) || {
+    coins: 0, fireRateLevel: 0, hpLevel: 0, goldSkin: false
+};
+function saveGame() { localStorage.setItem('neon_overdrive_save', JSON.stringify(saveData)); }
+
+function openShop() {
+    document.getElementById('shop-coins').textContent = saveData.coins;
+    document.getElementById('buy-fire').textContent = saveData.fireRateLevel >= 3 ? "MAX" : (50 * (saveData.fireRateLevel + 1)) + " 🪙";
+    document.getElementById('buy-hp').textContent = saveData.hpLevel >= 3 ? "MAX" : (75 * (saveData.hpLevel + 1)) + " 🪙";
+    document.getElementById('buy-skin').textContent = saveData.goldSkin ? "POSSÉDÉ" : "150 🪙";
+    document.getElementById('shop-modal').style.display = 'flex';
+}
+function closeShop() { document.getElementById('shop-modal').style.display = 'none'; }
+
+function buyUpgrade(type, baseCost) {
+    if (type === 'fireRate' && saveData.fireRateLevel < 3) {
+        let cost = 50 * (saveData.fireRateLevel + 1);
+        if (saveData.coins >= cost) { saveData.coins -= cost; saveData.fireRateLevel++; }
+    } else if (type === 'maxHp' && saveData.hpLevel < 3) {
+        let cost = 75 * (saveData.hpLevel + 1);
+        if (saveData.coins >= cost) { saveData.coins -= cost; saveData.hpLevel++; }
+    } else if (type === 'goldSkin' && !saveData.goldSkin && saveData.coins >= 150) {
+        saveData.coins -= 150; saveData.goldSkin = true;
+    }
+    saveGame(); openShop();
+}
+
+// --- ENGINE & SETUP ---
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-let isPlaying = false, score = 0, screenShake = 0;
+let isPlaying = false, score = 0, screenShake = 0, modePlayers = 1;
 
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize); resize();
 
-// --- JOUEUR ---
-const player = {
-    x: 0, y: 0, r: 18, hp: 100, maxHp: 100,
-    speed: 7, weapon: 'normal', weaponTimer: 0
-};
-
-// --- ARRAYS DE JEU ---
-let bullets = [], enemies = [], particles = [], powerups = [];
+let players = [], bullets = [], enemies = [], particles = [], coins = [];
 const keys = {};
-
 window.addEventListener('keydown', e => keys[e.code] = true);
 window.addEventListener('keyup', e => keys[e.code] = false);
 
-// --- PARTICULES & SECOUSSE ---
-function createExplosion(x, y, color, count = 18) {
+function createExplosion(x, y, color, count = 15) {
     for (let i = 0; i < count; i++) {
-        let angle = Math.random() * Math.PI * 2;
-        let speed = 2 + Math.random() * 6;
-        particles.push({
-            x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-            life: 1, decay: 0.02 + Math.random() * 0.03, color, r: 2 + Math.random() * 3
-        });
+        let angle = Math.random() * Math.PI * 2, speed = 2 + Math.random() * 5;
+        particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 1, decay: 0.03, color, r: 2 + Math.random() * 3 });
     }
 }
 
-function triggerShake(intensity) { screenShake = Math.max(screenShake, intensity); }
-
-// --- DÉMARRAGE DU JEU ---
-function startGame() {
-    audio.init();
-    player.x = canvas.width / 2;
-    player.y = canvas.height * 0.8;
-    player.hp = 100;
-    player.weapon = 'normal';
-    score = 0;
-    bullets = []; enemies = []; particles = []; powerups = [];
+function startGame(nbPlayers) {
+    audio.init(); modePlayers = nbPlayers;
+    players = [];
     
+    // Joueur 1
+    players.push({
+        id: 1, x: canvas.width * (nbPlayers === 2 ? 0.35 : 0.5), y: canvas.height * 0.8,
+        r: 18, hp: 100 + saveData.hpLevel * 25, color: saveData.goldSkin ? '#fffe00' : '#00f2fe',
+        lastShot: 0, fireDelay: Math.max(70, 130 - saveData.fireRateLevel * 20)
+    });
+
+    // Joueur 2
+    if (nbPlayers === 2) {
+        players.push({
+            id: 2, x: canvas.width * 0.65, y: canvas.height * 0.8,
+            r: 18, hp: 100, color: '#ff007f', lastShot: 0, fireDelay: 130
+        });
+    }
+
+    bullets = []; enemies = []; particles = []; coins = []; score = 0;
     document.getElementById('menu').style.display = 'none';
     document.getElementById('hud').style.display = 'flex';
-    document.getElementById('hp-fill').style.width = '100%';
-    document.getElementById('score-val').textContent = '0';
-    
+    document.getElementById('coins-val').textContent = saveData.coins;
     isPlaying = true;
     requestAnimationFrame(gameLoop);
 }
 
-// --- TIR DU JOUEUR ---
-let lastShot = 0;
-function shoot() {
-    let now = Date.now();
-    let delay = player.weapon === 'triple' ? 180 : 120;
-    if (now - lastShot < delay) return;
-    lastShot = now;
-
-    audio.playShoot();
-    if (player.weapon === 'triple') {
-        bullets.push({ x: player.x - 12, y: player.y - 10, vx: -2, vy: -14, r: 4, color: '#ff007f' });
-        bullets.push({ x: player.x, y: player.y - 15, vx: 0, vy: -15, r: 4, color: '#ff007f' });
-        bullets.push({ x: player.x + 12, y: player.y - 10, vx: 2, vy: -14, r: 4, color: '#ff007f' });
-    } else {
-        bullets.push({ x: player.x, y: player.y - 15, vx: 0, vy: -16, r: 4, color: '#00f2fe' });
-    }
-}
-
-// --- GENERATION DES ENNEMIS & POWERUPS ---
-let enemyTimer = 0;
-function spawnEnemies() {
-    enemyTimer++;
-    if (enemyTimer % 40 === 0) {
-        let type = Math.random() > 0.7 ? 'fast' : 'standard';
-        enemies.push({
-            x: Math.random() * (canvas.width - 60) + 30, y: -30,
-            r: type === 'fast' ? 14 : 20,
-            hp: type === 'fast' ? 1 : 3,
-            speed: type === 'fast' ? 6 : 2.5,
-            color: type === 'fast' ? '#fffe00' : '#ff007f',
-            type
-        });
-    }
-}
-
-function spawnPowerup(x, y) {
-    if (Math.random() < 0.2) {
-        powerups.push({ x, y, vy: 2, r: 12, type: Math.random() > 0.5 ? 'heal' : 'triple' });
-    }
-}
-
-// --- UPDATE & BOUCLE PRINCIPALE ---
 function update() {
-    // Déplacement Joueur
-    if ((keys['KeyA'] || keys['ArrowLeft'] || keys['KeyQ']) && player.x > player.r) player.x -= player.speed;
-    if ((keys['KeyD'] || keys['ArrowRight']) && player.x < canvas.width - player.r) player.x += player.speed;
-    if ((keys['KeyW'] || keys['ArrowUp'] || keys['KeyZ']) && player.y > player.r) player.y -= player.speed;
-    if ((keys['KeyS'] || keys['ArrowDown']) && player.y < canvas.height - player.r) player.y += player.speed;
-    if (keys['Space']) shoot();
+    // Déplacements & Tirs J1
+    let p1 = players[0];
+    if (p1 && p1.hp > 0) {
+        if ((keys['KeyA'] || keys['KeyQ']) && p1.x > p1.r) p1.x -= 7;
+        if (keys['KeyD'] && p1.x < canvas.width - p1.r) p1.x += 7;
+        if ((keys['KeyW'] || keys['KeyZ']) && p1.y > p1.r) p1.y -= 7;
+        if (keys['KeyS'] && p1.y < canvas.height - p1.r) p1.y += 7;
+        if (keys['Space'] && Date.now() - p1.lastShot > p1.fireDelay) {
+            audio.playShoot();
+            bullets.push({ x: p1.x, y: p1.y - 15, vy: -16, color: p1.color });
+            p1.lastShot = Date.now();
+        }
+    }
 
-    // Traînée du réacteur
-    particles.push({
-        x: player.x + (Math.random() * 8 - 4), y: player.y + 15,
-        vx: Math.random() * 2 - 1, vy: 3 + Math.random() * 2,
-        life: 1, decay: 0.08, color: '#00f2fe', r: 3
-    });
+    // Déplacements & Tirs J2
+    let p2 = players[1];
+    if (p2 && p2.hp > 0) {
+        if (keys['ArrowLeft'] && p2.x > p2.r) p2.x -= 7;
+        if (keys['ArrowRight'] && p2.x < canvas.width - p2.r) p2.x += 7;
+        if (keys['ArrowUp'] && p2.y > p2.r) p2.y -= 7;
+        if (keys['ArrowDown'] && p2.y < canvas.height - p2.r) p2.y += 7;
+        if (keys['Enter'] && Date.now() - p2.lastShot > p2.fireDelay) {
+            audio.playShoot();
+            bullets.push({ x: p2.x, y: p2.y - 15, vy: -16, color: p2.color });
+            p2.lastShot = Date.now();
+        }
+    }
 
     // Bullets
     bullets.forEach((b, bi) => {
-        b.x += b.vx; b.y += b.vy;
-        if (b.y < -20 || b.x < 0 || b.x > canvas.width) bullets.splice(bi, 1);
+        b.y += b.vy; if (b.y < -20) bullets.splice(bi, 1);
     });
 
-    // Ennemis & Collisions
-    spawnEnemies();
+    // Spawn Ennemis
+    if (Math.random() < 0.04) {
+        enemies.push({
+            x: Math.random() * (canvas.width - 60) + 30, y: -30,
+            r: 18, hp: 2, speed: 3 + Math.random() * 2, color: '#ff0055'
+        });
+    }
+
+    // Collisions Ennemis
     enemies.forEach((e, ei) => {
         e.y += e.speed;
-
-        // Collision Balle <-> Ennemi
+        
         bullets.forEach((b, bi) => {
-            if (Math.hypot(b.x - e.x, b.y - e.y) < b.r + e.r) {
-                e.hp--;
-                bullets.splice(bi, 1);
-                createExplosion(b.x, b.y, e.color, 6);
+            if (Math.hypot(b.x - e.x, b.y - e.y) < b.vy ? 8 : 18) {
+                e.hp--; bullets.splice(bi, 1);
                 if (e.hp <= 0) {
-                    audio.playExplosion();
-                    triggerShake(8);
-                    createExplosion(e.x, e.y, e.color, 20);
-                    spawnPowerup(e.x, e.y);
-                    score += e.type === 'fast' ? 150 : 100;
-                    document.getElementById('score-val').textContent = score;
+                    audio.playExplosion(); createExplosion(e.x, e.y, e.color);
+                    if (Math.random() < 0.6) coins.push({ x: e.x, y: e.y, vy: 2 });
+                    score += 100; document.getElementById('score-val').textContent = score;
                     enemies.splice(ei, 1);
                 }
             }
         });
 
-        // Collision Joueur <-> Ennemi
-        if (Math.hypot(player.x - e.x, player.y - e.y) < player.r + e.r) {
-            audio.playExplosion();
-            triggerShake(18);
-            createExplosion(e.x, e.y, '#ff0055', 25);
-            player.hp -= 25;
-            enemies.splice(ei, 1);
-            
-            let fill = document.getElementById('hp-fill');
-            fill.style.width = Math.max(0, player.hp) + '%';
-            if (player.hp <= 30) fill.style.background = '#ff0055';
-
-            if (player.hp <= 0) gameOver();
-        }
-
-        if (e.y > canvas.height + 50) enemies.splice(ei, 1);
-    });
-
-    // Power-ups
-    powerups.forEach((p, pi) => {
-        p.y += p.vy;
-        if (Math.hypot(player.x - p.x, player.y - p.y) < player.r + p.r) {
-            audio.playPowerup();
-            if (p.type === 'heal') {
-                player.hp = Math.min(100, player.hp + 30);
-                document.getElementById('hp-fill').style.width = player.hp + '%';
-            } else {
-                player.weapon = 'triple';
+        players.forEach(p => {
+            if (p.hp > 0 && Math.hypot(p.x - e.x, p.y - e.y) < p.r + e.r) {
+                audio.playExplosion(); createExplosion(e.x, e.y, '#ff0055');
+                p.hp -= 30; enemies.splice(ei, 1);
             }
-            powerups.splice(pi, 1);
-        }
+        });
+
+        if (e.y > canvas.height + 40) enemies.splice(ei, 1);
     });
+
+    // Pièces Néon
+    coins.forEach((c, ci) => {
+        c.y += c.vy;
+        players.forEach(p => {
+            if (p.hp > 0 && Math.hypot(p.x - c.x, p.y - c.y) < p.r + 15) {
+                saveData.coins++; saveGame();
+                document.getElementById('coins-val').textContent = saveData.coins;
+                coins.splice(ci, 1);
+            }
+        });
+    });
+
+    // Verification fin de partie
+    if (players.every(p => p.hp <= 0)) gameOver();
 
     // Particules
     particles.forEach((p, pi) => {
-        p.x += p.vx; p.y += p.vy;
-        p.life -= p.decay;
+        p.x += p.vx; p.y += p.vy; p.life -= p.decay;
         if (p.life <= 0) particles.splice(pi, 1);
     });
-
-    if (screenShake > 0) screenShake *= 0.88;
 }
 
-// --- DESSIN ---
 function draw() {
-    ctx.save();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Effet Screen Shake
-    if (screenShake > 0.5) {
-        ctx.translate((Math.random() - 0.5) * screenShake, (Math.random() - 0.5) * screenShake);
-    }
-
-    // Particules
+    // Dessin Particules
     particles.forEach(p => {
-        ctx.globalAlpha = p.life;
-        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
     });
     ctx.globalAlpha = 1;
 
+    // Pièces
+    coins.forEach(c => {
+        ctx.shadowBlur = 10; ctx.shadowColor = '#fffe00'; ctx.fillStyle = '#fffe00';
+        ctx.beginPath(); ctx.arc(c.x, c.y, 6, 0, Math.PI * 2); ctx.fill();
+    });
+
     // Tirs
     bullets.forEach(b => {
-        ctx.shadowBlur = 12; ctx.shadowColor = b.color; ctx.fillStyle = b.color;
-        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 10; ctx.shadowColor = b.color; ctx.fillStyle = b.color;
+        ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI * 2); ctx.fill();
     });
 
     // Ennemis
     enemies.forEach(e => {
-        ctx.shadowBlur = 15; ctx.shadowColor = e.color; ctx.fillStyle = e.color;
-        ctx.beginPath();
-        ctx.moveTo(e.x, e.y + e.r); ctx.lineTo(e.x - e.r, e.y - e.r); ctx.lineTo(e.x + e.r, e.y - e.r);
-        ctx.closePath(); ctx.fill();
+        ctx.shadowBlur = 12; ctx.shadowColor = e.color; ctx.fillStyle = e.color;
+        ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2); ctx.fill();
     });
 
-    // Power-ups
-    powerups.forEach(p => {
-        let color = p.type === 'heal' ? '#00ff66' : '#fffe00';
-        ctx.shadowBlur = 12; ctx.shadowColor = color; ctx.fillStyle = color;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    // Joueurs
+    players.forEach(p => {
+        if (p.hp > 0) {
+            ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y - p.r); ctx.lineTo(p.x - p.r, p.y + p.r); ctx.lineTo(p.x + p.r, p.y + p.r);
+            ctx.closePath(); ctx.fill();
+        }
     });
-
-    // Vaisseau Joueur
-    ctx.shadowBlur = 20; ctx.shadowColor = '#00f2fe';
-    ctx.fillStyle = '#00f2fe';
-    ctx.beginPath();
-    ctx.moveTo(player.x, player.y - player.r);
-    ctx.lineTo(player.x - player.r, player.y + player.r);
-    ctx.lineTo(player.x, player.y + player.r * 0.5);
-    ctx.lineTo(player.x + player.r, player.y + player.r);
-    ctx.closePath(); ctx.fill();
-
-    ctx.restore();
 }
 
 function gameLoop() {
     if (!isPlaying) return;
-    update();
-    draw();
-    requestAnimationFrame(gameLoop);
+    update(); draw(); requestAnimationFrame(gameLoop);
 }
 
 function gameOver() {
     isPlaying = false;
-    document.getElementById('main-title').textContent = "GAME OVER";
-    document.getElementById('start-btn').textContent = "REESSAYER";
-    document.getElementById('hud').style.display = 'none';
+    document.getElementById('main-title').textContent = "Perdu";
     document.getElementById('menu').style.display = 'flex';
 }
-
-document.getElementById('start-btn').addEventListener('click', startGame);
 </script>
 </body>
 </html>
