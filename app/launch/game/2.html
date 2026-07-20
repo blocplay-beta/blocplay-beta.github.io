@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Rider - Ultimate Arcade</title>
+    <title>NNNNNNAAAAAAAANNNNNNNNNN</title>
     <style>
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
@@ -70,7 +70,7 @@
     </div>
 
     <div class="controls-tip">
-        <strong style="color: #00f2fe;">[Z / S] ou [HAUT / BAS]</strong> Avancer / Reculer | <strong style="color: #00f2fe;">[Q / D] ou [GAUCHE / DROITE]</strong> Flips ultra-sensibles
+        <strong style="color: #00f2fe;">[Z / S] ou [HAUT / BAS]</strong> Avancer / Reculer au bord | <strong style="color: #00f2fe;">[Q / D] ou [GAUCHE / DROITE]</strong> Flips Réactifs
     </div>
 </div>
 
@@ -95,7 +95,7 @@ let uId = null, highscore = 0, totalGems = 0;
 onAuthStateChanged(auth, (u) => {
     if (u) {
         uId = u.uid;
-        get(child(ref(db), `neon_rider_final/${uId}`)).then((s) => {
+        get(child(ref(db), `neon_rider_fixed/${uId}`)).then((s) => {
             if (s.exists()) {
                 highscore = s.val().best || 0;
                 totalGems = s.val().gems || 0;
@@ -119,12 +119,12 @@ const bike = {
     x: 150, y: 300,
     vx: 0, vy: 0,
     speed: 0,
-    maxSpeed: 14,
-    maxReverse: -4,    // Permet de reculer pour prendre de l'élan
+    maxSpeed: 13,
+    maxReverse: -4,
     accel: 0.35,
     decel: 0.25,
     friction: 0.985,
-    gravity: 0.45,      // Vraie gravité lourde mécanique
+    gravity: 0.42,      // Gravité équilibrée
     angle: 0,
     isGrounded: false,
     radius: 12,
@@ -138,52 +138,48 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Génération de map : espaces gigantesques pour flips et losanges rabaissés
 function generateTracks() {
     tracks = [];
     diamonds = [];
     let cx = 0, cy = canvas.height * 0.7;
 
-    // Plateforme de départ géante (permet de reculer jusqu'au bord gauche)
+    // Zone de départ (permet de reculer)
     tracks.push({ x1: -300, y1: cy, x2: 700, y2: cy });
     cx = 700;
 
-    for(let i = 0; i < 30; i++) {
-        // Ligne droite au sol pour accumuler de la vitesse
-        let flatLength = 600 + Math.random() * 200;
+    for(let i = 0; i < 40; i++) {
+        // Ligne droite au sol
+        let flatLength = 500 + Math.random() * 150;
         let nextY = cy + (Math.random() * 40 - 20);
         if (nextY > canvas.height * 0.85 || nextY < canvas.height * 0.5) nextY = canvas.height * 0.7;
         
         tracks.push({ x1: cx, y1: cy, x2: cx + flatLength, y2: nextY });
         cx += flatLength; cy = nextY;
 
-        // Dispersion de losanges (argent) juste au-dessus du sol
+        // Losanges au sol
         for (let j = 1; j <= 3; j++) {
-            diamonds.push({ x: cx - (j * 120), y: cy - 20, picked: false });
+            diamonds.push({ x: cx - (j * 100), y: cy - 20, picked: false });
         }
 
-        // Tremplin court mais ultra-propulsif (kicker)
-        let rampX = cx + 120;
-        let rampY = cy - 80;
+        // Tremplin d'élan
+        let rampX = cx + 100;
+        let rampY = cy - 60;
         tracks.push({ x1: cx, y1: cy, x2: rampX, y2: rampY });
         cx = rampX; cy = rampY;
 
-        // GIGA ESPACE VIDE (Haut et profond pour enchaîner les galipettes)
-        let megaGap = 450 + Math.random() * 150;
+        // ESPACE CORRIGÉ : Trous moins larges, sauts plus accessibles
+        let gap = 240 + Math.random() * 80;
         
-        // Losanges placés au milieu du vide sur la trajectoire de saut
-        diamonds.push({ x: cx + (megaGap * 0.3), y: cy + 10, picked: false });
-        diamonds.push({ x: cx + (megaGap * 0.5), y: cy + 40, picked: false });
-        diamonds.push({ x: cx + (megaGap * 0.7), y: cy + 80, picked: false });
+        // Losanges dans le vide
+        diamonds.push({ x: cx + (gap * 0.5), y: cy + 30, picked: false });
 
-        cx += megaGap;
-        cy += 180; // Réception beaucoup plus basse pour avoir le temps de finir ses flips
+        cx += gap;
+        cy += 100; // Réception un peu plus basse pour assurer le coup
 
-        // Longue zone de réception sécurisée
-        tracks.push({ x1: cx, y1: cy, x2: cx + 500, y2: cy });
-        cx += 500;
+        // Plateforme de réception
+        tracks.push({ x1: cx, y1: cy, x2: cx + 450, y2: cy });
+        cx += 450;
     }
-    // Ligne de fin infinie
     tracks.push({ x1: cx, y1: cy, x2: cx + 5000, y2: cy });
 }
 
@@ -204,7 +200,6 @@ function start() {
 }
 
 function updatePhysics() {
-    // Commandes : Avancer (Z / Flèche Haut) ou Reculer (S / Flèche Bas)
     if (keys['KeyW'] || keys['KeyZ'] || keys['ArrowUp']) {
         bike.speed = Math.min(bike.speed + bike.accel, bike.maxSpeed);
     } else if (keys['KeyS'] || keys['ArrowDown']) {
@@ -214,18 +209,16 @@ function updatePhysics() {
         if (Math.abs(bike.speed) < 0.05) bike.speed = 0;
     }
 
-    // Contrôle aérien et flips ultra-nerveux (Q/D ou Flèches Gauche/Droite)
     if (!bike.isGrounded) {
         if (keys['KeyA'] || keys['KeyQ'] || keys['ArrowLeft']) {
-            bike.angle -= 0.13; // Sensibilité accrue pour des rotations éclairs
-            bike.flipTracker -= 0.13;
+            bike.angle -= 0.12;
+            bike.flipTracker -= 0.12;
         }
         if (keys['KeyD'] || keys['ArrowRight']) {
-            bike.angle += 0.13;
-            bike.flipTracker += 0.13;
+            bike.angle += 0.12;
+            bike.flipTracker += 0.12;
         }
 
-        // Système de validation de figures
         if (Math.abs(bike.flipTracker) >= Math.PI * 2) {
             score += 1000;
             bike.flipTracker = 0;
@@ -234,18 +227,17 @@ function updatePhysics() {
         bike.flipTracker = 0;
     }
 
-    // Gestion de la cinétique directionnelle
     if (bike.isGrounded) {
         bike.vx = Math.cos(bike.angle) * bike.speed;
         bike.vy = Math.sin(bike.angle) * bike.speed;
     } else {
-        bike.vy += bike.gravity; // Gravité brute réaliste
+        bike.vy += bike.gravity;
     }
 
     bike.x += bike.vx;
     bike.y += bike.vy;
 
-    // Empêcher la moto de sortir complètement à gauche de l'écran (Frotter le contour)
+    // Frotter le bord gauche de l'écran sans bugger
     let minScreenX = cameraX + 20;
     if (bike.x < minScreenX) {
         bike.x = minScreenX;
@@ -253,15 +245,14 @@ function updatePhysics() {
         if (bike.speed < 0) bike.speed = 0;
     }
 
-    // Détection robuste des collisions au sol
+    // Système de collision strict (Segment par segment)
     let matchSurface = null;
     for (let t of tracks) {
         if (bike.x >= t.x1 && bike.x <= t.x2) {
             let pct = (bike.x - t.x1) / (t.x2 - t.x1);
             let yOnTrack = t.y1 + pct * (t.y2 - t.y1);
             
-            // Box de collision stricte pour éviter de passer au travers
-            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.5 && bike.y - bike.radius <= yOnTrack + 15) {
+            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.5 && bike.y - bike.radius <= yOnTrack + 12) {
                 matchSurface = { y: yOnTrack, angle: Math.atan2(t.y2 - t.y1, t.x2 - t.x1) };
                 break;
             }
@@ -273,7 +264,6 @@ function updatePhysics() {
         while (diff > Math.PI) diff -= Math.PI * 2;
         while (diff < -Math.PI) diff += Math.PI * 2;
 
-        // Crash si atterrissage brutal à l'envers
         if (!bike.isGrounded && Math.abs(diff) > 1.3) {
             crash();
             return;
@@ -286,7 +276,6 @@ function updatePhysics() {
         bike.isGrounded = false;
     }
 
-    // Collecte des Losanges
     diamonds.forEach(d => {
         if (!d.picked && Math.hypot(bike.x - d.x, bike.y - d.y) < bike.radius + 22) {
             d.picked = true;
@@ -296,14 +285,12 @@ function updatePhysics() {
         }
     });
 
-    // Tracking Caméra fluide
     cameraX = Math.max(0, bike.x - (canvas.width * 0.25));
     cameraY = cameraY * 0.85 + (bike.y - (canvas.height * 0.6)) * 0.15;
 
     if (bike.vx > 0) score += bike.vx * 0.1;
     document.getElementById('score').textContent = Math.floor(score);
 
-    // Chute fatale dans un trou
     if (bike.y > canvas.height + 600) crash();
 }
 
@@ -314,20 +301,21 @@ function draw() {
     ctx.save();
     ctx.translate(-cameraX, -cameraY);
 
-    // Tracé de la piste néon
+    // FIX : On lève le stylo entre chaque segment pour éviter les lignes fantômes
     ctx.lineWidth = 6;
     ctx.strokeStyle = '#00f2fe';
     ctx.shadowBlur = 12;
     ctx.shadowColor = '#00f2fe';
-    ctx.beginPath();
-    tracks.forEach((t, index) => {
-        if (index === 0) ctx.moveTo(t.x1, t.y1);
+    
+    tracks.forEach(t => {
+        ctx.beginPath();
+        ctx.moveTo(t.x1, t.y1);
         ctx.lineTo(t.x2, t.y2);
+        ctx.stroke();
     });
-    ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // Rendu des Losanges (Argent du jeu)
+    // Rendu des Losanges
     diamonds.forEach(d => {
         if (d.picked) return;
         ctx.save();
@@ -352,7 +340,6 @@ function draw() {
     ctx.shadowBlur = 15;
     ctx.shadowColor = '#00f2fe';
 
-    // Design bloc plat original
     ctx.beginPath();
     ctx.moveTo(-18, 5);
     ctx.lineTo(-22, -5);
@@ -361,7 +348,6 @@ function draw() {
     ctx.closePath();
     ctx.fill();
 
-    // Verrière blanche
     ctx.fillStyle = '#fff';
     ctx.beginPath();
     ctx.moveTo(-2, -5); ctx.lineTo(8, -5); ctx.lineTo(4, -10); ctx.lineTo(-4, -10);
@@ -389,7 +375,7 @@ function crash() {
         highscore = Math.floor(score);
         document.getElementById('best').textContent = highscore;
     }
-    if (uId) set(ref(db, `neon_rider_final/${uId}`), { best: highscore, gems: totalGems });
+    if (uId) set(ref(db, `neon_rider_fixed/${uId}`), { best: highscore, gems: totalGems });
 }
 
 document.getElementById('actionBtn').addEventListener('click', start);
