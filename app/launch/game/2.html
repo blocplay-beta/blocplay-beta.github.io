@@ -3,369 +3,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Rider - BlocPlay</title>
+    <title>Neon Rider - Edition BlocPlay</title>
     <style>
         :root {
-            --bg-color: #050505;
+            --bg-dark: #060913;
             --neon-blue: #00f2fe;
             --neon-pink: #fe0979;
-            --text-color: #ffffff;
+            --neon-yellow: #fffe00;
         }
 
         body {
             margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             overflow: hidden;
-            user-select: none;
         }
 
-        /* --- CONTENEUR DU JEU --- */
         #game-container {
             position: relative;
-            width: 800px;
-            max-width: 100vw;
-            height: 450px;
-            background: #0a0a0a;
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
-            border-radius: 12px;
+            width: 900px;
+            height: 500px;
+            border: 2px solid #1e293b;
+            border-radius: 16px;
             overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         canvas {
             display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* --- INTERFACE UTILISATEUR --- */
-        #ui-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            box-sizing: border-box;
+            background: radial-gradient(circle at center, #111827 0%, #030712 100%);
         }
 
         .hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
             display: flex;
             justify-content: space-between;
             font-size: 1.2rem;
             font-weight: bold;
-            text-shadow: 0 0 10px var(--neon-blue);
+            pointer-events: none;
+            font-family: monospace;
         }
 
-        #game-over-screen {
+        .color-indicator {
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        #game-over {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.9);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            pointer-events: auto;
             display: none;
-            backdrop-filter: blur(4px);
         }
 
         h1 {
-            font-size: 3rem;
-            margin: 0 0 20px 0;
+            font-size: 3.5rem;
             color: var(--neon-pink);
             text-shadow: 0 0 20px var(--neon-pink);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            margin: 0 0 10px 0;
         }
 
-        .btn-restart {
+        button {
             background: transparent;
             color: var(--neon-blue);
             border: 2px solid var(--neon-blue);
-            padding: 12px 30px;
-            font-size: 1.2rem;
+            padding: 12px 35px;
+            font-size: 1.1rem;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
-            transition: all 0.2s;
-            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            transition: 0.2s;
         }
 
-        .btn-restart:hover {
+        button:hover {
             background: var(--neon-blue);
             color: #000;
             box-shadow: 0 0 25px var(--neon-blue);
         }
 
-        #auth-status {
+        .controls-guide {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
-        
-        #controls-hint {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.5);
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            color: #64748b;
+            text-align: center;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
-    <div id="game-container">
-        <canvas id="gameCanvas" width="800" height="450"></canvas>
-        
-        <div id="ui-layer">
-            <div class="hud">
-                <div>SCORE: <span id="scoreVal">0</span></div>
-                <div>BEST: <span id="bestScoreVal">0</span></div>
-            </div>
-            
-            <div id="auth-status">Connexion Firebase en cours...</div>
-            <div id="controls-hint">ESPACE ou CLIC GAUCHE pour sauter</div>
-        </div>
-
-        <div id="game-over-screen">
-            <h1>CRASHED</h1>
-            <p style="font-size: 1.5rem; margin-bottom: 30px;">Score Final: <span id="finalScore">0</span></p>
-            <button class="btn-restart" id="btn-restart">Rejouer</button>
-        </div>
+<div id="game-container">
+    <canvas id="riderCanvas" width="900" height="500"></canvas>
+    
+    <div class="hud">
+        <div>SCORE: <span id="score">0</span></div>
+        <div id="moto-color-hud" class="color-indicator" style="color: var(--neon-blue);">Couleur: Bleu</div>
+        <div>BEST: <span id="best">0</span></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    <div id="game-over">
+        <h1>CRASH TOTAL</h1>
+        <p style="color: #94a3b8; margin-bottom: 25px;">La couleur de la piste ne correspondait pas !</p>
+        <button id="restartBtn">REPROUVER</button>
+    </div>
 
-        // 1. CONFIGURATION FIREBASE
-        const firebaseConfig = {
-            apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-            authDomain: "blocplay-a9417.firebaseapp.com",
-            projectId: "blocplay-a9417",
-            storageBucket: "blocplay-a9417.firebasestorage.app",
-            messagingSenderId: "540161549188",
-            appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
-        };
+    <div class="controls-guide">
+        Changer couleur Moto : <strong>A</strong> (Bleu) | <strong>Z</strong> (Rose) | <strong>E</strong> (Jaune)<br>
+        Contrôle de la Moto : <strong>Flèche Haut</strong> (Sauter) | <strong>Flèches Gauche/Droite</strong> (Équilibre)
+    </div>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-        let currentUser = null;
-        let dbHighScore = 0;
+// --- FIREBASE SETUP ---
+const firebaseConfig = {
+    apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+    authDomain: "blocplay-a9417.firebaseapp.com",
+    projectId: "blocplay-a9417",
+    storageBucket: "blocplay-a9417.firebasestorage.app",
+    messagingSenderId: "540161549188",
+    appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
 
-        const authStatus = document.getElementById('auth-status');
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+let userUID = null;
+let bestScore = 0;
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                authStatus.textContent = `Connecté en tant que ${user.displayName || 'Joueur'} - Sauvegarde Cloud Activée`;
-                loadHighScore();
-            } else {
-                authStatus.textContent = "Non connecté - Progression locale uniquement";
-                authStatus.style.color = "#fe0979";
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        userUID = user.uid;
+        get(child(ref(db), `neon_rider_scores/${userUID}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                bestScore = snapshot.val().score;
+                document.getElementById('best').textContent = bestScore;
             }
         });
+    }
+});
 
-        function loadHighScore() {
-            if (!currentUser) return;
-            get(child(ref(db), `neon_rider_saves/${currentUser.uid}`)).then((snap) => {
-                if (snap.exists() && snap.val().highScore) {
-                    dbHighScore = snap.val().highScore;
-                    document.getElementById('bestScoreVal').textContent = dbHighScore;
-                }
-            });
-        }
+// --- ENGINE JEU ---
+const canvas = document.getElementById('riderCanvas');
+const ctx = canvas.getContext('2d');
 
-        function saveHighScore(newScore) {
-            if (!currentUser || newScore <= dbHighScore) return;
-            dbHighScore = newScore;
-            document.getElementById('bestScoreVal').textContent = dbHighScore;
-            set(ref(db, 'neon_rider_saves/' + currentUser.uid), { highScore: dbHighScore });
-        }
+const colors = { blue: '#00f2fe', pink: '#fe0979', yellow: '#fffe00' };
 
-        // 2. MOTEUR DU JEU (HTML5 Canvas)
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const gameOverScreen = document.getElementById('game-over-screen');
-        const scoreDisplay = document.getElementById('scoreVal');
-        const finalScoreDisplay = document.getElementById('finalScore');
-        
-        let frames = 0;
-        let score = 0;
-        let gameSpeed = 5;
-        let isGameOver = false;
-        let animationId;
+let gameActive = true;
+let score = 0;
+let cameraX = 0;
 
-        // Entité Joueur (Le "Rider")
-        const player = {
-            x: 100,
-            y: 200,
-            size: 20,
-            vy: 0,
-            gravity: 0.6,
-            jumpPower: -10,
-            color: '#00f2fe',
-            jump: function() {
-                // On permet le saut uniquement si le joueur est sur le sol
-                if (this.y >= canvas.height - 50 - this.size) {
-                    this.vy = this.jumpPower;
-                }
-            },
-            update: function() {
-                this.vy += this.gravity;
-                this.y += this.vy;
+// Propriétés de la Moto
+const bike = {
+    x: 150,
+    y: 300,
+    vy: 0,
+    radius: 12,
+    angle: 0, // Rotation de la moto
+    targetAngle: 0,
+    color: 'blue',
+    gravity: 0.4,
+    isGrounded: false
+};
 
-                // Sol (Plancher à 50px du bas)
-                if (this.y + this.size >= canvas.height - 50) {
-                    this.y = canvas.height - 50 - this.size;
-                    this.vy = 0;
-                }
-            },
-            draw: function() {
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = this.color;
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-                ctx.shadowBlur = 0; // Reset pour ne pas affecter les autres éléments
-            }
-        };
+// Génération des segments de pistes (comme dans le vrai Neon Rider)
+const tracks = [
+    { x1: 0, y1: 380, x2: 400, y2: 380, color: 'blue' },
+    { x1: 400, y1: 380, x2: 650, y2: 280, color: 'pink' }, // Une belle montée
+    { x1: 650, y1: 280, x2: 1000, y2: 280, color: 'blue' },
+    { x1: 1000, y1: 280, x2: 1300, y2: 420, color: 'yellow' }, // Descente raide
+    { x1: 1300, y1: 420, x2: 1800, y2: 420, color: 'pink' },
+    { x1: 1800, y1: 420, x2: 2100, y2: 300, color: 'yellow' },
+    { x1: 2100, y1: 300, x2: 3000, y2: 300, color: 'blue' }
+];
 
-        // Obstacles (Murs Néon)
-        const obstacles = [];
-        
-        function handleObstacles() {
-            // Génération toutes les 90 frames (~1.5 sec)
-            if (frames % 90 === 0) {
-                let height = Math.random() * 80 + 30; // Hauteur aléatoire
-                obstacles.push({
-                    x: canvas.width,
-                    y: canvas.height - 50 - height,
-                    width: 20,
-                    height: height,
-                    color: '#fe0979'
-                });
-            }
+// Gestion des inputs clavier
+const keys = {};
+window.addEventListener('keydown', (e) => {
+    keys[e.key] = true;
+    
+    // Changement de couleur instantané (A, Z, E)
+    if (e.key.toLowerCase() === 'a') changeBikeColor('blue');
+    if (e.key.toLowerCase() === 'z') changeBikeColor('pink');
+    if (e.key.toLowerCase() === 'e') changeBikeColor('yellow');
+    
+    // Saut
+    if (e.key === 'ArrowUp' && bike.isGrounded) {
+        bike.vy = -8;
+        bike.isGrounded = false;
+    }
+});
+window.addEventListener('keyup', (e) => { keys[e.key] = false; });
 
-            for (let i = 0; i < obstacles.length; i++) {
-                let obs = obstacles[i];
-                obs.x -= gameSpeed;
+function changeBikeColor(colorName) {
+    bike.color = colorName;
+    const hud = document.getElementById('moto-color-hud');
+    hud.style.color = colors[colorName];
+    hud.textContent = `Couleur: ${colorName}`;
+}
 
-                // Dessin avec effet Néon
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = obs.color;
-                ctx.fillStyle = obs.color;
-                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-                ctx.shadowBlur = 0;
+function updatePhysics() {
+    // Gravité standard
+    bike.vy += bike.gravity;
+    bike.y += bike.vy;
+    
+    // Contrôle d'assiette (équilibre de la moto en l'air)
+    if (!bike.isGrounded) {
+        if (keys['ArrowLeft']) bike.angle -= 0.05;
+        if (keys['ArrowRight']) bike.angle += 0.05;
+    }
 
-                // Collisions (Rectangle AABB)
-                if (
-                    player.x < obs.x + obs.width &&
-                    player.x + player.size > obs.x &&
-                    player.y < obs.y + obs.height &&
-                    player.y + player.size > obs.y
-                ) {
-                    triggerGameOver();
+    // Avancement automatique (défilement de la caméra)
+    bike.x += 4;
+    cameraX = bike.x - 150;
+
+    bike.isGrounded = false;
+
+    // Détection de collision au sol avec les segments de lignes
+    for (let track of tracks) {
+        if (bike.x >= track.x1 && bike.x <= track.x2) {
+            // Calculer la hauteur Y de la ligne inclinée par interpolation linéaire
+            let ratio = (bike.x - track.x1) / (track.x2 - track.x1);
+            let targetY = track.y1 + ratio * (track.y2 - track.y1);
+
+            // Si la moto touche ou traverse la ligne
+            if (bike.y + bike.radius >= targetY && bike.y - bike.radius <= targetY + 10) {
+                
+                // CRASH : Mauvaise couleur de moto !
+                if (bike.color !== track.color) {
+                    gameOver();
+                    return;
                 }
 
-                // Nettoyage et augmentation du score
-                if (obs.x + obs.width < 0) {
-                    obstacles.shift();
-                    score += 10;
-                    scoreDisplay.textContent = score;
-                    if (score % 100 === 0) gameSpeed += 0.5; // Accélération progressive
-                    i--;
-                }
+                // Recaler la moto sur la ligne
+                bike.y = targetY - bike.radius;
+                bike.vy = 0;
+                bike.isGrounded = true;
+
+                // Aligner automatiquement l'angle de la moto avec la pente de la piste
+                let dx = track.x2 - track.x1;
+                let dy = track.y2 - track.y1;
+                bike.angle = Math.atan2(dy, dx);
             }
         }
+    }
 
-        // Décoration : Ligne de sol
-        function drawGround() {
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = '#00f2fe';
-            ctx.strokeStyle = '#00f2fe';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height - 50);
-            ctx.lineTo(canvas.width, canvas.height - 50);
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-        }
+    // Chute dans le vide
+    if (bike.y > canvas.height + 100) {
+        gameOver();
+    }
 
-        // Boucle principale
-        function animate() {
-            if (isGameOver) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            drawGround();
-            player.update();
-            player.draw();
-            handleObstacles();
-            
-            frames++;
-            animationId = requestAnimationFrame(animate);
-        }
+    // Gestion du score
+    score = Math.floor(bike.x / 10);
+    document.getElementById('score').textContent = score;
+}
 
-        // Gestion de la fin de partie
-        function triggerGameOver() {
-            isGameOver = true;
-            cancelAnimationFrame(animationId);
-            saveHighScore(score);
-            finalScoreDisplay.textContent = score;
-            gameOverScreen.style.display = 'flex';
-        }
+function drawElements() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        function resetGame() {
-            player.y = 200;
-            player.vy = 0;
-            obstacles.length = 0;
-            score = 0;
-            frames = 0;
-            gameSpeed = 5;
-            isGameOver = false;
-            scoreDisplay.textContent = score;
-            gameOverScreen.style.display = 'none';
-            animate();
-        }
+    ctx.save();
+    ctx.translate(-cameraX, 0); // Effet scrolling caméra de suivi
 
-        // Contrôles
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                player.jump();
-            }
-        });
-        
-        // Clic sur le canvas pour sauter (mobile/souris)
-        document.getElementById('game-container').addEventListener('mousedown', () => {
-            if (!isGameOver) player.jump();
-        });
+    // 1. Dessiner les pistes Cyberpunk Neon
+    tracks.forEach(track => {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = colors[track.color];
+        ctx.strokeStyle = colors[track.color];
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(track.x1, track.y1);
+        ctx.lineTo(track.x2, track.y2);
+        ctx.stroke();
+    });
+    ctx.shadowBlur = 0;
 
-        document.getElementById('btn-restart').addEventListener('click', resetGame);
+    // 2. Dessiner la Moto (Représentée sous forme de châssis lumineux)
+    ctx.save();
+    ctx.translate(bike.x, bike.y);
+    ctx.rotate(bike.angle);
 
-        // Lancement initial
-        animate();
-    </script>
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = colors[bike.color];
+    ctx.fillStyle = colors[bike.color];
+
+    // Roues et corps simplifié du véhicule
+    ctx.beginPath();
+    ctx.arc(-15, 5, 8, 0, Math.PI * 2); // Roue arrière
+    ctx.arc(15, 5, 8, 0, Math.PI * 2);  // Roue avant
+    ctx.fill();
+
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(-15, 5);
+    ctx.lineTo(0, -5);
+    ctx.lineTo(15, 5);
+    ctx.stroke();
+
+    ctx.restore();
+    ctx.restore();
+}
+
+function loop() {
+    if (!gameActive) return;
+    updatePhysics();
+    drawElements();
+    requestAnimationFrame(loop);
+}
+
+function gameOver() {
+    gameActive = false;
+    document.getElementById('game-over').style.display = 'flex';
+
+    if (userUID && score > bestScore) {
+        bestScore = score;
+        document.getElementById('best').textContent = bestScore;
+        set(ref(db, `neon_rider_scores/${userUID}`), { score: bestScore });
+    }
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+    bike.x = 150;
+    bike.y = 300;
+    bike.vy = 0;
+    bike.angle = 0;
+    bike.color = 'blue';
+    changeBikeColor('blue');
+    gameActive = true;
+    document.getElementById('game-over').style.style.display = 'none';
+    loop();
+});
+
+// Start loop
+loop();
+</script>
 </body>
 </html>
