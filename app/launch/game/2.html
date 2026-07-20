@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEAVE</title>
+    <title>Neon Rider - Arcade Remake</title>
     <style>
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background-color: #010205;
-            color: #fff; font-family: monospace; user-select: none;
+            overflow: hidden; background-color: #0d131a;
+            color: #fff; font-family: 'Courier New', Courier, monospace; user-select: none;
         }
 
         #game-container {
@@ -20,36 +20,38 @@
         .hud {
             position: absolute; top: 20px; left: 20px; right: 20px;
             display: flex; justify-content: space-between;
-            font-size: 1.5rem; font-weight: bold; pointer-events: none;
-            z-index: 5;
+            font-size: 1.8rem; font-weight: bold; pointer-events: none;
+            z-index: 5; text-transform: uppercase;
         }
 
         .hud-item {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px; border-radius: 4px;
-            border: 1px solid #00f2fe;
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+            background: rgba(13, 19, 26, 0.85);
+            padding: 8px 20px; border-radius: 6px;
+            border: 2px solid #39ff14;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
         }
 
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(1, 2, 5, 0.9);
+            background: rgba(10, 15, 20, 0.9);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10;
         }
 
-        h1 { font-size: 4.5rem; margin: 0 0 20px 0; letter-spacing: 5px; color: #00f2fe; text-shadow: 0 0 25px #00f2fe; }
+        h1 { font-size: 5rem; margin: 0 0 10px 0; letter-spacing: 8px; color: #00f2fe; text-shadow: 0 0 30px #00f2fe; }
+        p { font-size: 1.2rem; color: #a0aec0; margin-bottom: 30px; }
         
         button {
-            background: transparent; color: #00f2fe; border: 2px solid #00f2fe;
-            padding: 15px 60px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
-            transition: 0.2s; font-family: monospace;
+            background: transparent; color: #39ff14; border: 3px solid #39ff14;
+            padding: 15px 50px; font-size: 1.5rem; font-weight: bold; cursor: pointer;
+            transition: 0.2s; border-radius: 4px;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
         }
-        button:hover { background: #00f2fe; color: #000; box-shadow: 0 0 25px #00f2fe; }
+        button:hover { background: #39ff14; color: #000; box-shadow: 0 0 35px #39ff14; }
 
         .controls-tip {
             position: absolute; bottom: 25px; width: 100%; text-align: center;
-            color: #4b5563; font-size: 1rem; pointer-events: none;
+            color: #718096; font-size: 1.1rem; pointer-events: none;
         }
     </style>
 </head>
@@ -59,76 +61,48 @@
     <canvas id="neonCanvas"></canvas>
     
     <div class="hud">
-        <div class="hud-item" style="color: #00f2fe;">SCORE: <span id="score">LEAVE</span></div>
-        <div class="hud-item" style="color: #fffe00;">💎: <span id="gems">LEAVE</span></div>
-        <div class="hud-item" style="color: #fffe00;">BEST: <span id="best">LEAVE</span></div>
+        <div class="hud-item" style="color: #ffffff;">POWER: <span id="score">0</span></div>
+        <div class="hud-item" style="color: #ff007f;">♦ <span id="gems">0</span></div>
     </div>
 
     <div id="game-overlay" class="overlay">
-        <h1 id="menu-title">LEAVE</h1>
-        <button id="actionBtn">LEAVE</button>
+        <h1 id="menu-title">NEON RIDER</h1>
+        <p>Évitez les scies rouges, ramassez les cristaux et gérez vos réceptions !</p>
+        <button id="actionBtn">RIDE</button>
     </div>
 
     <div class="controls-tip">
-        <strong style="color: #00f2fe;">[Z / S] ou [HAUT / BAS]</strong> Avancer / Reculer au bord | <strong style="color: #00f2fe;">[Q / D] ou [GAUCHE / DROITE]</strong> Flips Réactifs
+        <strong style="color: #39ff14;">[Z / S] ou [HAUT / BAS]</strong> Accélérer / Reculer | <strong style="color: #00f2fe;">[Q / D] ou [GAUCHE / DROITE]</strong> Inclinaisons & Flips
     </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-    authDomain: "blocplay-a9417.firebaseapp.com",
-    projectId: "blocplay-a9417",
-    storageBucket: "blocplay-a9417.firebasestorage.app",
-    messagingSenderId: "540161549188",
-    appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-let uId = null, highscore = 0, totalGems = 0;
-
-onAuthStateChanged(auth, (u) => {
-    if (u) {
-        uId = u.uid;
-        get(child(ref(db), `neon_rider_fixed/${uId}`)).then((s) => {
-            if (s.exists()) {
-                highscore = s.val().best || 0;
-                totalGems = s.val().gems || 0;
-                document.getElementById('best').textContent = highscore;
-                document.getElementById('gems').textContent = totalGems;
-            }
-        });
-    }
-});
-
+<script>
 const canvas = document.getElementById('neonCanvas');
 const ctx = canvas.getContext('2d');
 
 let isPlaying = false;
 let score = 0;
+let gemsCollected = 0;
 let cameraX = 0, cameraY = 0;
-let tracks = [];
+let trackPoints = [];
 let diamonds = [];
+let obstacles = [];
 
 const bike = {
-    x: 150, y: 300,
+    x: 200, y: 300,
     vx: 0, vy: 0,
     speed: 0,
-    maxSpeed: 13,
-    maxReverse: -4,
-    accel: 0.35,
-    decel: 0.25,
+    maxSpeed: 11,
+    maxReverse: -3,
+    accel: 0.22,
+    decel: 0.18,
     friction: 0.985,
-    gravity: 0.42,      // Gravité équilibrée
+    gravity: 0.38,
     angle: 0,
     isGrounded: false,
-    radius: 12,
-    flipTracker: 0
+    radius: 14,
+    width: 36,
+    height: 12
 };
 
 function resize() {
@@ -138,49 +112,84 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-function generateTracks() {
-    tracks = [];
+// Génération d'une ligne continue fluide inspirée de la vidéo
+function generateTrack() {
+    trackPoints = [];
     diamonds = [];
-    let cx = 0, cy = canvas.height * 0.7;
+    obstacles = [];
 
-    // Zone de départ (permet de reculer)
-    tracks.push({ x1: -300, y1: cy, x2: 700, y2: cy });
-    cx = 700;
+    let cx = 0;
+    let cy = canvas.height * 0.65;
+    
+    // Point de départ
+    trackPoints.push({ x: -500, y: cy });
+    trackPoints.push({ x: 600, y: cy });
+    cx = 600;
 
-    for(let i = 0; i < 40; i++) {
-        // Ligne droite au sol
-        let flatLength = 500 + Math.random() * 150;
-        let nextY = cy + (Math.random() * 40 - 20);
-        if (nextY > canvas.height * 0.85 || nextY < canvas.height * 0.5) nextY = canvas.height * 0.7;
-        
-        tracks.push({ x1: cx, y1: cy, x2: cx + flatLength, y2: nextY });
-        cx += flatLength; cy = nextY;
+    for (let i = 0; i < 60; i++) {
+        let type = Math.random();
 
-        // Losanges au sol
-        for (let j = 1; j <= 3; j++) {
-            diamonds.push({ x: cx - (j * 100), y: cy - 20, picked: false });
+        if (type < 0.35) {
+            // Ligne droite ou légère pente avec cristaux
+            let len = 300 + Math.random() * 200;
+            let targetY = cy + (Math.random() * 80 - 40);
+            
+            // Placer des cristaux au-dessus
+            for(let j = 1; j <= 3; j++) {
+                diamonds.push({ x: cx + (len * (j/4)), y: cy - 25, picked: false });
+            }
+
+            cx += len;
+            cy = targetY;
+            trackPoints.push({ x: cx, y: cy });
+
+        } else if (type < 0.65) {
+            // Un grand bump / colline fluide
+            let length = 400;
+            let peakY = cy - 120;
+            let endY = cy + 40;
+
+            // Approximation de colline
+            trackPoints.push({ x: cx + length * 0.25, y: cy - 40 });
+            trackPoints.push({ x: cx + length * 0.5, y: peakY });
+            trackPoints.push({ x: cx + length * 0.75, y: cy - 20 });
+            
+            // Cristal au sommet
+            diamonds.push({ x: cx + length * 0.5, y: peakY - 30, picked: false });
+
+            cx += length;
+            cy = endY;
+            trackPoints.push({ x: cx, y: cy });
+
+        } else {
+            // Saut avec un trou et obstacle scie rouge au milieu !
+            let launchLen = 150;
+            let gap = 200 + Math.random() * 100;
+            let landLen = 250;
+
+            // Tremplin montant
+            cx += launchLen;
+            cy -= 40;
+            trackPoints.push({ x: cx, y: cy });
+
+            // On ajoute une scie rouge dangereuse juste au niveau du trou
+            obstacles.push({ x: cx + (gap / 2), y: cy + 40, radius: 24, rotation: 0 });
+
+            // Cristaux au dessus de la scie
+            diamonds.push({ x: cx + (gap / 2), y: cy - 40, picked: false });
+
+            // Réception plus basse
+            cx += gap;
+            cy += 80;
+            trackPoints.push({ x: cx, y: cy });
+
+            cx += landLen;
+            trackPoints.push({ x: cx, y: cy });
         }
-
-        // Tremplin d'élan
-        let rampX = cx + 100;
-        let rampY = cy - 60;
-        tracks.push({ x1: cx, y1: cy, x2: rampX, y2: rampY });
-        cx = rampX; cy = rampY;
-
-        // ESPACE CORRIGÉ : Trous moins larges, sauts plus accessibles
-        let gap = 240 + Math.random() * 80;
-        
-        // Losanges dans le vide
-        diamonds.push({ x: cx + (gap * 0.5), y: cy + 30, picked: false });
-
-        cx += gap;
-        cy += 100; // Réception un peu plus basse pour assurer le coup
-
-        // Plateforme de réception
-        tracks.push({ x1: cx, y1: cy, x2: cx + 450, y2: cy });
-        cx += 450;
     }
-    tracks.push({ x1: cx, y1: cy, x2: cx + 5000, y2: cy });
+    
+    // Fin infinie plate
+    trackPoints.push({ x: cx + 5000, y: cy });
 }
 
 const keys = {};
@@ -188,150 +197,197 @@ window.addEventListener('keydown', (e) => { keys[e.code] = true; });
 window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
 function start() {
-    generateTracks();
-    bike.x = 100; bike.y = canvas.height * 0.5;
+    generateTrack();
+    bike.x = 200; 
+    bike.y = canvas.height * 0.5;
     bike.vx = 0; bike.vy = 0; bike.speed = 0;
     bike.angle = 0; bike.isGrounded = false;
     score = 0;
+    gemsCollected = 0;
     
+    document.getElementById('gems').textContent = gemsCollected;
     document.getElementById('game-overlay').style.display = 'none';
     isPlaying = true;
     loop();
 }
 
 function updatePhysics() {
+    // Commandes de vitesse (Z / S ou Flèches)
     if (keys['KeyW'] || keys['KeyZ'] || keys['ArrowUp']) {
         bike.speed = Math.min(bike.speed + bike.accel, bike.maxSpeed);
     } else if (keys['KeyS'] || keys['ArrowDown']) {
         bike.speed = Math.max(bike.speed - bike.decel, bike.maxReverse);
     } else {
         bike.speed *= bike.friction;
-        if (Math.abs(bike.speed) < 0.05) bike.speed = 0;
     }
 
-    if (!bike.isGrounded) {
-        if (keys['KeyA'] || keys['KeyQ'] || keys['ArrowLeft']) {
-            bike.angle -= 0.12;
-            bike.flipTracker -= 0.12;
-        }
-        if (keys['KeyD'] || keys['ArrowRight']) {
-            bike.angle += 0.12;
-            bike.flipTracker += 0.12;
-        }
-
-        if (Math.abs(bike.flipTracker) >= Math.PI * 2) {
-            score += 1000;
-            bike.flipTracker = 0;
-        }
-    } else {
-        bike.flipTracker = 0;
+    // Commandes d'inclinaison (Q / D ou Flèches Gauche/Droite)
+    if (keys['KeyA'] || keys['KeyQ'] || keys['ArrowLeft']) {
+        bike.angle -= 0.07;
+    }
+    if (keys['KeyD'] || keys['ArrowRight']) {
+        bike.angle += 0.07;
     }
 
+    // Application du vecteur de vitesse
     if (bike.isGrounded) {
         bike.vx = Math.cos(bike.angle) * bike.speed;
         bike.vy = Math.sin(bike.angle) * bike.speed;
     } else {
         bike.vy += bike.gravity;
+        // Léger frein aérodynamique sur l'axe X si on lâche les gaz
+        bike.vx *= 0.99;
     }
 
     bike.x += bike.vx;
     bike.y += bike.vy;
 
-    // Frotter le bord gauche de l'écran sans bugger
-    let minScreenX = cameraX + 20;
-    if (bike.x < minScreenX) {
-        bike.x = minScreenX;
+    // Bloquer le recul au bord de l'écran pour éviter de tomber hors-map à gauche
+    let minX = cameraX + 30;
+    if (bike.x < minX) {
+        bike.x = minX;
         if (bike.vx < 0) bike.vx = 0;
         if (bike.speed < 0) bike.speed = 0;
     }
 
-    // Système de collision strict (Segment par segment)
+    // --- SYSTEME DE COLLISION CONTINUE PAR SEGMENT COMPLET ---
     let matchSurface = null;
-    for (let t of tracks) {
-        if (bike.x >= t.x1 && bike.x <= t.x2) {
-            let pct = (bike.x - t.x1) / (t.x2 - t.x1);
-            let yOnTrack = t.y1 + pct * (t.y2 - t.y1);
+    bike.isGrounded = false;
+
+    for (let i = 0; i < trackPoints.length - 1; i++) {
+        let p1 = trackPoints[i];
+        let p2 = trackPoints[i+1];
+
+        // Vérifier si la moto est horizontalement entre ces deux points de la ligne
+        if (bike.x >= p1.x && bike.x <= p2.x) {
+            let pct = (bike.x - p1.x) / (p2.x - p1.x);
+            let yOnTrack = p1.y + pct * (p2.y - p1.y);
             
-            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.5 && bike.y - bike.radius <= yOnTrack + 12) {
-                matchSurface = { y: yOnTrack, angle: Math.atan2(t.y2 - t.y1, t.x2 - t.x1) };
+            // Zone d'impact stricte sous les roues
+            if (bike.y + bike.radius >= yOnTrack && bike.y - bike.radius <= yOnTrack + 15 && bike.vy >= -1) {
+                matchSurface = {
+                    y: yOnTrack,
+                    angle: Math.atan2(p2.y - p1.y, p2.x - p1.x)
+                };
                 break;
             }
         }
     }
 
     if (matchSurface) {
-        let diff = bike.angle - matchSurface.angle;
-        while (diff > Math.PI) diff -= Math.PI * 2;
-        while (diff < -Math.PI) diff += Math.PI * 2;
+        let angleDiff = bike.angle - matchSurface.angle;
+        // Normalisation de l'angle
+        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
 
-        if (!bike.isGrounded && Math.abs(diff) > 1.3) {
-            crash();
+        // Crash si l'angle d'impact au sol est trop violent (bécane retournée)
+        if (Math.abs(angleDiff) > 1.4 && Math.abs(bike.vy) > 2) {
+            crash("CRASH ! Réception ratée");
             return;
         }
 
         bike.y = matchSurface.y - bike.radius;
+        bike.vy = 0;
         bike.isGrounded = true;
-        bike.angle = bike.angle * 0.15 + matchSurface.angle * 0.85; 
-    } else {
-        bike.isGrounded = false;
+        // Aligner progressivement l'angle de la moto avec le sol
+        bike.angle = bike.angle * 0.2 + matchSurface.angle * 0.8;
     }
 
-    diamonds.forEach(d => {
-        if (!d.picked && Math.hypot(bike.x - d.x, bike.y - d.y) < bike.radius + 22) {
-            d.picked = true;
-            totalGems++;
-            score += 200;
-            document.getElementById('gems').textContent = totalGems;
+    // Gestion de la rotation des obstacles scies et collision
+    obstacles.forEach(obs => {
+        obs.rotation += 0.1; // Fait tourner la scie
+        let dist = Math.hypot(bike.x - obs.x, bike.y - obs.y);
+        if (dist < obs.radius + bike.radius) {
+            crash("DÉTRUIT ! Évitez les scies");
         }
     });
 
-    cameraX = Math.max(0, bike.x - (canvas.width * 0.25));
-    cameraY = cameraY * 0.85 + (bike.y - (canvas.height * 0.6)) * 0.15;
+    // Collecte des cristaux (losanges)
+    diamonds.forEach(d => {
+        if (!d.picked && Math.hypot(bike.x - d.x, bike.y - d.y) < bike.radius + 20) {
+            d.picked = true;
+            gemsCollected++;
+            document.getElementById('gems').textContent = gemsCollected;
+        }
+    });
 
-    if (bike.vx > 0) score += bike.vx * 0.1;
+    // Tracking caméra centré comme sur la vidéo originale
+    cameraX = bike.x - (canvas.width * 0.35);
+    cameraY = cameraY * 0.9 + (bike.y - (canvas.height * 0.6)) * 0.1;
+
+    // Score basé sur l'avancée
+    if (bike.vx > 0) score += bike.vx * 0.05;
     document.getElementById('score').textContent = Math.floor(score);
 
-    if (bike.y > canvas.height + 600) crash();
+    // Chute fatale dans un ravin
+    if (bike.y > canvas.height + 400) {
+        crash("GAME OVER ! Chute dans le vide");
+    }
 }
 
 function draw() {
-    ctx.fillStyle = '#010205';
+    // Fond bleu foncé/noir typique
+    ctx.fillStyle = '#0d131a';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
     ctx.translate(-cameraX, -cameraY);
 
-    // FIX : On lève le stylo entre chaque segment pour éviter les lignes fantômes
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = '#00f2fe';
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = '#00f2fe';
-    
-    tracks.forEach(t => {
-        ctx.beginPath();
-        ctx.moveTo(t.x1, t.y1);
-        ctx.lineTo(t.x2, t.y2);
-        ctx.stroke();
+    // RENDER DE LA LIGNE CONTINUE (NÉON VERT FLUO)
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#39ff14';
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#39ff14';
+    ctx.beginPath();
+    trackPoints.forEach((p, index) => {
+        if (index === 0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
     });
+    ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // Rendu des Losanges
+    // RENDER DES CRISTAUX (LOSANGES ROSES)
     diamonds.forEach(d => {
         if (d.picked) return;
         ctx.save();
         ctx.translate(d.x, d.y);
-        ctx.fillStyle = '#fffe00';
+        ctx.fillStyle = '#ff007f';
         ctx.shadowBlur = 10;
-        ctx.shadowColor = '#fffe00';
+        ctx.shadowColor = '#ff007f';
         ctx.beginPath();
-        ctx.moveTo(0, -10); ctx.lineTo(7, 0); ctx.lineTo(0, 10); ctx.lineTo(-7, 0);
+        ctx.moveTo(0, -12); 
+        ctx.lineTo(8, 0); 
+        ctx.lineTo(0, 12); 
+        ctx.lineTo(-8, 0);
         ctx.closePath();
         ctx.fill();
         ctx.restore();
     });
     ctx.shadowBlur = 0;
 
-    // Rendu de la Cyber-Bike
+    // RENDER DES OBSTACLES (SCIES ROUGES)
+    obstacles.forEach(obs => {
+        ctx.save();
+        ctx.translate(obs.x, obs.y);
+        ctx.rotate(obs.rotation);
+        ctx.fillStyle = '#ff3333';
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = '#ff3333';
+        
+        // Dessin de la scie circulaire crantée
+        ctx.beginPath();
+        for (let j = 0; j < 12; j++) {
+            let angle = (j / 12) * Math.PI * 2;
+            ctx.lineTo(Math.cos(angle) * obs.radius, Math.sin(angle) * obs.radius);
+            ctx.lineTo(Math.cos(angle + 0.1) * (obs.radius - 8), Math.sin(angle + 0.1) * (obs.radius - 8));
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    });
+    ctx.shadowBlur = 0;
+
+    // RENDER DE LA MOTO (CYBER-BIKE CYAN DE LA VIDÉO)
     ctx.save();
     ctx.translate(bike.x, bike.y);
     ctx.rotate(bike.angle);
@@ -340,17 +396,22 @@ function draw() {
     ctx.shadowBlur = 15;
     ctx.shadowColor = '#00f2fe';
 
+    // Corps de la moto compacte comme sur la vidéo
     ctx.beginPath();
-    ctx.moveTo(-18, 5);
-    ctx.lineTo(-22, -5);
-    ctx.lineTo(12, -5);
-    ctx.lineTo(20, 5);
+    ctx.moveTo(-16, 4);
+    ctx.lineTo(-20, -4);
+    ctx.lineTo(10, -4);
+    ctx.lineTo(16, 4);
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = '#fff';
+    // Pare-brise / cockpit blanc lumineux
+    ctx.fillStyle = '#ffffff';
     ctx.beginPath();
-    ctx.moveTo(-2, -5); ctx.lineTo(8, -5); ctx.lineTo(4, -10); ctx.lineTo(-4, -10);
+    ctx.moveTo(-2, -4); 
+    ctx.lineTo(8, -4); 
+    ctx.lineTo(4, -9); 
+    ctx.lineTo(-2, -9);
     ctx.closePath();
     ctx.fill();
 
@@ -365,17 +426,11 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-function crash() {
+function crash(message) {
     isPlaying = false;
-    document.getElementById('menu-title').textContent = "LEAVE";
-    document.getElementById('actionBtn').textContent = "LEAVE";
+    document.getElementById('menu-title').textContent = message;
+    document.getElementById('actionBtn').textContent = "RIDE AGAIN";
     document.getElementById('game-overlay').style.display = 'flex';
-
-    if (score > highscore) {
-        highscore = Math.floor(score);
-        document.getElementById('best').textContent = highscore;
-    }
-    if (uId) set(ref(db, `neon_rider_fixed/${uId}`), { best: highscore, gems: totalGems });
 }
 
 document.getElementById('actionBtn').addEventListener('click', start);
