@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Overdrive</title>
+    <title>NEON OVERDRIVE - Ultimate Revive Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&display=swap');
 
@@ -17,14 +17,32 @@
         #game-container { position: relative; width: 100vw; height: 100vh; }
         canvas { display: block; width: 100%; height: 100%; }
 
-        /* HUD */
-        .hud {
+        /* HUD EN BAS A GAUCHE ET EN BAS A DROITE */
+        .hud-player {
+            position: absolute; bottom: 20px; z-index: 5;
+            display: flex; flex-direction: column; gap: 6px;
+            color: #fff; text-shadow: 0 0 10px #00f2fe;
+        }
+        #hud-p1 { left: 20px; }
+        #hud-p2 { right: 20px; text-align: right; }
+
+        .health-bar-bg {
+            width: 180px; height: 16px; background: rgba(255, 255, 255, 0.15);
+            border: 2px solid #00f2fe; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+        }
+        .health-bar-fill {
+            width: 100%; height: 100%; background: #00f2fe;
+            transition: width 0.2s ease;
+        }
+        #p2-fill { background: #ff007f; border-color: #ff007f; }
+
+        /* HUD HAUT (SCORE & COINS) */
+        .hud-top {
             position: absolute; top: 15px; left: 20px; right: 20px;
             display: flex; justify-content: space-between; align-items: center;
-            pointer-events: none; z-index: 5; color: #fff; text-shadow: 0 0 10px #00f2fe;
+            pointer-events: none; z-index: 5; color: #fff; font-size: 1.2rem;
         }
-        .stats-group { display: flex; gap: 20px; align-items: center; }
-        .coin-count { color: #fffe00; text-shadow: 0 0 10px #fffe00; }
 
         /* MENUS & OVERLAYS */
         .overlay {
@@ -35,38 +53,45 @@
         }
 
         h1 {
-            font-size: 3.8rem; margin: 0 0 5px 0; letter-spacing: 3px;
-            color: #00f2fe; text-shadow: 0 0 30px #00f2fe, 0 0 60px #00f2fe;
-            text-align: center; font-weight: 900;
+            font-size: 3.5rem; margin: 0 0 5px 0; letter-spacing: 3px;
+            color: #00f2fe; text-shadow: 0 0 30px #00f2fe; text-align: center; font-weight: 900;
         }
 
-        .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; align-items: center; }
 
         .btn {
-            background: #ff007f; color: #fff; border: none;
-            padding: 14px 40px; font-size: 1.2rem; font-weight: 900;
-            border-radius: 30px; cursor: pointer; transition: all 0.2s ease;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
+            background: #ff007f; color: #fff; border: 2px solid transparent;
+            padding: 14px 40px; font-size: 1.1rem; font-weight: 900;
+            border-radius: 30px; cursor: pointer; transition: all 0.15s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
             font-family: 'Orbitron', sans-serif; text-transform: uppercase;
+            width: 320px; text-align: center;
         }
-        .btn:hover { transform: scale(1.08); background: #ff3399; box-shadow: 0 0 35px rgba(255, 0, 127, 0.8); }
-        .btn-blue { background: #00f2fe; box-shadow: 0 0 20px rgba(0, 242, 254, 0.5); color: #000; }
-        .btn-blue:hover { background: #66fcf1; box-shadow: 0 0 35px rgba(0, 242, 254, 0.8); }
+        .btn:hover, .btn.focused {
+            transform: scale(1.06); background: #ff3399;
+            border-color: #fff; box-shadow: 0 0 30px rgba(255, 0, 127, 0.9);
+            outline: none;
+        }
+        .btn-blue { background: #00f2fe; color: #000; box-shadow: 0 0 15px rgba(0, 242, 254, 0.5); }
+        .btn-blue:hover, .btn-blue.focused { background: #66fcf1; box-shadow: 0 0 30px rgba(0, 242, 254, 0.9); }
+        .btn-gold { background: #fffe00; color: #000; box-shadow: 0 0 15px rgba(255, 254, 0, 0.5); }
+        .btn-gold:hover, .btn-gold.focused { background: #ffff66; box-shadow: 0 0 30px rgba(255, 254, 0, 0.9); }
 
-        /* MODAL BOUTIQUE */
-        .shop-modal {
-            display: none; background: #0c0d1b; border: 2px solid #00f2fe;
-            border-radius: 15px; padding: 25px; width: 90%; max-width: 550px;
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3); color: #fff;
-            flex-direction: column; gap: 15px; z-index: 11;
+        /* FENÊTRE PUB EN CADRE CENTRAL */
+        .ad-modal {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+            align-items: center; justify-content: center; z-index: 20;
         }
-        .shop-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 10px;
+        .ad-box {
+            width: 90%; max-width: 650px; height: 480px; background: #0c0d1b;
+            border: 2px solid #00f2fe; border-radius: 12px; overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: 0 0 35px rgba(0,242,254,0.5);
         }
-        .shop-item-btn {
-            background: #fffe00; color: #000; border: none; padding: 8px 18px;
-            border-radius: 20px; font-weight: 900; cursor: pointer; font-family: 'Orbitron';
+        .ad-box iframe { width: 100%; height: 390px; border: none; }
+        .ad-footer {
+            height: 90px; background: #060710; display: flex;
+            align-items: center; justify-content: space-between; padding: 0 20px;
         }
     </style>
 </head>
@@ -75,203 +100,233 @@
 <div id="game-container">
     <canvas id="canvas"></canvas>
 
-    <div class="hud" id="hud" style="display:none;">
-        <div class="stats-group">
-            <div>SCORE: <span id="score-val" style="color:#ff007f;">0</span></div>
-            <div class="coin-count">🪙 <span id="coins-val">0</span></div>
-        </div>
+    <div class="hud-top" id="hud-top" style="display:none;">
+        <div>SCORE: <span id="score-val" style="color:#ff007f;">0</span></div>
+        <div>🪙 <span id="coins-val" style="color:#fffe00;">0</span></div>
+    </div>
+
+    <div class="hud-player" id="hud-p1" style="display:none;">
+        <div style="font-size: 0.9rem;">JOUEUR 1</div>
+        <div class="health-bar-bg"><div class="health-bar-fill" id="p1-fill"></div></div>
+    </div>
+
+    <div class="hud-player" id="hud-p2" style="display:none;">
+        <div style="font-size: 0.9rem;">JOUEUR 2</div>
+        <div class="health-bar-bg" style="border-color:#ff007f;"><div class="health-bar-fill" id="p2-fill"></div></div>
     </div>
 
     <div id="menu" class="overlay">
-        <h1 id="main-title">Neon Overdrive</h1>
-        
+        <h1 id="main-title">NEON OVERDRIVE</h1>
+        <p style="color:#a0a0d0; letter-spacing: 2px; margin:0 0 10px 0;">ARCADE EDITION</p>
+
         <div class="btn-group">
-            <button class="btn" onclick="startGame(1)">Solo</button>
-            <button class="btn btn-blue" onclick="startGame(2)">Multijoueur</button>
-                            <button class="btn" style="background:#fffe00; color:#000;" onclick="openShop()">Boutique</button>
+            <button class="btn btn-action" onclick="startGame(1)">1 JOUEUR</button>
+            <button class="btn btn-blue btn-action" onclick="startGame(2)">2 JOUEURS (CO-OP)</button>
         </div>
     </div>
 
-    <div id="shop-modal" class="overlay" style="display:none;">
-        <div class="shop-modal" style="display:flex;">
-            <h2 style="margin:0; text-align:center; color:#fffe00;">BOUTIQUE NEON</h2>
-            <div style="text-align:center; margin-bottom:10px;">Tes Pièces : <span id="shop-coins" class="coin-count">0</span> 🪙</div>
+    <div id="revive-menu" class="overlay" style="display:none;">
+        <h1 style="color:#ff0055; text-shadow:0 0 30px #ff0055;">PARTIE TERMINÉE</h1>
+        <p style="color:#fff; margin-bottom: 20px;">Voulez-vous récupérer vos vies ?</p>
 
-            <div class="shop-item">
-                <div><b>Tir Rapide</b><br><small style="color:#aaa">Augmente la cadence</small></div>
-                <button class="shop-item-btn" id="buy-fire" onclick="buyUpgrade('fireRate', 50)">50 🪙</button>
-            </div>
-            <div class="shop-item">
-                <div><b>Coque Renforcée</b><br><small style="color:#aaa">+25 PV Max</small></div>
-                <button class="shop-item-btn" id="buy-hp" onclick="buyUpgrade('maxHp', 75)">75 🪙</button>
-            </div>
-            <div class="shop-item">
-                <div><b>Skin Doré</b><br><small style="color:#aaa">Style personnalisé</small></div>
-                <button class="shop-item-btn" id="buy-skin" onclick="buyUpgrade('goldSkin', 150)">150 🪙</button>
-            </div>
+        <div class="btn-group">
+            <button class="btn btn-gold btn-action" id="btn-pay-coins" onclick="reviveWithCoins()">PAYER 25 🪙</button>
+            <button class="btn btn-blue btn-action" onclick="openAdModal()">REGARDER UNE PUB 📺</button>
+            <button class="btn btn-action" style="background:#555;" onclick="closeGameOver()">NON MERCI</button>
+        </div>
+    </div>
 
-            <button class="btn" style="margin-top:10px; align-self:center;" onclick="closeShop()">RETOUR</button>
+    <div id="ad-modal" class="ad-modal">
+        <div class="ad-box">
+            <iframe id="ad-iframe" src=""></iframe>
+            <div class="ad-footer">
+                <span id="ad-timer-text" style="color:#fffe00; font-size:0.9rem;">Attente : 10s...</span>
+                <button class="btn btn-blue btn-action" id="ad-close-btn" disabled style="width: auto; padding: 10px 20px; opacity:0.5;" onclick="reviveFromAd()">RÉCUPÉRER MES VIES</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-// --- AUDIO SYNTH (Web Audio API) ---
+// --- AUDIO SYSTEM ---
 class SoundSystem {
     constructor() { this.ctx = null; }
     init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
-    
     playShoot() {
         if (!this.ctx) return;
         let osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
         osc.type = 'sawtooth'; osc.frequency.setValueAtTime(800, this.ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.15, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.12, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
         osc.connect(gain); gain.connect(this.ctx.destination);
         osc.start(); osc.stop(this.ctx.currentTime + 0.1);
     }
     playExplosion() {
         if (!this.ctx) return;
-        let dur = 0.25, bufferSize = this.ctx.sampleRate * dur, buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        let dur = 0.2, bufferSize = this.ctx.sampleRate * dur, buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
         let data = buffer.getChannelData(0); for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
         let noise = this.ctx.createBufferSource(); noise.buffer = buffer;
         let filter = this.ctx.createBiquadFilter(); filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(600, this.ctx.currentTime); filter.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + dur);
-        let gain = this.ctx.createGain(); gain.gain.setValueAtTime(0.3, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
+        filter.frequency.setValueAtTime(500, this.ctx.currentTime); filter.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + dur);
+        let gain = this.ctx.createGain(); gain.gain.setValueAtTime(0.25, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + dur);
         noise.connect(filter); filter.connect(gain); gain.connect(this.ctx.destination);
         noise.start(); noise.stop(this.ctx.currentTime + dur);
     }
 }
 const audio = new SoundSystem();
 
-// --- SAVES & SHOP SYSTEM ---
-let saveData = JSON.parse(localStorage.getItem('neon_overdrive_save')) || {
-    coins: 0, fireRateLevel: 0, hpLevel: 0, goldSkin: false
-};
-function saveGame() { localStorage.setItem('neon_overdrive_save', JSON.stringify(saveData)); }
-
-function openShop() {
-    document.getElementById('shop-coins').textContent = saveData.coins;
-    document.getElementById('buy-fire').textContent = saveData.fireRateLevel >= 3 ? "MAX" : (50 * (saveData.fireRateLevel + 1)) + " 🪙";
-    document.getElementById('buy-hp').textContent = saveData.hpLevel >= 3 ? "MAX" : (75 * (saveData.hpLevel + 1)) + " 🪙";
-    document.getElementById('buy-skin').textContent = saveData.goldSkin ? "POSSÉDÉ" : "150 🪙";
-    document.getElementById('shop-modal').style.display = 'flex';
-}
-function closeShop() { document.getElementById('shop-modal').style.display = 'none'; }
-
-function buyUpgrade(type, baseCost) {
-    if (type === 'fireRate' && saveData.fireRateLevel < 3) {
-        let cost = 50 * (saveData.fireRateLevel + 1);
-        if (saveData.coins >= cost) { saveData.coins -= cost; saveData.fireRateLevel++; }
-    } else if (type === 'maxHp' && saveData.hpLevel < 3) {
-        let cost = 75 * (saveData.hpLevel + 1);
-        if (saveData.coins >= cost) { saveData.coins -= cost; saveData.hpLevel++; }
-    } else if (type === 'goldSkin' && !saveData.goldSkin && saveData.coins >= 150) {
-        saveData.coins -= 150; saveData.goldSkin = true;
-    }
-    saveGame(); openShop();
-}
-
-// --- ENGINE & SETUP ---
+// --- GAME ENGINE & VARIABLES ---
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-let isPlaying = false, score = 0, screenShake = 0, modePlayers = 1;
+let isPlaying = false, score = 0, coinsTotal = 0, modePlayers = 1;
 
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize); resize();
 
-let players = [], bullets = [], enemies = [], particles = [], coins = [];
+let players = [], bullets = [], enemies = [], fallingCoins = [], particles = [];
 const keys = {};
-window.addEventListener('keydown', e => keys[e.code] = true);
-window.addEventListener('keyup', e => keys[e.code] = false);
 
-function createExplosion(x, y, color, count = 15) {
-    for (let i = 0; i < count; i++) {
-        let angle = Math.random() * Math.PI * 2, speed = 2 + Math.random() * 5;
-        particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 1, decay: 0.03, color, r: 2 + Math.random() * 3 });
-    }
+// NAVIGATION NAVIGATION CLAVIER EN MENU
+let focusedBtnIndex = 0;
+
+function getActiveButtons() {
+    const overlays = [document.getElementById('menu'), document.getElementById('revive-menu'), document.getElementById('ad-modal')];
+    const visibleOverlay = overlays.find(o => o && o.style.display !== 'none' && o.style.display !== '');
+    if (!visibleOverlay) return [];
+    return Array.from(visibleOverlay.querySelectorAll('.btn-action:not([disabled])'));
 }
 
+function updateButtonFocus() {
+    const btns = getActiveButtons();
+    btns.forEach((b, i) => {
+        if (i === focusedBtnIndex) b.classList.add('focused');
+        else b.classList.remove('focused');
+    });
+}
+
+window.addEventListener('keydown', e => {
+    keys[e.code] = true;
+    
+    // Si un menu est ouvert, permettre la navigation clavier
+    if (!isPlaying) {
+        const btns = getActiveButtons();
+        if (btns.length === 0) return;
+
+        if (['ArrowDown', 'KeyS', 'ArrowRight', 'KeyD'].includes(e.code)) {
+            focusedBtnIndex = (focusedBtnIndex + 1) % btns.length;
+            updateButtonFocus();
+        } else if (['ArrowUp', 'KeyW', 'ArrowLeft', 'KeyA'].includes(e.code)) {
+            focusedBtnIndex = (focusedBtnIndex - 1 + btns.length) % btns.length;
+            updateButtonFocus();
+        } else if (['Enter', 'Space'].includes(e.code)) {
+            if (btns[focusedBtnIndex]) btns[focusedBtnIndex].click();
+        }
+    }
+});
+
+window.addEventListener('keyup', e => keys[e.code] = false);
+
+// DÉMARRAGE DU JEU
 function startGame(nbPlayers) {
     audio.init(); modePlayers = nbPlayers;
     players = [];
     
-    // Joueur 1
+    // Player 1
     players.push({
         id: 1, x: canvas.width * (nbPlayers === 2 ? 0.35 : 0.5), y: canvas.height * 0.8,
-        r: 18, hp: 100 + saveData.hpLevel * 25, color: saveData.goldSkin ? '#fffe00' : '#00f2fe',
-        lastShot: 0, fireDelay: Math.max(70, 130 - saveData.fireRateLevel * 20)
+        r: 18, hp: 100, maxHp: 100, color: '#00f2fe', lastShot: 0
     });
 
-    // Joueur 2
+    // Player 2
     if (nbPlayers === 2) {
         players.push({
             id: 2, x: canvas.width * 0.65, y: canvas.height * 0.8,
-            r: 18, hp: 100, color: '#ff007f', lastShot: 0, fireDelay: 130
+            r: 18, hp: 100, maxHp: 100, color: '#ff007f', lastShot: 0
         });
     }
 
-    bullets = []; enemies = []; particles = []; coins = []; score = 0;
+    bullets = []; enemies = []; fallingCoins = []; particles = []; score = 0;
+    
     document.getElementById('menu').style.display = 'none';
-    document.getElementById('hud').style.display = 'flex';
-    document.getElementById('coins-val').textContent = saveData.coins;
+    document.getElementById('revive-menu').style.display = 'none';
+    document.getElementById('hud-top').style.display = 'flex';
+    document.getElementById('hud-p1').style.display = 'flex';
+    document.getElementById('hud-p2').style.display = nbPlayers === 2 ? 'flex' : 'none';
+    
+    updateHealthUI();
     isPlaying = true;
     requestAnimationFrame(gameLoop);
 }
 
+function updateHealthUI() {
+    if (players[0]) {
+        document.getElementById('p1-fill').style.width = Math.max(0, (players[0].hp / players[0].maxHp) * 100) + '%';
+    }
+    if (players[1]) {
+        document.getElementById('p2-fill').style.width = Math.max(0, (players[1].hp / players[1].maxHp) * 100) + '%';
+    }
+}
+
 function update() {
-    // Déplacements & Tirs J1
+    // Joueur 1 (ZQSD + Espace)
     let p1 = players[0];
     if (p1 && p1.hp > 0) {
         if ((keys['KeyA'] || keys['KeyQ']) && p1.x > p1.r) p1.x -= 7;
         if (keys['KeyD'] && p1.x < canvas.width - p1.r) p1.x += 7;
         if ((keys['KeyW'] || keys['KeyZ']) && p1.y > p1.r) p1.y -= 7;
         if (keys['KeyS'] && p1.y < canvas.height - p1.r) p1.y += 7;
-        if (keys['Space'] && Date.now() - p1.lastShot > p1.fireDelay) {
+        if (keys['Space'] && Date.now() - p1.lastShot > 120) {
             audio.playShoot();
-            bullets.push({ x: p1.x, y: p1.y - 15, vy: -16, color: p1.color });
+            bullets.push({ x: p1.x, y: p1.y - 15, vy: -15, color: p1.color });
             p1.lastShot = Date.now();
         }
     }
 
-    // Déplacements & Tirs J2
+    // Joueur 2 (Flèches + Entrée)
     let p2 = players[1];
     if (p2 && p2.hp > 0) {
         if (keys['ArrowLeft'] && p2.x > p2.r) p2.x -= 7;
         if (keys['ArrowRight'] && p2.x < canvas.width - p2.r) p2.x += 7;
         if (keys['ArrowUp'] && p2.y > p2.r) p2.y -= 7;
         if (keys['ArrowDown'] && p2.y < canvas.height - p2.r) p2.y += 7;
-        if (keys['Enter'] && Date.now() - p2.lastShot > p2.fireDelay) {
+        if (keys['Enter'] && Date.now() - p2.lastShot > 120) {
             audio.playShoot();
-            bullets.push({ x: p2.x, y: p2.y - 15, vy: -16, color: p2.color });
+            bullets.push({ x: p2.x, y: p2.y - 15, vy: -15, color: p2.color });
             p2.lastShot = Date.now();
         }
     }
 
-    // Bullets
+    // Deplacement Balles
     bullets.forEach((b, bi) => {
         b.y += b.vy; if (b.y < -20) bullets.splice(bi, 1);
     });
 
-    // Spawn Ennemis
-    if (Math.random() < 0.04) {
+    // Spawn Ennemis (Balles Rouges)
+    if (Math.random() < 0.045) {
         enemies.push({
             x: Math.random() * (canvas.width - 60) + 30, y: -30,
-            r: 18, hp: 2, speed: 3 + Math.random() * 2, color: '#ff0055'
+            r: 16, hp: 2, speed: 3 + Math.random() * 2, color: '#ff0055'
+        });
+    }
+
+    // Spawn Pièces tombantes (Moins fréquentes que les balles rouges)
+    if (Math.random() < 0.012) {
+        fallingCoins.push({
+            x: Math.random() * (canvas.width - 60) + 30, y: -30,
+            r: 12, speed: 2 + Math.random() * 1.5
         });
     }
 
     // Collisions Ennemis
     enemies.forEach((e, ei) => {
         e.y += e.speed;
-        
         bullets.forEach((b, bi) => {
-            if (Math.hypot(b.x - e.x, b.y - e.y) < b.vy ? 8 : 18) {
+            if (Math.hypot(b.x - e.x, b.y - e.y) < b.r + e.r) {
                 e.hp--; bullets.splice(bi, 1);
                 if (e.hp <= 0) {
-                    audio.playExplosion(); createExplosion(e.x, e.y, e.color);
-                    if (Math.random() < 0.6) coins.push({ x: e.x, y: e.y, vy: 2 });
-                    score += 100; document.getElementById('score-val').textContent = score;
+                    audio.playExplosion();
+                    score += 100;
+                    document.getElementById('score-val').textContent = score;
                     enemies.splice(ei, 1);
                 }
             }
@@ -279,51 +334,34 @@ function update() {
 
         players.forEach(p => {
             if (p.hp > 0 && Math.hypot(p.x - e.x, p.y - e.y) < p.r + e.r) {
-                audio.playExplosion(); createExplosion(e.x, e.y, '#ff0055');
-                p.hp -= 30; enemies.splice(ei, 1);
+                audio.playExplosion();
+                p.hp -= 30; updateHealthUI();
+                enemies.splice(ei, 1);
             }
         });
 
         if (e.y > canvas.height + 40) enemies.splice(ei, 1);
     });
 
-    // Pièces Néon
-    coins.forEach((c, ci) => {
-        c.y += c.vy;
+    // Traitement Pièces
+    fallingCoins.forEach((c, ci) => {
+        c.y += c.speed;
         players.forEach(p => {
-            if (p.hp > 0 && Math.hypot(p.x - c.x, p.y - c.y) < p.r + 15) {
-                saveData.coins++; saveGame();
-                document.getElementById('coins-val').textContent = saveData.coins;
-                coins.splice(ci, 1);
+            if (p.hp > 0 && Math.hypot(p.x - c.x, p.y - c.y) < p.r + c.r) {
+                coinsTotal++;
+                document.getElementById('coins-val').textContent = coinsTotal;
+                fallingCoins.splice(ci, 1);
             }
         });
+        if (c.y > canvas.height + 40) fallingCoins.splice(ci, 1);
     });
 
-    // Verification fin de partie
-    if (players.every(p => p.hp <= 0)) gameOver();
-
-    // Particules
-    particles.forEach((p, pi) => {
-        p.x += p.vx; p.y += p.vy; p.life -= p.decay;
-        if (p.life <= 0) particles.splice(pi, 1);
-    });
+    // Vérification Défaite
+    if (players.every(p => p.hp <= 0)) triggerReviveMenu();
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Dessin Particules
-    particles.forEach(p => {
-        ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-
-    // Pièces
-    coins.forEach(c => {
-        ctx.shadowBlur = 10; ctx.shadowColor = '#fffe00'; ctx.fillStyle = '#fffe00';
-        ctx.beginPath(); ctx.arc(c.x, c.y, 6, 0, Math.PI * 2); ctx.fill();
-    });
 
     // Tirs
     bullets.forEach(b => {
@@ -331,13 +369,19 @@ function draw() {
         ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI * 2); ctx.fill();
     });
 
-    // Ennemis
+    // Ennemis (Balles rouges)
     enemies.forEach(e => {
         ctx.shadowBlur = 12; ctx.shadowColor = e.color; ctx.fillStyle = e.color;
         ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2); ctx.fill();
     });
 
-    // Joueurs
+    // Pièces tombantes (Balles dorées)
+    fallingCoins.forEach(c => {
+        ctx.shadowBlur = 12; ctx.shadowColor = '#fffe00'; ctx.fillStyle = '#fffe00';
+        ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2); ctx.fill();
+    });
+
+    // Vaisseaux Joueurs
     players.forEach(p => {
         if (p.hp > 0) {
             ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fillStyle = p.color;
@@ -353,10 +397,65 @@ function gameLoop() {
     update(); draw(); requestAnimationFrame(gameLoop);
 }
 
-function gameOver() {
+// MENU SYSTEM REVIVE
+function triggerReviveMenu() {
     isPlaying = false;
-    document.getElementById('main-title').textContent = "Perdu";
+    document.getElementById('btn-pay-coins').disabled = coinsTotal < 25;
+    document.getElementById('revive-menu').style.display = 'flex';
+    focusedBtnIndex = 0; updateButtonFocus();
+}
+
+function reviveWithCoins() {
+    if (coinsTotal >= 25) {
+        coinsTotal -= 25;
+        document.getElementById('coins-val').textContent = coinsTotal;
+        applyRevive();
+    }
+}
+
+function openAdModal() {
+    document.getElementById('ad-modal').style.display = 'flex';
+    document.getElementById('ad-iframe').src = 'https://blocplay-beta.github.io/app/launch/ad/index.html';
+    
+    let timer = 10;
+    const btn = document.getElementById('ad-close-btn');
+    const txt = document.getElementById('ad-timer-text');
+    btn.disabled = true; btn.style.opacity = '0.5';
+    
+    const interval = setInterval(() => {
+        timer--;
+        if (timer > 0) {
+            txt.textContent = `Attente : ${timer}s...`;
+        } else {
+            clearInterval(interval);
+            txt.textContent = "Publicité terminée !";
+            btn.disabled = false; btn.style.opacity = '1';
+            focusedBtnIndex = 0; updateButtonFocus();
+        }
+    }, 1000);
+}
+
+function reviveFromAd() {
+    document.getElementById('ad-modal').style.display = 'none';
+    document.getElementById('ad-iframe').src = '';
+    applyRevive();
+}
+
+function applyRevive() {
+    players.forEach(p => p.hp = p.maxHp);
+    updateHealthUI();
+    document.getElementById('revive-menu').style.display = 'none';
+    isPlaying = true;
+    requestAnimationFrame(gameLoop);
+}
+
+function closeGameOver() {
+    document.getElementById('revive-menu').style.display = 'none';
+    document.getElementById('hud-top').style.display = 'none';
+    document.getElementById('hud-p1').style.display = 'none';
+    document.getElementById('hud-p2').style.display = 'none';
     document.getElementById('menu').style.display = 'flex';
+    focusedBtnIndex = 0; updateButtonFocus();
 }
 </script>
 </body>
