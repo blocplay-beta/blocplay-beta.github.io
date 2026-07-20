@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotation d'images au rechargement</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    .image-affichee {
+      max-width: 90%;
+      max-height: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Image en rotation</h2>
+    <img id="monImage" class="image-affichee" src="" alt="Image affichée">
+  </div>
+
+  <script>
+    // 1. Définir le tableau contenant les liens vers vos 3 images
+    const images = [
+      "https://blocplay-beta.github.io/app/launch/ad/1.png",
+      "https://blocplay-beta.github.io/app/launch/ad/2.png",
+      "https://blocplay-beta.github.io/app/launch/ad/3.png"
+    ];
+
+    // 2. Récupérer l'index stocké dans le navigateur
+    let indexActuel = parseInt(localStorage.getItem('indexImage'), 10);
+
+    // 3. Calculer le nouvel index
+    if (isNaN(indexActuel)) {
+      indexActuel = 0;
+    } else {
+      // Alterne entre 0, 1 et 2 à chaque rechargement
+      indexActuel = (indexActuel + 1) % images.length;
+    }
+
+    // 4. Enregistrer le nouvel index pour le prochain rechargement
+    localStorage.setItem('indexImage', indexActuel);
+
+    // 5. Mettre à jour la source de l'image
+    document.getElementById('monImage').src = images[indexActuel];
+  </script>
+
+</body>
+</html>
