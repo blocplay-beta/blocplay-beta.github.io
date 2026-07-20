@@ -1,1 +1,265 @@
-test
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker 2.0 - BlocPlay Auth</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #e94560;
+        }
+
+        /* Zone d'authentification */
+        .auth-container {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 300px;
+        }
+
+        .auth-container input {
+            width: 90%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #0f3460;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .auth-buttons button {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .auth-buttons button:hover {
+            background: #ff5c77;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Zone de jeu */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .score-container {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            background: #16213e;
+            padding: 15px 30px;
+            border-radius: 15px;
+        }
+
+        #score { color: #e94560; font-weight: bold; }
+
+        #click-btn {
+            background-color: #0f3460;
+            border: 4px solid #e94560;
+            border-radius: 50%;
+            width: 180px;
+            height: 180px;
+            font-size: 1.3rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 0 30px #e9456055;
+            user-select: none;
+        }
+
+        #click-btn:active {
+            transform: scale(0.90);
+        }
+
+        #save-btn, #logout-btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            font-size: 1rem;
+            background-color: #e94560;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #logout-btn { background-color: #4e4e50; margin-left: 10px; }
+
+        #status {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #4caf50;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Clicker 2.0</h1>
+
+    <div id="auth-section" class="auth-container">
+        <h3>Connexion BlocPlay</h3>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Mot de passe">
+        <div class="auth-buttons">
+            <button id="login-btn">Se connecter</button>
+            <button id="signup-btn">S'inscrire</button>
+        </div>
+    </div>
+
+    <div id="game-section" class="game-container hidden">
+        <p>Connecté en tant que : <span id="user-display" style="color:#4caf50;"></span></p>
+        <div class="score-container">
+            Score: <span id="score">0</span>
+        </div>
+        <button id="click-btn">CLIQUE !</button>
+        <div>
+            <button id="save-btn">💾 Sauvegarder</button>
+            <button id="logout-btn">Déconnexion</button>
+        </div>
+    </div>
+    
+    <div id="status">Statut</div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+        // Ajout du module d'authentification
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+            authDomain: "blocplay-a9417.firebaseapp.com",
+            databaseURL: "https://blocplay-a9417-default-rtdb.firebaseio.com",
+            projectId: "blocplay-a9417",
+            storageBucket: "blocplay-a9417.firebasestorage.app",
+            messagingSenderId: "540161549188",
+            appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+        };
+
+        // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        let score = 0;
+        let currentUser = null;
+
+        // DOM Elements
+        const authSection = document.getElementById("auth-section");
+        const gameSection = document.getElementById("game-section");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const scoreElement = document.getElementById("score");
+        const userDisplay = document.getElementById("user-display");
+        const statusElement = document.getElementById("status");
+
+        function showStatus(message, color = "#4caf50") {
+            statusElement.textContent = message;
+            statusElement.style.color = color;
+            statusElement.style.opacity = 1;
+            setTimeout(() => statusElement.style.opacity = 0, 3000);
+        }
+
+        // --- GESTION DE L'AUTHENTIFICATION ---
+
+        // Inscription
+        document.getElementById("signup-btn").addEventListener("click", () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => showStatus("Compte créé avec succès !"))
+                .catch(err => showStatus("Erreur : " + err.message, "#f44336"));
+        });
+
+        // Connexion
+        document.getElementById("login-btn").addEventListener("click", () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => showStatus("Connecté !"))
+                .catch(err => showStatus("Identifiants incorrects", "#f44336"));
+        });
+
+        // Déconnexion
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            signOut(auth).then(() => {
+                score = 0;
+                scoreElement.textContent = score;
+                showStatus("Déconnecté.");
+            });
+        });
+
+        // Surveiller l'état de la connexion (Le cœur du système)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                userDisplay.textContent = user.email;
+                authSection.classList.add("hidden");
+                gameSection.classList.remove("hidden");
+                loadUserData(user.uid); // Charge le score du joueur connecté
+            } else {
+                currentUser = null;
+                authSection.classList.remove("hidden");
+                gameSection.classList.add("hidden");
+            }
+        });
+
+        // --- GAMEPLAY ---
+
+        document.getElementById("click-btn").addEventListener("click", () => {
+            score++;
+            scoreElement.textContent = score;
+        });
+
+        // Sauvegarde liée à l'UID de l'utilisateur
+        document.getElementById("save-btn").addEventListener("click", () => {
+            if (!currentUser) return;
+            
+            set(ref(db, 'users/' + currentUser.uid), {
+                score: score,
+                email: currentUser.email,
+                lastSaved: new Date().toISOString()
+            })
+            .then(() => showStatus("💾 Score sauvegardé sur ton compte !"))
+            .catch(() => showStatus("❌ Erreur de sauvegarde", "#f44336"));
+        });
+
+        // Chargement des données spécifiques à l'UID
+        function loadUserData(uid) {
+            const dbRef = ref(db);
+            get(child(dbRef, `users/${uid}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    score = snapshot.val().score || 0;
+                    scoreElement.textContent = score;
+                }
+            }).catch((error) => console.error("Erreur de chargement:", error));
+        }
+    </script>
+</body>
+</html>
