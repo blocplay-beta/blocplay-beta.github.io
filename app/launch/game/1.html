@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clicker 2.0 - Édition Ultime</title>
+    <title>Clicker 2.0</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -187,9 +187,11 @@
             z-index: 10000;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             overflow: hidden;
+            width: 220px; /* Optionnel : donne une largeur fixe propre au menu */
         }
 
-        #custom-menu button {
+        /* On applique le style aux boutons ET aux liens du menu */
+        #custom-menu button, #custom-menu a {
             background: transparent;
             border: none;
             color: white;
@@ -199,9 +201,17 @@
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: bold;
+            display: block;          /* Force le lien à prendre toute la largeur comme un bouton */
+            text-decoration: none;   /* Supprime le soulignement bleu classique des liens */
+            box-sizing: border-box;  /* Évite que le padding ne fasse déborder le lien du menu */
+            font-family: inherit;
         }
 
-        #custom-menu button:hover { background: var(--accent-neon); color: #000; }
+        /* Effet de survol identique pour les deux éléments */
+        #custom-menu button:hover, #custom-menu a:hover {
+            background: var(--accent-neon);
+            color: #000;
+        }
 
         /* Fenêtre de Chat Flottante */
         #chat-window {
@@ -281,7 +291,7 @@
 
     <div id="custom-menu">
         <button id="open-chat-btn">BP Contact</button>
-        <a href"https://discord.com/invite/TcK65JDaaC">Serveur Discord</a>
+        <a href="https://discord.com/invite/TcK65JDaaC" target="_blank">Serveur Discord</a>
     </div>
 
     <div id="chat-window">
