@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Rider - Play.Works Edition</title>
+    <title>Neon Rider - Ultimate Arcade</title>
     <style>
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background-color: #020307;
+            overflow: hidden; background-color: #010205;
             color: #fff; font-family: monospace; user-select: none;
         }
 
@@ -25,15 +25,15 @@
         }
 
         .hud-item {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px; border-radius: 6px;
-            border: 1px solid rgba(0, 242, 254, 0.3);
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px; border-radius: 4px;
+            border: 1px solid #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
         }
 
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 3, 7, 0.9);
+            background: rgba(1, 2, 5, 0.9);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10;
         }
@@ -43,7 +43,7 @@
         button {
             background: transparent; color: #00f2fe; border: 2px solid #00f2fe;
             padding: 15px 60px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
-            border-radius: 4px; transition: 0.2s; font-family: monospace;
+            transition: 0.2s; font-family: monospace;
         }
         button:hover { background: #00f2fe; color: #000; box-shadow: 0 0 25px #00f2fe; }
 
@@ -60,6 +60,7 @@
     
     <div class="hud">
         <div class="hud-item" style="color: #00f2fe;">SCORE: <span id="score">0</span></div>
+        <div class="hud-item" style="color: #fffe00;">💎: <span id="gems">0</span></div>
         <div class="hud-item" style="color: #fffe00;">BEST: <span id="best">0</span></div>
     </div>
 
@@ -69,7 +70,7 @@
     </div>
 
     <div class="controls-tip">
-        <strong style="color: #00f2fe;">[Z / W]</strong> Accélérer | <strong style="color: #00f2fe;">[Q / D] ou [FLÈCHES GAUCHE / DROITE]</strong> Flips & Équilibre
+        <strong style="color: #00f2fe;">[Z / S] ou [HAUT / BAS]</strong> Avancer / Reculer | <strong style="color: #00f2fe;">[Q / D] ou [GAUCHE / DROITE]</strong> Flips ultra-sensibles
     </div>
 </div>
 
@@ -89,15 +90,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-let uId = null, highscore = 0;
+let uId = null, highscore = 0, totalGems = 0;
 
 onAuthStateChanged(auth, (u) => {
     if (u) {
         uId = u.uid;
-        get(child(ref(db), `neon_rider_playworks/${uId}`)).then((s) => {
+        get(child(ref(db), `neon_rider_final/${uId}`)).then((s) => {
             if (s.exists()) {
                 highscore = s.val().best || 0;
+                totalGems = s.val().gems || 0;
                 document.getElementById('best').textContent = highscore;
+                document.getElementById('gems').textContent = totalGems;
             }
         });
     }
@@ -110,15 +113,18 @@ let isPlaying = false;
 let score = 0;
 let cameraX = 0, cameraY = 0;
 let tracks = [];
+let diamonds = [];
 
 const bike = {
-    x: 100, y: 300,
+    x: 150, y: 300,
     vx: 0, vy: 0,
     speed: 0,
-    maxSpeed: 13,       // Vitesse arcade Play.Works
-    accel: 0.28,
-    friction: 0.99,
-    gravity: 0.26,      // Gravité lissée pour de longs sauts
+    maxSpeed: 14,
+    maxReverse: -4,    // Permet de reculer pour prendre de l'élan
+    accel: 0.35,
+    decel: 0.25,
+    friction: 0.985,
+    gravity: 0.45,      // Vraie gravité lourde mécanique
     angle: 0,
     isGrounded: false,
     radius: 12,
@@ -132,40 +138,52 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Génération de pistes fluides (Grandes lignes droites, montées, sauts et réceptions amples)
+// Génération de map : espaces gigantesques pour flips et losanges rabaissés
 function generateTracks() {
     tracks = [];
-    let cx = 0, cy = canvas.height * 0.65;
+    diamonds = [];
+    let cx = 0, cy = canvas.height * 0.7;
 
-    // Départ
-    tracks.push({ x1: cx, y1: cy, x2: cx + 600, y2: cy });
-    cx += 600;
+    // Plateforme de départ géante (permet de reculer jusqu'au bord gauche)
+    tracks.push({ x1: -300, y1: cy, x2: 700, y2: cy });
+    cx = 700;
 
     for(let i = 0; i < 30; i++) {
-        // Zone de vitesse au sol
-        let flatLength = 500 + Math.random() * 300;
-        let nextY = cy + (Math.random() * 60 - 30);
-        if (nextY > canvas.height * 0.8 || nextY < canvas.height * 0.4) nextY = canvas.height * 0.65;
+        // Ligne droite au sol pour accumuler de la vitesse
+        let flatLength = 600 + Math.random() * 200;
+        let nextY = cy + (Math.random() * 40 - 20);
+        if (nextY > canvas.height * 0.85 || nextY < canvas.height * 0.5) nextY = canvas.height * 0.7;
         
         tracks.push({ x1: cx, y1: cy, x2: cx + flatLength, y2: nextY });
         cx += flatLength; cy = nextY;
 
-        // Tremplin incliné
-        let rampX = cx + 150;
-        let rampY = cy - 60;
+        // Dispersion de losanges (argent) juste au-dessus du sol
+        for (let j = 1; j <= 3; j++) {
+            diamonds.push({ x: cx - (j * 120), y: cy - 20, picked: false });
+        }
+
+        // Tremplin court mais ultra-propulsif (kicker)
+        let rampX = cx + 120;
+        let rampY = cy - 80;
         tracks.push({ x1: cx, y1: cy, x2: rampX, y2: rampY });
         cx = rampX; cy = rampY;
 
-        // Grand espace vide pour caler des flips
-        let gap = 250 + Math.random() * 100;
-        cx += gap;
-        cy += 140; // Réception plus basse sécurisée
+        // GIGA ESPACE VIDE (Haut et profond pour enchaîner les galipettes)
+        let megaGap = 450 + Math.random() * 150;
+        
+        // Losanges placés au milieu du vide sur la trajectoire de saut
+        diamonds.push({ x: cx + (megaGap * 0.3), y: cy + 10, picked: false });
+        diamonds.push({ x: cx + (megaGap * 0.5), y: cy + 40, picked: false });
+        diamonds.push({ x: cx + (megaGap * 0.7), y: cy + 80, picked: false });
 
-        // Zone de réception longue
-        tracks.push({ x1: cx, y1: cy, x2: cx + 400, y2: cy });
-        cx += 400;
+        cx += megaGap;
+        cy += 180; // Réception beaucoup plus basse pour avoir le temps de finir ses flips
+
+        // Longue zone de réception sécurisée
+        tracks.push({ x1: cx, y1: cy, x2: cx + 500, y2: cy });
+        cx += 500;
     }
-    // Ligne infinie
+    // Ligne de fin infinie
     tracks.push({ x1: cx, y1: cy, x2: cx + 5000, y2: cy });
 }
 
@@ -175,8 +193,8 @@ window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
 function start() {
     generateTracks();
-    bike.x = 150; bike.y = canvas.height * 0.4;
-    bike.vx = 4; bike.vy = 0; bike.speed = 3;
+    bike.x = 100; bike.y = canvas.height * 0.5;
+    bike.vx = 0; bike.vy = 0; bike.speed = 0;
     bike.angle = 0; bike.isGrounded = false;
     score = 0;
     
@@ -186,25 +204,28 @@ function start() {
 }
 
 function updatePhysics() {
-    // Accélération (Z ou W)
-    if (keys['KeyW'] || keys['KeyZ']) {
+    // Commandes : Avancer (Z / Flèche Haut) ou Reculer (S / Flèche Bas)
+    if (keys['KeyW'] || keys['KeyZ'] || keys['ArrowUp']) {
         bike.speed = Math.min(bike.speed + bike.accel, bike.maxSpeed);
+    } else if (keys['KeyS'] || keys['ArrowDown']) {
+        bike.speed = Math.max(bike.speed - bike.decel, bike.maxReverse);
     } else {
         bike.speed *= bike.friction;
+        if (Math.abs(bike.speed) < 0.05) bike.speed = 0;
     }
 
-    // Sensibilité des Flips (Flèches ou Q/D ou A/D)
+    // Contrôle aérien et flips ultra-nerveux (Q/D ou Flèches Gauche/Droite)
     if (!bike.isGrounded) {
         if (keys['KeyA'] || keys['KeyQ'] || keys['ArrowLeft']) {
-            bike.angle -= 0.10;
-            bike.flipTracker -= 0.10;
+            bike.angle -= 0.13; // Sensibilité accrue pour des rotations éclairs
+            bike.flipTracker -= 0.13;
         }
         if (keys['KeyD'] || keys['ArrowRight']) {
-            bike.angle += 0.10;
-            bike.flipTracker += 0.10;
+            bike.angle += 0.13;
+            bike.flipTracker += 0.13;
         }
 
-        // Détection flip complet
+        // Système de validation de figures
         if (Math.abs(bike.flipTracker) >= Math.PI * 2) {
             score += 1000;
             bike.flipTracker = 0;
@@ -213,24 +234,34 @@ function updatePhysics() {
         bike.flipTracker = 0;
     }
 
+    // Gestion de la cinétique directionnelle
     if (bike.isGrounded) {
         bike.vx = Math.cos(bike.angle) * bike.speed;
         bike.vy = Math.sin(bike.angle) * bike.speed;
     } else {
-        bike.vy += bike.gravity;
+        bike.vy += bike.gravity; // Gravité brute réaliste
     }
 
     bike.x += bike.vx;
     bike.y += bike.vy;
 
-    // Collisions
+    // Empêcher la moto de sortir complètement à gauche de l'écran (Frotter le contour)
+    let minScreenX = cameraX + 20;
+    if (bike.x < minScreenX) {
+        bike.x = minScreenX;
+        if (bike.vx < 0) bike.vx = 0;
+        if (bike.speed < 0) bike.speed = 0;
+    }
+
+    // Détection robuste des collisions au sol
     let matchSurface = null;
     for (let t of tracks) {
         if (bike.x >= t.x1 && bike.x <= t.x2) {
             let pct = (bike.x - t.x1) / (t.x2 - t.x1);
             let yOnTrack = t.y1 + pct * (t.y2 - t.y1);
             
-            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.1 && bike.y - bike.radius <= yOnTrack + 12) {
+            // Box de collision stricte pour éviter de passer au travers
+            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.5 && bike.y - bike.radius <= yOnTrack + 15) {
                 matchSurface = { y: yOnTrack, angle: Math.atan2(t.y2 - t.y1, t.x2 - t.x1) };
                 break;
             }
@@ -242,38 +273,51 @@ function updatePhysics() {
         while (diff > Math.PI) diff -= Math.PI * 2;
         while (diff < -Math.PI) diff += Math.PI * 2;
 
-        if (!bike.isGrounded && Math.abs(diff) > 1.2) {
+        // Crash si atterrissage brutal à l'envers
+        if (!bike.isGrounded && Math.abs(diff) > 1.3) {
             crash();
             return;
         }
 
         bike.y = matchSurface.y - bike.radius;
         bike.isGrounded = true;
-        bike.angle = bike.angle * 0.2 + matchSurface.angle * 0.8; // Alignement propre
+        bike.angle = bike.angle * 0.15 + matchSurface.angle * 0.85; 
     } else {
         bike.isGrounded = false;
     }
 
-    cameraX = bike.x - (canvas.width * 0.3);
-    cameraY = cameraY * 0.88 + (bike.y - (canvas.height * 0.6)) * 0.12;
+    // Collecte des Losanges
+    diamonds.forEach(d => {
+        if (!d.picked && Math.hypot(bike.x - d.x, bike.y - d.y) < bike.radius + 22) {
+            d.picked = true;
+            totalGems++;
+            score += 200;
+            document.getElementById('gems').textContent = totalGems;
+        }
+    });
 
-    score += bike.vx * 0.12;
+    // Tracking Caméra fluide
+    cameraX = Math.max(0, bike.x - (canvas.width * 0.25));
+    cameraY = cameraY * 0.85 + (bike.y - (canvas.height * 0.6)) * 0.15;
+
+    if (bike.vx > 0) score += bike.vx * 0.1;
     document.getElementById('score').textContent = Math.floor(score);
 
-    if (bike.y > canvas.height + 500) crash();
+    // Chute fatale dans un trou
+    if (bike.y > canvas.height + 600) crash();
 }
 
 function draw() {
-    ctx.fillStyle = '#020307';
+    ctx.fillStyle = '#010205';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
     ctx.translate(-cameraX, -cameraY);
 
-    // Tracé de la piste unique bleu néon
+    // Tracé de la piste néon
     ctx.lineWidth = 6;
     ctx.strokeStyle = '#00f2fe';
-    ctx.shadowBlur = 15;
+    ctx.shadowBlur = 12;
     ctx.shadowColor = '#00f2fe';
     ctx.beginPath();
     tracks.forEach((t, index) => {
@@ -283,7 +327,23 @@ function draw() {
     ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // Rendu de la Cyber-Bike (Bloc de profil original)
+    // Rendu des Losanges (Argent du jeu)
+    diamonds.forEach(d => {
+        if (d.picked) return;
+        ctx.save();
+        ctx.translate(d.x, d.y);
+        ctx.fillStyle = '#fffe00';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#fffe00';
+        ctx.beginPath();
+        ctx.moveTo(0, -10); ctx.lineTo(7, 0); ctx.lineTo(0, 10); ctx.lineTo(-7, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    });
+    ctx.shadowBlur = 0;
+
+    // Rendu de la Cyber-Bike
     ctx.save();
     ctx.translate(bike.x, bike.y);
     ctx.rotate(bike.angle);
@@ -292,7 +352,7 @@ function draw() {
     ctx.shadowBlur = 15;
     ctx.shadowColor = '#00f2fe';
 
-    // Forme bloc du véhicule original
+    // Design bloc plat original
     ctx.beginPath();
     ctx.moveTo(-18, 5);
     ctx.lineTo(-22, -5);
@@ -301,7 +361,7 @@ function draw() {
     ctx.closePath();
     ctx.fill();
 
-    // Vitre blanche
+    // Verrière blanche
     ctx.fillStyle = '#fff';
     ctx.beginPath();
     ctx.moveTo(-2, -5); ctx.lineTo(8, -5); ctx.lineTo(4, -10); ctx.lineTo(-4, -10);
@@ -322,14 +382,14 @@ function loop() {
 function crash() {
     isPlaying = false;
     document.getElementById('menu-title').textContent = "CRASH !";
-    document.getElementById('actionBtn').textContent = "RETRY RUN";
+    document.getElementById('actionBtn').textContent = "RETRY";
     document.getElementById('game-overlay').style.display = 'flex';
 
     if (score > highscore) {
         highscore = Math.floor(score);
         document.getElementById('best').textContent = highscore;
     }
-    if (uId) set(ref(db, `neon_rider_playworks/${uId}`), { best: highscore });
+    if (uId) set(ref(db, `neon_rider_final/${uId}`), { best: highscore, gems: totalGems });
 }
 
 document.getElementById('actionBtn').addEventListener('click', start);
