@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Rider Classic</title>
+    <title>Neon Rider - Play.Works Edition</title>
     <style>
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background-color: #05050a;
+            overflow: hidden; background-color: #020307;
             color: #fff; font-family: monospace; user-select: none;
         }
 
@@ -25,49 +25,31 @@
         }
 
         .hud-item {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px; border-radius: 4px;
-            border: 1px solid #333;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px; border-radius: 6px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
         }
-
-        .color-indicator {
-            position: absolute; bottom: 80px; left: 50%;
-            transform: translateX(-50%);
-            display: flex; gap: 15px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 12px; border-radius: 10px;
-            border: 1px solid #444;
-            pointer-events: none;
-        }
-
-        .color-box {
-            width: 35px; height: 35px; border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 0.8rem; color: #000;
-            opacity: 0.3; transition: all 0.1s ease;
-        }
-
-        .color-box.active { opacity: 1; transform: scale(1.15); box-shadow: 0 0 15px currentColor; }
 
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 5, 10, 0.9);
+            background: rgba(2, 3, 7, 0.9);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10;
         }
 
-        h1 { font-size: 4rem; margin: 0 0 20px 0; letter-spacing: 5px; text-shadow: 0 0 20px #00f2fe; }
+        h1 { font-size: 4.5rem; margin: 0 0 20px 0; letter-spacing: 5px; color: #00f2fe; text-shadow: 0 0 25px #00f2fe; }
         
         button {
-            background: transparent; color: #fff; border: 2px solid #fff;
-            padding: 15px 50px; font-size: 1.2rem; cursor: pointer;
-            transition: 0.2s; font-family: monospace;
+            background: transparent; color: #00f2fe; border: 2px solid #00f2fe;
+            padding: 15px 60px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
+            border-radius: 4px; transition: 0.2s; font-family: monospace;
         }
-        button:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
+        button:hover { background: #00f2fe; color: #000; box-shadow: 0 0 25px #00f2fe; }
 
         .controls-tip {
             position: absolute; bottom: 25px; width: 100%; text-align: center;
-            color: #666; font-size: 1rem; pointer-events: none;
+            color: #4b5563; font-size: 1rem; pointer-events: none;
         }
     </style>
 </head>
@@ -77,24 +59,17 @@
     <canvas id="neonCanvas"></canvas>
     
     <div class="hud">
-        <div class="hud-item">SCORE: <span id="score">0</span></div>
+        <div class="hud-item" style="color: #00f2fe;">SCORE: <span id="score">0</span></div>
         <div class="hud-item" style="color: #fffe00;">BEST: <span id="best">0</span></div>
-    </div>
-
-    <div class="color-indicator">
-        <div class="color-box" id="btn-blue" style="background: #00f2fe; color: #000;">🡩</div>
-        <div class="color-box" id="btn-red" style="background: #fe0979; color: #fff;">🡫</div>
-        <div class="color-box" id="btn-yellow" style="background: #fffe00; color: #000;">🡨</div>
-        <div class="color-box" id="btn-green" style="background: #00ff66; color: #000;">🡪</div>
     </div>
 
     <div id="game-overlay" class="overlay">
         <h1 id="menu-title">NEON RIDER</h1>
-        <button id="actionBtn">START LEVEL</button>
+        <button id="actionBtn">START RIDE</button>
     </div>
 
     <div class="controls-tip">
-        [Z / W] Accélérer | [Q / D] Inclinaison | [FLÈCHES CLAVIER] Changer la couleur de la moto
+        <strong style="color: #00f2fe;">[Z / W]</strong> Accélérer | <strong style="color: #00f2fe;">[Q / D] ou [FLÈCHES GAUCHE / DROITE]</strong> Flips & Équilibre
     </div>
 </div>
 
@@ -119,7 +94,7 @@ let uId = null, highscore = 0;
 onAuthStateChanged(auth, (u) => {
     if (u) {
         uId = u.uid;
-        get(child(ref(db), `neon_rider_classic/${uId}`)).then((s) => {
+        get(child(ref(db), `neon_rider_playworks/${uId}`)).then((s) => {
             if (s.exists()) {
                 highscore = s.val().best || 0;
                 document.getElementById('best').textContent = highscore;
@@ -136,25 +111,17 @@ let score = 0;
 let cameraX = 0, cameraY = 0;
 let tracks = [];
 
-const COLORS = {
-    BLUE: '#00f2fe',
-    RED: '#fe0979',
-    YELLOW: '#fffe00',
-    GREEN: '#00ff66'
-};
-
 const bike = {
     x: 100, y: 300,
     vx: 0, vy: 0,
     speed: 0,
-    maxSpeed: 12,
-    accel: 0.25,
-    friction: 0.985,
-    gravity: 0.3,
+    maxSpeed: 13,       // Vitesse arcade Play.Works
+    accel: 0.28,
+    friction: 0.99,
+    gravity: 0.26,      // Gravité lissée pour de longs sauts
     angle: 0,
     isGrounded: false,
     radius: 12,
-    currentColor: 'BLUE', // Couleur de départ
     flipTracker: 0
 };
 
@@ -165,75 +132,52 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Génération d'un vrai parcours à base de lignes de couleurs alternées
+// Génération de pistes fluides (Grandes lignes droites, montées, sauts et réceptions amples)
 function generateTracks() {
     tracks = [];
-    let cx = 0, cy = canvas.height * 0.6;
+    let cx = 0, cy = canvas.height * 0.65;
 
-    // 1. Zone bleue de départ (Toujours solide pour tout le monde)
-    tracks.push({ x1: cx, y1: cy, x2: cx + 500, y2: cy, color: 'BLUE' });
-    cx += 500;
+    // Départ
+    tracks.push({ x1: cx, y1: cy, x2: cx + 600, y2: cy });
+    cx += 600;
 
-    // 2. Premier gros saut avec une ligne de couleur en l'air
-    tracks.push({ x1: cx, y1: cy, x2: cx + 150, y2: cy - 40, color: 'BLUE' }); // Tremplin
-    cx += 150; cy -= 40;
+    for(let i = 0; i < 30; i++) {
+        // Zone de vitesse au sol
+        let flatLength = 500 + Math.random() * 300;
+        let nextY = cy + (Math.random() * 60 - 30);
+        if (nextY > canvas.height * 0.8 || nextY < canvas.height * 0.4) nextY = canvas.height * 0.65;
+        
+        tracks.push({ x1: cx, y1: cy, x2: cx + flatLength, y2: nextY });
+        cx += flatLength; cy = nextY;
 
-    // Ligne Jaune suspendue dans le vide (tu passes au travers si tu n'es pas Jaune !)
-    tracks.push({ x1: cx + 100, y1: cy - 20, x2: cx + 400, y2: cy + 30, color: 'YELLOW' });
-    cx += 500; cy += 30;
+        // Tremplin incliné
+        let rampX = cx + 150;
+        let rampY = cy - 60;
+        tracks.push({ x1: cx, y1: cy, x2: rampX, y2: rampY });
+        cx = rampX; cy = rampY;
 
-    // Plateforme de récupération Rouge
-    tracks.push({ x1: cx, y1: cy + 50, x2: cx + 400, y2: cy + 50, color: 'RED' });
-    cx += 400; cy += 50;
+        // Grand espace vide pour caler des flips
+        let gap = 250 + Math.random() * 100;
+        cx += gap;
+        cy += 140; // Réception plus basse sécurisée
 
-    // 3. Un grand Looping/Toboggan Vert
-    let loopX = cx;
-    let loopY = cy;
-    for(let a = 0; a < Math.PI * 2; a += 0.2) {
-        let nextX = loopX + Math.sin(a) * 120 + 120;
-        let nextY = loopY + Math.cos(a) * 120 - 120;
-        tracks.push({ x1: cx, y1: cy, x2: nextX, y2: nextY, color: 'GREEN' });
-        cx = nextX; cy = nextY;
+        // Zone de réception longue
+        tracks.push({ x1: cx, y1: cy, x2: cx + 400, y2: cy });
+        cx += 400;
     }
-
-    // Ligne droite finale multi-couleurs de test de réflexes
-    const colorsList = ['BLUE', 'RED', 'YELLOW', 'GREEN'];
-    for(let i = 0; i < 20; i++) {
-        let nextColor = colorsList[Math.floor(Math.random() * colorsList.length)];
-        tracks.push({ x1: cx, y1: cy, x2: cx + 300, y2: cy, color: nextColor });
-        cx += 300;
-        if(Math.random() > 0.5) cy += (Math.random() * 40 - 20); // Variations de hauteur
-    }
+    // Ligne infinie
+    tracks.push({ x1: cx, y1: cy, x2: cx + 5000, y2: cy });
 }
 
 const keys = {};
-window.addEventListener('keydown', (e) => { 
-    keys[e.code] = true; 
-    
-    // Changement de couleur à l'identique avec les flèches directionnelles
-    if (e.code === 'ArrowUp') bike.currentColor = 'BLUE';
-    if (e.code === 'ArrowDown') bike.currentColor = 'RED';
-    if (e.code === 'ArrowLeft') bike.currentColor = 'YELLOW';
-    if (e.code === 'ArrowRight') bike.currentColor = 'GREEN';
-    updateColorHUD();
-});
+window.addEventListener('keydown', (e) => { keys[e.code] = true; });
 window.addEventListener('keyup', (e) => { keys[e.code] = false; });
-
-function updateColorHUD() {
-    document.querySelectorAll('.color-box').forEach(b => b.classList.remove('active'));
-    if(bike.currentColor === 'BLUE') document.getElementById('btn-blue').classList.add('active');
-    if(bike.currentColor === 'RED') document.getElementById('btn-red').classList.add('active');
-    if(bike.currentColor === 'YELLOW') document.getElementById('btn-yellow').classList.add('active');
-    if(bike.currentColor === 'GREEN') document.getElementById('btn-green').classList.add('active');
-}
 
 function start() {
     generateTracks();
-    bike.x = 100; bike.y = canvas.height * 0.4;
-    bike.vx = 4; bike.vy = 0; bike.speed = 2;
+    bike.x = 150; bike.y = canvas.height * 0.4;
+    bike.vx = 4; bike.vy = 0; bike.speed = 3;
     bike.angle = 0; bike.isGrounded = false;
-    bike.currentColor = 'BLUE';
-    updateColorHUD();
     score = 0;
     
     document.getElementById('game-overlay').style.display = 'none';
@@ -242,17 +186,31 @@ function start() {
 }
 
 function updatePhysics() {
-    // Propulsion d'origine (W ou Z)
+    // Accélération (Z ou W)
     if (keys['KeyW'] || keys['KeyZ']) {
         bike.speed = Math.min(bike.speed + bike.accel, bike.maxSpeed);
     } else {
         bike.speed *= bike.friction;
     }
 
-    // Rotation aérienne nerveuse (A/D ou Q/D)
+    // Sensibilité des Flips (Flèches ou Q/D ou A/D)
     if (!bike.isGrounded) {
-        if (keys['KeyA'] || keys['KeyQ']) bike.angle -= 0.08;
-        if (keys['KeyD']) bike.angle += 0.08;
+        if (keys['KeyA'] || keys['KeyQ'] || keys['ArrowLeft']) {
+            bike.angle -= 0.10;
+            bike.flipTracker -= 0.10;
+        }
+        if (keys['KeyD'] || keys['ArrowRight']) {
+            bike.angle += 0.10;
+            bike.flipTracker += 0.10;
+        }
+
+        // Détection flip complet
+        if (Math.abs(bike.flipTracker) >= Math.PI * 2) {
+            score += 1000;
+            bike.flipTracker = 0;
+        }
+    } else {
+        bike.flipTracker = 0;
     }
 
     if (bike.isGrounded) {
@@ -265,17 +223,14 @@ function updatePhysics() {
     bike.x += bike.vx;
     bike.y += bike.vy;
 
-    // Détection stricte des collisions par couleur
+    // Collisions
     let matchSurface = null;
     for (let t of tracks) {
         if (bike.x >= t.x1 && bike.x <= t.x2) {
-            // RÈGLE D'OR : La ligne est immatérielle si on n'a pas la bonne couleur (sauf si elle est bleue)
-            if (t.color !== 'BLUE' && t.color !== bike.currentColor) continue;
-
             let pct = (bike.x - t.x1) / (t.x2 - t.x1);
             let yOnTrack = t.y1 + pct * (t.y2 - t.y1);
             
-            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.5 && bike.y - bike.radius <= yOnTrack + 10) {
+            if (bike.y + bike.radius >= yOnTrack && bike.vy >= -0.1 && bike.y - bike.radius <= yOnTrack + 12) {
                 matchSurface = { y: yOnTrack, angle: Math.atan2(t.y2 - t.y1, t.x2 - t.x1) };
                 break;
             }
@@ -283,73 +238,73 @@ function updatePhysics() {
     }
 
     if (matchSurface) {
-        // Crash sur la tête
-        let diff = Math.abs(bike.angle - matchSurface.angle);
+        let diff = bike.angle - matchSurface.angle;
         while (diff > Math.PI) diff -= Math.PI * 2;
-        if (!bike.isGrounded && Math.abs(diff) > 1.3) {
+        while (diff < -Math.PI) diff += Math.PI * 2;
+
+        if (!bike.isGrounded && Math.abs(diff) > 1.2) {
             crash();
             return;
         }
 
         bike.y = matchSurface.y - bike.radius;
         bike.isGrounded = true;
-        bike.angle = matchSurface.angle;
+        bike.angle = bike.angle * 0.2 + matchSurface.angle * 0.8; // Alignement propre
     } else {
         bike.isGrounded = false;
     }
 
     cameraX = bike.x - (canvas.width * 0.3);
-    cameraY = cameraY * 0.85 + (bike.y - (canvas.height * 0.55)) * 0.15;
+    cameraY = cameraY * 0.88 + (bike.y - (canvas.height * 0.6)) * 0.12;
 
-    score += bike.vx * 0.1;
+    score += bike.vx * 0.12;
     document.getElementById('score').textContent = Math.floor(score);
 
-    if (bike.y > canvas.height + 600) crash();
+    if (bike.y > canvas.height + 500) crash();
 }
 
 function draw() {
-    ctx.fillStyle = '#05050c';
+    ctx.fillStyle = '#020307';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
     ctx.translate(-cameraX, -cameraY);
 
-    // Dessin des pistes avec leurs couleurs respectives
-    ctx.lineWidth = 5;
-    tracks.forEach(t => {
-        ctx.strokeStyle = COLORS[t.color];
-        ctx.shadowBlur = bike.currentColor === t.color || t.color === 'BLUE' ? 12 : 0;
-        ctx.shadowColor = COLORS[t.color];
-        ctx.beginPath();
-        ctx.moveTo(t.x1, t.y1);
+    // Tracé de la piste unique bleu néon
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = '#00f2fe';
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#00f2fe';
+    ctx.beginPath();
+    tracks.forEach((t, index) => {
+        if (index === 0) ctx.moveTo(t.x1, t.y1);
         ctx.lineTo(t.x2, t.y2);
-        ctx.stroke();
     });
+    ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // Rendu du Véhicule (Châssis bloc d'origine de Neon Rider)
+    // Rendu de la Cyber-Bike (Bloc de profil original)
     ctx.save();
     ctx.translate(bike.x, bike.y);
     ctx.rotate(bike.angle);
 
-    let bikeColor = COLORS[bike.currentColor];
-    ctx.fillStyle = bikeColor;
+    ctx.fillStyle = '#00f2fe';
     ctx.shadowBlur = 15;
-    ctx.shadowColor = bikeColor;
+    ctx.shadowColor = '#00f2fe';
 
-    // Design "Bloc" aérodynamique futuriste original
+    // Forme bloc du véhicule original
     ctx.beginPath();
-    ctx.moveTo(-18, 6);
-    ctx.lineTo(-22, -4);
-    ctx.lineTo(12, -4);
-    ctx.lineTo(20, 6);
+    ctx.moveTo(-18, 5);
+    ctx.lineTo(-22, -5);
+    ctx.lineTo(12, -5);
+    ctx.lineTo(20, 5);
     ctx.closePath();
     ctx.fill();
 
-    // Verrière cockpit blanche
+    // Vitre blanche
     ctx.fillStyle = '#fff';
     ctx.beginPath();
-    ctx.moveTo(-2, -4); ctx.lineTo(8, -4); ctx.lineTo(4, -9); ctx.lineTo(-4, -9);
+    ctx.moveTo(-2, -5); ctx.lineTo(8, -5); ctx.lineTo(4, -10); ctx.lineTo(-4, -10);
     ctx.closePath();
     ctx.fill();
 
@@ -366,15 +321,15 @@ function loop() {
 
 function crash() {
     isPlaying = false;
-    document.getElementById('menu-title').textContent = "BOOM !";
-    document.getElementById('actionBtn').textContent = "RETRY";
+    document.getElementById('menu-title').textContent = "CRASH !";
+    document.getElementById('actionBtn').textContent = "RETRY RUN";
     document.getElementById('game-overlay').style.display = 'flex';
 
     if (score > highscore) {
         highscore = Math.floor(score);
         document.getElementById('best').textContent = highscore;
     }
-    if (uId) set(ref(db, `neon_rider_classic/${uId}`), { best: highscore });
+    if (uId) set(ref(db, `neon_rider_playworks/${uId}`), { best: highscore });
 }
 
 document.getElementById('actionBtn').addEventListener('click', start);
