@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Rider - Premium Edition</title>
+    <title>Neon Rider - Real Bike Physics</title>
     <style>
-        :root {
-            --neon-glow: #00f2fe;
-        }
         body {
             margin: 0;
-            background-color: #02040a;
+            background-color: #030712;
             color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -25,113 +22,101 @@
             position: relative;
             width: 960px;
             height: 540px;
-            background: #050814;
-            border: 2px solid #1e293b;
+            background: #0b0f19;
+            border: 3px solid #00f2fe;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(0, 242, 254, 0.15);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
         }
 
         canvas {
             display: block;
         }
 
-        /* HUD Élégant */
         .hud {
             position: absolute;
-            top: 25px; left: 30px; right: 30px;
+            top: 20px; left: 20px; right: 20px;
             display: flex;
             justify-content: space-between;
             pointer-events: none;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: monospace;
+            font-size: 1.3rem;
             font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
         }
 
-        .hud-block {
-            background: rgba(5, 8, 20, 0.75);
-            padding: 10px 20px;
+        .hud-item {
+            background: rgba(11, 15, 25, 0.8);
+            padding: 8px 16px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 242, 254, 0.2);
         }
 
-        .highlight {
-            color: var(--neon-glow);
-            text-shadow: 0 0 10px var(--neon-glow);
-        }
-
-        /* Écran Game Over / Start */
         .overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 5, 12, 0.9);
+            background: rgba(3, 7, 18, 0.85);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(5px);
             z-index: 10;
         }
 
         h1 {
-            font-size: 4rem;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+            font-size: 3.5rem;
+            color: #fe0979;
+            text-shadow: 0 0 20px #fe0979;
+            margin: 0 0 20px 0;
         }
 
         button {
             background: transparent;
-            color: #fff;
-            border: 2px solid #fff;
-            padding: 14px 45px;
+            color: #00f2fe;
+            border: 2px solid #00f2fe;
+            padding: 12px 40px;
             font-size: 1.1rem;
             font-weight: bold;
             border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            transition: 0.2s ease;
         }
 
         button:hover {
+            background: #00f2fe;
             color: #000;
-            background: #fff;
-            box-shadow: 0 0 25px #fff;
-            transform: scale(1.05);
+            box-shadow: 0 0 25px #00f2fe;
         }
 
-        .controls {
+        .instructions {
             position: absolute;
             bottom: 20px;
-            color: #475569;
-            font-size: 0.85rem;
-            text-align: center;
             width: 100%;
-            pointer-events: none;
+            text-align: center;
+            color: #4b5563;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
 <div id="game-container">
-    <canvas id="ctxCanvas" width="960" height="540"></canvas>
+    <canvas id="bikeCanvas" width="960" height="540"></canvas>
     
     <div class="hud">
-        <div class="hud-block">SCORE: <span id="score" class="highlight">0</span></div>
-        <div class="hud-block">💎: <span id="diamonds" style="color: #fe0979; text-shadow: 0 0 10px #fe0979;">0</span></div>
-        <div class="hud-block">BEST: <span id="best">0</span></div>
+        <div class="hud-item" style="color: #00f2fe;">SCORE: <span id="score">0</span></div>
+        <div class="hud-item" style="color: #38bdf8;">💎 <span id="gems">0</span></div>
+        <div class="hud-item" style="color: #fffe00;">BEST: <span id="best">0</span></div>
     </div>
 
-    <div id="game-over-screen" class="overlay" style="display: none;">
-        <h1 id="screen-title" class="highlight">MOTO CRASHED</h1>
-        <p style="color: #64748b; margin-bottom: 30px; font-size: 1.2rem;">Score final : <span id="final-score">0</span></p>
-        <button id="actionBtn">RIDE ENCORE</button>
+    <div id="menu-overlay" class="overlay">
+        <h1 id="menu-title">NEON RIDER</h1>
+        <button id="startBtn">LANCER LE RIDE</button>
     </div>
 
-    <div class="controls">
-        [Flèche Droite] Incliner vers l'avant | [Flèche Gauche] Incliner vers l'arrière (Flips)
+    <div class="instructions">
+        [Flèche Haut / Z] Accélérer | [Flèches Gauche - Droite / Q - D] Équilibre & Flips en l'air
     </div>
 </div>
 
@@ -140,7 +125,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// --- CONFIG FIREBASE ---
+// --- CONFIGURATION CLOUD FIREBASE ---
 const firebaseConfig = {
     apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
     authDomain: "blocplay-a9417.firebaseapp.com",
@@ -152,84 +137,82 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-let userId = null, cloudBest = 0, cloudDiamonds = 0;
+let uId = null, highscore = 0, totalGems = 0;
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        userId = user.uid;
-        get(child(ref(db), `neon_rider_pro/${userId}`)).then((s) => {
+onAuthStateChanged(auth, (u) => {
+    if (u) {
+        uId = u.uid;
+        get(child(ref(db), `neon_rider_v3/${uId}`)).then((s) => {
             if (s.exists()) {
-                cloudBest = s.val().best || 0;
-                cloudDiamonds = s.val().diamonds || 0;
-                document.getElementById('best').textContent = cloudBest;
-                document.getElementById('diamonds').textContent = cloudDiamonds;
+                highscore = s.val().best || 0;
+                totalGems = s.val().gems || 0;
+                document.getElementById('best').textContent = highscore;
+                document.getElementById('gems').textContent = totalGems;
             }
         });
     }
 });
 
-// --- CODE DU MOTEUR GRAPHIQUE ET PHYSIQUE ---
-const canvas = document.getElementById('ctxCanvas');
+// --- MOTEUR DU JEU ---
+const canvas = document.getElementById('bikeCanvas');
 const ctx = canvas.getContext('2d');
 
-const themes = [
-    { neon: '#00f2fe', bgGrad: '#041226' },
-    { neon: '#fe0979', bgGrad: '#260414' },
-    { neon: '#fffe00', bgGrad: '#212102' },
-    { neon: '#00ff66', bgGrad: '#02210f' }
-];
-let currentTheme = themes[0];
+let isPlaying = false;
+let score = 0;
+let cameraX = 0, cameraY = 0;
+let trackPoints = [];
+let diamonds = [];
+let bikeTrail = [];
 
-let isRunning = true;
-let score = 0, diamondsCollected = 0;
-let particles = [], gems = [];
-
-// Caméra fluide (Lerp)
-const camera = { x: 0, y: 0, targetX: 0, targetY: 0 };
-
-// La Moto (Physiques articulées)
+// Définition de la Moto avec vraie physique Newtonienne
 const bike = {
-    x: 100, y: 300,
-    vx: 5.5, vy: 0,
-    radius: 12,
+    x: 100, y: 200,
+    vx: 0, vy: 0,
+    speed: 0,
+    maxSpeed: 7,
+    accel: 0.15,
+    friction: 0.98,
+    gravity: 0.28,
     angle: 0,
     angularVelocity: 0,
-    gravity: 0.3,
     isGrounded: false,
-    flipTracker: 0
+    radius: 15,
+    flipCount: 0
 };
 
-// Tracé vectoriel fait main d'un vrai niveau fluide (Lignes de fuite, Tremplins)
-const trackPoints = [];
-function buildTrack() {
-    trackPoints.length = 0;
-    let currX = 0, currY = 400;
-    trackPoints.push({ x: currX, y: currY });
+// Couleurs aléatoires appliquées à la piste entière à chaque essai
+const themeColors = ['#00f2fe', '#fe0979', '#fffe00', '#00ff66', '#a855f7'];
+let activeColor = themeColors[0];
 
-    for (let i = 0; i < 150; i++) {
-        let length = 150 + Math.random() * 150;
-        let type = Math.random();
+// Construction manuelle d'un circuit technique amusant (Lignes droites, creux et vrais tremplins de saut)
+function generateMap() {
+    trackPoints = [];
+    let cx = 0, cy = 380;
+    trackPoints.push({x: cx, y: cy});
 
-        if (type < 0.3) { // Ligne droite
-            currX += length;
-        } else if (type < 0.65) { // Belle montée / Tremplin de saut
-            currX += length;
-            currY -= 60 + Math.random() * 60;
-        } else { // Descente rapide
-            currX += length;
-            currY += 70 + Math.random() * 50;
+    // Patterns répétés pour créer un niveau cohérent
+    for (let i = 0; i < 80; i++) {
+        let r = Math.random();
+        if (r < 0.3) { // Ligne droite pour prendre de la vitesse
+            cx += 200;
+        } else if (r < 0.65) { // Un grand tremplin incliné vers le haut
+            cx += 180;
+            cy -= 80;
+        } else { // Descente pour accélérer
+            cx += 220;
+            cy += 70;
         }
-        trackPoints.push({ x: currX, y: currY });
+        trackPoints.push({x: cx, y: cy});
     }
-    
-    // Générer les cristaux de forme losange au-dessus des bosses
-    gems.length = 0;
-    for (let i = 2; i < trackPoints.length - 1; i++) {
-        if(Math.random() > 0.3) {
-            gems.push({
-                x: trackPoints[i].x - 50,
-                y: trackPoints[i].y - 40 - Math.random() * 40,
-                collected: false
+
+    // Ajout des losanges bleus au-dessus des bosses
+    diamonds = [];
+    for (let i = 1; i < trackPoints.length; i++) {
+        if (Math.random() > 0.4) {
+            diamonds.push({
+                x: trackPoints[i].x - 80,
+                y: trackPoints[i].y - 50 - Math.random() * 60,
+                picked: false
             });
         }
     }
@@ -240,27 +223,29 @@ const keys = {};
 window.addEventListener('keydown', (e) => { keys[e.code] = true; });
 window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
-function startNewRun() {
-    currentTheme = themes[Math.floor(Math.random() * themes.length)];
-    document.documentElement.style.setProperty('--neon-glow', currentTheme.neon);
+function startRun() {
+    activeColor = themeColors[Math.floor(Math.random() * themeColors.length)];
+    generateMap();
     
-    bike.x = 100; bike.y = 250; bike.vx = 5.5; bike.vy = 0;
-    bike.angle = 0; bike.angularVelocity = 0; bike.flipTracker = 0;
-    score = 0; isRunning = true;
-    particles = [];
+    bike.x = 100; bike.y = 250;
+    bike.vx = 2; bike.vy = 0; bike.speed = 0;
+    bike.angle = 0; bike.angularVelocity = 0;
+    bike.isGrounded = false;
+    bikeTrail = [];
+    score = 0;
     
-    buildTrack();
-    document.getElementById('game-over-screen').style.display = 'none';
-    gameLoop();
+    document.getElementById('menu-overlay').style.display = 'none';
+    isPlaying = true;
+    runLoop();
 }
 
-// Chercher la hauteur de la piste sous la moto
-function getTrackData(x) {
+// Trouver l'altitude et la pente du sol sous la coordonnée X de la moto
+function getTrackAt(x) {
     for (let i = 0; i < trackPoints.length - 1; i++) {
         let p1 = trackPoints[i], p2 = trackPoints[i+1];
         if (x >= p1.x && x <= p2.x) {
-            let t = (x - p1.x) / (p2.x - p1.x);
-            let y = p1.y + t * (p2.y - p1.y);
+            let pct = (x - p1.x) / (p2.x - p1.x);
+            let y = p1.y + pct * (p2.y - p1.y);
             let angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
             return { y, angle };
         }
@@ -268,129 +253,130 @@ function getTrackData(x) {
     return null;
 }
 
-function update() {
-    bike.vx += 0.0005; // Accélération progressive globale
+function updatePhysics() {
+    // 1. Gestion des contrôles utilisateurs
+    if (keys['ArrowUp'] || keys['KeyW']) {
+        bike.speed = Math.min(bike.speed + bike.accel, bike.maxSpeed);
+    } else {
+        bike.speed *= bike.friction; // Ralentissement naturel
+    }
+
+    // Contrôle d'équilibre et figures en l'air (Flips)
+    if (!bike.isGrounded) {
+        if (keys['ArrowLeft'] || keys['KeyA']) bike.angularVelocity = -0.06;
+        else if (keys['ArrowRight'] || keys['KeyD']) bike.angularVelocity = 0.06;
+        else bike.angularVelocity *= 0.9;
+        
+        bike.angle += bike.angularVelocity;
+        bike.flipCount += bike.angularVelocity;
+
+        // Détection d'un flip complet réussi
+        if (Math.abs(bike.flipCount) >= Math.PI * 2) {
+            score += 1000;
+            bike.flipCount = 0;
+        }
+    } else {
+        bike.flipCount = 0; // Remise à zéro au sol
+    }
+
+    // Traduction des forces physiques (Vitesse en fonction de l'angle de la moto)
+    if (bike.isGrounded) {
+        bike.vx = Math.cos(bike.angle) * bike.speed;
+        bike.vy = Math.sin(bike.angle) * bike.speed;
+    } else {
+        // En l'air : inertie cinétique + gravité pure
+        bike.vy += bike.gravity;
+    }
+
     bike.x += bike.vx;
-    bike.vy += bike.gravity;
     bike.y += bike.vy;
 
-    let track = getTrackData(bike.x);
-
-    if (track) {
-        // Détection de contact avec la ligne
-        if (bike.y + bike.radius >= track.y) {
-            let angleDiff = Math.abs(normalizeAngle(bike.angle - track.angle));
+    // 2. Détection du sol et de l'envol (Launch Physics)
+    let ground = getTrackAt(bike.x);
+    if (ground) {
+        // La moto ne se plaque au sol QUE si elle tombe dessus par le haut
+        if (bike.y + bike.radius >= ground.y && bike.vy >= 0) {
             
-            // Si l'angle d'atterrissage dépasse 80 degrés de différence = Crash direct
-            if (!bike.isGrounded && angleDiff > 1.4) {
-                endGame();
+            // CRASH CONDITION : Si la moto arrive sur le toit (angle trop inversé)
+            let diffAngle = Math.abs(normalizeAngle(bike.angle - ground.angle));
+            if (!bike.isGrounded && diffAngle > 1.3) {
+                crash();
                 return;
             }
 
-            bike.y = track.y - bike.radius;
-            bike.vy = 0;
+            bike.y = ground.y - bike.radius;
             bike.isGrounded = true;
-
-            // La moto épouse la pente en douceur
-            bike.angle = bike.angle * 0.5 + track.angle * 0.5;
-            bike.flipTracker = 0;
-
-            // Particules de frottement au sol
-            if (Math.random() > 0.4) {
-                particles.push({
-                    x: bike.x, y: bike.y + bike.radius,
-                    vx: -bike.vx * 0.4 + (Math.random() - 0.5) * 2,
-                    vy: (Math.random() - 1) * 2,
-                    size: Math.random() * 3 + 1, alpha: 1
-                });
-            }
+            
+            // La moto s'aligne progressivement à la pente du sol
+            bike.angle = bike.angle * 0.6 + ground.angle * 0.4;
         } else {
+            // Décollage naturel sur le tremplin si la vitesse verticale est plus forte que la pente !
             bike.isGrounded = false;
         }
     }
 
-    // Gestion des figures aériennes (Flips)
-    if (!bike.isGrounded) {
-        if (keys['ArrowLeft']) bike.angularVelocity = -0.065;
-        else if (keys['ArrowRight']) bike.angularVelocity = 0.065;
-        else bike.angularVelocity *= 0.95;
+    // Gestion de la traînée lumineuse (Trail)
+    bikeTrail.push({x: bike.x, y: bike.y});
+    if (bikeTrail.length > 25) bikeTrail.shift();
 
-        bike.angle += bike.angularVelocity;
-        bike.flipTracker += bike.angularVelocity;
-
-        // Détection d'un 360° complet
-        if (Math.abs(bike.flipTracker) >= Math.PI * 2) {
-            score += 1000;
-            bike.flipTracker = 0;
-            // Éclat de particules vertes pour célébrer la figure
-            for(let i=0; i<15; i++) {
-                particles.push({ x: bike.x, y: bike.y, vx: (Math.random()-0.5)*8, vy: (Math.random()-0.5)*8, size: 4, alpha: 1, isBonus: true });
-            }
-        }
-    }
-
-    // Ramassage des gemmes losanges
-    gems.forEach(g => {
-        if (!g.collected && Math.hypot(bike.x - g.x, bike.y - g.y) < bike.radius + 15) {
-            g.collected = true;
-            diamondsCollected++;
-            cloudDiamonds++;
-            score += 200;
-            document.getElementById('diamonds').textContent = cloudDiamonds;
+    // Ramassage des losanges
+    diamonds.forEach(d => {
+        if (!d.picked && Math.hypot(bike.x - d.x, bike.y - d.y) < bike.radius + 15) {
+            d.picked = true;
+            totalGems++;
+            score += 250;
+            document.getElementById('gems').textContent = totalGems;
         }
     });
 
-    // Nettoyage et mise à jour des effets de particules
-    particles.forEach((p, idx) => {
-        p.x += p.vx || 0; p.y += p.vy;
-        p.alpha -= 0.02;
-        if (p.alpha <= 0) particles.splice(idx, 1);
-    });
+    // Déplacement fluide de la caméra
+    cameraX = bike.x - 200;
+    cameraY = cameraY * 0.9 + (bike.y - 300) * 0.1;
 
-    // Tracking caméra lissé (effet amorti haut de gamme)
-    camera.targetX = bike.x - 250;
-    camera.targetY = bike.y - 300;
-    camera.x += (camera.targetX - camera.x) * 0.1;
-    camera.y += (camera.targetY - camera.y) * 0.15;
-
-    score += 0.5;
+    score += bike.vx * 0.1;
     document.getElementById('score').textContent = Math.floor(score);
 
-    if (bike.y > 900) endGame(); // Chute fatale dans le vide
+    if (bike.y > 1000) crash(); // Chute dans le vide
 }
 
-function draw() {
-    // Fond d'écran avec dégradé dynamique propre au thème choisi
-    let grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 50, canvas.width/2, canvas.height/2, 600);
-    grad.addColorStop(0, currentTheme.bgGrad);
-    grad.addColorStop(1, '#020306');
-    ctx.fillStyle = grad;
+function drawGame() {
+    ctx.fillStyle = '#05070f';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
-    ctx.translate(-camera.x, -camera.y);
+    ctx.translate(-cameraX, -cameraY);
 
-    // 1. DESSINER LA PISTE VECTORIELLE (Effet néon nébuleux)
+    // 1. Dessiner la traînée lumineuse néon derrière la moto
+    if (bikeTrail.length > 1) {
+        ctx.beginPath();
+        ctx.strokeStyle = activeColor;
+        ctx.lineWidth = 4;
+        ctx.globalAlpha = 0.4;
+        ctx.moveTo(bikeTrail[0].x, bikeTrail[0].y);
+        for(let p of bikeTrail) ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+    }
+
+    // 2. Dessiner le circuit vectoriel fluide
     ctx.beginPath();
     ctx.lineWidth = 6;
-    ctx.strokeStyle = currentTheme.neon;
+    ctx.strokeStyle = activeColor;
     ctx.shadowBlur = 15;
-    ctx.shadowColor = currentTheme.neon;
-    for (let i = 0; i < trackPoints.length; i++) {
-        if (i === 0) ctx.moveTo(trackPoints[i].x, trackPoints[i].y);
-        else ctx.lineTo(trackPoints[i].x, trackPoints[i].y);
-    }
+    ctx.shadowColor = activeColor;
+    ctx.moveTo(trackPoints[0].x, trackPoints[0].y);
+    for (let p of trackPoints) ctx.lineTo(p.x, p.y);
     ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // 2. RENDU DES LOSANGES DE COLLECTION
-    gems.forEach(g => {
-        if (g.collected) return;
+    // 3. Dessiner les Losanges (Gems)
+    diamonds.forEach(d => {
+        if (d.picked) return;
         ctx.save();
-        ctx.translate(g.x, g.y);
-        ctx.fillStyle = '#fe0979';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#fe0979';
+        ctx.translate(d.x, d.y);
+        ctx.fillStyle = '#38bdf8';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#38bdf8';
         ctx.beginPath();
         ctx.moveTo(0, -10); ctx.lineTo(7, 0); ctx.lineTo(0, 10); ctx.lineTo(-7, 0);
         ctx.closePath();
@@ -399,33 +385,31 @@ function draw() {
     });
     ctx.shadowBlur = 0;
 
-    // 3. EFFETS DES PARTICULES (Échappement & Poussière de pneu)
-    particles.forEach(p => {
-        ctx.fillStyle = p.isBonus ? '#00ff66' : currentTheme.neon;
-        ctx.globalAlpha = p.alpha;
-        ctx.fillRect(p.x, p.y, p.size, p.size);
-    });
-    ctx.globalAlpha = 1.0;
-
-    // 4. RENDU AVANCÉ DE LA MOTO TRON
+    // 4. RENDU DE LA MOTO (Design double roues distinctes)
     ctx.save();
     ctx.translate(bike.x, bike.y);
     ctx.rotate(bike.angle);
-    
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = currentTheme.neon;
-    ctx.fillStyle = currentTheme.neon;
 
-    // Roues pleines cyber
-    ctx.beginPath(); ctx.arc(-18, 6, 8, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(18, 6, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = activeColor;
+    ctx.fillStyle = activeColor;
 
-    // Châssis aérodynamique
+    // Roue Arrière et Roue Avant séparées pour faire VRAIMENT moto
+    ctx.beginPath(); ctx.arc(-18, 5, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(18, 5, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Corps / Cadre de la moto
     ctx.strokeStyle = '#ffffff';
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(-18, 6); ctx.lineTo(-6, -8); ctx.lineTo(10, -8); ctx.lineTo(18, 6);
-    ctx.closePath();
+    ctx.moveTo(-18, 5);
+    ctx.lineTo(-5, -6);
+    ctx.lineTo(10, -6);
+    ctx.lineTo(18, 5);
+    ctx.moveTo(-5, -6);
+    ctx.lineTo(2, -14); // Guidon / cockpit de la moto
+    ctx.lineTo(10, -6);
     ctx.stroke();
 
     ctx.restore();
@@ -438,31 +422,29 @@ function normalizeAngle(a) {
     return a;
 }
 
-function gameLoop() {
-    if (!isRunning) return;
-    update();
-    draw();
-    requestAnimationFrame(gameLoop);
+function runLoop() {
+    if (!isPlaying) return;
+    updatePhysics();
+    drawGame();
+    requestAnimationFrame(runLoop);
 }
 
-function endGame() {
-    isRunning = false;
-    document.getElementById('game-over-screen').style.display = 'flex';
-    document.getElementById('final-score').textContent = Math.floor(score);
+function crash() {
+    isPlaying = false;
+    document.getElementById('menu-title').textContent = "CRASH !";
+    document.getElementById('startBtn').textContent = "RÉESSAYER";
+    document.getElementById('menu-overlay').style.display = 'flex';
 
-    if (score > cloudBest) {
-        cloudBest = Math.floor(score);
-        document.getElementById('best').textContent = cloudBest;
+    if (score > highscore) {
+        highscore = Math.floor(score);
+        document.getElementById('best').textContent = highscore;
     }
-    if (userId) {
-        set(ref(db, `neon_rider_pro/${userId}`), { best: cloudBest, diamonds: cloudDiamonds });
+    if (uId) {
+        set(ref(db, `neon_rider_v3/${uId}`), { best: highscore, gems: totalGems });
     }
 }
 
-document.getElementById('actionBtn').addEventListener('click', startNewRun);
-
-// Premier démarrage automatique
-startNewRun();
+document.getElementById('startBtn').addEventListener('click', startRun);
 </script>
 </body>
 </html>
