@@ -2,26 +2,64 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BlocPlay - Accueil</title>
+<title>Accueil - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
 
 <style>
-body {
-  margin:0;
-  background:#0f172a;
-  color:white;
-  font-family:Arial;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+/* Bouton customisé pour lancer le jeu avec un effet néon dynamique */
+.btn-play {
+    background: linear-gradient(135deg, #00f2fe, #fe0979);
+    color: white;
+    padding: 16px 40px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
 }
 
-.loading {
-  text-align:center;
-  font-size:20px;
+.btn-play:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254, 9, 121, 0.4);
+}
+
+.btn-play:active {
+    transform: translateY(0);
+}
+
+/* Liste des nouveautés du jeu */
+.game-features {
+    text-align: left;
+    max-width: 360px;
+    margin: 20px auto;
+    padding: 0;
+    list-style: none;
+    color: #94a3b8;
+}
+
+.game-features li {
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.game-features li::before {
+    content: "⚡";
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 </style>
 
@@ -29,21 +67,55 @@ body {
 
 <body>
 
-<div class="loading">
-  Chargement...
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/icon.png">
+    </a>
+
+    <div class="profile-menu">
+      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+           class="avatar" id="avatar">
+
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <img src="https://blocplay-beta.github.io/app/launch/game/1.png" style="width:120px; border-radius: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+    <h1>Clicker 2.0</h1>
+
+    <a href="/fr/game/1" class="btn-play">
+      🎮 VOIR
+    </a>
+  </div>
+
+  <div class="card">
+    <img src="https://blocplay-beta.github.io/app/launch/game/2.png" style="width:120px; border-radius: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+    <h1>Neon Overdrive</h1>
+
+    <a href="/fr/game/2" class="btn-play">
+      🎮 VOIR
+    </a>
+  </div>
+
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } 
+import { getAuth, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
   authDomain: "blocplay-a9417.firebaseapp.com",
   projectId: "blocplay-a9417",
-  storageBucket: "blocplay-a9417.appspot.com",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
   messagingSenderId: "540161549188",
   appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
 };
@@ -51,11 +123,57 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user) => {
-    window.location.replace("/")
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+const playBtn = document.getElementById("playBtn");
+const statusTxt = document.getElementById("connection-status");
 
+function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+    }
+}
+
+onAuthStateChanged(auth, (user) => {
+    renderMenu(user);
+
+    if (user) {
+        statusTxt.textContent = `Content de te revoir, ${user.displayName || 'Joueur'} !`;
+        statusTxt.style.color = "#10b981"; // Vert
+        playBtn.style.display = "inline-block";
+    } else {
+        statusTxt.textContent = "Connecte-toi pour sauvegarder ton score dans le Cloud !";
+        statusTxt.style.color = "#ff3c00"; // Orange/Rouge
+        playBtn.style.display = "inline-block"; // Reste accessible, la page finale gérera la restriction si besoin
+    }
 });
 
+/* GESTION DU MENU DEROULANT */
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        e.preventDefault();
+        await signOut(auth);
+        window.location.reload();
+    }
+});
 </script>
 
 </body>
