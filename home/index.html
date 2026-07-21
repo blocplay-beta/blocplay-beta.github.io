@@ -189,7 +189,37 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-/* GESTION DU MENU DEROULANT */
+    // 🔥 IMPORTANT : récupération Firestore par UID
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+        document.getElementById("username").textContent = "Utilisateur";
+        return;
+    }
+
+    const data = docSnap.data();
+
+    document.getElementById("username").textContent = data.displayName;
+
+    document.getElementById("profilePic").src =
+        data.photoURL || `https://ui-avatars.com/api/?name=${data.displayName}`;
+
+    // 🔥 ADMIN / RIZO
+    const isAdmin =
+        data.email === "blocplaystudios@gmail.com" &&
+        data.displayName === "BlocPlay Studios";
+
+    if (isAdmin) {
+        localStorage.setItem("rizoplay", "true");
+    }
+
+    if (localStorage.getItem("rizoplay")) {
+        document.getElementById("rizoBadge").style.display = "block";
+    }
+
+});
+
 avatar.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
@@ -206,6 +236,7 @@ document.addEventListener("click", async (e) => {
         window.location.reload();
     }
 });
+
 </script>
 
 </body>
