@@ -63,6 +63,23 @@
 }
 </style>
 
+<style>
+.profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+.rizo-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,120,0,0.7);
+}
+</style>
+
 </head>
 
 <body>
@@ -83,6 +100,21 @@
 
   </div>
 </header>
+
+<div class="container">
+
+  <div class="card profile-card">
+
+    <h1 id="username">Bonjour, </h1>
+
+    <div class="profile-container">
+      <img id="profilePic" class="profile-pic">
+      <img src="/rizo-play.png" id="rizoBadge" class="rizo-badge" style="display:none;">
+    </div>
+
+  </div>
+
+</div>
 
 <div class="container">
 
