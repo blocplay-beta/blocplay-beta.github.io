@@ -132,8 +132,14 @@ header {
 .btn-gradient {
     background: linear-gradient(45deg, #00c6ff, #0072ff);
 }
+
 .profile-card {
     text-align: center;
+}
+
+.home-card {
+    text-align: center;
+    background: #0F53A6;
 }
 
 .profile-pic {
