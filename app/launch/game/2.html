@@ -19,17 +19,18 @@
 
         /* HUD EN BAS A GAUCHE ET EN BAS A DROITE */
         .hud-player {
-            position: absolute; bottom: 20px; z-index: 5;
-            display: flex; flex-direction: column; gap: 6px;
+            position: absolute; bottom: 25px; z-index: 5;
+            display: flex; flex-direction: column; gap: 8px;
             color: #fff; text-shadow: 0 0 10px #00f2fe;
+            font-size: 1.1rem;
         }
-        #hud-p1 { left: 20px; }
-        #hud-p2 { right: 20px; text-align: right; }
+        #hud-p1 { left: 25px; }
+        #hud-p2 { right: 25px; text-align: right; }
 
         .health-bar-bg {
-            width: 180px; height: 16px; background: rgba(255, 255, 255, 0.15);
-            border: 2px solid #00f2fe; border-radius: 8px; overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+            width: 220px; height: 20px; background: rgba(255, 255, 255, 0.15);
+            border: 2px solid #00f2fe; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
         }
         .health-bar-fill {
             width: 100%; height: 100%; background: #00f2fe;
@@ -39,70 +40,73 @@
 
         /* HUD HAUT */
         .hud-top {
-            position: absolute; top: 15px; left: 20px; right: 20px;
+            position: absolute; top: 20px; left: 25px; right: 25px;
             display: flex; justify-content: space-between; align-items: center;
-            pointer-events: none; z-index: 5; color: #fff; font-size: 1.2rem;
+            pointer-events: none; z-index: 5; color: #fff; font-size: 1.4rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
         /* MENUS & OVERLAYS */
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 3, 8, 0.92); backdrop-filter: blur(8px);
+            background: rgba(3, 3, 8, 0.93); backdrop-filter: blur(8px);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 10;
         }
 
         h1 {
-            font-size: 3.8rem; margin: 0 0 15px 0; letter-spacing: 3px;
-            color: #00f2fe; text-shadow: 0 0 30px #00f2fe; text-align: center; font-weight: 900;
+            font-size: 4rem; margin: 0 0 20px 0; letter-spacing: 4px;
+            color: #00f2fe; text-shadow: 0 0 35px #00f2fe; text-align: center; font-weight: 900;
         }
 
-        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; align-items: center; }
+        .btn-group { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; align-items: center; }
 
+        /* OPTIMISÉ POUR TÉLÉ ET PC (FOCUS VISIBLE) */
         .btn {
-            background: #ff007f; color: #fff; border: 2px solid transparent;
-            padding: 14px 40px; font-size: 1.1rem; font-weight: 900;
-            border-radius: 30px; cursor: pointer; transition: all 0.15s ease;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+            background: #ff007f; color: #fff; border: 3px solid transparent;
+            padding: 16px 45px; font-size: 1.25rem; font-weight: 900;
+            border-radius: 35px; cursor: pointer; transition: all 0.15s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
             font-family: 'Orbitron', sans-serif; text-transform: uppercase;
-            width: 320px; text-align: center;
+            width: 380px; text-align: center;
         }
         .btn:hover, .btn.focused {
-            transform: scale(1.06); background: #ff3399;
-            border-color: #fff; box-shadow: 0 0 30px rgba(255, 0, 127, 0.9);
+            transform: scale(1.08); background: #ff3399;
+            border-color: #ffffff; box-shadow: 0 0 40px rgba(255, 0, 127, 1);
             outline: none;
         }
-        .btn-blue { background: #00f2fe; color: #000; box-shadow: 0 0 15px rgba(0, 242, 254, 0.5); }
-        .btn-blue:hover, .btn-blue.focused { background: #66fcf1; box-shadow: 0 0 30px rgba(0, 242, 254, 0.9); }
-        .btn-gold { background: #fffe00; color: #000; box-shadow: 0 0 15px rgba(255, 254, 0, 0.5); }
-        .btn-gold:hover, .btn-gold.focused { background: #ffff66; box-shadow: 0 0 30px rgba(255, 254, 0, 0.9); }
+        .btn-blue { background: #00f2fe; color: #000; box-shadow: 0 0 20px rgba(0, 242, 254, 0.5); }
+        .btn-blue:hover, .btn-blue.focused { background: #66fcf1; border-color: #ffffff; box-shadow: 0 0 40px rgba(0, 242, 254, 1); }
+        .btn-gold { background: #fffe00; color: #000; box-shadow: 0 0 20px rgba(255, 254, 0, 0.5); }
+        .btn-gold:hover, .btn-gold.focused { background: #ffff66; border-color: #ffffff; box-shadow: 0 0 40px rgba(255, 254, 0, 1); }
 
         /* BOUTIQUE */
         .shop-box {
-            background: #0c0d1b; border: 2px solid #00f2fe; border-radius: 15px;
-            padding: 25px; width: 90%; max-width: 500px; box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
-            display: flex; flex-direction: column; gap: 15px; color: #fff;
+            background: #0c0d1b; border: 3px solid #00f2fe; border-radius: 18px;
+            padding: 30px; width: 90%; max-width: 580px; box-shadow: 0 0 40px rgba(0, 242, 254, 0.4);
+            display: flex; flex-direction: column; gap: 18px; color: #fff;
         }
         .shop-item {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 10px;
+            background: rgba(255,255,255,0.06); padding: 14px 20px; border-radius: 12px;
+            font-size: 1.1rem;
         }
 
         /* FENÊTRE PUB */
         .ad-modal {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.88); backdrop-filter: blur(6px);
             align-items: center; justify-content: center; z-index: 20;
         }
         .ad-box {
-            width: 90%; max-width: 650px; height: 480px; background: #0c0d1b;
-            border: 2px solid #00f2fe; border-radius: 12px; overflow: hidden;
-            display: flex; flex-direction: column; box-shadow: 0 0 35px rgba(0,242,254,0.5);
+            width: 90%; max-width: 720px; height: 520px; background: #0c0d1b;
+            border: 3px solid #00f2fe; border-radius: 15px; overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,242,254,0.6);
         }
-        .ad-box iframe { width: 100%; height: 390px; border: none; }
+        .ad-box iframe { width: 100%; height: 420px; border: none; }
         .ad-footer {
-            height: 90px; background: #060710; display: flex;
-            align-items: center; justify-content: space-between; padding: 0 20px;
+            height: 100px; background: #060710; display: flex;
+            align-items: center; justify-content: space-between; padding: 0 25px;
         }
     </style>
 </head>
@@ -117,12 +121,12 @@
     </div>
 
     <div class="hud-player" id="hud-p1" style="display:none;">
-        <div style="font-size: 0.9rem;">JOUEUR 1</div>
+        <div>JOUEUR 1</div>
         <div class="health-bar-bg"><div class="health-bar-fill" id="p1-fill"></div></div>
     </div>
 
     <div class="hud-player" id="hud-p2" style="display:none;">
-        <div style="font-size: 0.9rem;">JOUEUR 2</div>
+        <div>JOUEUR 2</div>
         <div class="health-bar-bg" style="border-color:#ff007f;"><div class="health-bar-fill" id="p2-fill"></div></div>
     </div>
 
@@ -138,20 +142,20 @@
 
     <div id="shop-menu" class="overlay" style="display:none;">
         <div class="shop-box">
-            <h2 style="margin:0; text-align:center; color:#fffe00;">BOUTIQUE</h2>
-            <div style="text-align:center;">Tes Pièces : <span id="shop-coins-val" style="color:#fffe00;">0</span> 🪙</div>
+            <h2 style="margin:0; text-align:center; color:#fffe00; font-size:2rem;">BOUTIQUE</h2>
+            <div style="text-align:center; font-size:1.2rem;">Tes Pièces : <span id="shop-coins-val" style="color:#fffe00;">0</span> 🪙</div>
 
             <div class="shop-item">
-                <div><b>Tir Rapide</b><br><small style="color:#aaa">Augmente la cadence</small></div>
-                <button class="btn btn-gold btn-action" id="buy-fire" style="width: auto; padding: 8px 16px;" onclick="buyUpgrade('fireRate')">50 🪙</button>
+                <div><b>Tir Rapide</b><br><small style="color:#aaa">Cadence élevée</small></div>
+                <button class="btn btn-gold btn-action" id="buy-fire" style="width: auto; padding: 10px 20px;" onclick="buyUpgrade('fireRate')">50 🪙</button>
             </div>
             <div class="shop-item">
                 <div><b>Coque Renforcée</b><br><small style="color:#aaa">+25 PV Max</small></div>
-                <button class="btn btn-gold btn-action" id="buy-hp" style="width: auto; padding: 8px 16px;" onclick="buyUpgrade('maxHp')">75 🪙</button>
+                <button class="btn btn-gold btn-action" id="buy-hp" style="width: auto; padding: 10px 20px;" onclick="buyUpgrade('maxHp')">75 🪙</button>
             </div>
             <div class="shop-item">
                 <div><b>Skin Doré</b><br><small style="color:#aaa">Apparence dorée</small></div>
-                <button class="btn btn-gold btn-action" id="buy-skin" style="width: auto; padding: 8px 16px;" onclick="buyUpgrade('goldSkin')">150 🪙</button>
+                <button class="btn btn-gold btn-action" id="buy-skin" style="width: auto; padding: 10px 20px;" onclick="buyUpgrade('goldSkin')">150 🪙</button>
             </div>
 
             <button class="btn btn-action" style="align-self:center; margin-top:10px;" onclick="closeShop()">RETOUR</button>
@@ -160,7 +164,7 @@
 
     <div id="revive-menu" class="overlay" style="display:none;">
         <h1 style="color:#ff0055; text-shadow:0 0 30px #ff0055;">PARTIE TERMINÉE</h1>
-        <p style="color:#fff; margin-bottom: 20px;">Voulez-vous récupérer vos vies ?</p>
+        <p style="color:#fff; margin-bottom: 25px; font-size:1.3rem;">Voulez-vous récupérer vos vies ?</p>
 
         <div class="btn-group">
             <button class="btn btn-gold btn-action" id="btn-pay-coins" onclick="reviveWithCoins()">PAYER 25 🪙</button>
@@ -173,8 +177,8 @@
         <div class="ad-box">
             <iframe id="ad-iframe" src=""></iframe>
             <div class="ad-footer">
-                <span id="ad-timer-text" style="color:#fffe00; font-size:0.9rem;">Attente : 10s...</span>
-                <button class="btn btn-blue btn-action" id="ad-close-btn" disabled style="width: auto; padding: 10px 20px; opacity:0.5;" onclick="reviveFromAd()">RÉCUPÉRER MES VIES</button>
+                <span id="ad-timer-text" style="color:#fffe00; font-size:1.1rem;">Attente : 10s...</span>
+                <button class="btn btn-blue btn-action" id="ad-close-btn" disabled style="width: auto; padding: 12px 25px; opacity:0.5;" onclick="reviveFromAd()">RÉCUPÉRER MES VIES</button>
             </div>
         </div>
     </div>
@@ -257,7 +261,7 @@ window.addEventListener('resize', resize); resize();
 let players = [], bullets = [], enemies = [], fallingCoins = [], particles = [];
 const keys = {};
 
-// NAVIGATION CLAVIER MENU
+// NAVIGATION NAVIGATION TÉLÉCOMMANDE / MANETTE / CLAVIER EN MENU
 let focusedBtnIndex = 0;
 
 function getActiveButtons() {
@@ -280,8 +284,16 @@ function updateButtonFocus() {
     });
 }
 
+// GESTION TOUCHES TÉLÉCOMMANDE / PC
 window.addEventListener('keydown', e => {
     keys[e.code] = true;
+
+    // Touches Retour Télécommande (Escape, Backspace, GoBack)
+    if (['Escape', 'Backspace', 'GoBack', 'XF86Back'].includes(e.key) || e.keyCode === 10009 || e.keyCode === 461) {
+        if (document.getElementById('shop-menu').style.display === 'flex') closeShop();
+        if (document.getElementById('revive-menu').style.display === 'flex') closeGameOver();
+    }
+
     if (!isPlaying) {
         const btns = getActiveButtons();
         if (btns.length === 0) return;
@@ -292,7 +304,7 @@ window.addEventListener('keydown', e => {
         } else if (['ArrowUp', 'KeyW', 'ArrowLeft', 'KeyA'].includes(e.code)) {
             focusedBtnIndex = (focusedBtnIndex - 1 + btns.length) % btns.length;
             updateButtonFocus();
-        } else if (['Enter', 'Space'].includes(e.code)) {
+        } else if (['Enter', 'Space', 'Select'].includes(e.code) || e.keyCode === 13) {
             if (btns[focusedBtnIndex]) btns[focusedBtnIndex].click();
         }
     }
@@ -347,8 +359,53 @@ function updateHealthUI() {
     }
 }
 
+// SUPPORT MANETTES TV / PC (GAMEPAD API)
+function pollGamepads() {
+    const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+    if (!gamepads) return;
+
+    // Manette 1 -> Joueur 1
+    if (gamepads[0] && players[0] && players[0].hp > 0) {
+        let gp = gamepads[0];
+        if (gp.axes[0] < -0.3 || gp.buttons[14]?.pressed) players[0].x -= 7;
+        if (gp.axes[0] > 0.3 || gp.buttons[15]?.pressed) players[0].x += 7;
+        if (gp.axes[1] < -0.3 || gp.buttons[12]?.pressed) players[0].y -= 7;
+        if (gp.axes[1] > 0.3 || gp.buttons[13]?.pressed) players[0].y += 7;
+        
+        // Empêcher de sortir du canvas
+        players[0].x = Math.max(players[0].r, Math.min(canvas.width - players[0].r, players[0].x));
+        players[0].y = Math.max(players[0].r, Math.min(canvas.height - players[0].r, players[0].y));
+
+        if ((gp.buttons[0]?.pressed || gp.buttons[7]?.pressed) && Date.now() - players[0].lastShot > players[0].fireDelay) {
+            audio.playShoot();
+            bullets.push({ x: players[0].x, y: players[0].y - 15, vy: -15, color: players[0].color });
+            players[0].lastShot = Date.now();
+        }
+    }
+
+    // Manette 2 -> Joueur 2
+    if (gamepads[1] && players[1] && players[1].hp > 0) {
+        let gp = gamepads[1];
+        if (gp.axes[0] < -0.3 || gp.buttons[14]?.pressed) players[1].x -= 7;
+        if (gp.axes[0] > 0.3 || gp.buttons[15]?.pressed) players[1].x += 7;
+        if (gp.axes[1] < -0.3 || gp.buttons[12]?.pressed) players[1].y -= 7;
+        if (gp.axes[1] > 0.3 || gp.buttons[13]?.pressed) players[1].y += 7;
+
+        players[1].x = Math.max(players[1].r, Math.min(canvas.width - players[1].r, players[1].x));
+        players[1].y = Math.max(players[1].r, Math.min(canvas.height - players[1].r, players[1].y));
+
+        if ((gp.buttons[0]?.pressed || gp.buttons[7]?.pressed) && Date.now() - players[1].lastShot > players[1].fireDelay) {
+            audio.playShoot();
+            bullets.push({ x: players[1].x, y: players[1].y - 15, vy: -15, color: players[1].color });
+            players[1].lastShot = Date.now();
+        }
+    }
+}
+
 function update() {
-    // Joueur 1 (ZQSD + Espace)
+    pollGamepads();
+
+    // Joueur 1 (ZQSD / Télécommande D-Pad + Espace)
     let p1 = players[0];
     if (p1 && p1.hp > 0) {
         if ((keys['KeyA'] || keys['KeyQ']) && p1.x > p1.r) p1.x -= 7;
