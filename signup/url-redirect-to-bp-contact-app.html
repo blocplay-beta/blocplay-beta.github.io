@@ -1,0 +1,187 @@
+<!-- Please read COPYRIGHT.md -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription - BlocPlay</title>
+
+  <link rel="icon" href="logo.ico">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0b0f1a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 10px;
+    }
+
+    .box {
+      background: #141a2a;
+      padding: 30px;
+      border-radius: 15px;
+      width: 300px;
+    }
+
+    h2 { text-align: center; }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg,#8b5cf6,#22d3ee);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    a {
+      color: #22d3ee;
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      text-decoration: none;
+    }
+  #color-status {
+    width: 100%;
+    min-height: 50px;
+    background-color: #141a2a;
+    border-radius: 5px 10px 10px 5px;
+    align-items: stretch;
+    margin-top: 10px;
+    padding: 0;
+  }
+  #status {
+    display: flex;
+    width: calc(100% - 6px);
+    background-color: #141a2a;
+    margin-left: auto;
+    border-radius: 5px;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 5px;
+  }
+  #status-txt {
+    font-family: Arial, sans-serif;
+    color: #90faff;
+  }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Inscription</h2>
+
+  <input type="text" id="username" placeholder="Pseudo">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Mot de passe">
+
+  <button onclick="signup()">Créer un compte</button>
+</div>
+    <div id="color-status" style="display: none"><div id="status"><p id="status-txt">text</p></div></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  updateProfile 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { 
+  getFirestore, 
+  doc, 
+  setDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  function status(text, color) {
+    const statusColor = document.getElementById("color-status")
+    const status = document.getElementById("status")
+    const statusTxt = document.getElementById("status-txt")
+    statusColor.style.backgroundColor = color;
+    statusColor.style.display = "flex";
+    statusTxt.textContent = text;
+  }
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.signup = async function () {
+
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!username || !email || !password) {
+    status("Remplis tous les champs !", "#ff7f00");
+    return;
+  }
+
+  try {
+
+    // 🔐 Création du compte
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // 🔥 Mise à jour du displayName Firebase Auth
+    await updateProfile(user, {
+      displayName: username
+    });
+
+    // 🔥 Création du profil Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      id: Math.floor(Math.random() * 100000000),
+      displayName: username,
+      email: email,
+      photoURL: "",
+      rizoplay: false, // 🔥 IMPORTANT (booléen)
+      createdAt: Date.now()
+    });
+
+    status("Compte créé !", "#00ff00");
+    window.location.href = "/login";
+
+  } catch (error) {
+    let MessageError = "Une erreur est survenue";
+    if (error.code === "auth/weak-password") {
+      MessageError = "Le mot de passe doit contenir au moins 6 caractères";
+    } else if (error.code === "auth/email-already-in-use") {
+      MessageError = "identifiant ou email déjà pris";
+    } else if (error.code === "auth/invalid-email") {
+      MessageError = "e-mail invalide: merci de bien vérifier l'orthographe";
+    } else {
+      MessageError = error.message;
+    }
+    status (MessageError, "#ff0000");
+  }
+}
+</script>
+
+<script type="module" src="/login/firebase-auth.js"></script>
+
+</body>
+</html>
