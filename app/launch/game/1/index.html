@@ -3502,20 +3502,17 @@ window.addEventListener("error", (event) => {
 
 <script>
 window.addEventListener("error", function(event) {
-    alert(
-        "ERREUR JS :\n" +
-        event.message
-    );
+    alert("ERREUR JS :\n" + event.message);
 });
 
 window.addEventListener("unhandledrejection", function(event) {
-    let error = event.reason;
+    var error = event.reason;
 
     alert(
         "FIREBASE / PROMISE ERROR :\n" +
-        (error?.code || "") +
+        (error && error.code ? error.code : "") +
         "\n" +
-        (error?.message || String(error))
+        (error && error.message ? error.message : String(error))
     );
 });
 </script>
