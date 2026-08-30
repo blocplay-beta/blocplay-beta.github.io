@@ -3500,24 +3500,25 @@ window.addEventListener("error", (event) => {
     );
 });
 
-window.addEventListener("unhandledrejection", (event) => {
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        `<div style="
-            position:fixed;
-            bottom:0;
-            left:0;
-            right:0;
-            background:red;
-            color:white;
-            padding:10px;
-            z-index:999999;
-            font-size:12px;
-        ">
-            FIREBASE : ${event.reason}
-        </div>`
+<script>
+window.addEventListener("error", function(event) {
+    alert(
+        "ERREUR JS :\n" +
+        event.message
     );
 });
+
+window.addEventListener("unhandledrejection", function(event) {
+    let error = event.reason;
+
+    alert(
+        "FIREBASE / PROMISE ERROR :\n" +
+        (error?.code || "") +
+        "\n" +
+        (error?.message || String(error))
+    );
+});
+</script>
 
 </body>
 </html>
