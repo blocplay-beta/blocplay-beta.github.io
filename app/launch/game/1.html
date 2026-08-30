@@ -2,8 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clicker 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0f19">
+
+    <title>Clicker 2.0 - BlocPlay</title>
 
     <style>
         :root {
@@ -14,75 +16,132 @@
             --text-color: #e2e8f0;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
         body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            min-height: 100%;
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
+        }
+
+        body {
             display: flex;
-            height: 100vh;
-            width: 100vw;
+            min-height: 100vh;
             overflow: hidden;
             user-select: none;
             transition: background 0.5s ease;
         }
 
-        /* Décors & Fonds */
+        /* ==========================================
+           PARTICULES
+        ========================================== */
+
         .particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed;
+            inset: 0;
             pointer-events: none;
             z-index: 0;
-            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 400% 400%;
+            background-image:
+                radial-gradient(
+                    rgba(255,255,255,0.05) 1px,
+                    transparent 1px
+                );
+            background-size: 40px 40px;
         }
 
-        /* --- STRUCTURE PRINCIPALE --- */
+        /* ==========================================
+           ZONE PRINCIPALE
+        ========================================== */
 
         .clicker-section {
             flex: 1;
+            min-width: 0;
+            min-height: 100vh;
+
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
             position: relative;
             z-index: 1;
+
             padding: 20px;
         }
 
+        /* ==========================================
+           PANNEAU DROIT
+        ========================================== */
+
         .right-panel {
             width: 380px;
+            flex-shrink: 0;
             height: 100vh;
+
             background: rgba(26, 35, 50, 0.95);
             backdrop-filter: blur(15px);
-            border-left: 2px solid rgba(255, 255, 255, 0.1);
+
+            border-left:
+                2px solid
+                rgba(255, 255, 255, 0.1);
+
             display: flex;
             flex-direction: column;
+
+            position: relative;
             z-index: 2;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+
+            box-shadow:
+                -5px 0 25px
+                rgba(0,0,0,0.5);
         }
 
         .scrollable-content {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 20px;
         }
 
-        .scrollable-content::-webkit-scrollbar { width: 6px; }
+        .scrollable-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
         .scrollable-content::-webkit-scrollbar-thumb {
             background: var(--accent-neon);
             border-radius: 3px;
         }
 
+        /* ==========================================
+           TITRES
+        ========================================== */
+
         h1 {
             font-size: 2.5rem;
             margin: 0 0 20px 0;
             text-align: center;
-            background: linear-gradient(45deg, var(--accent-neon), var(--accent-pink));
+
+            background:
+                linear-gradient(
+                    45deg,
+                    var(--accent-neon),
+                    var(--accent-pink)
+                );
+
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* ==========================================
+           SCORE
+        ========================================== */
 
         .stats-display {
             text-align: center;
@@ -90,10 +149,15 @@
         }
 
         .score-val {
-            font-size: 4rem;
+            font-size: clamp(3rem, 7vw, 4rem);
             font-weight: 900;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+
+            text-shadow:
+                0 0 15px
+                rgba(0, 242, 254, 0.3);
+
+            word-break: break-word;
         }
 
         .sps-val {
@@ -102,36 +166,67 @@
             margin-top: 5px;
         }
 
-        /* Bouton Principal */
+        /* ==========================================
+           BOUTON PRINCIPAL
+        ========================================== */
+
         #main-clicker {
-            width: 220px;
-            height: 220px;
+            width: min(220px, 55vw);
+            height: min(220px, 55vw);
+
+            min-width: 150px;
+            min-height: 150px;
+
+            aspect-ratio: 1;
+
             border-radius: 50%;
+
             background-color: #111827;
             background-size: cover;
             background-position: center;
-            border: 6px solid var(--accent-neon);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+
+            border:
+                6px solid
+                var(--accent-neon);
+
+            box-shadow:
+                0 0 30px
+                rgba(0, 242, 254, 0.4);
+
             cursor: pointer;
             outline: none;
-            transition: transform 0.05s;
-            font-size: 90px;
+
+            transition:
+                transform 0.05s;
+
+            font-size:
+                clamp(60px, 12vw, 90px);
+
             display: flex;
             align-items: center;
             justify-content: center;
+
+            touch-action: manipulation;
         }
 
         #main-clicker:active {
             transform: scale(0.92);
         }
 
-        /* --- BOUTIQUE CONTENUS --- */
+        /* ==========================================
+           BOUTIQUE
+        ========================================== */
 
         .shop-title {
             font-size: 1.2rem;
             margin: 20px 0 10px 0;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+
+            border-bottom:
+                2px solid
+                rgba(255, 255, 255, 0.1);
+
             padding-bottom: 5px;
+
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -142,21 +237,36 @@
         }
 
         .shop-item {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255,255,255,0.08);
+            background:
+                rgba(0, 0, 0, 0.25);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
             border-radius: 10px;
+
             padding: 12px;
             margin-bottom: 8px;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            gap: 10px;
+
             cursor: pointer;
-            transition: all 0.2s;
+
+            transition:
+                all 0.2s;
         }
 
         .shop-item:hover:not(.disabled) {
-            border-color: var(--accent-neon);
-            background: rgba(0, 242, 254, 0.05);
+            border-color:
+                var(--accent-neon);
+
+            background:
+                rgba(0, 242, 254, 0.05);
         }
 
         .shop-item.disabled {
@@ -165,8 +275,15 @@
         }
 
         .shop-item.equipped {
-            border-color: var(--accent-pink);
-            background: rgba(254, 9, 121, 0.1);
+            border-color:
+                var(--accent-pink);
+
+            background:
+                rgba(254, 9, 121, 0.1);
+        }
+
+        .item-info {
+            min-width: 0;
         }
 
         .item-info h4 {
@@ -184,264 +301,742 @@
         .item-cost {
             font-weight: bold;
             color: var(--accent-neon);
+            text-align: right;
         }
 
         .item-status {
             font-size: 0.8rem;
             color: #94a3b8;
             text-align: right;
+            display: block;
         }
 
-        /* --- TEXTE FLOTTANT --- */
+        /* ==========================================
+           TEXTE FLOTTANT
+        ========================================== */
 
         .floating-number {
             position: absolute;
+
             color: #ffffff;
             font-weight: 900;
-            font-size: 3.5rem;
+            font-size:
+                clamp(2rem, 7vw, 3.5rem);
+
             pointer-events: none;
-            animation: floatUpRandom 0.8s ease-out forwards;
+
+            animation:
+                floatUpRandom
+                0.8s ease-out forwards;
+
             z-index: 10;
-            text-shadow: 0 0 15px var(--accent-pink), 0 0 4px #000;
+
+            text-shadow:
+                0 0 15px
+                var(--accent-pink),
+                0 0 4px #000;
         }
 
         @keyframes floatUpRandom {
+
             0% {
-                transform: scale(0.4) translateY(0);
+                transform:
+                    scale(0.4)
+                    translateY(0);
+
                 opacity: 0;
             }
 
             20% {
-                transform: scale(1.1) translateY(-10px);
+                transform:
+                    scale(1.1)
+                    translateY(-10px);
+
                 opacity: 1;
             }
 
             100% {
-                transform: scale(1) translateY(-80px);
+                transform:
+                    scale(1)
+                    translateY(-80px);
+
                 opacity: 0;
             }
+
         }
 
-        /* --- MENU CLIC DROIT --- */
+        /* ==========================================
+           MENU CLIC DROIT
+        ========================================== */
 
         #custom-menu {
             position: fixed;
             display: none;
+
             background: #1a2332;
-            border: 2px solid var(--accent-neon);
+
+            border:
+                2px solid
+                var(--accent-neon);
+
             border-radius: 8px;
+
             z-index: 10000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.5);
+
             overflow: hidden;
+
             width: 220px;
+            max-width: calc(100vw - 20px);
         }
 
         #custom-menu button,
         #custom-menu a {
+
             background: transparent;
             border: none;
+
             color: white;
+
             padding: 12px 20px;
+
             width: 100%;
+
             text-align: left;
+
             cursor: pointer;
+
             font-size: 0.95rem;
             font-weight: bold;
+
             display: block;
+
             text-decoration: none;
+
             box-sizing: border-box;
+
             font-family: inherit;
         }
 
         #custom-menu button:hover,
         #custom-menu a:hover {
-            background: var(--accent-neon);
+
+            background:
+                var(--accent-neon);
+
             color: #000;
         }
 
-        /* --- FENÊTRE CHAT --- */
+        /* ==========================================
+           CHAT
+        ========================================== */
 
         #chat-window {
             position: fixed;
+
             top: 15%;
             left: 15%;
-            width: 400px;
-            height: 500px;
+
+            width: min(400px, calc(100vw - 30px));
+            height: min(500px, calc(100vh - 30px));
+
             min-width: 250px;
             min-height: 250px;
+
             background: #0f172a;
-            border: 2px solid var(--accent-pink);
+
+            border:
+                2px solid
+                var(--accent-pink);
+
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,0.6);
+
             z-index: 999;
+
             display: none;
             flex-direction: column;
+
             resize: both;
             overflow: hidden;
         }
 
         .chat-header {
+
             background: #1e293b;
+
             padding: 10px;
+
             cursor: move;
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.1);
         }
 
         .chat-close {
+
             background: none;
             border: none;
-            color: var(--accent-pink);
+
+            color:
+                var(--accent-pink);
+
             font-weight: bold;
+
             cursor: pointer;
+
             font-size: 1.1rem;
         }
 
         .chat-body {
+
             flex: 1;
             width: 100%;
             height: 100%;
             border: none;
         }
 
+        /* ==========================================
+           NOTIFICATION
+        ========================================== */
+
         #notif {
+
             position: fixed;
+
             bottom: 20px;
             left: 20px;
-            background: var(--accent-neon);
+
+            background:
+                var(--accent-neon);
+
             color: black;
+
             padding: 8px 16px;
+
             border-radius: 20px;
+
             font-weight: bold;
+
             opacity: 0;
-            transition: opacity 0.3s;
+
+            transition:
+                opacity 0.3s;
+
             z-index: 100;
         }
 
         /* ==========================================
-           POPUP DE CONNEXION BLOCPLAY
+           POPUP CONNEXION BLOCPLAY
         ========================================== */
 
         #login-modal {
+
             position: fixed;
             inset: 0;
+
             z-index: 50000;
+
             display: flex;
+
             align-items: center;
             justify-content: center;
-            background: rgba(4, 8, 18, 0.88);
-            backdrop-filter: blur(12px);
+
+            background:
+                rgba(4, 8, 18, 0.88);
+
+            backdrop-filter:
+                blur(12px);
+
+            padding: 20px;
         }
 
         .login-box {
-            width: min(400px, calc(100vw - 40px));
-            background: linear-gradient(145deg, #111b2d, #0b0f19);
-            border: 1px solid rgba(0, 242, 254, 0.5);
+
+            width:
+                min(
+                    400px,
+                    calc(100vw - 40px)
+                );
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111b2d,
+                    #0b0f19
+                );
+
+            border:
+                1px solid
+                rgba(0, 242, 254, 0.5);
+
             border-radius: 18px;
+
             padding: 32px;
-            box-sizing: border-box;
+
             box-shadow:
-                0 0 40px rgba(0, 242, 254, 0.15),
-                0 20px 80px rgba(0, 0, 0, 0.7);
+                0 0 40px
+                rgba(0, 242, 254, 0.15),
+                0 20px 80px
+                rgba(0, 0, 0, 0.7);
+
             text-align: center;
         }
 
         .login-logo {
+
             width: 75px;
             height: 75px;
+
             object-fit: contain;
+
             margin-bottom: 10px;
-            filter: drop-shadow(0 0 12px rgba(0,242,254,0.5));
+
+            filter:
+                drop-shadow(
+                    0 0 12px
+                    rgba(0,242,254,0.5)
+                );
         }
 
         .login-box h2 {
+
             margin: 5px 0 8px;
+
             color: white;
+
             font-size: 1.8rem;
         }
 
         .login-box .subtitle {
+
             color: #94a3b8;
+
             font-size: 0.9rem;
+
             margin-bottom: 25px;
         }
 
         .login-box input {
+
             width: 100%;
-            box-sizing: border-box;
+
             padding: 13px 15px;
+
             margin-bottom: 12px;
-            background: rgba(0,0,0,0.25);
-            border: 1px solid rgba(255,255,255,0.12);
+
+            background:
+                rgba(0,0,0,0.25);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
             border-radius: 9px;
+
             color: white;
+
             font-family: inherit;
+
             font-size: 1rem;
+
             outline: none;
+
             transition: 0.2s;
         }
 
         .login-box input:focus {
-            border-color: var(--accent-neon);
-            box-shadow: 0 0 0 3px rgba(0,242,254,0.1);
+
+            border-color:
+                var(--accent-neon);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(0,242,254,0.1);
         }
 
         #login-btn {
+
             width: 100%;
+
             padding: 13px;
+
             border: none;
+
             border-radius: 9px;
+
             cursor: pointer;
-            background: linear-gradient(90deg, var(--accent-neon), #00b8d4);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--accent-neon),
+                    #00b8d4
+                );
+
             color: #061018;
+
             font-size: 1rem;
+
             font-weight: 800;
+
             font-family: inherit;
+
             transition: 0.2s;
         }
 
         #login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,242,254,0.25);
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,242,254,0.25);
+        }
+
+        #login-btn:disabled {
+
+            opacity: 0.6;
+
+            cursor:
+                wait;
+
+            transform: none;
         }
 
         #login-error {
+
             display: none;
+
             margin-top: 15px;
+
             padding: 10px;
+
             border-radius: 8px;
-            background: rgba(254, 9, 121, 0.12);
-            border: 1px solid rgba(254, 9, 121, 0.4);
+
+            background:
+                rgba(254, 9, 121, 0.12);
+
+            border:
+                1px solid
+                rgba(254, 9, 121, 0.4);
+
             color: #ff6aa7;
+
             font-size: 0.85rem;
         }
 
         .login-register {
+
             margin-top: 20px;
+
             color: #94a3b8;
+
             font-size: 0.9rem;
         }
 
         .login-register a {
-            color: var(--accent-neon);
+
+            color:
+                var(--accent-neon);
+
             text-decoration: none;
+
             font-weight: bold;
         }
 
-        .login-register a:hover {
-            text-decoration: underline;
+        /* ==========================================
+           MOBILE PORTRAIT
+        ========================================== */
+
+        @media (max-width: 700px) {
+
+            body {
+                display: block;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .clicker-section {
+
+                min-height:
+                    55vh;
+
+                height:
+                    55vh;
+
+                padding:
+                    20px 15px;
+            }
+
+            .right-panel {
+
+                width: 100%;
+
+                height: auto;
+
+                min-height:
+                    45vh;
+
+                border-left: none;
+
+                border-top:
+                    2px solid
+                    rgba(255,255,255,0.1);
+
+                box-shadow:
+                    0 -5px 25px
+                    rgba(0,0,0,0.4);
+            }
+
+            .scrollable-content {
+
+                max-height: none;
+
+                overflow: visible;
+
+                padding:
+                    18px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            #main-clicker {
+
+                width:
+                    min(190px, 50vw);
+
+                height:
+                    min(190px, 50vw);
+            }
+
+            #chat-window {
+
+                position: fixed;
+
+                left: 10px !important;
+                top: 10px !important;
+
+                width:
+                    calc(100vw - 20px);
+
+                height:
+                    calc(100vh - 20px);
+
+                min-width: 0;
+                min-height: 0;
+
+                resize: none;
+            }
+
+            .login-box {
+
+                padding:
+                    25px 20px;
+            }
+
         }
+
+        /* ==========================================
+           MOBILE PETIT
+        ========================================== */
+
+        @media (max-width: 380px) {
+
+            .clicker-section {
+
+                height:
+                    50vh;
+
+                min-height:
+                    50vh;
+            }
+
+            .right-panel {
+
+                min-height:
+                    50vh;
+            }
+
+            #main-clicker {
+
+                width: 145px;
+                height: 145px;
+
+                font-size: 65px;
+            }
+
+            .score-val {
+                font-size: 2.7rem;
+            }
+
+            .login-box {
+                padding: 20px 15px;
+            }
+
+        }
+
+        /* ==========================================
+           MOBILE PAYSAGE
+        ========================================== */
+
+        @media (max-height: 600px)
+        and (orientation: landscape) {
+
+            body {
+                display: flex;
+                overflow: hidden;
+            }
+
+            .clicker-section {
+
+                min-height: 100vh;
+
+                padding:
+                    10px;
+            }
+
+            .right-panel {
+
+                width:
+                    min(330px, 42vw);
+
+                height: 100vh;
+
+                border-top: none;
+
+                border-left:
+                    2px solid
+                    rgba(255,255,255,0.1);
+            }
+
+            .scrollable-content {
+                padding: 12px;
+                overflow-y: auto;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+                margin-bottom: 10px;
+            }
+
+            .stats-display {
+                margin-bottom: 12px;
+            }
+
+            .score-val {
+                font-size: 2.7rem;
+            }
+
+            .sps-val {
+                font-size: 0.9rem;
+            }
+
+            #main-clicker {
+
+                width:
+                    min(150px, 28vh);
+
+                height:
+                    min(150px, 28vh);
+
+                min-width: 100px;
+                min-height: 100px;
+
+                font-size: 60px;
+            }
+
+            .shop-title {
+
+                margin:
+                    12px 0 7px;
+
+                font-size:
+                    0.95rem;
+            }
+
+            .shop-item {
+
+                padding: 8px;
+
+                margin-bottom: 6px;
+            }
+
+            .login-box {
+
+                max-height:
+                    calc(100vh - 20px);
+
+                overflow-y: auto;
+
+                padding:
+                    18px;
+            }
+
+            .login-logo {
+
+                width: 50px;
+                height: 50px;
+
+                margin-bottom: 2px;
+            }
+
+            .login-box h2 {
+                font-size: 1.4rem;
+                margin: 3px 0;
+            }
+
+            .login-box .subtitle {
+                margin-bottom: 15px;
+                font-size: 0.8rem;
+            }
+
+            .login-box input {
+                padding: 10px 12px;
+                margin-bottom: 8px;
+            }
+
+            #login-btn {
+                padding: 10px;
+            }
+
+            .login-register {
+                margin-top: 12px;
+            }
+
+        }
+
     </style>
+
 </head>
 
 <body>
 
     <div class="particles"></div>
 
-    <!-- POPUP CONNEXION -->
+
+    <!-- ==========================================
+         POPUP DE CONNEXION
+    ========================================== -->
+
     <div id="login-modal">
+
         <div class="login-box">
 
             <img
@@ -477,69 +1072,160 @@
             <div id="login-error"></div>
 
             <div class="login-register">
+
                 Pas encore de compte ?
-                <a href="https://blocplay-beta.github.io/signup">
+
+                <a
+                    href="https://blocplay-beta.github.io/signup"
+                >
                     Créer un compte
                 </a>
+
             </div>
 
         </div>
+
     </div>
 
-    <!-- JEU -->
-    <div class="clicker-section" id="game-zone">
+
+    <!-- ==========================================
+         JEU
+    ========================================== -->
+
+    <div
+        class="clicker-section"
+        id="game-zone"
+    >
 
         <div class="stats-display">
-            <div class="score-val" id="score-display">0</div>
-            <div class="sps-val" id="sps-display">
+
+            <div
+                class="score-val"
+                id="score-display"
+            >
+                0
+            </div>
+
+            <div
+                class="sps-val"
+                id="sps-display"
+            >
                 Génération Auto: 0/s
             </div>
+
         </div>
 
-        <button id="main-clicker">🍪</button>
+
+        <button
+            id="main-clicker"
+            aria-label="Cliquer"
+        >
+            🍪
+        </button>
 
     </div>
 
-    <!-- BOUTIQUE -->
+
+    <!-- ==========================================
+         BOUTIQUE
+    ========================================== -->
+
     <div class="right-panel">
 
         <div class="scrollable-content">
 
             <h1>Clicker 2.0</h1>
 
-            <div class="shop-title">⚡ Améliorations</div>
 
-            <div class="shop-item" id="buy-clicker">
-                <div class="item-info">
-                    <h4>Clic Boost</h4>
-                    <p>+1 base / clic</p>
-                </div>
-
-                <div>
-                    <div class="item-cost" id="cost-clicker">15</div>
-                    <span class="item-status" id="count-clicker">Niv. 0</span>
-                </div>
+            <div class="shop-title">
+                ⚡ Améliorations
             </div>
 
-            <div class="shop-item" id="buy-miner">
+
+            <div
+                class="shop-item"
+                id="buy-clicker"
+            >
 
                 <div class="item-info">
-                    <h4>Auto-Clic</h4>
-                    <p>+1 / seconde</p>
+
+                    <h4>
+                        Clic Boost
+                    </h4>
+
+                    <p>
+                        +1 base / clic
+                    </p>
+
                 </div>
 
+
                 <div>
-                    <div class="item-cost" id="cost-miner">100</div>
-                    <span class="item-status" id="count-miner">Qté: 0</span>
+
+                    <div
+                        class="item-cost"
+                        id="cost-clicker"
+                    >
+                        15
+                    </div>
+
+                    <span
+                        class="item-status"
+                        id="count-clicker"
+                    >
+                        Niv. 0
+                    </span>
+
                 </div>
 
             </div>
+
+
+            <div
+                class="shop-item"
+                id="buy-miner"
+            >
+
+                <div class="item-info">
+
+                    <h4>
+                        Auto-Clic
+                    </h4>
+
+                    <p>
+                        +1 / seconde
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <div
+                        class="item-cost"
+                        id="cost-miner"
+                    >
+                        100
+                    </div>
+
+                    <span
+                        class="item-status"
+                        id="count-miner"
+                    >
+                        Qté: 0
+                    </span>
+
+                </div>
+
+            </div>
+
 
             <div class="shop-title">
                 🎨 Skins (+ Multiplicateurs)
             </div>
 
             <div id="skins-container"></div>
+
 
             <div class="shop-title">
                 🖼️ Fonds d'écran
@@ -551,83 +1237,140 @@
 
     </div>
 
-    <!-- MENU CLIC DROIT -->
+
+    <!-- ==========================================
+         MENU CLIC DROIT
+    ========================================== -->
+
     <div id="custom-menu">
-        <button id="open-chat-btn">BP Contact</button>
+
+        <button id="open-chat-btn">
+            BP Contact
+        </button>
 
         <a
             href="https://discord.com/invite/TcK65JDaaC"
             target="_blank"
+            rel="noopener noreferrer"
         >
             Serveur Discord
         </a>
+
     </div>
 
-    <!-- CHAT -->
+
+    <!-- ==========================================
+         CHAT
+    ========================================== -->
+
     <div id="chat-window">
 
-        <div class="chat-header" id="chat-header">
+        <div
+            class="chat-header"
+            id="chat-header"
+        >
 
-            <span>Chat Privé BlocPlay</span>
+            <span>
+                Chat Privé BlocPlay
+            </span>
 
-            <button class="chat-close" id="close-chat-btn">
+            <button
+                class="chat-close"
+                id="close-chat-btn"
+                aria-label="Fermer le chat"
+            >
                 ✕
             </button>
 
         </div>
 
+
         <iframe
             class="chat-body"
             src="https://bp-contact.github.io/"
+            title="BP Contact"
         ></iframe>
 
     </div>
 
-    <div id="notif">Sauvegarde...</div>
+
+    <div id="notif">
+        Sauvegarde...
+    </div>
 
 
     <script type="module">
 
-        import { initializeApp }
-        from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+        /* ==========================================
+           IMPORTS FIREBASE
+        ========================================== */
+
+        import {
+            initializeApp
+        }
+        from
+        "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
 
         import {
             getDatabase,
             ref,
             set,
-            get,
-            child
+            get
         }
-        from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+        from
+        "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
 
         import {
             getAuth,
             onAuthStateChanged,
             signInWithEmailAndPassword
         }
-        from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+        from
+        "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 
         /* ==========================================
-           FIREBASE
+           CONFIGURATION FIREBASE
         ========================================== */
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-            authDomain: "blocplay-a9417.firebaseapp.com",
-            databaseURL: "https://blocplay-a9417-default-rtdb.firebaseio.com",
-            projectId: "blocplay-a9417",
-            storageBucket: "blocplay-a9417.firebasestorage.app",
-            messagingSenderId: "540161549188",
-            appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+
+            apiKey:
+                "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+            authDomain:
+                "blocplay-a9417.firebaseapp.com",
+
+            databaseURL:
+                "https://blocplay-a9417-default-rtdb.firebaseio.com",
+
+            projectId:
+                "blocplay-a9417",
+
+            storageBucket:
+                "blocplay-a9417.firebasestorage.app",
+
+            messagingSenderId:
+                "540161549188",
+
+            appId:
+                "1:540161549188:web:e0ec0350bd044de2f333d1"
+
         };
 
 
-        const app = initializeApp(firebaseConfig);
+        const app =
+            initializeApp(firebaseConfig);
 
-        const db = getDatabase(app);
 
-        const auth = getAuth(app);
+        const db =
+            getDatabase(app);
+
+
+        const auth =
+            getAuth(app);
 
 
         /* ==========================================
@@ -679,7 +1422,8 @@
             blocplay: {
                 name: "Logo BlocPlay",
                 cost: 50000,
-                content: "https://blocplay-beta.github.io/icon.png",
+                content:
+                    "https://blocplay-beta.github.io/icon.png",
                 mult: 50,
                 isImg: true
             }
@@ -696,80 +1440,139 @@
             dark: {
                 name: "Espace Sombre",
                 cost: 0,
-                style: "linear-gradient(45deg, #0b0f19, #131b2f)"
+                style:
+                    "linear-gradient(45deg, #0b0f19, #131b2f)"
             },
 
             neon: {
                 name: "Cyber Cyberpunk",
                 cost: 500,
-                style: "linear-gradient(135deg, #2e0854, #0b0f19)"
+                style:
+                    "linear-gradient(135deg, #2e0854, #0b0f19)"
             },
 
             sunset: {
                 name: "Coucher de soleil",
                 cost: 2500,
-                style: "linear-gradient(180deg, #fdba74, #3b0764)"
+                style:
+                    "linear-gradient(180deg, #fdba74, #3b0764)"
             },
 
             matrix: {
                 name: "Code Matrix",
                 cost: 10000,
-                style: "linear-gradient(0deg, #064e3b, #022c22)"
+                style:
+                    "linear-gradient(0deg, #064e3b, #022c22)"
             }
 
         };
 
 
         /* ==========================================
-           DONNÉES DU JEU
+           DONNÉES PAR DÉFAUT DU JEU
         ========================================== */
 
-        let game = {
+        function createDefaultGame() {
 
-            score: 0,
-            clickPower: 1,
-            autoPower: 0,
+            return {
 
-            clickerLevel: 0,
-            minerCount: 0,
+                score: 0,
 
-            clickerCost: 15,
-            minerCost: 100,
+                clickPower: 1,
 
-            skinsOwned: ['cookie'],
-            activeSkin: 'cookie',
+                autoPower: 0,
 
-            bgOwned: ['dark'],
-            activeBg: 'dark'
+                clickerLevel: 0,
 
-        };
+                minerCount: 0,
+
+                clickerCost: 15,
+
+                minerCost: 100,
+
+                skinsOwned: [
+                    "cookie"
+                ],
+
+                activeSkin:
+                    "cookie",
+
+                bgOwned: [
+                    "dark"
+                ],
+
+                activeBg:
+                    "dark"
+
+            };
+
+        }
 
 
-        let currentUser = null;
-        let gameIntervalsStarted = false;
+        let game =
+            createDefaultGame();
+
+
+        let currentUser =
+            null;
+
+
+        let gameIntervalsStarted =
+            false;
+
+
+        let gameLoaded =
+            false;
+
+
+        let isSaving =
+            false;
 
 
         /* ==========================================
-           ELEMENTS DOM
+           ÉLÉMENTS DOM
         ========================================== */
 
         const scoreDisplay =
-            document.getElementById("score-display");
+            document.getElementById(
+                "score-display"
+            );
+
 
         const spsDisplay =
-            document.getElementById("sps-display");
+            document.getElementById(
+                "sps-display"
+            );
+
 
         const mainClicker =
-            document.getElementById("main-clicker");
+            document.getElementById(
+                "main-clicker"
+            );
+
 
         const gameZone =
-            document.getElementById("game-zone");
+            document.getElementById(
+                "game-zone"
+            );
+
 
         const customMenu =
-            document.getElementById("custom-menu");
+            document.getElementById(
+                "custom-menu"
+            );
+
 
         const chatWindow =
-            document.getElementById("chat-window");
+            document.getElementById(
+                "chat-window"
+            );
+
+
+        const notif =
+            document.getElementById(
+                "notif"
+            );
 
 
         /* ==========================================
@@ -777,198 +1580,325 @@
         ========================================== */
 
         const loginModal =
-            document.getElementById("login-modal");
+            document.getElementById(
+                "login-modal"
+            );
+
 
         const loginEmail =
-            document.getElementById("login-email");
+            document.getElementById(
+                "login-email"
+            );
+
 
         const loginPassword =
-            document.getElementById("login-password");
+            document.getElementById(
+                "login-password"
+            );
+
 
         const loginBtn =
-            document.getElementById("login-btn");
+            document.getElementById(
+                "login-btn"
+            );
+
 
         const loginError =
-            document.getElementById("login-error");
+            document.getElementById(
+                "login-error"
+            );
 
 
         function showLoginError(message) {
 
-            loginError.textContent = message;
-            loginError.style.display = "block";
+            loginError.textContent =
+                message;
+
+            loginError.style.display =
+                "block";
 
         }
 
 
         function hideLoginError() {
 
-            loginError.style.display = "none";
-            loginError.textContent = "";
+            loginError.textContent =
+                "";
+
+            loginError.style.display =
+                "none";
 
         }
 
 
-        loginBtn.addEventListener("click", async () => {
+        /* ==========================================
+           CONNEXION
+        ========================================== */
 
-            const email = loginEmail.value.trim();
-            const password = loginPassword.value;
+        loginBtn.addEventListener(
+            "click",
+            async () => {
 
-            hideLoginError();
-
-
-            if (!email || !password) {
-
-                showLoginError(
-                    "Veuillez remplir votre adresse e-mail et votre mot de passe."
-                );
-
-                return;
-
-            }
+                const email =
+                    loginEmail.value.trim();
 
 
-            loginBtn.disabled = true;
-            loginBtn.textContent = "Connexion...";
+                const password =
+                    loginPassword.value;
 
 
-            try {
+                hideLoginError();
 
-                await signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
-                );
 
-            }
+                if (!email || !password) {
 
-            catch (error) {
+                    showLoginError(
+                        "Veuillez remplir votre adresse e-mail et votre mot de passe."
+                    );
 
-                console.error(error);
-
-                let message =
-                    "Une erreur est survenue lors de la connexion.";
-
-                if (error.code === "auth/invalid-email") {
-
-                    message =
-                        "Adresse e-mail invalide.";
+                    return;
 
                 }
 
-                else if (
-                    error.code === "auth/user-not-found" ||
-                    error.code === "auth/wrong-password" ||
-                    error.code === "auth/invalid-credential"
+
+                loginBtn.disabled =
+                    true;
+
+                loginBtn.textContent =
+                    "Connexion...";
+
+
+                try {
+
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Erreur Firebase Auth:",
+                        error
+                    );
+
+
+                    let message =
+                        "Une erreur est survenue lors de la connexion.";
+
+
+                    if (
+                        error.code ===
+                        "auth/invalid-email"
+                    ) {
+
+                        message =
+                            "Adresse e-mail invalide.";
+
+                    }
+
+                    else if (
+
+                        error.code ===
+                        "auth/user-not-found"
+
+                        ||
+
+                        error.code ===
+                        "auth/wrong-password"
+
+                        ||
+
+                        error.code ===
+                        "auth/invalid-credential"
+
+                    ) {
+
+                        message =
+                            "Adresse e-mail ou mot de passe incorrect.";
+
+                    }
+
+                    else if (
+
+                        error.code ===
+                        "auth/too-many-requests"
+
+                    ) {
+
+                        message =
+                            "Trop de tentatives. Réessaie plus tard.";
+
+                    }
+
+                    else if (
+
+                        error.code ===
+                        "auth/network-request-failed"
+
+                    ) {
+
+                        message =
+                            "Erreur réseau. Vérifie ta connexion Internet.";
+
+                    }
+
+
+                    showLoginError(
+                        message
+                    );
+
+                }
+
+                finally {
+
+                    loginBtn.disabled =
+                        false;
+
+                    loginBtn.textContent =
+                        "Se connecter";
+
+                }
+
+            }
+        );
+
+
+        loginPassword.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key ===
+                    "Enter"
                 ) {
 
-                    message =
-                        "Adresse e-mail ou mot de passe incorrect.";
+                    loginBtn.click();
 
                 }
 
-                else if (error.code === "auth/too-many-requests") {
+            }
+        );
 
-                    message =
-                        "Trop de tentatives. Réessaie plus tard.";
+
+        loginEmail.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    loginPassword.focus();
 
                 }
 
-
-                showLoginError(message);
-
             }
-
-            finally {
-
-                loginBtn.disabled = false;
-                loginBtn.textContent = "Se connecter";
-
-            }
-
-        });
-
-
-        loginPassword.addEventListener("keydown", (event) => {
-
-            if (event.key === "Enter") {
-
-                loginBtn.click();
-
-            }
-
-        });
-
-
-        loginEmail.addEventListener("keydown", (event) => {
-
-            if (event.key === "Enter") {
-
-                loginPassword.focus();
-
-            }
-
-        });
+        );
 
 
         /* ==========================================
-           AUTHENTIFICATION & DÉMARRAGE DU JEU
+           AUTHENTIFICATION FIREBASE
         ========================================== */
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(
+            auth,
+            async (user) => {
 
-            if (user) {
-
-                currentUser = user;
-
-                loginModal.style.display = "none";
-
-                loadGameData(user.uid);
-
-
-                if (!gameIntervalsStarted) {
-
-                    gameIntervalsStarted = true;
+                console.log(
+                    "État Firebase Auth:",
+                    user
+                        ? `Connecté: ${user.uid}`
+                        : "Déconnecté"
+                );
 
 
-                    setInterval(() => {
+                if (user) {
 
-                        if (
-                            currentUser &&
-                            game.autoPower > 0
-                        ) {
-
-                            game.score += game.autoPower;
-
-                            updateUI();
-
-                        }
-
-                    }, 1000);
+                    currentUser =
+                        user;
 
 
-                    setInterval(() => {
+                    loginModal.style.display =
+                        "none";
 
-                        if (currentUser) {
 
-                            saveGameData(false);
+                    await loadGameData(
+                        user.uid
+                    );
 
-                        }
 
-                    }, 10000);
+                    if (
+                        !gameIntervalsStarted
+                    ) {
+
+                        gameIntervalsStarted =
+                            true;
+
+
+                        setInterval(
+                            () => {
+
+                                if (
+                                    currentUser &&
+                                    gameLoaded
+                                ) {
+
+                                    game.score +=
+                                        game.autoPower;
+
+                                    updateUI();
+
+                                }
+
+                            },
+                            1000
+                        );
+
+
+                        setInterval(
+                            () => {
+
+                                if (
+                                    currentUser &&
+                                    gameLoaded
+                                ) {
+
+                                    saveGameData(
+                                        false
+                                    );
+
+                                }
+
+                            },
+                            10000
+                        );
+
+                    }
+
+                }
+
+                else {
+
+                    currentUser =
+                        null;
+
+
+                    gameLoaded =
+                        false;
+
+
+                    loginModal.style.display =
+                        "flex";
 
                 }
 
             }
-
-            else {
-
-                currentUser = null;
-
-                loginModal.style.display = "flex";
-
-            }
-
-        });
+        );
 
 
         /* ==========================================
@@ -982,12 +1912,22 @@
                 e.preventDefault();
 
 
-                let menuX = e.clientX;
-                let menuY = e.clientY;
+                let menuX =
+                    e.clientX;
+
+                let menuY =
+                    e.clientY;
 
 
-                const menuWidth = 220;
-                const menuHeight = 100;
+                const menuWidth =
+                    Math.min(
+                        220,
+                        window.innerWidth - 20
+                    );
+
+
+                const menuHeight =
+                    110;
 
 
                 if (
@@ -996,7 +1936,9 @@
                 ) {
 
                     menuX =
-                        window.innerWidth - menuWidth - 10;
+                        window.innerWidth -
+                        menuWidth -
+                        10;
 
                 }
 
@@ -1007,16 +1949,33 @@
                 ) {
 
                     menuY =
-                        window.innerHeight - menuHeight - 10;
+                        window.innerHeight -
+                        menuHeight -
+                        10;
 
                 }
 
 
+                menuX =
+                    Math.max(
+                        10,
+                        menuX
+                    );
+
+
+                menuY =
+                    Math.max(
+                        10,
+                        menuY
+                    );
+
                 customMenu.style.left =
                     `${menuX}px`;
 
+
                 customMenu.style.top =
                     `${menuY}px`;
+
 
                 customMenu.style.display =
                     "block";
@@ -1051,15 +2010,19 @@
         ========================================== */
 
         document
-            .getElementById("open-chat-btn")
+            .getElementById(
+                "open-chat-btn"
+            )
             .addEventListener(
                 "click",
                 (e) => {
 
                     e.stopPropagation();
 
+
                     customMenu.style.display =
                         "none";
+
 
                     chatWindow.style.display =
                         "flex";
@@ -1069,7 +2032,9 @@
 
 
         document
-            .getElementById("close-chat-btn")
+            .getElementById(
+                "close-chat-btn"
+            )
             .addEventListener(
                 "click",
                 () => {
@@ -1086,28 +2051,57 @@
         ========================================== */
 
         const chatHeader =
-            document.getElementById("chat-header");
+            document.getElementById(
+                "chat-header"
+            );
 
 
-        let isDragging = false;
+        let isDragging =
+            false;
 
-        let offsetX = 0;
-        let offsetY = 0;
+
+        let offsetX =
+            0;
+
+
+        let offsetY =
+            0;
+
+
+        function startDrag(
+            clientX,
+            clientY
+        ) {
+
+            isDragging =
+                true;
+
+
+            offsetX =
+                clientX -
+                chatWindow.offsetLeft;
+
+
+            offsetY =
+                clientY -
+                chatWindow.offsetTop;
+
+        }
 
 
         chatHeader.addEventListener(
             "mousedown",
             (e) => {
 
-                isDragging = true;
+                if (
+                    window.innerWidth <= 700
+                ) return;
 
-                offsetX =
-                    e.clientX -
-                    chatWindow.offsetLeft;
 
-                offsetY =
-                    e.clientY -
-                    chatWindow.offsetTop;
+                startDrag(
+                    e.clientX,
+                    e.clientY
+                );
 
 
                 document.body.style.cursor =
@@ -1124,38 +2118,10 @@
                 if (!isDragging) return;
 
 
-                let newX =
-                    e.clientX - offsetX;
-
-                let newY =
-                    e.clientY - offsetY;
-
-
-                newX = Math.max(
-                    0,
-                    Math.min(
-                        newX,
-                        window.innerWidth -
-                        chatWindow.offsetWidth
-                    )
+                moveChat(
+                    e.clientX,
+                    e.clientY
                 );
-
-
-                newY = Math.max(
-                    0,
-                    Math.min(
-                        newY,
-                        window.innerHeight -
-                        chatWindow.offsetHeight
-                    )
-                );
-
-
-                chatWindow.style.left =
-                    `${newX}px`;
-
-                chatWindow.style.top =
-                    `${newY}px`;
 
             }
         );
@@ -1165,10 +2131,126 @@
             "mouseup",
             () => {
 
-                isDragging = false;
+                stopDrag();
 
-                document.body.style.cursor =
-                    "default";
+            }
+        );
+
+
+        function moveChat(
+            clientX,
+            clientY
+        ) {
+
+            let newX =
+                clientX -
+                offsetX;
+
+
+            let newY =
+                clientY -
+                offsetY;
+
+
+            newX =
+                Math.max(
+                    0,
+                    Math.min(
+                        newX,
+                        window.innerWidth -
+                        chatWindow.offsetWidth
+                    )
+                );
+
+
+            newY =
+                Math.max(
+                    0,
+                    Math.min(
+                        newY,
+                        window.innerHeight -
+                        chatWindow.offsetHeight
+                    )
+                );
+
+
+            chatWindow.style.left =
+                `${newX}px`;
+
+
+            chatWindow.style.top =
+                `${newY}px`;
+
+        }
+
+
+        function stopDrag() {
+
+            isDragging =
+                false;
+
+
+            document.body.style.cursor =
+                "default";
+
+        }
+
+
+        /* Support tactile du déplacement */
+
+        chatHeader.addEventListener(
+            "touchstart",
+            (e) => {
+
+                if (
+                    window.innerWidth <= 700
+                ) return;
+
+
+                const touch =
+                    e.touches[0];
+
+
+                startDrag(
+                    touch.clientX,
+                    touch.clientY
+                );
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "touchmove",
+            (e) => {
+
+                if (!isDragging) return;
+
+
+                const touch =
+                    e.touches[0];
+
+
+                moveChat(
+                    touch.clientX,
+                    touch.clientY
+                );
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "touchend",
+            () => {
+
+                stopDrag();
 
             }
         );
@@ -1182,7 +2264,10 @@
             "click",
             () => {
 
-                if (!currentUser) return;
+                if (
+                    !currentUser ||
+                    !gameLoaded
+                ) return;
 
 
                 const currentMult =
@@ -1196,7 +2281,8 @@
                     currentMult;
 
 
-                game.score += finalGain;
+                game.score +=
+                    finalGain;
 
 
                 updateUI();
@@ -1205,6 +2291,7 @@
                 const zoneW =
                     gameZone.clientWidth;
 
+
                 const zoneH =
                     gameZone.clientHeight;
 
@@ -1212,19 +2299,27 @@
                 const rx =
                     Math.floor(
                         Math.random() *
-                        Math.max(1, zoneW - 160)
+                        Math.max(
+                            1,
+                            zoneW - 160
+                        )
                     ) + 40;
 
 
                 const ry =
                     Math.floor(
                         Math.random() *
-                        Math.max(1, zoneH - 160)
+                        Math.max(
+                            1,
+                            zoneH - 160
+                        )
                     ) + 80;
 
 
                 const el =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
 
                 el.className =
@@ -1238,11 +2333,14 @@
                 el.style.left =
                     `${rx}px`;
 
+
                 el.style.top =
                     `${ry}px`;
 
 
-                gameZone.appendChild(el);
+                gameZone.appendChild(
+                    el
+                );
 
 
                 el.addEventListener(
@@ -1259,12 +2357,17 @@
         ========================================== */
 
         document
-            .getElementById("buy-clicker")
+            .getElementById(
+                "buy-clicker"
+            )
             .addEventListener(
                 "click",
                 () => {
 
-                    if (!currentUser) return;
+                    if (
+                        !currentUser ||
+                        !gameLoaded
+                    ) return;
 
 
                     if (
@@ -1276,10 +2379,12 @@
                             game.clickerCost;
 
 
-                        game.clickerLevel++;
+                        game.clickerLevel +=
+                            1;
 
 
-                        game.clickPower += 1;
+                        game.clickPower +=
+                            1;
 
 
                         game.clickerCost =
@@ -1294,7 +2399,10 @@
 
                         updateUI();
 
-                        saveGameData(false);
+
+                        saveGameData(
+                            false
+                        );
 
                     }
 
@@ -1307,12 +2415,17 @@
         ========================================== */
 
         document
-            .getElementById("buy-miner")
+            .getElementById(
+                "buy-miner"
+            )
             .addEventListener(
                 "click",
                 () => {
 
-                    if (!currentUser) return;
+                    if (
+                        !currentUser ||
+                        !gameLoaded
+                    ) return;
 
 
                     if (
@@ -1324,10 +2437,12 @@
                             game.minerCost;
 
 
-                        game.minerCount++;
+                        game.minerCount +=
+                            1;
 
 
-                        game.autoPower += 1;
+                        game.autoPower +=
+                            1;
 
 
                         game.minerCost =
@@ -1342,7 +2457,10 @@
 
                         updateUI();
 
-                        saveGameData(false);
+
+                        saveGameData(
+                            false
+                        );
 
                     }
 
@@ -1362,55 +2480,59 @@
                 );
 
 
-            skinCont.innerHTML = "";
+            skinCont.innerHTML =
+                "";
 
 
-            Object.keys(skinsData)
-                .forEach((id) => {
+            Object
+                .keys(
+                    skinsData
+                )
+                .forEach(
+                    (id) => {
 
-                    if (id === "cookie") return;
+                        if (
+                            id === "cookie"
+                        ) return;
 
 
-                    skinCont.innerHTML += `
+                        skinCont.innerHTML += `
 
-                        <div
-                            class="shop-item"
-                            id="sk-${id}"
-                        >
+                            <div
+                                class="shop-item"
+                                id="sk-${id}"
+                            >
 
-                            <div class="item-info">
+                                <div class="item-info">
 
-                                <h4>
-                                    ${skinsData[id].name}
-                                </h4>
+                                    <h4>
+                                        ${skinsData[id].name}
+                                    </h4>
 
-                                <p>
-                                    Avantage: Clic x${skinsData[id].mult}
-                                </p>
+                                    <p>
+                                        Avantage: Clic x${skinsData[id].mult}
+                                    </p>
 
-                            </div>
-
-                            <div>
-
-                                <div
-                                    class="item-cost class-cost"
-                                >
-                                    ${skinsData[id].cost}
                                 </div>
 
-                                <span
-                                    class="item-status class-status"
-                                >
-                                    Acheter
-                                </span>
+                                <div>
+
+                                    <div class="item-cost">
+                                        ${skinsData[id].cost}
+                                    </div>
+
+                                    <span class="item-status">
+                                        Acheter
+                                    </span>
+
+                                </div>
 
                             </div>
 
-                        </div>
+                        `;
 
-                    `;
-
-                });
+                    }
+                );
 
 
             const bgCont =
@@ -1419,95 +2541,133 @@
                 );
 
 
-            bgCont.innerHTML = "";
+            bgCont.innerHTML =
+                "";
 
 
-            Object.keys(bgData)
-                .forEach((id) => {
+            Object
+                .keys(
+                    bgData
+                )
+                .forEach(
+                    (id) => {
 
-                    if (id === "dark") return;
+                        if (
+                            id === "dark"
+                        ) return;
 
 
-                    bgCont.innerHTML += `
+                        bgCont.innerHTML += `
 
-                        <div
-                            class="shop-item"
-                            id="bg-${id}"
-                        >
+                            <div
+                                class="shop-item"
+                                id="bg-${id}"
+                            >
 
-                            <div class="item-info">
+                                <div class="item-info">
 
-                                <h4>
-                                    ${bgData[id].name}
-                                </h4>
+                                    <h4>
+                                        ${bgData[id].name}
+                                    </h4>
 
-                                <p>
-                                    Ambiance visuelle
-                                </p>
+                                    <p>
+                                        Ambiance visuelle
+                                    </p>
 
-                            </div>
-
-                            <div>
-
-                                <div
-                                    class="item-cost class-cost"
-                                >
-                                    ${bgData[id].cost}
                                 </div>
 
-                                <span
-                                    class="item-status class-status"
-                                >
-                                    Acheter
-                                </span>
+                                <div>
+
+                                    <div class="item-cost">
+                                        ${bgData[id].cost}
+                                    </div>
+
+                                    <span class="item-status">
+                                        Acheter
+                                    </span>
+
+                                </div>
 
                             </div>
 
-                        </div>
+                        `;
 
-                    `;
-
-                });
-
-
-            Object.keys(skinsData)
-                .forEach((id) => {
-
-                    if (id === "cookie") return;
+                    }
+                );
 
 
-                    document
-                        .getElementById(`sk-${id}`)
-                        .addEventListener(
+            Object
+                .keys(
+                    skinsData
+                )
+                .forEach(
+                    (id) => {
+
+                        if (
+                            id === "cookie"
+                        ) return;
+
+
+                        const element =
+                            document.getElementById(
+                                `sk-${id}`
+                            );
+
+
+                        if (!element) return;
+
+
+                        element.addEventListener(
                             "click",
-                            () =>
+                            () => {
+
                                 handleBuy(
                                     "skin",
                                     id
-                                )
+                                );
+
+                            }
                         );
 
-                });
+                    }
+                );
 
 
-            Object.keys(bgData)
-                .forEach((id) => {
+            Object
+                .keys(
+                    bgData
+                )
+                .forEach(
+                    (id) => {
 
-                    if (id === "dark") return;
+                        if (
+                            id === "dark"
+                        ) return;
 
 
-                    document
-                        .getElementById(`bg-${id}`)
-                        .addEventListener(
+                        const element =
+                            document.getElementById(
+                                `bg-${id}`
+                            );
+
+
+                        if (!element) return;
+
+
+                        element.addEventListener(
                             "click",
-                            () =>
+                            () => {
+
                                 handleBuy(
                                     "bg",
                                     id
-                                )
+                                );
+
+                            }
                         );
 
-                });
+                    }
+                );
 
         }
 
@@ -1516,18 +2676,37 @@
            ACHAT / ÉQUIPEMENT
         ========================================== */
 
-        function handleBuy(type, id) {
+        function handleBuy(
+            type,
+            id
+        ) {
 
-            if (!currentUser) return;
+            if (
+                !currentUser ||
+                !gameLoaded
+            ) return;
 
 
-            if (type === "skin") {
+            let changed =
+                false;
+
+
+            if (
+                type === "skin"
+            ) {
 
                 if (
-                    game.skinsOwned.includes(id)
+                    game.skinsOwned.includes(
+                        id
+                    )
                 ) {
 
-                    game.activeSkin = id;
+                    game.activeSkin =
+                        id;
+
+
+                    changed =
+                        true;
 
                 }
 
@@ -1540,23 +2719,39 @@
                         skinsData[id].cost;
 
 
-                    game.skinsOwned.push(id);
+                    game.skinsOwned.push(
+                        id
+                    );
 
 
-                    game.activeSkin = id;
+                    game.activeSkin =
+                        id;
+
+
+                    changed =
+                        true;
 
                 }
 
             }
 
 
-            else if (type === "bg") {
+            else if (
+                type === "bg"
+            ) {
 
                 if (
-                    game.bgOwned.includes(id)
+                    game.bgOwned.includes(
+                        id
+                    )
                 ) {
 
-                    game.activeBg = id;
+                    game.activeBg =
+                        id;
+
+
+                    changed =
+                        true;
 
                 }
 
@@ -1569,21 +2764,33 @@
                         bgData[id].cost;
 
 
-                    game.bgOwned.push(id);
+                    game.bgOwned.push(
+                        id
+                    );
 
 
-                    game.activeBg = id;
+                    game.activeBg =
+                        id;
+
+
+                    changed =
+                        true;
 
                 }
 
             }
 
 
+            if (!changed) return;
+
+
             applyVisuals();
 
             updateUI();
 
-            saveGameData(false);
+            saveGameData(
+                false
+            );
 
         }
 
@@ -1600,40 +2807,47 @@
                 ];
 
 
-            if (!skin) return;
+            if (skin) {
+
+                if (
+                    skin.isImg
+                ) {
+
+                    mainClicker.textContent =
+                        "";
 
 
-            if (skin.isImg) {
-
-                mainClicker.textContent = "";
-
-                mainClicker.style.backgroundImage =
-                    `url('${skin.content}')`;
-
-                mainClicker.style.border =
-                    "none";
-
-                mainClicker.style.backgroundColor =
-                    "transparent";
-
-            }
-
-            else {
-
-                mainClicker.style.backgroundImage =
-                    "none";
+                    mainClicker.style.backgroundImage =
+                        `url("${skin.content}")`;
 
 
-                mainClicker.style.backgroundColor =
-                    "#111827";
+                    mainClicker.style.border =
+                        "none";
 
 
-                mainClicker.style.border =
-                    "6px solid var(--accent-neon)";
+                    mainClicker.style.backgroundColor =
+                        "transparent";
+
+                }
+
+                else {
+
+                    mainClicker.style.backgroundImage =
+                        "none";
 
 
-                mainClicker.textContent =
-                    skin.content;
+                    mainClicker.style.backgroundColor =
+                        "#111827";
+
+
+                    mainClicker.style.border =
+                        "6px solid var(--accent-neon)";
+
+
+                    mainClicker.textContent =
+                        skin.content;
+
+                }
 
             }
 
@@ -1655,334 +2869,307 @@
 
 
         /* ==========================================
-           MISE À JOUR INTERFACE
+           MISE À JOUR DE L'INTERFACE
         ========================================== */
 
         function updateUI() {
 
+            if (!game) return;
+
+
             scoreDisplay.textContent =
-                Math.floor(game.score);
+                Math.floor(
+                    game.score
+                ).toLocaleString(
+                    "fr-FR"
+                );
 
 
             spsDisplay.textContent =
                 `Génération Auto: ${game.autoPower}/s`;
 
 
-            document
-                .getElementById("cost-clicker")
-                .textContent =
-                    game.clickerCost;
-
-
-            document
-                .getElementById("count-clicker")
-                .textContent =
-                    `Niv. ${game.clickerLevel}`;
-
-
-            document
-                .getElementById("buy-clicker")
-                .classList.toggle(
-                    "disabled",
-                    game.score <
-                    game.clickerCost
+            const clickerCost =
+                document.getElementById(
+                    "cost-clicker"
                 );
 
 
-            document
-                .getElementById("cost-miner")
-                .textContent =
-                    game.minerCost;
-
-
-            document
-                .getElementById("count-miner")
-                .textContent =
-                    `Qté: ${game.minerCount}`;
-
-
-            document
-                .getElementById("buy-miner")
-                .classList.toggle(
-                    "disabled"
-                    game.score <
-                    game.minerCost
+            const clickerCount =
+                document.getElementById(
+                    "count-clicker"
                 );
 
 
-            /* ==========================================
-               STATUTS DES SKINS
-            ========================================== */
-
-            Object.keys(skinsData)
-                .forEach((id) => {
-
-                    if (id === "cookie") return;
+            const clickerItem =
+                document.getElementById(
+                    "buy-clicker"
+                );
 
 
-                    const itemEl =
-                        document.getElementById(
-                            `sk-${id}`
-                        );
+            clickerCost.textContent =
+                game.clickerCost.toLocaleString(
+                    "fr-FR"
+                );
 
 
-                    if (!itemEl) return;
+            clickerCount.textContent =
+                `Niv. ${game.clickerLevel}`;
 
 
-                    const statusEl =
-                        itemEl.querySelector(
-                            ".class-status"
-                        );
+            clickerItem.classList.toggle(
+                "disabled",
+                game.score <
+                game.clickerCost
+            );
 
 
-                    const costEl =
-                        itemEl.querySelector(
-                            ".class-cost"
-                        );
+            const minerCost =
+                document.getElementById(
+                    "cost-miner"
+                );
 
 
-                    if (
-                        game.activeSkin === id
-                    ) {
-
-                        itemEl.className =
-                            "shop-item equipped";
+            const minerCount =
+                document.getElementById(
+                    "count-miner"
+                );
 
 
-                        statusEl.textContent =
-                            "Équipé";
+            const minerItem =
+                document.getElementById(
+                    "buy-miner"
+                );
 
 
-                        costEl.textContent =
-                            "";
-
-                    }
-
-
-                    else if (
-                        game.skinsOwned.includes(id)
-                    ) {
-
-                        itemEl.className =
-                            "shop-item";
+            minerCost.textContent =
+                game.minerCost.toLocaleString(
+                    "fr-FR"
+                );
 
 
-                        statusEl.textContent =
-                            "Équiper";
+            minerCount.textContent =
+                `Qté: ${game.minerCount}`;
 
 
-                        costEl.textContent =
-                            "";
+            minerItem.classList.toggle(
+                "disabled",
+                game.score <
+                game.minerCost
+            );
 
-                    }
+
+            Object
+                .keys(
+                    skinsData
+                )
+                .forEach(
+                    (id) => {
+
+                        if (
+                            id === "cookie"
+                        ) return;
 
 
-                    else {
-
-                        itemEl.className =
-                            "shop-item" +
-                            (
-                                game.score <
-                                skinsData[id].cost
-                                    ? " disabled"
-                                    : ""
+                        const element =
+                            document.getElementById(
+                                `sk-${id}`
                             );
 
 
-                        statusEl.textContent =
-                            "Acheter";
+                        if (!element) return;
 
 
-                        costEl.textContent =
-                            skinsData[id].cost;
-
-                    }
-
-                });
-
-
-            /* ==========================================
-               STATUTS DES FONDS
-            ========================================== */
-
-            Object.keys(bgData)
-                .forEach((id) => {
-
-                    if (id === "dark") return;
-
-
-                    const itemEl =
-                        document.getElementById(
-                            `bg-${id}`
-                        );
-
-
-                    if (!itemEl) return;
-
-
-                    const statusEl =
-                        itemEl.querySelector(
-                            ".class-status"
-                        );
-
-
-                    const costEl =
-                        itemEl.querySelector(
-                            ".class-cost"
-                        );
-
-
-                    if (
-                        game.activeBg === id
-                    ) {
-
-                        itemEl.className =
-                            "shop-item equipped";
-
-
-                        statusEl.textContent =
-                            "Équipé";
-
-
-                        costEl.textContent =
-                            "";
-
-                    }
-
-
-                    else if (
-                        game.bgOwned.includes(id)
-                    ) {
-
-                        itemEl.className =
-                            "shop-item";
-
-
-                        statusEl.textContent =
-                            "Équiper";
-
-
-                        costEl.textContent =
-                            "";
-
-                    }
-
-
-                    else {
-
-                        itemEl.className =
-                            "shop-item" +
-                            (
-                                game.score <
-                                bgData[id].cost
-                                    ? " disabled"
-                                    : ""
+                        const owned =
+                            game.skinsOwned.includes(
+                                id
                             );
 
 
-                        statusEl.textContent =
-                            "Acheter";
+                        const equipped =
+                            game.activeSkin ===
+                            id;
 
 
-                        costEl.textContent =
-                            bgData[id].cost;
+                        element.classList.toggle(
+                            "disabled",
+                            !owned &&
+                            game.score <
+                            skinsData[id].cost
+                        );
+
+
+                        element.classList.toggle(
+                            "equipped",
+                            equipped
+                        );
+
+
+                        const status =
+                            element.querySelector(
+                                ".item-status"
+                            );
+
+
+                        if (status) {
+
+                            if (equipped) {
+
+                                status.textContent =
+                                    "Équipé";
+
+                            }
+
+                            else if (owned) {
+
+                                status.textContent =
+                                    "Équiper";
+
+                            }
+
+                            else {
+
+                                status.textContent =
+                                    "Acheter";
+
+                            }
+
+                        }
 
                     }
+                );
 
-                });
+
+            Object
+                .keys(
+                    bgData
+                )
+                .forEach(
+                    (id) => {
+
+                        if (
+                            id === "dark"
+                        ) return;
+
+
+                        const element =
+                            document.getElementById(
+                                `bg-${id}`
+                            );
+
+
+                        if (!element) return;
+
+
+                        const owned =
+                            game.bgOwned.includes(
+                                id
+                            );
+
+
+                        const equipped =
+                            game.activeBg ===
+                            id;
+
+
+                        element.classList.toggle(
+                            "disabled",
+                            !owned &&
+                            game.score <
+                            bgData[id].cost
+                        );
+
+
+                        element.classList.toggle(
+                            "equipped",
+                            equipped
+                        );
+
+
+                        const status =
+                            element.querySelector(
+                                ".item-status"
+                            );
+
+
+                        if (status) {
+
+                            if (equipped) {
+
+                                status.textContent =
+                                    "Équipé";
+
+                            }
+
+                            else if (owned) {
+
+                                status.textContent =
+                                    "Équiper";
+
+                            }
+
+                            else {
+
+                                status.textContent =
+                                    "Acheter";
+
+                            }
+
+                        }
+
+                    }
+                );
 
         }
 
 
         /* ==========================================
-           SAUVEGARDE FIREBASE
+           CHARGEMENT DES DONNÉES
         ========================================== */
 
-        function saveGameData(show = true) {
+        async function loadGameData(
+            uid
+        ) {
 
-            if (!currentUser) return;
-
-
-            set(
-                ref(
-                    db,
-                    "clicker2_saves/" +
-                    currentUser.uid
-                ),
-                {
-                    game: game
-                }
-            )
-            .then(() => {
-
-                if (show) {
-
-                    const notif =
-                        document.getElementById(
-                            "notif"
-                        );
+            gameLoaded =
+                false;
 
 
-                    notif.style.opacity = "1";
+            try {
 
-
-                    setTimeout(
-                        () => {
-
-                            notif.style.opacity =
-                                "0";
-
-                        },
-                        1500
+                const gameRef =
+                    ref(
+                        db,
+                        `clicker2/${uid}`
                     );
 
-                }
 
-            })
-            .catch((error) => {
+                const snapshot =
+                    await get(
+                        gameRef
+                    );
 
-                console.error(
-                    "Erreur de sauvegarde :",
-                    error
-                );
-
-            });
-
-        }
-
-
-        /* ==========================================
-           CHARGEMENT FIREBASE
-        ========================================== */
-
-        function loadGameData(uid) {
-
-            setupShopLists();
-
-
-            get(
-                child(
-                    ref(db),
-                    `clicker2_saves/${uid}`
-                )
-            )
-            .then((snap) => {
 
                 if (
-                    snap.exists() &&
-                    snap.val().game
+                    snapshot.exists()
                 ) {
 
+                    const savedData =
+                        snapshot.val();
+
+
+                    const defaultGame =
+                        createDefaultGame();
+
+
                     game = {
-                        ...game,
-                        ...snap.val().game
+
+                        ...defaultGame,
+
+                        ...savedData
+
                     };
 
-
-                    /*
-                       Vérification de sécurité pour éviter
-                       les erreurs avec d'anciennes sauvegardes
-                    */
 
                     if (
                         !Array.isArray(
@@ -2004,6 +3191,32 @@
 
                         game.bgOwned =
                             ["dark"];
+
+                    }
+
+
+                    if (
+                        !game.skinsOwned.includes(
+                            "cookie"
+                        )
+                    ) {
+
+                        game.skinsOwned.push(
+                            "cookie"
+                        );
+
+                    }
+
+
+                    if (
+                        !game.bgOwned.includes(
+                            "dark"
+                        )
+                    ) {
+
+                        game.bgOwned.push(
+                            "dark"
+                        );
 
                     }
 
@@ -2033,25 +3246,176 @@
 
                 }
 
+                else {
+
+                    game =
+                        createDefaultGame();
+
+
+                    await set(
+                        gameRef,
+                        game
+                    );
+
+                }
+
+
+                setupShopLists();
 
                 applyVisuals();
 
                 updateUI();
 
-            })
-            .catch((error) => {
+
+                gameLoaded =
+                    true;
+
+
+                console.log(
+                    "Données du jeu chargées avec succès."
+                );
+
+            }
+
+            catch (error) {
 
                 console.error(
-                    "Erreur de chargement :",
+                    "Erreur lors du chargement:",
                     error
                 );
 
 
+                game =
+                    createDefaultGame();
+
+
+                setupShopLists();
+
                 applyVisuals();
 
                 updateUI();
 
-            });
+
+                gameLoaded =
+                    true;
+
+
+                showNotification(
+                    "Impossible de charger la sauvegarde."
+                );
+
+            }
+
+        }
+
+
+        /* ==========================================
+           SAUVEGARDE DES DONNÉES
+        ========================================== */
+
+        async function saveGameData(
+            showNotif = true
+        ) {
+
+            if (
+                !currentUser ||
+                !gameLoaded ||
+                isSaving
+            ) return;
+
+
+            isSaving =
+                true;
+
+
+            try {
+
+                const gameRef =
+                    ref(
+                        db,
+                        `clicker2/${currentUser.uid}`
+                    );
+
+
+                await set(
+                    gameRef,
+                    game
+                );
+
+
+                if (showNotif) {
+
+                    showNotification(
+                        "Progression sauvegardée !"
+                    );
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Erreur lors de la sauvegarde:",
+                    error
+                );
+
+
+                if (showNotif) {
+
+                    showNotification(
+                        "Erreur de sauvegarde."
+                    );
+
+                }
+
+            }
+
+            finally {
+
+                isSaving =
+                    false;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           NOTIFICATION
+        ========================================== */
+
+        let notificationTimeout =
+            null;
+
+
+        function showNotification(
+            message
+        ) {
+
+            notif.textContent =
+                message;
+
+
+            notif.style.opacity =
+                "1";
+
+
+            clearTimeout(
+                notificationTimeout
+            );
+
+
+            notificationTimeout =
+                setTimeout(
+                    () => {
+
+                        notif.style.opacity =
+                            "0";
+
+                    },
+                    2500
+                );
 
         }
 
@@ -2064,10 +3428,56 @@
             "beforeunload",
             () => {
 
-                saveGameData(false);
+                if (
+                    currentUser &&
+                    gameLoaded
+                ) {
+
+                    saveGameData(
+                        false
+                    );
+
+                }
 
             }
         );
+
+
+        /* ==========================================
+           GESTION DU REDIMENSIONNEMENT
+        ========================================== */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                if (
+                    window.innerWidth <= 700
+                ) {
+
+                    stopDrag();
+
+
+                    chatWindow.style.left =
+                        "10px";
+
+
+                    chatWindow.style.top =
+                        "10px";
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+           INITIALISATION VISUELLE
+        ========================================== */
+
+        applyVisuals();
+
+        updateUI();
 
     </script>
 
