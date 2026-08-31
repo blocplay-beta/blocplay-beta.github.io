@@ -3481,6 +3481,7 @@
 
     </script>
 
+<script>
 window.addEventListener("error", (event) => {
     document.body.insertAdjacentHTML(
         "beforeend",
@@ -3497,22 +3498,6 @@ window.addEventListener("error", (event) => {
         ">
             ERREUR : ${event.message}
         </div>`
-    );
-});
-
-<script>
-window.addEventListener("error", function(event) {
-    alert("ERREUR JS :\n" + event.message);
-});
-
-window.addEventListener("unhandledrejection", function(event) {
-    var error = event.reason;
-
-    alert(
-        "FIREBASE / PROMISE ERROR :\n" +
-        (error && error.code ? error.code : "") +
-        "\n" +
-        (error && error.message ? error.message : String(error))
     );
 });
 </script>
