@@ -1024,6 +1024,112 @@
 
     </style>
 
+<style>
+/* L'arrière-plan sombre derrière la popup */
+.share-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 9999;
+}
+
+/* La popup s'affiche quand elle a la classe .active */
+.share-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* La boîte blanche (style YouTube) */
+.share-box {
+    background: #fff;
+    width: 90%;
+    max-width: 450px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    font-family: Arial, sans-serif;
+}
+
+.share-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.share-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #0f0f0f;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #606060;
+}
+
+.share-desc {
+    font-size: 14px;
+    color: #606060;
+    margin: 0 0 15px 0;
+}
+
+/* Le conteneur du lien et du bouton copier */
+.share-body {
+    display: flex;
+    gap: 8px;
+    background: #f2f2f2;
+    padding: 8px 8px 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Le champ de texte contenant l'URL */
+#share-link-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #0f0f0f;
+    outline: none;
+    text-overflow: ellipsis;
+}
+
+/* Le bouton Copier */
+#copy-share-btn {
+    background: #065fd4; /* Bleu style YouTube */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#copy-share-btn:hover {
+    background: #054da1;
+}
+
+#copy-share-btn.copied {
+    background: #27853f;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -1259,6 +1365,20 @@
         <button id="btn-partager">
             Partager le jeu
         </button>
+
+            <div id="custom-share-popup" class="share-overlay">
+                <div class="share-box">
+                    <div class="share-header">
+                        <h3>Partager</h3>
+                        <button id="close-share-popup" class="close-btn">&times;</button>
+                    </div>
+                    <p class="share-desc">Lien :</p>
+                    <div class="share-body">
+                        <input type="text" id="share-link-input" readonly>
+                        <button id="copy-share-btn">Copier</button>
+                    </div>
+                </div>
+            </div>
 
     </div>
 
@@ -3507,7 +3627,6 @@ window.addEventListener("error", (event) => {
 </script>
 
 <script>
-// Vos 10 URLs
 const mesUrls = [
     "https://blocplay.codeberg.page/invite/id/IKt45jKlzD",
     "https://blocplay.codeberg.page/invite/id/TmJsr9G4H",
@@ -3521,78 +3640,63 @@ const mesUrls = [
     "https://lien10.com"
 ];
 
-// Fonction principale déclenchée au clic
-function executerPartageOuCopie() {
-    // 1. Sélection immédiate de l'URL
-    const urlChoisie = mesUrls[Math.floor(Math.random() * mesUrls.length)];
-    console.log("URL sélectionnée :", urlChoisie); // Permet de vérifier dans la console F12
-
-    // 2. Tentative de partage natif (Mobile)
-    if (navigator.share) {
-        navigator.share({
-            title: 'Découvrez ce lien !',
-            url: urlChoisie
-        })
-        .then(() => console.log('Partage réussi'))
-        .catch((err) => {
-            if (err.name !== 'AbortError') console.error(err);
-        });
-        return; 
-    }
-
-    // 3. Tentative de copie moderne (PC/Mobile récents sous HTTPS)
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(urlChoisie)
-            .then(() => {
-                alert("Lien copié dans le presse-papiers !");
-            })
-            .catch((err) => {
-                console.warn("Échec Clipboard API, passage au secours :", err);
-                secoursAncienneMethode(urlChoisie);
-            });
-        return;
-    }
-
-    // 4. Secours universel (HTTP local / Anciens navigateurs)
-    secoursAncienneMethode(urlChoisie);
-}
-
-// Fonction de secours universelle
-function secoursAncienneMethode(texte) {
-    const input = document.createElement("textarea");
-    input.value = texte;
-    input.style.position = "fixed";
-    input.style.top = "0";
-    input.style.left = "0";
-    input.style.opacity = "0";
-    document.body.appendChild(input);
-    
-    input.focus();
-    input.select();
-    input.setSelectionRange(0, 99999); 
-    
-    try {
-        const succes = document.execCommand("copy");
-        if (succes) {
-            alert("Lien copié ! (Mode secours)");
-        } else {
-            prompt("Copiez ce lien manuellement :", texte);
-        }
-    } catch (err) {
-        prompt("Copiez ce lien manuellement :", texte);
-    }
-    
-    document.body.removeChild(input);
-}
-
-// Liaison propre du bouton (écouteur d'événement)
 document.addEventListener("DOMContentLoaded", () => {
-    const bouton = document.getElementById("btn-partager");
-    if (bouton) {
-        bouton.addEventListener("click", executerPartageOuCopie);
-    } else {
-        console.error("Le bouton avec l'ID 'btn-partager' n'a pas été trouvé dans la page.");
-    }
+    const btnPartager = document.getElementById("btn-partager");
+    const popup = document.getElementById("custom-share-popup");
+    const btnFermer = document.getElementById("close-share-popup");
+    const inputLien = document.getElementById("share-link-input");
+    const btnCopier = document.getElementById("copy-share-btn");
+
+    // 1. Clic sur le bouton principal : Génère le lien et ouvre la popup
+    btnPartager.addEventListener("click", () => {
+        // Choix de l'URL au hasard
+        const urlChoisie = mesUrls[Math.floor(Math.random() * mesUrls.length)];
+        
+        // On injecte l'URL dans l'input de la popup
+        inputLien.value = urlChoisie;
+        
+        // Reset du bouton copier au cas où il était resté sur "Copié !"
+        btnCopier.textContent = "Copier";
+        btnCopier.classList.remove("copied");
+
+        // On affiche la popup
+        popup.classList.add("active");
+    });
+
+    // 2. Clic sur le bouton Copier à l'intérieur de la popup
+    btnCopier.addEventListener("click", () => {
+        // Sélection et copie du texte de l'input
+        inputLien.select();
+        inputLien.setSelectionRange(0, 99999); // Sécurité Mobile
+
+        try {
+            // Méthode universelle de copie basée sur la sélection de l'input
+            document.execCommand("copy");
+            
+            // Effet visuel de succès
+            btnCopier.textContent = "Copié !";
+            btnCopier.classList.add("copied");
+            
+            // Ferme automatiquement la popup après 1 seconde
+            setTimeout(() => {
+                popup.classList.remove("active");
+            }, 1000);
+        } catch (err) {
+            alert("Erreur lors de la copie, veuillez copier manuellement.");
+        }
+    });
+
+    // 3. Fermer la popup avec la croix
+    btnFermer.addEventListener("click", () => {
+        popup.classList.remove("active");
+    });
+
+    // 4. Fermer la popup si on clique à côté de la boîte blanche
+    popup.addEventListener("click", (e) => {
+        if (e.target === popup) {
+            popup.classList.remove("active");
+        }
+    });
 });
 </script>
 
