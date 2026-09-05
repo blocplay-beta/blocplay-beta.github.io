@@ -3507,7 +3507,6 @@ window.addEventListener("error", (event) => {
 </script>
 
 <script>
-// Vos 10 URLs différentes
 const mesUrls = [
     "https://blocplay.codeberg.page/invite/id/IKt45jKlzD",
     "https://blocplay.codeberg.page/invite/id/TmJsr9G4H",
@@ -3521,30 +3520,69 @@ const mesUrls = [
     "https://lien10.com"
 ];
 
-async function partagerLienAleatoire() {
-    // Sélectionne une URL au hasard parmi les 10
+function partagerLienAleatoire() {
+    // Étape 1 : Sélection synchrone et immédiate du lien pour éviter le blocage de sécurité
     const urlChoisie = mesUrls[Math.floor(Math.random() * mesUrls.length)];
 
-    // 1. Tente le partage natif (Mobile / Tablettes)
+    // Étape 2 : Tentative de partage natif (Principalement Mobile sous HTTPS)
     if (navigator.share) {
-        try {
-            await navigator.share({
-                title: 'Découvrez ce lien !',
-                url: urlChoisie
-            });
-            return;
-        } catch (err) {
-            if (err.name === 'AbortError') return; // L'utilisateur a annulé
-        }
+        navigator.share({
+            title: 'Découvrez ce lien !',
+            url: urlChoisie
+        }).then(() => {
+            console.log('Partage réussi');
+        }).catch((err) => {
+            if (err.name !== 'AbortError') console.error(err);
+        });
+        return; 
     }
 
-    // 2. Secours : Copie dans le presse-papiers (Ordinateurs / Non compatible)
-    try {
-        await navigator.clipboard.writeText(urlChoisie);
-        alert("Un lien a été copié dans votre presse-papiers !");
-    } catch (err) {
-        console.error("Erreur de copie :", err);
+    // Étape 3 : Tentative de copie moderne (PC/Mobile sous HTTPS)
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(urlChoisie)
+            .then(() => {
+                alert("Lien copié dans le presse-papiers !");
+            })
+            .catch((err) => {
+                console.error("Erreur Clipboard API : ", err);
+                secoursAncienneMethode(urlChoisie);
+            });
+        return;
     }
+
+    // Étape 4 : Secours universel (Si HTTP classique ou vieux navigateur)
+    secoursAncienneMethode(urlChoisie);
+}
+
+// Méthode de secours historique qui fonctionne même sans HTTPS
+function secoursAncienneMethode(texte) {
+    const input invisible = document.createElement("textarea");
+    input.value = texte;
+    // Empêche le zoom sur mobile lors de la création
+    input.style.fontSize = "12pt"; 
+    input.style.position = "fixed";
+    input.style.top = "0";
+    input.style.left = "0";
+    input.style.opacity = "0";
+    document.body.appendChild(input);
+    
+    // Sélection et copie
+    input.focus();
+    input.select();
+    input.setSelectionRange(0, 99999); // Pour iOS
+    
+    try {
+        const succes = document.execCommand("copy");
+        if (succes) {
+            alert("Lien copié ! (Méthode de secours)");
+        } else {
+            prompt("Copiez ce lien manuellement :", texte);
+        }
+    } catch (err) {
+        prompt("Copiez ce lien manuellement :", texte);
+    }
+    
+    document.body.removeChild(input);
 }
 </script>
 
