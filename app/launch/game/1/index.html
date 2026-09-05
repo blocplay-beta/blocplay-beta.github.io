@@ -3626,74 +3626,36 @@ window.addEventListener("error", (event) => {
 </script>
 
 <script>
-const mesUrls = [
-    "https://blocplay.codeberg.page/invite/id/IKt45jKlzD",
-    "https://blocplay.codeberg.page/invite/id/TmJsr9G4H",
-    "https://blocplay.codeberg.page/invite/id/gHDnQATy",
-    "https://lien4.com",
-    "https://lien5.com",
-    "https://lien6.com",
-    "https://lien7.com",
-    "https://lien8.com",
-    "https://lien9.com",
-    "https://lien10.com"
-];
+// Importez vos fonctions Firebase (assurez-vous d'avoir configuré Firebase dans votre script)
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://gstatic.com";
 
-// On choisit l'URL UNE SEULE FOIS au chargement initial de la page
-const urlFixePourCetteSession = mesUrls[Math.floor(Math.random() * mesUrls.length)];
+const db = getFirestore();
 
-document.addEventListener("DOMContentLoaded", () => {
-    const btnPartager = document.getElementById("btn-partager");
-    const popup = document.getElementById("custom-share-popup");
-    const btnFermer = document.getElementById("close-share-popup");
-    const inputLien = document.getElementById("share-link-input");
-    const btnCopier = document.getElementById("copy-share-btn");
+// Fonction pour enregistrer l'invitation dans Firebase
+async function enregistrerInvitationFirebase(idInvitation) {
+    try {
+        // Crée un document dans la collection "invitations" avec l'ID généré
+        await setDoc(doc(db, "invitations", idInvitation), {
+            creeLe: serverTimestamp(),
+            statut: "actif",
+            creePar: "systeme_blocplay" // Vous pouvez y ajouter l'ID de l'utilisateur si connecté
+        });
+        console.log("Invitation synchronisée avec Firebase !");
+    } catch (erreur) {
+        console.error("Erreur lors de la synchronisation Firebase :", erreur);
+    }
+}
 
-    // 1. Clic sur le bouton principal : Ouvre la popup avec l'URL unique de la session
-    btnPartager.addEventListener("click", () => {
-        // On injecte l'URL qui a été mémorisée au chargement de la page
-        inputLien.value = urlFixePourCetteSession;
-        
-        // Reset du bouton copier (au cas où il était resté sur "Copié !")
-        btnCopier.textContent = "Copier";
-        btnCopier.classList.remove("copied");
+// INTEGREZ CELA DANS VOTRE ÉCOUTEUR DE CLIC EXISTANT :
+btnPartager.addEventListener("click", async () => {
+    inputLien.value = urlFixePourCetteSession;
+    
+    // Lance la sauvegarde en arrière-plan dans Firebase
+    await enregistrerInvitationFirebase(idInvitationUnique);
 
-        // On affiche la popup
-        popup.classList.add("active");
-    });
-
-    // 2. Clic sur le bouton Copier à l'intérieur de la popup
-    btnCopier.addEventListener("click", () => {
-        inputLien.select();
-        inputLien.setSelectionRange(0, 99999); // Sécurité Mobile
-
-        try {
-            document.execCommand("copy");
-            
-            // Effet visuel de succès
-            btnCopier.textContent = "Copié !";
-            btnCopier.classList.add("copied");
-            
-            // Ferme automatiquement la popup après 1 seconde
-            setTimeout(() => {
-                popup.classList.remove("active");
-            }, 1000);
-        } catch (err) {
-            alert("Erreur lors de la copie, veuillez copier manuellement.");
-        }
-    });
-
-    // 3. Fermer la popup avec la croix
-    btnFermer.addEventListener("click", () => {
-        popup.classList.remove("active");
-    });
-
-    // 4. Fermer la popup si on clique à côté de la boîte blanche
-    popup.addEventListener("click", (e) => {
-        if (e.target === popup) {
-            popup.classList.remove("active");
-        }
-    });
+    btnCopier.textContent = "Copier";
+    btnCopier.classList.remove("copied");
+    popup.classList.add("active");
 });
 </script>
 
