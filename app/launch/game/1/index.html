@@ -39,68 +39,43 @@
             transition: background 0.5s ease;
         }
 
-        /* ==========================================
-           PARTICULES
-        ========================================== */
-
+        /* PARTICULES */
         .particles {
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 0;
-            background-image:
-                radial-gradient(
-                    rgba(255,255,255,0.05) 1px,
-                    transparent 1px
-                );
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
             background-size: 40px 40px;
         }
 
-        /* ==========================================
-           ZONE PRINCIPALE
-        ========================================== */
-
+        /* ZONE PRINCIPALE */
         .clicker-section {
             flex: 1;
             min-width: 0;
             min-height: 100vh;
-
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-
             position: relative;
             z-index: 1;
-
             padding: 20px;
         }
 
-        /* ==========================================
-           PANNEAU DROIT
-        ========================================== */
-
+        /* PANNEAU DROIT */
         .right-panel {
             width: 380px;
             flex-shrink: 0;
             height: 100vh;
-
             background: rgba(26, 35, 50, 0.95);
             backdrop-filter: blur(15px);
-
-            border-left:
-                2px solid
-                rgba(255, 255, 255, 0.1);
-
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
-
             position: relative;
             z-index: 2;
-
-            box-shadow:
-                -5px 0 25px
-                rgba(0,0,0,0.5);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
         }
 
         .scrollable-content {
@@ -119,30 +94,17 @@
             border-radius: 3px;
         }
 
-        /* ==========================================
-           TITRES
-        ========================================== */
-
+        /* TITRES */
         h1 {
             font-size: 2.5rem;
             margin: 0 0 20px 0;
             text-align: center;
-
-            background:
-                linear-gradient(
-                    45deg,
-                    var(--accent-neon),
-                    var(--accent-pink)
-                );
-
+            background: linear-gradient(45deg, var(--accent-neon), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* ==========================================
-           SCORE
-        ========================================== */
-
+        /* SCORE & CPS */
         .stats-display {
             text-align: center;
             margin-bottom: 25px;
@@ -152,11 +114,7 @@
             font-size: clamp(3rem, 7vw, 4rem);
             font-weight: 900;
             color: #ffffff;
-
-            text-shadow:
-                0 0 15px
-                rgba(0, 242, 254, 0.3);
-
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
             word-break: break-word;
         }
 
@@ -166,46 +124,33 @@
             margin-top: 5px;
         }
 
-        /* ==========================================
-           BOUTON PRINCIPAL
-        ========================================== */
+        .cps-val {
+            font-size: 1rem;
+            color: var(--accent-pink);
+            margin-top: 3px;
+            font-weight: bold;
+        }
 
+        /* BOUTON PRINCIPAL */
         #main-clicker {
             width: min(220px, 55vw);
             height: min(220px, 55vw);
-
             min-width: 150px;
             min-height: 150px;
-
             aspect-ratio: 1;
-
             border-radius: 50%;
-
             background-color: #111827;
             background-size: cover;
             background-position: center;
-
-            border:
-                6px solid
-                var(--accent-neon);
-
-            box-shadow:
-                0 0 30px
-                rgba(0, 242, 254, 0.4);
-
+            border: 6px solid var(--accent-neon);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
             cursor: pointer;
             outline: none;
-
-            transition:
-                transform 0.05s;
-
-            font-size:
-                clamp(60px, 12vw, 90px);
-
+            transition: transform 0.05s;
+            font-size: clamp(60px, 12vw, 90px);
             display: flex;
             align-items: center;
             justify-content: center;
-
             touch-action: manipulation;
         }
 
@@ -213,20 +158,12 @@
             transform: scale(0.92);
         }
 
-        /* ==========================================
-           BOUTIQUE
-        ========================================== */
-
+        /* BOUTIQUE */
         .shop-title {
             font-size: 1.2rem;
             margin: 20px 0 10px 0;
-
-            border-bottom:
-                2px solid
-                rgba(255, 255, 255, 0.1);
-
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 5px;
-
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -237,36 +174,22 @@
         }
 
         .shop-item {
-            background:
-                rgba(0, 0, 0, 0.25);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.08);
-
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 10px;
-
             padding: 12px;
             margin-bottom: 8px;
-
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             gap: 10px;
-
             cursor: pointer;
-
-            transition:
-                all 0.2s;
+            transition: all 0.2s;
         }
 
         .shop-item:hover:not(.disabled) {
-            border-color:
-                var(--accent-neon);
-
-            background:
-                rgba(0, 242, 254, 0.05);
+            border-color: var(--accent-neon);
+            background: rgba(0, 242, 254, 0.05);
         }
 
         .shop-item.disabled {
@@ -275,11 +198,8 @@
         }
 
         .shop-item.equipped {
-            border-color:
-                var(--accent-pink);
-
-            background:
-                rgba(254, 9, 121, 0.1);
+            border-color: var(--accent-pink);
+            background: rgba(254, 9, 121, 0.1);
         }
 
         .item-info {
@@ -311,460 +231,252 @@
             display: block;
         }
 
-        /* ==========================================
-           TEXTE FLOTTANT
-        ========================================== */
-
+        /* TEXTE FLOTTANT */
         .floating-number {
             position: absolute;
-
             color: #ffffff;
             font-weight: 900;
-            font-size:
-                clamp(2rem, 7vw, 3.5rem);
-
+            font-size: clamp(2rem, 7vw, 3.5rem);
             pointer-events: none;
-
-            animation:
-                floatUpRandom
-                0.8s ease-out forwards;
-
+            animation: floatUpRandom 0.8s ease-out forwards;
             z-index: 10;
-
-            text-shadow:
-                0 0 15px
-                var(--accent-pink),
-                0 0 4px #000;
+            text-shadow: 0 0 15px var(--accent-pink), 0 0 4px #000;
         }
 
         @keyframes floatUpRandom {
-
             0% {
-                transform:
-                    scale(0.4)
-                    translateY(0);
-
+                transform: scale(0.4) translateY(0);
                 opacity: 0;
             }
-
             20% {
-                transform:
-                    scale(1.1)
-                    translateY(-10px);
-
+                transform: scale(1.1) translateY(-10px);
                 opacity: 1;
             }
-
             100% {
-                transform:
-                    scale(1)
-                    translateY(-80px);
-
+                transform: scale(1) translateY(-80px);
                 opacity: 0;
             }
-
         }
 
-        /* ==========================================
-           MENU CLIC DROIT
-        ========================================== */
-
+        /* MENU CLIC DROIT */
         #custom-menu {
             position: fixed;
             display: none;
-
             background: #1a2332;
-
-            border:
-                2px solid
-                var(--accent-neon);
-
+            border: 2px solid var(--accent-neon);
             border-radius: 8px;
-
             z-index: 10000;
-
-            box-shadow:
-                0 4px 15px
-                rgba(0,0,0,0.5);
-
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             overflow: hidden;
-
             width: 220px;
             max-width: calc(100vw - 20px);
         }
 
         #custom-menu button,
         #custom-menu a {
-
             background: transparent;
             border: none;
-
             color: white;
-
             padding: 12px 20px;
-
             width: 100%;
-
             text-align: left;
-
             cursor: pointer;
-
             font-size: 0.95rem;
             font-weight: bold;
-
             display: block;
-
             text-decoration: none;
-
             box-sizing: border-box;
-
             font-family: inherit;
         }
 
         #custom-menu button:hover,
         #custom-menu a:hover {
-
-            background:
-                var(--accent-neon);
-
+            background: var(--accent-neon);
             color: #000;
         }
 
-        /* ==========================================
-           CHAT
-        ========================================== */
+        #logout-btn {
+            color: var(--accent-pink) !important;
+        }
 
+        #logout-btn:hover {
+            background: var(--accent-pink) !important;
+            color: #ffffff !important;
+        }
+
+        /* CHAT */
         #chat-window {
             position: fixed;
-
             top: 15%;
             left: 15%;
-
             width: min(400px, calc(100vw - 30px));
             height: min(500px, calc(100vh - 30px));
-
             min-width: 250px;
             min-height: 250px;
-
             background: #0f172a;
-
-            border:
-                2px solid
-                var(--accent-pink);
-
+            border: 2px solid var(--accent-pink);
             border-radius: 12px;
-
-            box-shadow:
-                0 10px 30px
-                rgba(0,0,0,0.6);
-
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             z-index: 999;
-
             display: none;
             flex-direction: column;
-
             resize: both;
             overflow: hidden;
         }
 
         .chat-header {
-
             background: #1e293b;
-
             padding: 10px;
-
             cursor: move;
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
-            border-bottom:
-                1px solid
-                rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .chat-close {
-
             background: none;
             border: none;
-
-            color:
-                var(--accent-pink);
-
+            color: var(--accent-pink);
             font-weight: bold;
-
             cursor: pointer;
-
             font-size: 1.1rem;
         }
 
         .chat-body {
-
             flex: 1;
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        /* ==========================================
-           NOTIFICATION
-        ========================================== */
-
+        /* NOTIFICATION */
         #notif {
-
             position: fixed;
-
             bottom: 20px;
             left: 20px;
-
-            background:
-                var(--accent-neon);
-
+            background: var(--accent-neon);
             color: black;
-
             padding: 8px 16px;
-
             border-radius: 20px;
-
             font-weight: bold;
-
             opacity: 0;
-
-            transition:
-                opacity 0.3s;
-
+            transition: opacity 0.3s;
             z-index: 100;
         }
 
-        /* ==========================================
-           POPUP CONNEXION BLOCPLAY
-        ========================================== */
-
+        /* POPUP CONNEXION BLOCPLAY */
         #login-modal {
-
             position: fixed;
             inset: 0;
-
             z-index: 50000;
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
-            background:
-                rgba(4, 8, 18, 0.88);
-
-            backdrop-filter:
-                blur(12px);
-
+            background: rgba(4, 8, 18, 0.88);
+            backdrop-filter: blur(12px);
             padding: 20px;
         }
 
         .login-box {
-
-            width:
-                min(
-                    400px,
-                    calc(100vw - 40px)
-                );
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #111b2d,
-                    #0b0f19
-                );
-
-            border:
-                1px solid
-                rgba(0, 242, 254, 0.5);
-
+            width: min(400px, calc(100vw - 40px));
+            background: linear-gradient(145deg, #111b2d, #0b0f19);
+            border: 1px solid rgba(0, 242, 254, 0.5);
             border-radius: 18px;
-
             padding: 32px;
-
-            box-shadow:
-                0 0 40px
-                rgba(0, 242, 254, 0.15),
-                0 20px 80px
-                rgba(0, 0, 0, 0.7);
-
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.15), 0 20px 80px rgba(0, 0, 0, 0.7);
             text-align: center;
         }
 
         .login-logo {
-
             width: 75px;
             height: 75px;
-
             object-fit: contain;
-
             margin-bottom: 10px;
-
-            filter:
-                drop-shadow(
-                    0 0 12px
-                    rgba(0,242,254,0.5)
-                );
+            filter: drop-shadow(0 0 12px rgba(0,242,254,0.5));
         }
 
         .login-box h2 {
-
             margin: 5px 0 8px;
-
             color: white;
-
             font-size: 1.8rem;
         }
 
         .login-box .subtitle {
-
             color: #94a3b8;
-
             font-size: 0.9rem;
-
             margin-bottom: 25px;
         }
 
         .login-box input {
-
             width: 100%;
-
             padding: 13px 15px;
-
             margin-bottom: 12px;
-
-            background:
-                rgba(0,0,0,0.25);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.12);
-
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.12);
             border-radius: 9px;
-
             color: white;
-
             font-family: inherit;
-
             font-size: 1rem;
-
             outline: none;
-
             transition: 0.2s;
         }
 
         .login-box input:focus {
-
-            border-color:
-                var(--accent-neon);
-
-            box-shadow:
-                0 0 0 3px
-                rgba(0,242,254,0.1);
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 0 3px rgba(0,242,254,0.1);
         }
 
         #login-btn {
-
             width: 100%;
-
             padding: 13px;
-
             border: none;
-
             border-radius: 9px;
-
             cursor: pointer;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--accent-neon),
-                    #00b8d4
-                );
-
+            background: linear-gradient(90deg, var(--accent-neon), #00b8d4);
             color: #061018;
-
             font-size: 1rem;
-
             font-weight: 800;
-
             font-family: inherit;
-
             transition: 0.2s;
         }
 
         #login-btn:hover {
-
-            transform:
-                translateY(-2px);
-
-            box-shadow:
-                0 8px 25px
-                rgba(0,242,254,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,242,254,0.25);
         }
 
         #login-btn:disabled {
-
             opacity: 0.6;
-
-            cursor:
-                wait;
-
+            cursor: wait;
             transform: none;
         }
 
         #login-error {
-
             display: none;
-
             margin-top: 15px;
-
             padding: 10px;
-
             border-radius: 8px;
-
-            background:
-                rgba(254, 9, 121, 0.12);
-
-            border:
-                1px solid
-                rgba(254, 9, 121, 0.4);
-
+            background: rgba(254, 9, 121, 0.12);
+            border: 1px solid rgba(254, 9, 121, 0.4);
             color: #ff6aa7;
-
             font-size: 0.85rem;
         }
 
         .login-register {
-
             margin-top: 20px;
-
             color: #94a3b8;
-
             font-size: 0.9rem;
         }
 
         .login-register a {
-
-            color:
-                var(--accent-neon);
-
+            color: var(--accent-neon);
             text-decoration: none;
-
             font-weight: bold;
         }
 
-        /* ==========================================
-           MOBILE PORTRAIT
-        ========================================== */
-
+        /* MEDIA QUERIES RESPONSIVE */
         @media (max-width: 700px) {
-
             body {
                 display: block;
                 overflow-y: auto;
@@ -772,2950 +484,972 @@
             }
 
             .clicker-section {
-
-                min-height:
-                    55vh;
-
-                height:
-                    55vh;
-
-                padding:
-                    20px 15px;
-            }
-
-            .right-panel {
-
-                width: 100%;
-
-                height: auto;
-
-                min-height:
-                    45vh;
-
-                border-left: none;
-
-                border-top:
-                    2px solid
-                    rgba(255,255,255,0.1);
-
-                box-shadow:
-                    0 -5px 25px
-                    rgba(0,0,0,0.4);
-            }
-
-            .scrollable-content {
-
-                max-height: none;
-
-                overflow: visible;
-
-                padding:
-                    18px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            #main-clicker {
-
-                width:
-                    min(190px, 50vw);
-
-                height:
-                    min(190px, 50vw);
-            }
-
-            #chat-window {
-
-                position: fixed;
-
-                left: 10px !important;
-                top: 10px !important;
-
-                width:
-                    calc(100vw - 20px);
-
-                height:
-                    calc(100vh - 20px);
-
-                min-width: 0;
-                min-height: 0;
-
-                resize: none;
-            }
-
-            .login-box {
-
-                padding:
-                    25px 20px;
-            }
-
-        }
-
-        /* ==========================================
-           MOBILE PETIT
-        ========================================== */
-
-        @media (max-width: 380px) {
-
-            .clicker-section {
-
-                height:
-                    50vh;
-
-                min-height:
-                    50vh;
-            }
-
-            .right-panel {
-
-                min-height:
-                    50vh;
-            }
-
-            #main-clicker {
-
-                width: 145px;
-                height: 145px;
-
-                font-size: 65px;
-            }
-
-            .score-val {
-                font-size: 2.7rem;
-            }
-
-            .login-box {
+                min-height: 55vh;
+                height: 55vh;
                 padding: 20px 15px;
             }
 
-        }
-
-        /* ==========================================
-           MOBILE PAYSAGE
-        ========================================== */
-
-        @media (max-height: 600px)
-        and (orientation: landscape) {
-
-            body {
-                display: flex;
-                overflow: hidden;
-            }
-
-            .clicker-section {
-
-                min-height: 100vh;
-
-                padding:
-                    10px;
-            }
-
             .right-panel {
-
-                width:
-                    min(330px, 42vw);
-
-                height: 100vh;
-
-                border-top: none;
-
-                border-left:
-                    2px solid
-                    rgba(255,255,255,0.1);
+                width: 100%;
+                height: auto;
+                min-height: 45vh;
+                border-left: none;
+                border-top: 2px solid rgba(255,255,255,0.1);
+                box-shadow: 0 -5px 25px rgba(0,0,0,0.4);
             }
 
             .scrollable-content {
-                padding: 12px;
-                overflow-y: auto;
+                max-height: none;
+                overflow: visible;
+                padding: 18px;
             }
 
-            h1 {
-                font-size: 1.7rem;
-                margin-bottom: 10px;
-            }
-
-            .stats-display {
-                margin-bottom: 12px;
-            }
-
-            .score-val {
-                font-size: 2.7rem;
-            }
-
-            .sps-val {
-                font-size: 0.9rem;
-            }
+            h1 { font-size: 2rem; }
 
             #main-clicker {
-
-                width:
-                    min(150px, 28vh);
-
-                height:
-                    min(150px, 28vh);
-
-                min-width: 100px;
-                min-height: 100px;
-
-                font-size: 60px;
+                width: min(190px, 50vw);
+                height: min(190px, 50vw);
             }
 
-            .shop-title {
-
-                margin:
-                    12px 0 7px;
-
-                font-size:
-                    0.95rem;
+            #chat-window {
+                position: fixed;
+                left: 10px !important;
+                top: 10px !important;
+                width: calc(100vw - 20px);
+                height: calc(100vh - 20px);
+                min-width: 0;
+                min-height: 0;
+                resize: none;
             }
 
-            .shop-item {
-
-                padding: 8px;
-
-                margin-bottom: 6px;
-            }
-
-            .login-box {
-
-                max-height:
-                    calc(100vh - 20px);
-
-                overflow-y: auto;
-
-                padding:
-                    18px;
-            }
-
-            .login-logo {
-
-                width: 50px;
-                height: 50px;
-
-                margin-bottom: 2px;
-            }
-
-            .login-box h2 {
-                font-size: 1.4rem;
-                margin: 3px 0;
-            }
-
-            .login-box .subtitle {
-                margin-bottom: 15px;
-                font-size: 0.8rem;
-            }
-
-            .login-box input {
-                padding: 10px 12px;
-                margin-bottom: 8px;
-            }
-
-            #login-btn {
-                padding: 10px;
-            }
-
-            .login-register {
-                margin-top: 12px;
-            }
-
+            .login-box { padding: 25px 20px; }
         }
 
+        @media (max-width: 380px) {
+            .clicker-section { height: 50vh; min-height: 50vh; }
+            .right-panel { min-height: 50vh; }
+            #main-clicker { width: 145px; height: 145px; font-size: 65px; }
+            .score-val { font-size: 2.7rem; }
+            .login-box { padding: 20px 15px; }
+        }
+
+        @media (max-height: 600px) and (orientation: landscape) {
+            body { display: flex; overflow: hidden; }
+            .clicker-section { min-height: 100vh; padding: 10px; }
+            .right-panel { width: min(330px, 42vw); height: 100vh; border-top: none; border-left: 2px solid rgba(255,255,255,0.1); }
+            .scrollable-content { padding: 12px; overflow-y: auto; }
+            h1 { font-size: 1.7rem; margin-bottom: 10px; }
+            .stats-display { margin-bottom: 12px; }
+            .score-val { font-size: 2.7rem; }
+            .sps-val { font-size: 0.9rem; }
+            #main-clicker { width: min(150px, 28vh); height: min(150px, 28vh); min-width: 100px; min-height: 100px; font-size: 60px; }
+            .shop-title { margin: 12px 0 7px; font-size: 0.95rem; }
+            .shop-item { padding: 8px; margin-bottom: 6px; }
+            .login-box { max-height: calc(100vh - 20px); overflow-y: auto; padding: 18px; }
+            .login-logo { width: 50px; height: 50px; margin-bottom: 2px; }
+            .login-box h2 { font-size: 1.4rem; margin: 3px 0; }
+            .login-box .subtitle { margin-bottom: 15px; font-size: 0.8rem; }
+            .login-box input { padding: 10px 12px; margin-bottom: 8px; }
+            #login-btn { padding: 10px; }
+            .login-register { margin-top: 12px; }
+        }
+
+        /* POPUP PARTAGE */
+        .share-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 9999;
+        }
+
+        .share-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .share-box {
+            background: #fff;
+            width: 90%;
+            max-width: 450px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+        }
+
+        .share-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .share-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #0f0f0f;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #606060;
+        }
+
+        .share-desc {
+            font-size: 14px;
+            color: #606060;
+            margin: 0 0 15px 0;
+        }
+
+        .share-body {
+            display: flex;
+            gap: 8px;
+            background: #f2f2f2;
+            padding: 8px 8px 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        #share-link-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: #0f0f0f;
+            outline: none;
+            text-overflow: ellipsis;
+        }
+
+        #copy-share-btn {
+            background: #065fd4;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #copy-share-btn:hover { background: #054da1; }
+        #copy-share-btn.copied { background: #27853f; }
     </style>
-
-<style>
-/* L'arrière-plan sombre derrière la popup */
-.share-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 9999;
-}
-
-/* La popup s'affiche quand elle a la classe .active */
-.share-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* La boîte blanche (style YouTube) */
-.share-box {
-    background: #fff;
-    width: 90%;
-    max-width: 450px;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    font-family: Arial, sans-serif;
-}
-
-.share-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.share-header h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #0f0f0f;
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #606060;
-}
-
-.share-desc {
-    font-size: 14px;
-    color: #606060;
-    margin: 0 0 15px 0;
-}
-
-/* Le conteneur du lien et du bouton copier */
-.share-body {
-    display: flex;
-    gap: 8px;
-    background: #f2f2f2;
-    padding: 8px 8px 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-/* Le champ de texte contenant l'URL */
-#share-link-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    color: #0f0f0f;
-    outline: none;
-    text-overflow: ellipsis;
-}
-
-/* Le bouton Copier */
-#copy-share-btn {
-    background: #065fd4; /* Bleu style YouTube */
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 18px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-#copy-share-btn:hover {
-    background: #054da1;
-}
-
-#copy-share-btn.copied {
-    background: #27853f;
-}
-
-</style>
-
 </head>
 
 <body>
 
     <div class="particles"></div>
 
-
-    <!-- ==========================================
-         POPUP DE CONNEXION
-    ========================================== -->
-
+    <!-- POPUP DE CONNEXION -->
     <div id="login-modal">
-
         <div class="login-box">
-
-            <img
-                src="https://blocplay-beta.github.io/icon.png"
-                class="login-logo"
-                alt="BlocPlay"
-            >
-
+            <img src="https://blocplay-beta.github.io/icon.png" class="login-logo" alt="BlocPlay">
             <h2>Connexion</h2>
-
-            <div class="subtitle">
-                Connecte-toi à ton compte BlocPlay pour jouer à Clicker 2.0
-            </div>
-
-            <input
-                type="email"
-                id="login-email"
-                placeholder="Adresse e-mail"
-                autocomplete="email"
-            >
-
-            <input
-                type="password"
-                id="login-password"
-                placeholder="Mot de passe"
-                autocomplete="current-password"
-            >
-
-            <button id="login-btn">
-                Se connecter
-            </button>
-
+            <div class="subtitle">Connecte-toi à ton compte BlocPlay pour jouer à Clicker 2.0</div>
+            <input type="email" id="login-email" placeholder="Adresse e-mail" autocomplete="email">
+            <input type="password" id="login-password" placeholder="Mot de passe" autocomplete="current-password">
+            <button id="login-btn">Se connecter</button>
             <div id="login-error"></div>
-
             <div class="login-register">
-
                 Pas encore de compte ?
-
-                <a
-                    href="https://blocplay-beta.github.io/signup"
-                >
-                    Créer un compte
-                </a>
-
+                <a href="https://blocplay-beta.github.io/signup">Créer un compte</a>
             </div>
-
         </div>
-
     </div>
 
-
-    <!-- ==========================================
-         JEU
-    ========================================== -->
-
-    <div
-        class="clicker-section"
-        id="game-zone"
-    >
-
+    <!-- JEU -->
+    <div class="clicker-section" id="game-zone">
         <div class="stats-display">
-
-            <div
-                class="score-val"
-                id="score-display"
-            >
-                0
-            </div>
-
-            <div
-                class="sps-val"
-                id="sps-display"
-            >
-                Génération Auto: 0/s
-            </div>
-
+            <div class="score-val" id="score-display">0</div>
+            <div class="sps-val" id="sps-display">Génération Auto: 0/s</div>
+            <div class="cps-val" id="cps-display">CPS: 0.0</div>
         </div>
 
-
-        <button
-            id="main-clicker"
-            aria-label="Cliquer"
-        >
-            🍪
-        </button>
-
+        <button id="main-clicker" aria-label="Cliquer">🍪</button>
     </div>
 
-
-    <!-- ==========================================
-         BOUTIQUE
-    ========================================== -->
-
+    <!-- BOUTIQUE -->
     <div class="right-panel">
-
         <div class="scrollable-content">
-
             <h1>Clicker 2.0</h1>
 
-
-            <div class="shop-title">
-                ⚡ Améliorations
-            </div>
-
-
-            <div
-                class="shop-item"
-                id="buy-clicker"
-            >
-
+            <div class="shop-title">⚡ Améliorations</div>
+            <div class="shop-item" id="buy-clicker">
                 <div class="item-info">
-
-                    <h4>
-                        Clic Boost
-                    </h4>
-
-                    <p>
-                        +1 base / clic
-                    </p>
-
+                    <h4>Clic Boost</h4>
+                    <p>+1 base / clic</p>
                 </div>
-
-
                 <div>
-
-                    <div
-                        class="item-cost"
-                        id="cost-clicker"
-                    >
-                        15
-                    </div>
-
-                    <span
-                        class="item-status"
-                        id="count-clicker"
-                    >
-                        Niv. 0
-                    </span>
-
+                    <div class="item-cost" id="cost-clicker">15</div>
+                    <span class="item-status" id="count-clicker">Niv. 0</span>
                 </div>
-
             </div>
 
-
-            <div
-                class="shop-item"
-                id="buy-miner"
-            >
-
+            <div class="shop-item" id="buy-miner">
                 <div class="item-info">
-
-                    <h4>
-                        Auto-Clic
-                    </h4>
-
-                    <p>
-                        +1 / seconde
-                    </p>
-
+                    <h4>Auto-Clic</h4>
+                    <p>+1 / seconde</p>
                 </div>
-
-
                 <div>
-
-                    <div
-                        class="item-cost"
-                        id="cost-miner"
-                    >
-                        100
-                    </div>
-
-                    <span
-                        class="item-status"
-                        id="count-miner"
-                    >
-                        Qté: 0
-                    </span>
-
+                    <div class="item-cost" id="cost-miner">100</div>
+                    <span class="item-status" id="count-miner">Qté: 0</span>
                 </div>
-
             </div>
 
-
-            <div class="shop-title">
-                🎨 Skins (+ Multiplicateurs)
-            </div>
-
+            <div class="shop-title">🎨 Skins (+ Multiplicateurs)</div>
             <div id="skins-container"></div>
 
-
-            <div class="shop-title">
-                🖼️ Fonds d'écran
-            </div>
-
+            <div class="shop-title">🖼️ Fonds d'écran</div>
             <div id="bg-container"></div>
-
         </div>
-
     </div>
 
-
-    <!-- ==========================================
-         MENU CLIC DROIT
-    ========================================== -->
-
+    <!-- MENU CLIC DROIT -->
     <div id="custom-menu">
-
-        <button id="open-chat-btn">
-            BP Contact
-        </button>
-
-        <a
-            href="https://blocplay.codeberg.page/invite/id/DISCORD"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
+        <button id="open-chat-btn">BP Contact</button>
+        <button id="logout-btn">Se déconnecter</button>
+        <a href="https://blocplay.codeberg.page/invite/id/DISCORD" target="_blank" rel="noopener noreferrer">
             Serveur Discord
         </a>
-
-        <button id="btn-partager">
-            Partager le jeu
-        </button>
-
+        <button id="btn-partager">Partager le jeu</button>
     </div>
 
-<div id="custom-share-popup" class="share-overlay">
-    <div class="share-box">
-        <div class="share-header">
-            <h3>Partager</h3>
-            <button id="close-share-popup" class="close-btn">&times;</button>
-        </div>
-        <p class="share-desc">Lien :</p>
-        <div class="share-body">
-            <input type="text" id="share-link-input" readonly>
-            <button id="copy-share-btn">Copier</button>
+    <!-- POPUP PARTAGE -->
+    <div id="custom-share-popup" class="share-overlay">
+        <div class="share-box">
+            <div class="share-header">
+                <h3>Partager</h3>
+                <button id="close-share-popup" class="close-btn">&times;</button>
+            </div>
+            <p class="share-desc">Lien :</p>
+            <div class="share-body">
+                <input type="text" id="share-link-input" readonly>
+                <button id="copy-share-btn">Copier</button>
+            </div>
         </div>
     </div>
-</div>
     
-    <!-- ==========================================
-         CHAT
-    ========================================== -->
-
+    <!-- CHAT -->
     <div id="chat-window">
-
-        <div
-            class="chat-header"
-            id="chat-header"
-        >
-
-            <span>
-                BP Contact
-            </span>
-
-            <button
-                class="chat-close"
-                id="close-chat-btn"
-                aria-label="Fermer le chat"
-            >
-                ✕
-            </button>
-
+        <div class="chat-header" id="chat-header">
+            <span>BP Contact</span>
+            <button class="chat-close" id="close-chat-btn" aria-label="Fermer le chat">✕</button>
         </div>
-
-
-        <iframe
-            class="chat-body"
-            src="https://bp-contact.github.io/"
-            title="BP Contact"
-        ></iframe>
-
+        <iframe class="chat-body" src="https://bp-contact.github.io/" title="BP Contact"></iframe>
     </div>
 
-
-    <div id="notif">
-        Sauvegarde...
-    </div>
-
+    <div id="notif">Sauvegarde...</div>
 
     <script type="module">
-
-        /* ==========================================
-           IMPORTS FIREBASE
-        ========================================== */
-
-        import {
-            initializeApp
-        }
-        from
-        "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-
-
-        import {
-            getDatabase,
-            ref,
-            set,
-            get
-        }
-        from
-        "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
-
-
-        import {
-            getAuth,
-            onAuthStateChanged,
-            signInWithEmailAndPassword
-        }
-        from
-        "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-
-
-        /* ==========================================
-           CONFIGURATION FIREBASE
-        ========================================== */
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
         const firebaseConfig = {
-
-            apiKey:
-                "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-
-            authDomain:
-                "blocplay-a9417.firebaseapp.com",
-
-            databaseURL:
-                "https://blocplay-a9417-default-rtdb.firebaseio.com",
-
-            projectId:
-                "blocplay-a9417",
-
-            storageBucket:
-                "blocplay-a9417.firebasestorage.app",
-
-            messagingSenderId:
-                "540161549188",
-
-            appId:
-                "1:540161549188:web:e0ec0350bd044de2f333d1"
-
+            apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+            authDomain: "blocplay-a9417.firebaseapp.com",
+            databaseURL: "https://blocplay-a9417-default-rtdb.firebaseio.com",
+            projectId: "blocplay-a9417",
+            storageBucket: "blocplay-a9417.firebasestorage.app",
+            messagingSenderId: "540161549188",
+            appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
         };
 
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        const firestoreDb = getFirestore(app);
 
-        const app =
-            initializeApp(firebaseConfig);
-
-
-        const db =
-            getDatabase(app);
-
-
-        const auth =
-            getAuth(app);
-
-
-        /* ==========================================
-           DONNÉES DES SKINS
-        ========================================== */
+        // Export des instances pour d'autres modules
+        window.firebaseAuth = auth;
+        window.firebaseFirestore = firestoreDb;
 
         const skinsData = {
-
-            cookie: {
-                name: "Cookie de base",
-                cost: 0,
-                content: "🍪",
-                mult: 1,
-                isImg: false
-            },
-
-            wood: {
-                name: "Planche de bois",
-                cost: 250,
-                content: "🪵",
-                mult: 2,
-                isImg: false
-            },
-
-            dice: {
-                name: "Dé Chanceux",
-                cost: 1000,
-                content: "🎲",
-                mult: 4,
-                isImg: false
-            },
-
-            diamond: {
-                name: "Diamant Pur",
-                cost: 5000,
-                content: "💎",
-                mult: 8,
-                isImg: false
-            },
-
-            fire: {
-                name: "Boule de Feu",
-                cost: 15000,
-                content: "🔥",
-                mult: 15,
-                isImg: false
-            },
-
-            blocplay: {
-                name: "Logo BlocPlay",
-                cost: 50000,
-                content:
-                    "https://blocplay-beta.github.io/icon.png",
-                mult: 50,
-                isImg: true
-            }
-
+            cookie: { name: "Cookie de base", cost: 0, content: "🍪", mult: 1, isImg: false },
+            wood: { name: "Planche de bois", cost: 250, content: "🪵", mult: 2, isImg: false },
+            dice: { name: "Dé Chanceux", cost: 1000, content: "🎲", mult: 4, isImg: false },
+            diamond: { name: "Diamant Pur", cost: 5000, content: "💎", mult: 8, isImg: false },
+            fire: { name: "Boule de Feu", cost: 15000, content: "🔥", mult: 15, isImg: false },
+            blocplay: { name: "Logo BlocPlay", cost: 50000, content: "https://blocplay-beta.github.io/icon.png", mult: 50, isImg: true }
         };
-
-
-        /* ==========================================
-           FONDS
-        ========================================== */
 
         const bgData = {
-
-            dark: {
-                name: "Espace Sombre",
-                cost: 0,
-                style:
-                    "linear-gradient(45deg, #0b0f19, #131b2f)"
-            },
-
-            neon: {
-                name: "Cyber Cyberpunk",
-                cost: 500,
-                style:
-                    "linear-gradient(135deg, #2e0854, #0b0f19)"
-            },
-
-            sunset: {
-                name: "Coucher de soleil",
-                cost: 2500,
-                style:
-                    "linear-gradient(180deg, #fdba74, #3b0764)"
-            },
-
-            matrix: {
-                name: "Code Matrix",
-                cost: 10000,
-                style:
-                    "linear-gradient(0deg, #064e3b, #022c22)"
-            }
-
+            dark: { name: "Espace Sombre", cost: 0, style: "linear-gradient(45deg, #0b0f19, #131b2f)" },
+            neon: { name: "Cyber Cyberpunk", cost: 500, style: "linear-gradient(135deg, #2e0854, #0b0f19)" },
+            sunset: { name: "Coucher de soleil", cost: 2500, style: "linear-gradient(180deg, #fdba74, #3b0764)" },
+            matrix: { name: "Code Matrix", cost: 10000, style: "linear-gradient(0deg, #064e3b, #022c22)" }
         };
 
-
-        /* ==========================================
-           DONNÉES PAR DÉFAUT DU JEU
-        ========================================== */
-
         function createDefaultGame() {
-
             return {
-
                 score: 0,
-
                 clickPower: 1,
-
                 autoPower: 0,
-
                 clickerLevel: 0,
-
                 minerCount: 0,
-
                 clickerCost: 15,
-
                 minerCost: 100,
-
-                skinsOwned: [
-                    "cookie"
-                ],
-
-                activeSkin:
-                    "cookie",
-
-                bgOwned: [
-                    "dark"
-                ],
-
-                activeBg:
-                    "dark"
-
+                skinsOwned: ["cookie"],
+                activeSkin: "cookie",
+                bgOwned: ["dark"],
+                activeBg: "dark"
             };
-
         }
 
+        let game = createDefaultGame();
+        let currentUser = null;
+        let gameIntervalsStarted = false;
+        let gameLoaded = false;
+        let isSaving = false;
 
-        let game =
-            createDefaultGame();
+        // Suivi des horodatages de clics pour calcul du CPS dynamique
+        let clickTimestamps = [];
 
+        const scoreDisplay = document.getElementById("score-display");
+        const spsDisplay = document.getElementById("sps-display");
+        const cpsDisplay = document.getElementById("cps-display");
+        const mainClicker = document.getElementById("main-clicker");
+        const gameZone = document.getElementById("game-zone");
+        const customMenu = document.getElementById("custom-menu");
+        const chatWindow = document.getElementById("chat-window");
+        const notif = document.getElementById("notif");
 
-        let currentUser =
-            null;
-
-
-        let gameIntervalsStarted =
-            false;
-
-
-        let gameLoaded =
-            false;
-
-
-        let isSaving =
-            false;
-
-
-        /* ==========================================
-           ÉLÉMENTS DOM
-        ========================================== */
-
-        const scoreDisplay =
-            document.getElementById(
-                "score-display"
-            );
-
-
-        const spsDisplay =
-            document.getElementById(
-                "sps-display"
-            );
-
-
-        const mainClicker =
-            document.getElementById(
-                "main-clicker"
-            );
-
-
-        const gameZone =
-            document.getElementById(
-                "game-zone"
-            );
-
-
-        const customMenu =
-            document.getElementById(
-                "custom-menu"
-            );
-
-
-        const chatWindow =
-            document.getElementById(
-                "chat-window"
-            );
-
-
-        const notif =
-            document.getElementById(
-                "notif"
-            );
-
-
-        /* ==========================================
-           POPUP DE CONNEXION
-        ========================================== */
-
-        const loginModal =
-            document.getElementById(
-                "login-modal"
-            );
-
-
-        const loginEmail =
-            document.getElementById(
-                "login-email"
-            );
-
-
-        const loginPassword =
-            document.getElementById(
-                "login-password"
-            );
-
-
-        const loginBtn =
-            document.getElementById(
-                "login-btn"
-            );
-
-
-        const loginError =
-            document.getElementById(
-                "login-error"
-            );
-
+        const loginModal = document.getElementById("login-modal");
+        const loginEmail = document.getElementById("login-email");
+        const loginPassword = document.getElementById("login-password");
+        const loginBtn = document.getElementById("login-btn");
+        const loginError = document.getElementById("login-error");
 
         function showLoginError(message) {
-
-            loginError.textContent =
-                message;
-
-            loginError.style.display =
-                "block";
-
+            loginError.textContent = message;
+            loginError.style.display = "block";
         }
-
 
         function hideLoginError() {
-
-            loginError.textContent =
-                "";
-
-            loginError.style.display =
-                "none";
-
+            loginError.textContent = "";
+            loginError.style.display = "none";
         }
 
+        loginBtn.addEventListener("click", async () => {
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value;
+            hideLoginError();
 
-        /* ==========================================
-           CONNEXION
-        ========================================== */
-
-        loginBtn.addEventListener(
-            "click",
-            async () => {
-
-                const email =
-                    loginEmail.value.trim();
-
-
-                const password =
-                    loginPassword.value;
-
-
-                hideLoginError();
-
-
-                if (!email || !password) {
-
-                    showLoginError(
-                        "Veuillez remplir votre adresse e-mail et votre mot de passe."
-                    );
-
-                    return;
-
-                }
-
-
-                loginBtn.disabled =
-                    true;
-
-                loginBtn.textContent =
-                    "Connexion...";
-
-
-                try {
-
-                    await signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        password
-                    );
-
-                }
-
-                catch (error) {
-
-                    console.error(
-                        "Erreur Firebase Auth:",
-                        error
-                    );
-
-
-                    let message =
-                        "Une erreur est survenue lors de la connexion.";
-
-
-                    if (
-                        error.code ===
-                        "auth/invalid-email"
-                    ) {
-
-                        message =
-                            "Adresse e-mail invalide.";
-
-                    }
-
-                    else if (
-
-                        error.code ===
-                        "auth/user-not-found"
-
-                        ||
-
-                        error.code ===
-                        "auth/wrong-password"
-
-                        ||
-
-                        error.code ===
-                        "auth/invalid-credential"
-
-                    ) {
-
-                        message =
-                            "Adresse e-mail ou mot de passe incorrect.";
-
-                    }
-
-                    else if (
-
-                        error.code ===
-                        "auth/too-many-requests"
-
-                    ) {
-
-                        message =
-                            "Trop de tentatives. Réessaie plus tard.";
-
-                    }
-
-                    else if (
-
-                        error.code ===
-                        "auth/network-request-failed"
-
-                    ) {
-
-                        message =
-                            "Erreur réseau. Vérifie ta connexion Internet.";
-
-                    }
-
-
-                    showLoginError(
-                        message
-                    );
-
-                }
-
-                finally {
-
-                    loginBtn.disabled =
-                        false;
-
-                    loginBtn.textContent =
-                        "Se connecter";
-
-                }
-
+            if (!email || !password) {
+                showLoginError("Veuillez remplir votre adresse e-mail et votre mot de passe.");
+                return;
             }
-        );
 
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Connexion...";
 
-        loginPassword.addEventListener(
-            "keydown",
-            (event) => {
-
-                if (
-                    event.key ===
-                    "Enter"
-                ) {
-
-                    loginBtn.click();
-
-                }
-
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error("Erreur Firebase Auth:", error);
+                let message = "Une erreur est survenue lors de la connexion.";
+                if (error.code === "auth/invalid-email") message = "Adresse e-mail invalide.";
+                else if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") message = "Adresse e-mail ou mot de passe incorrect.";
+                else if (error.code === "auth/too-many-requests") message = "Trop de tentatives. Réessaie plus tard.";
+                else if (error.code === "auth/network-request-failed") message = "Erreur réseau. Vérifie ta connexion Internet.";
+                showLoginError(message);
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = "Se connecter";
             }
-        );
+        });
 
+        loginPassword.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") loginBtn.click();
+        });
 
-        loginEmail.addEventListener(
-            "keydown",
-            (event) => {
+        loginEmail.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") loginPassword.focus();
+        });
 
-                if (
-                    event.key ===
-                    "Enter"
-                ) {
+        onAuthStateChanged(auth, async (user) => {
+            console.log("État Firebase Auth:", user ? `Connecté: ${user.uid}` : "Déconnecté");
+            if (user) {
+                currentUser = user;
+                loginModal.style.display = "none";
+                await loadGameData(user.uid);
 
-                    loginPassword.focus();
+                if (!gameIntervalsStarted) {
+                    gameIntervalsStarted = true;
 
+                    setInterval(() => {
+                        if (currentUser && gameLoaded) {
+                            game.score += game.autoPower;
+                            updateUI();
+                        }
+                    }, 1000);
+
+                    // Mise à jour continue du CPS dynamique (toutes les 100ms)
+                    setInterval(updateCPS, 100);
+
+                    setInterval(() => {
+                        if (currentUser && gameLoaded) {
+                            saveGameData(false);
+                        }
+                    }, 10000);
                 }
-
+            } else {
+                currentUser = null;
+                gameLoaded = false;
+                loginPassword.value = "";
+                loginModal.style.display = "flex";
             }
-        );
+        });
 
-
-        /* ==========================================
-           AUTHENTIFICATION FIREBASE
-        ========================================== */
-
-        onAuthStateChanged(
-            auth,
-            async (user) => {
-
-                console.log(
-                    "État Firebase Auth:",
-                    user
-                        ? `Connecté: ${user.uid}`
-                        : "Déconnecté"
-                );
-
-
-                if (user) {
-
-                    currentUser =
-                        user;
-
-
-                    loginModal.style.display =
-                        "none";
-
-
-                    await loadGameData(
-                        user.uid
-                    );
-
-
-                    if (
-                        !gameIntervalsStarted
-                    ) {
-
-                        gameIntervalsStarted =
-                            true;
-
-
-                        setInterval(
-                            () => {
-
-                                if (
-                                    currentUser &&
-                                    gameLoaded
-                                ) {
-
-                                    game.score +=
-                                        game.autoPower;
-
-                                    updateUI();
-
-                                }
-
-                            },
-                            1000
-                        );
-
-
-                        setInterval(
-                            () => {
-
-                                if (
-                                    currentUser &&
-                                    gameLoaded
-                                ) {
-
-                                    saveGameData(
-                                        false
-                                    );
-
-                                }
-
-                            },
-                            10000
-                        );
-
-                    }
-
-                }
-
-                else {
-
-                    currentUser =
-                        null;
-
-
-                    gameLoaded =
-                        false;
-
-
-                    loginModal.style.display =
-                        "flex";
-
-                }
-
+        /* BOUTON DÉCONNEXION */
+        document.getElementById("logout-btn").addEventListener("click", async () => {
+            customMenu.style.display = "none";
+            if (currentUser && gameLoaded) {
+                await saveGameData(false);
             }
-        );
-
-
-        /* ==========================================
-           MENU CLIC DROIT
-        ========================================== */
-
-        window.addEventListener(
-            "contextmenu",
-            (e) => {
-
-                e.preventDefault();
-
-
-                let menuX =
-                    e.clientX;
-
-                let menuY =
-                    e.clientY;
-
-
-                const menuWidth =
-                    Math.min(
-                        220,
-                        window.innerWidth - 20
-                    );
-
-
-                const menuHeight =
-                    110;
-
-
-                if (
-                    menuX + menuWidth >
-                    window.innerWidth
-                ) {
-
-                    menuX =
-                        window.innerWidth -
-                        menuWidth -
-                        10;
-
-                }
-
-
-                if (
-                    menuY + menuHeight >
-                    window.innerHeight
-                ) {
-
-                    menuY =
-                        window.innerHeight -
-                        menuHeight -
-                        10;
-
-                }
-
-
-                menuX =
-                    Math.max(
-                        10,
-                        menuX
-                    );
-
-
-                menuY =
-                    Math.max(
-                        10,
-                        menuY
-                    );
-
-                customMenu.style.left =
-                    `${menuX}px`;
-
-
-                customMenu.style.top =
-                    `${menuY}px`;
-
-
-                customMenu.style.display =
-                    "block";
-
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error("Erreur lors de la déconnexion :", error);
             }
-        );
+        });
 
+        /* MENU CLIC DROIT */
+        window.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            let menuX = e.clientX;
+            let menuY = e.clientY;
+            const menuWidth = Math.min(220, window.innerWidth - 20);
+            const menuHeight = 150;
 
-        window.addEventListener(
-            "click",
-            () => {
+            if (menuX + menuWidth > window.innerWidth) menuX = window.innerWidth - menuWidth - 10;
+            if (menuY + menuHeight > window.innerHeight) menuY = window.innerHeight - menuHeight - 10;
 
-                customMenu.style.display =
-                    "none";
+            menuX = Math.max(10, menuX);
+            menuY = Math.max(10, menuY);
 
-            }
-        );
+            customMenu.style.left = `${menuX}px`;
+            customMenu.style.top = `${menuY}px`;
+            customMenu.style.display = "block";
+        });
 
+        window.addEventListener("click", () => {
+            customMenu.style.display = "none";
+        });
 
-        customMenu.addEventListener(
-            "click",
-            (e) => {
+        customMenu.addEventListener("click", (e) => {
+            e.stopPropagation();
+        });
 
-                e.stopPropagation();
+        /* CHAT BLOCPLAY */
+        document.getElementById("open-chat-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            customMenu.style.display = "none";
+            chatWindow.style.display = "flex";
+        });
 
-            }
-        );
+        document.getElementById("close-chat-btn").addEventListener("click", () => {
+            chatWindow.style.display = "none";
+        });
 
+        /* DRAG & DROP DU CHAT */
+        const chatHeader = document.getElementById("chat-header");
+        let isDragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
 
-        /* ==========================================
-           CHAT BLOCPLAY
-        ========================================== */
-
-        document
-            .getElementById(
-                "open-chat-btn"
-            )
-            .addEventListener(
-                "click",
-                (e) => {
-
-                    e.stopPropagation();
-
-
-                    customMenu.style.display =
-                        "none";
-
-
-                    chatWindow.style.display =
-                        "flex";
-
-                }
-            );
-
-
-        document
-            .getElementById(
-                "close-chat-btn"
-            )
-            .addEventListener(
-                "click",
-                () => {
-
-                    chatWindow.style.display =
-                        "none";
-
-                }
-            );
-
-
-        /* ==========================================
-           DRAG & DROP DU CHAT
-        ========================================== */
-
-        const chatHeader =
-            document.getElementById(
-                "chat-header"
-            );
-
-
-        let isDragging =
-            false;
-
-
-        let offsetX =
-            0;
-
-
-        let offsetY =
-            0;
-
-
-        function startDrag(
-            clientX,
-            clientY
-        ) {
-
-            isDragging =
-                true;
-
-
-            offsetX =
-                clientX -
-                chatWindow.offsetLeft;
-
-
-            offsetY =
-                clientY -
-                chatWindow.offsetTop;
-
+        function startDrag(clientX, clientY) {
+            isDragging = true;
+            offsetX = clientX - chatWindow.offsetLeft;
+            offsetY = clientY - chatWindow.offsetTop;
         }
 
+        chatHeader.addEventListener("mousedown", (e) => {
+            if (window.innerWidth <= 700) return;
+            startDrag(e.clientX, e.clientY);
+            document.body.style.cursor = "grabbing";
+        });
 
-        chatHeader.addEventListener(
-            "mousedown",
-            (e) => {
+        window.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            moveChat(e.clientX, e.clientY);
+        });
 
-                if (
-                    window.innerWidth <= 700
-                ) return;
+        window.addEventListener("mouseup", () => {
+            stopDrag();
+        });
 
-
-                startDrag(
-                    e.clientX,
-                    e.clientY
-                );
-
-
-                document.body.style.cursor =
-                    "grabbing";
-
-            }
-        );
-
-
-        window.addEventListener(
-            "mousemove",
-            (e) => {
-
-                if (!isDragging) return;
-
-
-                moveChat(
-                    e.clientX,
-                    e.clientY
-                );
-
-            }
-        );
-
-
-        window.addEventListener(
-            "mouseup",
-            () => {
-
-                stopDrag();
-
-            }
-        );
-
-
-        function moveChat(
-            clientX,
-            clientY
-        ) {
-
-            let newX =
-                clientX -
-                offsetX;
-
-
-            let newY =
-                clientY -
-                offsetY;
-
-
-            newX =
-                Math.max(
-                    0,
-                    Math.min(
-                        newX,
-                        window.innerWidth -
-                        chatWindow.offsetWidth
-                    )
-                );
-
-
-            newY =
-                Math.max(
-                    0,
-                    Math.min(
-                        newY,
-                        window.innerHeight -
-                        chatWindow.offsetHeight
-                    )
-                );
-
-
-            chatWindow.style.left =
-                `${newX}px`;
-
-
-            chatWindow.style.top =
-                `${newY}px`;
-
+        function moveChat(clientX, clientY) {
+            let newX = clientX - offsetX;
+            let newY = clientY - offsetY;
+            newX = Math.max(0, Math.min(newX, window.innerWidth - chatWindow.offsetWidth));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - chatWindow.offsetHeight));
+            chatWindow.style.left = `${newX}px`;
+            chatWindow.style.top = `${newY}px`;
         }
-
 
         function stopDrag() {
-
-            isDragging =
-                false;
-
-
-            document.body.style.cursor =
-                "default";
-
+            isDragging = false;
+            document.body.style.cursor = "default";
         }
 
+        chatHeader.addEventListener("touchstart", (e) => {
+            if (window.innerWidth <= 700) return;
+            startDrag(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
 
-        /* Support tactile du déplacement */
+        window.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            moveChat(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
 
-        chatHeader.addEventListener(
-            "touchstart",
-            (e) => {
+        window.addEventListener("touchend", () => { stopDrag(); });
 
-                if (
-                    window.innerWidth <= 700
-                ) return;
-
-
-                const touch =
-                    e.touches[0];
-
-
-                startDrag(
-                    touch.clientX,
-                    touch.clientY
-                );
-
-            },
-            {
-                passive: true
+        /* 
+           CALCUL DU CPS DYNAMIQUE
+           Calcule le nombre de clics par seconde en temps réel sur une fenêtre glissante de 5s
+        */
+        function updateCPS() {
+            const now = performance.now();
+            const timeWindow = 5000; // Fenêtre de calcul en millisecondes
+            
+            // Nettoyage des clics trop anciens
+            clickTimestamps = clickTimestamps.filter(timestamp => now - timestamp <= timeWindow);
+            
+            let currentCPS = 0;
+            if (clickTimestamps.length > 0) {
+                // Calcule le CPS lissé sur la fenêtre temporelle courante
+                const duration = Math.max((now - clickTimestamps[0]) / 1000, 1);
+                currentCPS = (clickTimestamps.length / duration);
             }
-        );
-
-
-        window.addEventListener(
-            "touchmove",
-            (e) => {
-
-                if (!isDragging) return;
-
-
-                const touch =
-                    e.touches[0];
-
-
-                moveChat(
-                    touch.clientX,
-                    touch.clientY
-                );
-
-            },
-            {
-                passive: true
+            
+            if (cpsDisplay) {
+                cpsDisplay.textContent = `CPS: ${currentCPS.toFixed(1)}`;
             }
-        );
-
-
-        window.addEventListener(
-            "touchend",
-            () => {
-
-                stopDrag();
-
-            }
-        );
-
-
-        /* ==========================================
-           CLIC PRINCIPAL
-        ========================================== */
-
-        mainClicker.addEventListener(
-            "click",
-            () => {
-
-                if (
-                    !currentUser ||
-                    !gameLoaded
-                ) return;
-
-
-                const currentMult =
-                    skinsData[
-                        game.activeSkin
-                    ]?.mult || 1;
-
-
-                const finalGain =
-                    game.clickPower *
-                    currentMult;
-
-
-                game.score +=
-                    finalGain;
-
-
-                updateUI();
-
-
-                const zoneW =
-                    gameZone.clientWidth;
-
-
-                const zoneH =
-                    gameZone.clientHeight;
-
-
-                const rx =
-                    Math.floor(
-                        Math.random() *
-                        Math.max(
-                            1,
-                            zoneW - 160
-                        )
-                    ) + 40;
-
-
-                const ry =
-                    Math.floor(
-                        Math.random() *
-                        Math.max(
-                            1,
-                            zoneH - 160
-                        )
-                    ) + 80;
-
-
-                const el =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                el.className =
-                    "floating-number";
-
-
-                el.textContent =
-                    `+${finalGain}`;
-
-
-                el.style.left =
-                    `${rx}px`;
-
-
-                el.style.top =
-                    `${ry}px`;
-
-
-                gameZone.appendChild(
-                    el
-                );
-
-
-                el.addEventListener(
-                    "animationend",
-                    () => el.remove()
-                );
-
-            }
-        );
-
-
-        /* ==========================================
-           AMÉLIORATION CLIC
-        ========================================== */
-
-        document
-            .getElementById(
-                "buy-clicker"
-            )
-            .addEventListener(
-                "click",
-                () => {
-
-                    if (
-                        !currentUser ||
-                        !gameLoaded
-                    ) return;
-
-
-                    if (
-                        game.score >=
-                        game.clickerCost
-                    ) {
-
-                        game.score -=
-                            game.clickerCost;
-
-
-                        game.clickerLevel +=
-                            1;
-
-
-                        game.clickPower +=
-                            1;
-
-
-                        game.clickerCost =
-                            Math.round(
-                                15 *
-                                Math.pow(
-                                    1.5,
-                                    game.clickerLevel
-                                )
-                            );
-
-
-                        updateUI();
-
-
-                        saveGameData(
-                            false
-                        );
-
-                    }
-
-                }
-            );
-
-
-        /* ==========================================
-           AUTO-CLIC
-        ========================================== */
-
-        document
-            .getElementById(
-                "buy-miner"
-            )
-            .addEventListener(
-                "click",
-                () => {
-
-                    if (
-                        !currentUser ||
-                        !gameLoaded
-                    ) return;
-
-
-                    if (
-                        game.score >=
-                        game.minerCost
-                    ) {
-
-                        game.score -=
-                            game.minerCost;
-
-
-                        game.minerCount +=
-                            1;
-
-
-                        game.autoPower +=
-                            1;
-
-
-                        game.minerCost =
-                            Math.round(
-                                100 *
-                                Math.pow(
-                                    1.15,
-                                    game.minerCount
-                                )
-                            );
-
-
-                        updateUI();
-
-
-                        saveGameData(
-                            false
-                        );
-
-                    }
-
-                }
-            );
-
-
-        /* ==========================================
-           GÉNÉRATION DES BOUTIQUES
-        ========================================== */
-
-        function setupShopLists() {
-
-            const skinCont =
-                document.getElementById(
-                    "skins-container"
-                );
-
-
-            skinCont.innerHTML =
-                "";
-
-
-            Object
-                .keys(
-                    skinsData
-                )
-                .forEach(
-                    (id) => {
-
-                        if (
-                            id === "cookie"
-                        ) return;
-
-
-                        skinCont.innerHTML += `
-
-                            <div
-                                class="shop-item"
-                                id="sk-${id}"
-                            >
-
-                                <div class="item-info">
-
-                                    <h4>
-                                        ${skinsData[id].name}
-                                    </h4>
-
-                                    <p>
-                                        Avantage: Clic x${skinsData[id].mult}
-                                    </p>
-
-                                </div>
-
-                                <div>
-
-                                    <div class="item-cost">
-                                        ${skinsData[id].cost}
-                                    </div>
-
-                                    <span class="item-status">
-                                        Acheter
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-                    }
-                );
-
-
-            const bgCont =
-                document.getElementById(
-                    "bg-container"
-                );
-
-
-            bgCont.innerHTML =
-                "";
-
-
-            Object
-                .keys(
-                    bgData
-                )
-                .forEach(
-                    (id) => {
-
-                        if (
-                            id === "dark"
-                        ) return;
-
-
-                        bgCont.innerHTML += `
-
-                            <div
-                                class="shop-item"
-                                id="bg-${id}"
-                            >
-
-                                <div class="item-info">
-
-                                    <h4>
-                                        ${bgData[id].name}
-                                    </h4>
-
-                                    <p>
-                                        Ambiance visuelle
-                                    </p>
-
-                                </div>
-
-                                <div>
-
-                                    <div class="item-cost">
-                                        ${bgData[id].cost}
-                                    </div>
-
-                                    <span class="item-status">
-                                        Acheter
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-                    }
-                );
-
-
-            Object
-                .keys(
-                    skinsData
-                )
-                .forEach(
-                    (id) => {
-
-                        if (
-                            id === "cookie"
-                        ) return;
-
-
-                        const element =
-                            document.getElementById(
-                                `sk-${id}`
-                            );
-
-
-                        if (!element) return;
-
-
-                        element.addEventListener(
-                            "click",
-                            () => {
-
-                                handleBuy(
-                                    "skin",
-                                    id
-                                );
-
-                            }
-                        );
-
-                    }
-                );
-
-
-            Object
-                .keys(
-                    bgData
-                )
-                .forEach(
-                    (id) => {
-
-                        if (
-                            id === "dark"
-                        ) return;
-
-
-                        const element =
-                            document.getElementById(
-                                `bg-${id}`
-                            );
-
-
-                        if (!element) return;
-
-
-                        element.addEventListener(
-                            "click",
-                            () => {
-
-                                handleBuy(
-                                    "bg",
-                                    id
-                                );
-
-                            }
-                        );
-
-                    }
-                );
-
         }
 
+        /* CLIC PRINCIPAL */
+        mainClicker.addEventListener("click", () => {
+            if (!currentUser || !gameLoaded) return;
 
-        /* ==========================================
-           ACHAT / ÉQUIPEMENT
-        ========================================== */
+            // Enregistre l'horodatage pour le CPS dynamique
+            clickTimestamps.push(performance.now());
+            updateCPS();
 
-        function handleBuy(
-            type,
-            id
-        ) {
+            const currentMult = skinsData[game.activeSkin]?.mult || 1;
+            const finalGain = game.clickPower * currentMult;
 
-            if (
-                !currentUser ||
-                !gameLoaded
-            ) return;
-
-
-            let changed =
-                false;
-
-
-            if (
-                type === "skin"
-            ) {
-
-                if (
-                    game.skinsOwned.includes(
-                        id
-                    )
-                ) {
-
-                    game.activeSkin =
-                        id;
-
-
-                    changed =
-                        true;
-
-                }
-
-                else if (
-                    game.score >=
-                    skinsData[id].cost
-                ) {
-
-                    game.score -=
-                        skinsData[id].cost;
-
-
-                    game.skinsOwned.push(
-                        id
-                    );
-
-
-                    game.activeSkin =
-                        id;
-
-
-                    changed =
-                        true;
-
-                }
-
-            }
-
-
-            else if (
-                type === "bg"
-            ) {
-
-                if (
-                    game.bgOwned.includes(
-                        id
-                    )
-                ) {
-
-                    game.activeBg =
-                        id;
-
-
-                    changed =
-                        true;
-
-                }
-
-                else if (
-                    game.score >=
-                    bgData[id].cost
-                ) {
-
-                    game.score -=
-                        bgData[id].cost;
-
-
-                    game.bgOwned.push(
-                        id
-                    );
-
-
-                    game.activeBg =
-                        id;
-
-
-                    changed =
-                        true;
-
-                }
-
-            }
-
-
-            if (!changed) return;
-
-
-            applyVisuals();
-
+            game.score += finalGain;
             updateUI();
 
-            saveGameData(
-                false
-            );
+            const zoneW = gameZone.clientWidth;
+            const zoneH = gameZone.clientHeight;
 
+            const rx = Math.floor(Math.random() * Math.max(1, zoneW - 160)) + 40;
+            const ry = Math.floor(Math.random() * Math.max(1, zoneH - 160)) + 80;
+
+            const el = document.createElement("div");
+            el.className = "floating-number";
+            el.textContent = `+${finalGain}`;
+            el.style.left = `${rx}px`;
+            el.style.top = `${ry}px`;
+
+            gameZone.appendChild(el);
+            el.addEventListener("animationend", () => el.remove());
+        });
+
+        /* AMÉLIORATIONS */
+        document.getElementById("buy-clicker").addEventListener("click", () => {
+            if (!currentUser || !gameLoaded) return;
+
+            if (game.score >= game.clickerCost) {
+                game.score -= game.clickerCost;
+                game.clickerLevel += 1;
+                game.clickPower += 1;
+                game.clickerCost = Math.round(15 * Math.pow(1.5, game.clickerLevel));
+                updateUI();
+                saveGameData(false);
+            }
+        });
+
+        document.getElementById("buy-miner").addEventListener("click", () => {
+            if (!currentUser || !gameLoaded) return;
+
+            if (game.score >= game.minerCost) {
+                game.score -= game.minerCost;
+                game.minerCount += 1;
+                game.autoPower += 1;
+                game.minerCost = Math.round(100 * Math.pow(1.15, game.minerCount));
+                updateUI();
+                saveGameData(false);
+            }
+        });
+
+        /* BOUTIQUES */
+        function setupShopLists() {
+            const skinCont = document.getElementById("skins-container");
+            skinCont.innerHTML = "";
+
+            Object.keys(skinsData).forEach((id) => {
+                if (id === "cookie") return;
+                skinCont.innerHTML += `
+                    <div class="shop-item" id="sk-${id}">
+                        <div class="item-info">
+                            <h4>${skinsData[id].name}</h4>
+                            <p>Avantage: Clic x${skinsData[id].mult}</p>
+                        </div>
+                        <div>
+                            <div class="item-cost">${skinsData[id].cost}</div>
+                            <span class="item-status">Acheter</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const bgCont = document.getElementById("bg-container");
+            bgCont.innerHTML = "";
+
+            Object.keys(bgData).forEach((id) => {
+                if (id === "dark") return;
+                bgCont.innerHTML += `
+                    <div class="shop-item" id="bg-${id}">
+                        <div class="item-info">
+                            <h4>${bgData[id].name}</h4>
+                            <p>Ambiance visuelle</p>
+                        </div>
+                        <div>
+                            <div class="item-cost">${bgData[id].cost}</div>
+                            <span class="item-status">Acheter</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            Object.keys(skinsData).forEach((id) => {
+                if (id === "cookie") return;
+                const element = document.getElementById(`sk-${id}`);
+                if (!element) return;
+                element.addEventListener("click", () => { handleBuy("skin", id); });
+            });
+
+            Object.keys(bgData).forEach((id) => {
+                if (id === "dark") return;
+                const element = document.getElementById(`bg-${id}`);
+                if (!element) return;
+                element.addEventListener("click", () => { handleBuy("bg", id); });
+            });
         }
 
+        /* ACHAT / ÉQUIPEMENT */
+        function handleBuy(type, id) {
+            if (!currentUser || !gameLoaded) return;
+            let changed = false;
 
-        /* ==========================================
-           APPLICATION DES VISUELS
-        ========================================== */
+            if (type === "skin") {
+                if (game.skinsOwned.includes(id)) {
+                    game.activeSkin = id;
+                    changed = true;
+                } else if (game.score >= skinsData[id].cost) {
+                    game.score -= skinsData[id].cost;
+                    game.skinsOwned.push(id);
+                    game.activeSkin = id;
+                    changed = true;
+                }
+            } else if (type === "bg") {
+                if (game.bgOwned.includes(id)) {
+                    game.activeBg = id;
+                    changed = true;
+                } else if (game.score >= bgData[id].cost) {
+                    game.score -= bgData[id].cost;
+                    game.bgOwned.push(id);
+                    game.activeBg = id;
+                    changed = true;
+                }
+            }
 
+            if (!changed) return;
+            applyVisuals();
+            updateUI();
+            saveGameData(false);
+        }
+
+        /* VISUELS */
         function applyVisuals() {
-
-            const skin =
-                skinsData[
-                    game.activeSkin
-                ];
-
-
+            const skin = skinsData[game.activeSkin];
             if (skin) {
-
-                if (
-                    skin.isImg
-                ) {
-
-                    mainClicker.textContent =
-                        "";
-
-
-                    mainClicker.style.backgroundImage =
-                        `url("${skin.content}")`;
-
-
-                    mainClicker.style.border =
-                        "none";
-
-
-                    mainClicker.style.backgroundColor =
-                        "transparent";
-
+                if (skin.isImg) {
+                    mainClicker.textContent = "";
+                    mainClicker.style.backgroundImage = `url("${skin.content}")`;
+                    mainClicker.style.border = "none";
+                    mainClicker.style.backgroundColor = "transparent";
+                } else {
+                    mainClicker.style.backgroundImage = "none";
+                    mainClicker.style.backgroundColor = "#111827";
+                    mainClicker.style.border = "6px solid var(--accent-neon)";
+                    mainClicker.textContent = skin.content;
                 }
-
-                else {
-
-                    mainClicker.style.backgroundImage =
-                        "none";
-
-
-                    mainClicker.style.backgroundColor =
-                        "#111827";
-
-
-                    mainClicker.style.border =
-                        "6px solid var(--accent-neon)";
-
-
-                    mainClicker.textContent =
-                        skin.content;
-
-                }
-
             }
 
-
-            const bg =
-                bgData[
-                    game.activeBg
-                ];
-
-
+            const bg = bgData[game.activeBg];
             if (bg) {
-
-                document.body.style.background =
-                    bg.style;
-
+                document.body.style.background = bg.style;
             }
-
         }
 
-
-        /* ==========================================
-           MISE À JOUR DE L'INTERFACE
-        ========================================== */
-
+        /* MISE À JOUR DE L'INTERFACE */
         function updateUI() {
-
             if (!game) return;
 
-
-            scoreDisplay.textContent =
-                Math.floor(
-                    game.score
-                ).toLocaleString(
-                    "fr-FR"
-                );
-
-
-            spsDisplay.textContent =
-                `Génération Auto: ${game.autoPower}/s`;
-
-
-            const clickerCost =
-                document.getElementById(
-                    "cost-clicker"
-                );
-
-
-            const clickerCount =
-                document.getElementById(
-                    "count-clicker"
-                );
-
-
-            const clickerItem =
-                document.getElementById(
-                    "buy-clicker"
-                );
-
-
-            clickerCost.textContent =
-                game.clickerCost.toLocaleString(
-                    "fr-FR"
-                );
-
-
-            clickerCount.textContent =
-                `Niv. ${game.clickerLevel}`;
-
-
-            clickerItem.classList.toggle(
-                "disabled",
-                game.score <
-                game.clickerCost
-            );
-
-
-            const minerCost =
-                document.getElementById(
-                    "cost-miner"
-                );
-
-
-            const minerCount =
-                document.getElementById(
-                    "count-miner"
-                );
-
-
-            const minerItem =
-                document.getElementById(
-                    "buy-miner"
-                );
-
-
-            minerCost.textContent =
-                game.minerCost.toLocaleString(
-                    "fr-FR"
-                );
-
-
-            minerCount.textContent =
-                `Qté: ${game.minerCount}`;
-
-
-            minerItem.classList.toggle(
-                "disabled",
-                game.score <
-                game.minerCost
-            );
-
-
-            Object
-                .keys(
-                    skinsData
-                )
-                .forEach(
-                    (id) => {
-
-                        if (
-                            id === "cookie"
-                        ) return;
-
-
-                        const element =
-                            document.getElementById(
-                                `sk-${id}`
-                            );
-
-
-                        if (!element) return;
-
-
-                        const owned =
-                            game.skinsOwned.includes(
-                                id
-                            );
-
-
-                        const equipped =
-                            game.activeSkin ===
-                            id;
-
-
-                        element.classList.toggle(
-                            "disabled",
-                            !owned &&
-                            game.score <
-                            skinsData[id].cost
-                        );
-
-
-                        element.classList.toggle(
-                            "equipped",
-                            equipped
-                        );
-
-
-                        const status =
-                            element.querySelector(
-                                ".item-status"
-                            );
-
-
-                        if (status) {
-
-                            if (equipped) {
-
-                                status.textContent =
-                                    "Équipé";
-
-                            }
-
-                            else if (owned) {
-
-                                status.textContent =
-                                    "Équiper";
-
-                            }
-
-                            else {
-
-                                status.textContent =
-                                    "Acheter";
-
-                            }
-
-                        }
-
-                    }
-                );
-
-
-            Object
-                .keys(
-                    bgData
-                )
-                .forEach(
-                    (id) => {
-
-                        if (
-                            id === "dark"
-                        ) return;
-
-
-                        const element =
-                            document.getElementById(
-                                `bg-${id}`
-                            );
-
-
-                        if (!element) return;
-
-
-                        const owned =
-                            game.bgOwned.includes(
-                                id
-                            );
-
-
-                        const equipped =
-                            game.activeBg ===
-                            id;
-
-
-                        element.classList.toggle(
-                            "disabled",
-                            !owned &&
-                            game.score <
-                            bgData[id].cost
-                        );
-
-
-                        element.classList.toggle(
-                            "equipped",
-                            equipped
-                        );
-
-
-                        const status =
-                            element.querySelector(
-                                ".item-status"
-                            );
-
-
-                        if (status) {
-
-                            if (equipped) {
-
-                                status.textContent =
-                                    "Équipé";
-
-                            }
-
-                            else if (owned) {
-
-                                status.textContent =
-                                    "Équiper";
-
-                            }
-
-                            else {
-
-                                status.textContent =
-                                    "Acheter";
-
-                            }
-
-                        }
-
-                    }
-                );
-
+            scoreDisplay.textContent = Math.floor(game.score).toLocaleString("fr-FR");
+            spsDisplay.textContent = `Génération Auto: ${game.autoPower}/s`;
+
+            const clickerCost = document.getElementById("cost-clicker");
+            const clickerCount = document.getElementById("count-clicker");
+            const clickerItem = document.getElementById("buy-clicker");
+
+            clickerCost.textContent = game.clickerCost.toLocaleString("fr-FR");
+            clickerCount.textContent = `Niv. ${game.clickerLevel}`;
+            clickerItem.classList.toggle("disabled", game.score < game.clickerCost);
+
+            const minerCost = document.getElementById("cost-miner");
+            const minerCount = document.getElementById("count-miner");
+            const minerItem = document.getElementById("buy-miner");
+
+            minerCost.textContent = game.minerCost.toLocaleString("fr-FR");
+            minerCount.textContent = `Qté: ${game.minerCount}`;
+            minerItem.classList.toggle("disabled", game.score < game.minerCost);
+
+            Object.keys(skinsData).forEach((id) => {
+                if (id === "cookie") return;
+                const element = document.getElementById(`sk-${id}`);
+                if (!element) return;
+
+                const owned = game.skinsOwned.includes(id);
+                const equipped = game.activeSkin === id;
+
+                element.classList.toggle("disabled", !owned && game.score < skinsData[id].cost);
+                element.classList.toggle("equipped", equipped);
+
+                const status = element.querySelector(".item-status");
+                if (status) {
+                    if (equipped) status.textContent = "Équipé";
+                    else if (owned) status.textContent = "Équiper";
+                    else status.textContent = "Acheter";
+                }
+            });
+
+            Object.keys(bgData).forEach((id) => {
+                if (id === "dark") return;
+                const element = document.getElementById(`bg-${id}`);
+                if (!element) return;
+
+                const owned = game.bgOwned.includes(id);
+                const equipped = game.activeBg === id;
+
+                element.classList.toggle("disabled", !owned && game.score < bgData[id].cost);
+                element.classList.toggle("equipped", equipped);
+
+                const status = element.querySelector(".item-status");
+                if (status) {
+                    if (equipped) status.textContent = "Équipé";
+                    else if (owned) status.textContent = "Équiper";
+                    else status.textContent = "Acheter";
+                }
+            });
         }
 
-
-        /* ==========================================
-           CHARGEMENT DES DONNÉES
-        ========================================== */
-
-        async function loadGameData(
-            uid
-        ) {
-
-            gameLoaded =
-                false;
-
-
+        /* CHARGEMENT DES DONNÉES */
+        async function loadGameData(uid) {
+            gameLoaded = false;
             try {
+                const gameRef = ref(db, `clicker2/${uid}`);
+                const snapshot = await get(gameRef);
 
-                const gameRef =
-                    ref(
-                        db,
-                        `clicker2/${uid}`
-                    );
+                if (snapshot.exists()) {
+                    const savedData = snapshot.val();
+                    const defaultGame = createDefaultGame();
 
+                    game = { ...defaultGame, ...savedData };
 
-                const snapshot =
-                    await get(
-                        gameRef
-                    );
+                    if (!Array.isArray(game.skinsOwned)) game.skinsOwned = ["cookie"];
+                    if (!Array.isArray(game.bgOwned)) game.bgOwned = ["dark"];
 
+                    if (!game.skinsOwned.includes("cookie")) game.skinsOwned.push("cookie");
+                    if (!game.bgOwned.includes("dark")) game.bgOwned.push("dark");
 
-                if (
-                    snapshot.exists()
-                ) {
-
-                    const savedData =
-                        snapshot.val();
-
-
-                    const defaultGame =
-                        createDefaultGame();
-
-
-                    game = {
-
-                        ...defaultGame,
-
-                        ...savedData
-
-                    };
-
-
-                    if (
-                        !Array.isArray(
-                            game.skinsOwned
-                        )
-                    ) {
-
-                        game.skinsOwned =
-                            ["cookie"];
-
-                    }
-
-
-                    if (
-                        !Array.isArray(
-                            game.bgOwned
-                        )
-                    ) {
-
-                        game.bgOwned =
-                            ["dark"];
-
-                    }
-
-
-                    if (
-                        !game.skinsOwned.includes(
-                            "cookie"
-                        )
-                    ) {
-
-                        game.skinsOwned.push(
-                            "cookie"
-                        );
-
-                    }
-
-
-                    if (
-                        !game.bgOwned.includes(
-                            "dark"
-                        )
-                    ) {
-
-                        game.bgOwned.push(
-                            "dark"
-                        );
-
-                    }
-
-
-                    if (
-                        !skinsData[
-                            game.activeSkin
-                        ]
-                    ) {
-
-                        game.activeSkin =
-                            "cookie";
-
-                    }
-
-
-                    if (
-                        !bgData[
-                            game.activeBg
-                        ]
-                    ) {
-
-                        game.activeBg =
-                            "dark";
-
-                    }
-
+                    if (!skinsData[game.activeSkin]) game.activeSkin = "cookie";
+                    if (!bgData[game.activeBg]) game.activeBg = "dark";
+                } else {
+                    game = createDefaultGame();
+                    await set(gameRef, game);
                 }
-
-                else {
-
-                    game =
-                        createDefaultGame();
-
-
-                    await set(
-                        gameRef,
-                        game
-                    );
-
-                }
-
 
                 setupShopLists();
-
                 applyVisuals();
-
                 updateUI();
-
-
-                gameLoaded =
-                    true;
-
-
-                console.log(
-                    "Données du jeu chargées avec succès."
-                );
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Erreur lors du chargement:",
-                    error
-                );
-
-
-                game =
-                    createDefaultGame();
-
-
+                gameLoaded = true;
+                console.log("Données du jeu chargées avec succès.");
+            } catch (error) {
+                console.error("Erreur lors du chargement:", error);
+                game = createDefaultGame();
                 setupShopLists();
-
                 applyVisuals();
-
                 updateUI();
-
-
-                gameLoaded =
-                    true;
-
-
-                showNotification(
-                    "Impossible de charger la sauvegarde."
-                );
-
+                gameLoaded = true;
+                showNotification("Impossible de charger la sauvegarde.");
             }
-
         }
 
-
-        /* ==========================================
-           SAUVEGARDE DES DONNÉES
-        ========================================== */
-
-        async function saveGameData(
-            showNotif = true
-        ) {
-
-            if (
-                !currentUser ||
-                !gameLoaded ||
-                isSaving
-            ) return;
-
-
-            isSaving =
-                true;
-
+        /* SAUVEGARDE DES DONNÉES */
+        async function saveGameData(showNotif = true) {
+            if (!currentUser || !gameLoaded || isSaving) return;
+            isSaving = true;
 
             try {
+                const gameRef = ref(db, `clicker2/${currentUser.uid}`);
+                await set(gameRef, game);
 
-                const gameRef =
-                    ref(
-                        db,
-                        `clicker2/${currentUser.uid}`
-                    );
-
-
-                await set(
-                    gameRef,
-                    game
-                );
-
-
-                if (showNotif) {
-
-                    showNotification(
-                        "Progression sauvegardée !"
-                    );
-
-                }
-
+                if (showNotif) showNotification("Progression sauvegardée !");
+            } catch (error) {
+                console.error("Erreur lors de la sauvegarde:", error);
+                if (showNotif) showNotification("Erreur de sauvegarde.");
+            } finally {
+                isSaving = false;
             }
-
-            catch (error) {
-
-                console.error(
-                    "Erreur lors de la sauvegarde:",
-                    error
-                );
-
-
-                if (showNotif) {
-
-                    showNotification(
-                        "Erreur de sauvegarde."
-                    );
-
-                }
-
-            }
-
-            finally {
-
-                isSaving =
-                    false;
-
-            }
-
         }
 
-
-        /* ==========================================
-           NOTIFICATION
-        ========================================== */
-
-        let notificationTimeout =
-            null;
-
-
-        function showNotification(
-            message
-        ) {
-
-            notif.textContent =
-                message;
-
-
-            notif.style.opacity =
-                "1";
-
-
-            clearTimeout(
-                notificationTimeout
-            );
-
-
-            notificationTimeout =
-                setTimeout(
-                    () => {
-
-                        notif.style.opacity =
-                            "0";
-
-                    },
-                    2500
-                );
-
+        /* NOTIFICATIONS */
+        let notificationTimeout = null;
+        function showNotification(message) {
+            notif.textContent = message;
+            notif.style.opacity = "1";
+            clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => { notif.style.opacity = "0"; }, 2500);
         }
 
+        /* EVENEMENTS FENETRE */
+        window.addEventListener("beforeunload", () => {
+            if (currentUser && gameLoaded) saveGameData(false);
+        });
 
-        /* ==========================================
-           SAUVEGARDE AVANT FERMETURE
-        ========================================== */
-
-        window.addEventListener(
-            "beforeunload",
-            () => {
-
-                if (
-                    currentUser &&
-                    gameLoaded
-                ) {
-
-                    saveGameData(
-                        false
-                    );
-
-                }
-
+        window.addEventListener("resize", () => {
+            if (window.innerWidth <= 700) {
+                stopDrag();
+                chatWindow.style.left = "10px";
+                chatWindow.style.top = "10px";
             }
-        );
-
-
-        /* ==========================================
-           GESTION DU REDIMENSIONNEMENT
-        ========================================== */
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-                if (
-                    window.innerWidth <= 700
-                ) {
-
-                    stopDrag();
-
-
-                    chatWindow.style.left =
-                        "10px";
-
-
-                    chatWindow.style.top =
-                        "10px";
-
-                }
-
-            }
-        );
-
-
-        /* ==========================================
-           INITIALISATION VISUELLE
-        ========================================== */
+        });
 
         applyVisuals();
-
         updateUI();
-
     </script>
 
-<script>
-window.addEventListener("error", (event) => {
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        `<div style="
-            position:fixed;
-            bottom:0;
-            left:0;
-            right:0;
-            background:red;
-            color:white;
-            padding:10px;
-            z-index:999999;
-            font-size:12px;
-        ">
-            ERREUR : ${event.message}
-        </div>`
-    );
-});
-</script>
+    <script>
+        window.addEventListener("error", (event) => {
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<div style="position:fixed;bottom:0;left:0;right:0;background:red;color:white;padding:10px;z-index:999999;font-size:12px;">
+                    ERREUR : ${event.message}
+                </div>`
+            );
+        });
+    </script>
 
-<script>
-import { getAuth, onAuthStateChanged } from "https://gstatic.com";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://gstatic.com";
+    <script type="module">
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+        import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-const auth = getAuth();
-const db = getFirestore();
+        const auth = window.firebaseAuth;
+        const db = window.firebaseFirestore;
 
-// 1. Détection dynamique du numéro du jeu depuis l'URL actuelle (/game/1 ou /game/2)
-const segmentsUrl = window.location.pathname.split('/');
-const numeroJeu = segmentsUrl[segmentsUrl.length - 1] || "1"; 
+        const segmentsUrl = window.location.pathname.split('/');
+        const numeroJeu = segmentsUrl[segmentsUrl.length - 1] || "1"; 
 
-// Variable pour stocker les informations de l'utilisateur connecté
-let utilisateurConnecte = null;
+        let utilisateurConnecte = null;
 
-// Écouteur Firebase : Se déclenche automatiquement quand l'utilisateur est connecté
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        utilisateurConnecte = user;
-        console.log("Utilisateur BlocPlay connecté :", user.displayName);
-    } else {
-        utilisateurConnecte = null;
-        console.log("Aucun utilisateur connecté (Mode Invité)");
-    }
-});
-
-// 2. Fonction pour générer les 6 caractères aléatoires
-function genererCodeAleatoire(longueur) {
-    const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let resultat = "";
-    for (let i = 0; i < longueur; i++) {
-        resultat += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-    }
-    return resultat;
-}
-
-// 3. Gestion de l'interface et création du lien au clic
-document.addEventListener("DOMContentLoaded", () => {
-    const btnPartager = document.getElementById("btn-partager");
-    const popup = document.getElementById("custom-share-popup");
-    const btnFermer = document.getElementById("close-share-popup");
-    const inputLien = document.getElementById("share-link-input");
-    const btnCopier = document.getElementById("copy-share-btn");
-
-    btnPartager.addEventListener("click", async () => {
-        // Récupère le pseudo Firebase (ou "Invite" s'il n'est pas connecté)
-        const pseudo = utilisateurConnecte ? utilisateurConnecte.displayName : "Invite";
-        
-        // Génère le code unique pour cette session de partage
-        const idInvitationUnique = genererCodeAleatoire(6);
-
-        // Construit l'URL finale pour Codeberg
-        const urlFinale = `https://codeberg.page{idInvitationUnique}/game/${numeroJeu}`;
-        inputLien.value = urlFinale;
-
-        // Enregistre les données de manière sécurisée dans Firebase Firestore
-        try {
-            await setDoc(doc(db, "invitations", idInvitationUnique), {
-                jeu: numeroJeu,
-                createur: pseudo,
-                uidCreateur: utilisateurConnecte ? utilisateurConnecte.uid : null,
-                statut: "actif",
-                creeLe: serverTimestamp()
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    utilisateurConnecte = user;
+                    console.log("Utilisateur BlocPlay connecté :", user.displayName);
+                } else {
+                    utilisateurConnecte = null;
+                    console.log("Aucun utilisateur connecté (Mode Invité)");
+                }
             });
-            console.log(`Invitation ${idInvitationUnique} sauvegardée pour ${pseudo}`);
-        } catch (erreur) {
-            console.error("Erreur de sauvegarde Firebase :", erreur);
         }
 
-        // Configuration visuelle du popup
-        btnCopier.textContent = "Copier";
-        btnCopier.classList.remove("copied");
-        popup.classList.add("active");
-    });
-
-    // Événement bouton Copier
-    btnCopier.addEventListener("click", () => {
-        inputLien.select();
-        inputLien.setSelectionRange(0, 99999);
-        try {
-            document.execCommand("copy");
-            btnCopier.textContent = "Copié !";
-            btnCopier.classList.add("copied");
-            setTimeout(() => { popup.classList.remove("active"); }, 1000);
-        } catch (err) {
-            console.error("Erreur lors de la copie", err);
+        function genererCodeAleatoire(longueur) {
+            const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            let resultat = "";
+            for (let i = 0; i < longueur; i++) {
+                resultat += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return resultat;
         }
-    });
 
-    btnFermer.addEventListener("click", () => popup.classList.remove("active"));
-});
-</script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const btnPartager = document.getElementById("btn-partager");
+            const popup = document.getElementById("custom-share-popup");
+            const btnFermer = document.getElementById("close-share-popup");
+            const inputLien = document.getElementById("share-link-input");
+            const btnCopier = document.getElementById("copy-share-btn");
 
+            btnPartager.addEventListener("click", async () => {
+                const pseudo = utilisateurConnecte ? utilisateurConnecte.displayName : "Invite";
+                const idInvitationUnique = genererCodeAleatoire(6);
+                const urlFinale = `https://codeberg.page${idInvitationUnique}/game/${numeroJeu}`;
+                inputLien.value = urlFinale;
+
+                if (db) {
+                    try {
+                        await setDoc(doc(db, "invitations", idInvitationUnique), {
+                            jeu: numeroJeu,
+                            createur: pseudo,
+                            uidCreateur: utilisateurConnecte ? utilisateurConnecte.uid : null,
+                            statut: "actif",
+                            creeLe: serverTimestamp()
+                        });
+                        console.log(`Invitation ${idInvitationUnique} sauvegardée pour ${pseudo}`);
+                    } catch (erreur) {
+                        console.error("Erreur de sauvegarde Firebase :", erreur);
+                    }
+                }
+
+                btnCopier.textContent = "Copier";
+                btnCopier.classList.remove("copied");
+                popup.classList.add("active");
+            });
+
+            btnCopier.addEventListener("click", () => {
+                inputLien.select();
+                inputLien.setSelectionRange(0, 99999);
+                try {
+                    document.execCommand("copy");
+                    btnCopier.textContent = "Copié !";
+                    btnCopier.classList.add("copied");
+                    setTimeout(() => { popup.classList.remove("active"); }, 1000);
+                } catch (err) {
+                    console.error("Erreur lors de la copie", err);
+                }
+            });
+
+            btnFermer.addEventListener("click", () => popup.classList.remove("active"));
+        });
+    </script>
 </body>
 </html>
