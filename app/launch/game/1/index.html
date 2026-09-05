@@ -1256,7 +1256,7 @@
             Serveur Discord
         </a>
 
-        <button oneclick="partagerLienAléatoire()">
+        <button id="btn-partager">
             Partager le jeu
         </button>
 
@@ -3507,6 +3507,7 @@ window.addEventListener("error", (event) => {
 </script>
 
 <script>
+// Vos 10 URLs
 const mesUrls = [
     "https://blocplay.codeberg.page/invite/id/IKt45jKlzD",
     "https://blocplay.codeberg.page/invite/id/TmJsr9G4H",
@@ -3520,40 +3521,46 @@ const mesUrls = [
     "https://lien10.com"
 ];
 
-function partagerLienAleatoire() {
+// Fonction principale déclenchée au clic
+function executerPartageOuCopie() {
+    // 1. Sélection immédiate de l'URL
     const urlChoisie = mesUrls[Math.floor(Math.random() * mesUrls.length)];
+    console.log("URL sélectionnée :", urlChoisie); // Permet de vérifier dans la console F12
 
+    // 2. Tentative de partage natif (Mobile)
     if (navigator.share) {
         navigator.share({
             title: 'Découvrez ce lien !',
             url: urlChoisie
-        }).then(() => {
-            console.log('Partage réussi');
-        }).catch((err) => {
+        })
+        .then(() => console.log('Partage réussi'))
+        .catch((err) => {
             if (err.name !== 'AbortError') console.error(err);
         });
         return; 
     }
 
+    // 3. Tentative de copie moderne (PC/Mobile récents sous HTTPS)
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(urlChoisie)
             .then(() => {
                 alert("Lien copié dans le presse-papiers !");
             })
             .catch((err) => {
-                console.error("Erreur Clipboard API : ", err);
+                console.warn("Échec Clipboard API, passage au secours :", err);
                 secoursAncienneMethode(urlChoisie);
             });
         return;
     }
 
+    // 4. Secours universel (HTTP local / Anciens navigateurs)
     secoursAncienneMethode(urlChoisie);
 }
 
+// Fonction de secours universelle
 function secoursAncienneMethode(texte) {
     const input = document.createElement("textarea");
     input.value = texte;
-    input.style.fontSize = "12pt"; 
     input.style.position = "fixed";
     input.style.top = "0";
     input.style.left = "0";
@@ -3567,7 +3574,7 @@ function secoursAncienneMethode(texte) {
     try {
         const succes = document.execCommand("copy");
         if (succes) {
-            alert("Lien copié !");
+            alert("Lien copié ! (Mode secours)");
         } else {
             prompt("Copiez ce lien manuellement :", texte);
         }
@@ -3577,6 +3584,16 @@ function secoursAncienneMethode(texte) {
     
     document.body.removeChild(input);
 }
+
+// Liaison propre du bouton (écouteur d'événement)
+document.addEventListener("DOMContentLoaded", () => {
+    const bouton = document.getElementById("btn-partager");
+    if (bouton) {
+        bouton.addEventListener("click", executerPartageOuCopie);
+    } else {
+        console.error("Le bouton avec l'ID 'btn-partager' n'a pas été trouvé dans la page.");
+    }
+});
 </script>
 
 </body>
