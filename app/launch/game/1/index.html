@@ -3639,6 +3639,9 @@ const mesUrls = [
     "https://lien10.com"
 ];
 
+// On choisit l'URL UNE SEULE FOIS au chargement initial de la page
+const urlFixePourCetteSession = mesUrls[Math.floor(Math.random() * mesUrls.length)];
+
 document.addEventListener("DOMContentLoaded", () => {
     const btnPartager = document.getElementById("btn-partager");
     const popup = document.getElementById("custom-share-popup");
@@ -3646,15 +3649,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputLien = document.getElementById("share-link-input");
     const btnCopier = document.getElementById("copy-share-btn");
 
-    // 1. Clic sur le bouton principal : Génère le lien et ouvre la popup
+    // 1. Clic sur le bouton principal : Ouvre la popup avec l'URL unique de la session
     btnPartager.addEventListener("click", () => {
-        // Choix de l'URL au hasard
-        const urlChoisie = mesUrls[Math.floor(Math.random() * mesUrls.length)];
+        // On injecte l'URL qui a été mémorisée au chargement de la page
+        inputLien.value = urlFixePourCetteSession;
         
-        // On injecte l'URL dans l'input de la popup
-        inputLien.value = urlChoisie;
-        
-        // Reset du bouton copier au cas où il était resté sur "Copié !"
+        // Reset du bouton copier (au cas où il était resté sur "Copié !")
         btnCopier.textContent = "Copier";
         btnCopier.classList.remove("copied");
 
@@ -3664,12 +3664,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Clic sur le bouton Copier à l'intérieur de la popup
     btnCopier.addEventListener("click", () => {
-        // Sélection et copie du texte de l'input
         inputLien.select();
         inputLien.setSelectionRange(0, 99999); // Sécurité Mobile
 
         try {
-            // Méthode universelle de copie basée sur la sélection de l'input
             document.execCommand("copy");
             
             // Effet visuel de succès
