@@ -3626,37 +3626,86 @@ window.addEventListener("error", (event) => {
 </script>
 
 <script>
-// Importez vos fonctions Firebase (assurez-vous d'avoir configuré Firebase dans votre script)
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://gstatic.com";
-
-const db = getFirestore();
-
-// Fonction pour enregistrer l'invitation dans Firebase
-async function enregistrerInvitationFirebase(idInvitation) {
-    try {
-        // Crée un document dans la collection "invitations" avec l'ID généré
-        await setDoc(doc(db, "invitations", idInvitation), {
-            creeLe: serverTimestamp(),
-            statut: "actif",
-            creePar: "systeme_blocplay" // Vous pouvez y ajouter l'ID de l'utilisateur si connecté
-        });
-        console.log("Invitation synchronisée avec Firebase !");
-    } catch (erreur) {
-        console.error("Erreur lors de la synchronisation Firebase :", erreur);
+// 1. Fonction pour générer les 6 caractères aléatoires
+function genererCodeAleatoire(longueur) {
+    const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let resultat = "";
+    for (let i = 0; i < longueur; i++) {
+        resultat += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
+    return resultat;
 }
 
-// INTEGREZ CELA DANS VOTRE ÉCOUTEUR DE CLIC EXISTANT :
-btnPartager.addEventListener("click", async () => {
-    inputLien.value = urlFixePourCetteSession;
-    
-    // Lance la sauvegarde en arrière-plan dans Firebase
-    await enregistrerInvitationFirebase(idInvitationUnique);
+// 2. Détection dynamique du numéro du jeu depuis l'URL actuelle
+// Exemple : si l'URL se termine par /game/1, "numeroJeu" vaudra "1"
+const segmentsUrl = window.location.pathname.split('/');
+const numeroJeu = segmentsUrl[segmentsUrl.length - 1] || "1"; 
 
-    btnCopier.textContent = "Copier";
-    btnCopier.classList.remove("copied");
-    popup.classList.add("active");
+// 3. Récupération du pseudo de l'utilisateur connecté
+// (À adapter selon l'endroit où vous stockez le compte BlocPlay, exemple ici avec le localStorage)
+const pseudoUtilisateur = localStorage.getItem("blocplay_pseudo") || "Invite";
+
+// 4. Génération de l'identifiant unique de 6 caractères pour cette session
+const idInvitationUnique = genererCodeAleatoire(6);
+
+// 5. Assemblage de l'URL finale selon la structure demandée
+// Format cible : https://codeberg.page[CODE]/game/[NUMERO]?user=[PSEUDO]
+const urlFixePourCetteSession = `https://codeberg.page${idInvitationUnique}/game/${numeroJeu}`;
+
+// --- Gestion de l'interface et enregistrement ---
+document.addEventListener("DOMContentLoaded", () => {
+    const btnPartager = document.getElementById("btn-partager");
+    const popup = document.getElementById("custom-share-popup");
+    const btnFermer = document.getElementById("close-share-popup");
+    const inputLien = document.getElementById("share-link-input");
+    const btnCopier = document.getElementById("copy-share-btn");
+
+    btnPartager.addEventListener("click", async () => {
+        // Affiche l'URL personnalisée dans la popup de partage
+        inputLien.value = urlFixePourCetteSession;
+        
+        // Sauvegarde de l'invitation dans Firebase avec le pseudo associé
+        if (typeof enregistrerInvitationFirebase === "function") {
+            await enregistrerInvitationFirebase(idInvitationUnique, numeroJeu, pseudoUtilisateur);
+        }
+
+        btnCopier.textContent = "Copier";
+        btnCopier.classList.remove("copied");
+        popup.classList.add("active");
+    });
+
+    // Gestion du bouton Copier
+    btnCopier.addEventListener("click", () => {
+        inputLien.select();
+        inputLien.setSelectionRange(0, 99999);
+        try {
+            document.execCommand("copy");
+            btnCopier.textContent = "Copié !";
+            btnCopier.classList.add("copied");
+            setTimeout(() => { popup.classList.remove("active"); }, 1000);
+        } catch (err) {
+            console.error("Erreur de copie", err);
+        }
+    });
+
+    btnFermer.addEventListener("click", () => popup.classList.remove("active"));
 });
+
+// Fonction de synchronisation Firebase Firestore
+async function enregistrerInvitationFirebase(idInvitation, jeuId, pseudo) {
+    try {
+        // Import dynamique ou utilisation de votre instance "db" existante
+        await firebase.firestore().collection("invitations").doc(idInvitation).set({
+            jeu: jeuId,
+            createur: pseudo,
+            statut: "actif",
+            creeLe: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log(`Invitation ${idInvitation} enregistrée pour le jeu ${jeuId} par ${pseudo}`);
+    } catch (erreur) {
+        console.error("Erreur Firebase :", erreur);
+    }
+}
 </script>
 
 </body>
