@@ -1249,12 +1249,16 @@
         </button>
 
         <a
-            href="https://discord.com/invite/TcK65JDaaC"
+            href="https://blocplay.codeberg.page/invite/id/DISCORD"
             target="_blank"
             rel="noopener noreferrer"
         >
             Serveur Discord
         </a>
+
+        <button oneclick="partagerLienAléatoire()">
+            Partager le jeu
+        </button>
 
     </div>
 
@@ -1271,7 +1275,7 @@
         >
 
             <span>
-                Chat Privé BlocPlay
+                BP Contact
             </span>
 
             <button
@@ -3500,6 +3504,48 @@ window.addEventListener("error", (event) => {
         </div>`
     );
 });
+</script>
+
+<script>
+// Vos 10 URLs différentes
+const mesUrls = [
+    "https://blocplay.codeberg.page/invite/id/IKt45jKlzD",
+    "https://blocplay.codeberg.page/invite/id/TmJsr9G4H",
+    "https://blocplay.codeberg.page/invite/id/gHDnQATy",
+    "https://lien4.com",
+    "https://lien5.com",
+    "https://lien6.com",
+    "https://lien7.com",
+    "https://lien8.com",
+    "https://lien9.com",
+    "https://lien10.com"
+];
+
+async function partagerLienAleatoire() {
+    // Sélectionne une URL au hasard parmi les 10
+    const urlChoisie = mesUrls[Math.floor(Math.random() * mesUrls.length)];
+
+    // 1. Tente le partage natif (Mobile / Tablettes)
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Découvrez ce lien !',
+                url: urlChoisie
+            });
+            return;
+        } catch (err) {
+            if (err.name === 'AbortError') return; // L'utilisateur a annulé
+        }
+    }
+
+    // 2. Secours : Copie dans le presse-papiers (Ordinateurs / Non compatible)
+    try {
+        await navigator.clipboard.writeText(urlChoisie);
+        alert("Un lien a été copié dans votre presse-papiers !");
+    } catch (err) {
+        console.error("Erreur de copie :", err);
+    }
+}
 </script>
 
 </body>
