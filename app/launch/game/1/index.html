@@ -3626,7 +3626,31 @@ window.addEventListener("error", (event) => {
 </script>
 
 <script>
-// 1. Fonction pour générer les 6 caractères aléatoires
+import { getAuth, onAuthStateChanged } from "https://gstatic.com";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://gstatic.com";
+
+const auth = getAuth();
+const db = getFirestore();
+
+// 1. Détection dynamique du numéro du jeu depuis l'URL actuelle (/game/1 ou /game/2)
+const segmentsUrl = window.location.pathname.split('/');
+const numeroJeu = segmentsUrl[segmentsUrl.length - 1] || "1"; 
+
+// Variable pour stocker les informations de l'utilisateur connecté
+let utilisateurConnecte = null;
+
+// Écouteur Firebase : Se déclenche automatiquement quand l'utilisateur est connecté
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        utilisateurConnecte = user;
+        console.log("Utilisateur BlocPlay connecté :", user.displayName);
+    } else {
+        utilisateurConnecte = null;
+        console.log("Aucun utilisateur connecté (Mode Invité)");
+    }
+});
+
+// 2. Fonction pour générer les 6 caractères aléatoires
 function genererCodeAleatoire(longueur) {
     const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let resultat = "";
@@ -3636,23 +3660,7 @@ function genererCodeAleatoire(longueur) {
     return resultat;
 }
 
-// 2. Détection dynamique du numéro du jeu depuis l'URL actuelle
-// Exemple : si l'URL se termine par /game/1, "numeroJeu" vaudra "1"
-const segmentsUrl = window.location.pathname.split('/');
-const numeroJeu = segmentsUrl[segmentsUrl.length - 1] || "1"; 
-
-// 3. Récupération du pseudo de l'utilisateur connecté
-// (À adapter selon l'endroit où vous stockez le compte BlocPlay, exemple ici avec le localStorage)
-const pseudoUtilisateur = localStorage.getItem("blocplay_pseudo") || "Invite";
-
-// 4. Génération de l'identifiant unique de 6 caractères pour cette session
-const idInvitationUnique = genererCodeAleatoire(6);
-
-// 5. Assemblage de l'URL finale selon la structure demandée
-// Format cible : https://codeberg.page[CODE]/game/[NUMERO]?user=[PSEUDO]
-const urlFixePourCetteSession = `https://codeberg.page${idInvitationUnique}/game/${numeroJeu}`;
-
-// --- Gestion de l'interface et enregistrement ---
+// 3. Gestion de l'interface et création du lien au clic
 document.addEventListener("DOMContentLoaded", () => {
     const btnPartager = document.getElementById("btn-partager");
     const popup = document.getElementById("custom-share-popup");
@@ -3661,20 +3669,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCopier = document.getElementById("copy-share-btn");
 
     btnPartager.addEventListener("click", async () => {
-        // Affiche l'URL personnalisée dans la popup de partage
-        inputLien.value = urlFixePourCetteSession;
+        // Récupère le pseudo Firebase (ou "Invite" s'il n'est pas connecté)
+        const pseudo = utilisateurConnecte ? utilisateurConnecte.displayName : "Invite";
         
-        // Sauvegarde de l'invitation dans Firebase avec le pseudo associé
-        if (typeof enregistrerInvitationFirebase === "function") {
-            await enregistrerInvitationFirebase(idInvitationUnique, numeroJeu, pseudoUtilisateur);
+        // Génère le code unique pour cette session de partage
+        const idInvitationUnique = genererCodeAleatoire(6);
+
+        // Construit l'URL finale pour Codeberg
+        const urlFinale = `https://codeberg.page{idInvitationUnique}/game/${numeroJeu}`;
+        inputLien.value = urlFinale;
+
+        // Enregistre les données de manière sécurisée dans Firebase Firestore
+        try {
+            await setDoc(doc(db, "invitations", idInvitationUnique), {
+                jeu: numeroJeu,
+                createur: pseudo,
+                uidCreateur: utilisateurConnecte ? utilisateurConnecte.uid : null,
+                statut: "actif",
+                creeLe: serverTimestamp()
+            });
+            console.log(`Invitation ${idInvitationUnique} sauvegardée pour ${pseudo}`);
+        } catch (erreur) {
+            console.error("Erreur de sauvegarde Firebase :", erreur);
         }
 
+        // Configuration visuelle du popup
         btnCopier.textContent = "Copier";
         btnCopier.classList.remove("copied");
         popup.classList.add("active");
     });
 
-    // Gestion du bouton Copier
+    // Événement bouton Copier
     btnCopier.addEventListener("click", () => {
         inputLien.select();
         inputLien.setSelectionRange(0, 99999);
@@ -3684,28 +3709,12 @@ document.addEventListener("DOMContentLoaded", () => {
             btnCopier.classList.add("copied");
             setTimeout(() => { popup.classList.remove("active"); }, 1000);
         } catch (err) {
-            console.error("Erreur de copie", err);
+            console.error("Erreur lors de la copie", err);
         }
     });
 
     btnFermer.addEventListener("click", () => popup.classList.remove("active"));
 });
-
-// Fonction de synchronisation Firebase Firestore
-async function enregistrerInvitationFirebase(idInvitation, jeuId, pseudo) {
-    try {
-        // Import dynamique ou utilisation de votre instance "db" existante
-        await firebase.firestore().collection("invitations").doc(idInvitation).set({
-            jeu: jeuId,
-            createur: pseudo,
-            statut: "actif",
-            creeLe: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        console.log(`Invitation ${idInvitation} enregistrée pour le jeu ${jeuId} par ${pseudo}`);
-    } catch (erreur) {
-        console.error("Erreur Firebase :", erreur);
-    }
-}
 </script>
 
 </body>
