@@ -150,6 +150,8 @@
 
 .contact-info {
   min-width: 0;
+
+  flex: 1;
 }
 
 
@@ -174,6 +176,125 @@
   color: #7d899c;
 
   font-size: 11px;
+}
+
+
+/* ========================= */
+/* DEMANDE D'AMI */
+/* ========================= */
+
+.friend-request-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px;
+
+  background: #111827;
+
+  border: 1px solid rgba(255,255,255,0.06);
+
+  border-radius: 12px;
+
+  min-width: 0;
+}
+
+
+.friend-request-info {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.friend-request-name {
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.friend-request-label {
+  margin-top: 4px;
+
+  color: #7d899c;
+
+  font-size: 11px;
+}
+
+
+.friend-request-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  flex-shrink: 0;
+}
+
+
+.friend-request-accept,
+.friend-request-reject {
+  border: 0;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  padding: 8px 10px;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.friend-request-accept {
+  background: #2563eb;
+
+  color: white;
+}
+
+
+.friend-request-reject {
+  background: #1f2937;
+
+  color: #cbd5e1;
+
+  min-width: 34px;
+}
+
+
+.friend-request-accept:hover,
+.friend-request-reject:hover {
+  opacity: 0.85;
+
+  transform: translateY(-1px);
+}
+
+
+.friend-request-accept:disabled,
+.friend-request-reject:disabled {
+  opacity: 0.5;
+
+  cursor: default;
+
+  transform: none;
 }
 
 
@@ -768,9 +889,12 @@ import {
   doc,
   getDoc,
   getDocs,
+  setDoc,
+  deleteDoc,
   query,
   orderBy,
-  limit
+  limit,
+  serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -1220,6 +1344,87 @@ function createContact(
 
 
 /* ========================= */
+/* CARTE DEMANDE D'AMI */
+/* ========================= */
+
+function createFriendRequest(
+  data,
+  senderUid
+) {
+
+  const name =
+    data.username ||
+    data.displayName ||
+    "Utilisateur";
+
+
+  const image =
+    getImage(
+      data,
+      name
+    );
+
+
+  return `
+
+    <div
+      class="friend-request-item"
+      data-request-sender="${escapeHTML(senderUid)}"
+    >
+
+      <img
+        class="contact-avatar"
+        src="${escapeHTML(image)}"
+        alt=""
+        loading="lazy"
+      >
+
+
+      <div class="friend-request-info">
+
+        <div class="friend-request-name">
+          ${escapeHTML(name)}
+        </div>
+
+        <div class="friend-request-label">
+          Demande d'ami
+        </div>
+
+      </div>
+
+
+      <div class="friend-request-actions">
+
+        <button
+          class="friend-request-accept"
+          type="button"
+          data-action="accept"
+          data-sender="${escapeHTML(senderUid)}"
+        >
+          Accepter
+        </button>
+
+
+        <button
+          class="friend-request-reject"
+          type="button"
+          aria-label="Refuser la demande"
+          data-action="reject"
+          data-sender="${escapeHTML(senderUid)}"
+        >
+          X
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ========================= */
 /* EMPTY */
 /* ========================= */
 
@@ -1277,6 +1482,412 @@ async function getUserCollection(
 
 
 /* ========================= */
+/* DEMANDES D'AMIS REÇUES */
+/* ========================= */
+
+async function loadFriendRequests(
+  uid
+) {
+
+  const requestsRef =
+    collection(
+      db,
+      "users",
+      uid,
+      "friendRequests"
+    );
+
+
+  const snapshot =
+    await getDocs(
+      requestsRef
+    );
+
+
+  return snapshot.docs.map(
+    item => ({
+
+      id: item.id,
+
+      ...item.data()
+
+    })
+  );
+
+}
+
+
+/* ========================= */
+/* INFOS UTILISATEUR */
+/* ========================= */
+
+async function getUserPublicData(
+  uid
+) {
+
+  /* ========================= */
+  /* ESSAI PUBLICUSERS */
+  /* ========================= */
+
+  try {
+
+    const publicRef =
+      doc(
+        db,
+        "publicUsers",
+        uid
+      );
+
+
+    const publicSnap =
+      await getDoc(
+        publicRef
+      );
+
+
+    if (
+      publicSnap.exists()
+    ) {
+
+      return publicSnap.data();
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Public profile error:",
+      error
+    );
+
+  }
+
+
+  /* ========================= */
+  /* FALLBACK USERS */
+  /* ========================= */
+
+  try {
+
+    const userRef =
+      doc(
+        db,
+        "users",
+        uid
+      );
+
+
+    const userSnap =
+      await getDoc(
+        userRef
+      );
+
+
+    if (
+      userSnap.exists()
+    ) {
+
+      return userSnap.data();
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "User profile error:",
+      error
+    );
+
+  }
+
+
+  return {
+
+    displayName:
+      "Utilisateur"
+
+  };
+
+}
+
+
+/* ========================= */
+/* ACCEPTER UNE DEMANDE */
+/* ========================= */
+
+async function acceptFriendRequest(
+  uid,
+  senderUid
+) {
+
+  const requestRef =
+    doc(
+      db,
+      "users",
+      uid,
+      "friendRequests",
+      senderUid
+    );
+
+
+  const requestSnap =
+    await getDoc(
+      requestRef
+    );
+
+
+  if (
+    !requestSnap.exists()
+  ) {
+
+    return;
+
+  }
+
+
+  const requestData =
+    requestSnap.data();
+
+
+  /* ========================= */
+  /* VÉRIFICATION */
+  /* ========================= */
+
+  if (
+    requestData.senderUid !==
+    senderUid
+    ||
+    requestData.recipientUid !==
+    uid
+  ) {
+
+    throw new Error(
+      "Demande d'ami invalide."
+    );
+
+  }
+
+
+  /* ========================= */
+  /* CONTACT LOCAL */
+  /* ========================= */
+
+  const myFriendRef =
+    doc(
+      db,
+      "users",
+      uid,
+      "friends",
+      senderUid
+    );
+
+
+  /* ========================= */
+  /* CONTACT EXPÉDITEUR */
+  /* ========================= */
+
+  const senderFriendRef =
+    doc(
+      db,
+      "users",
+      senderUid,
+      "friends",
+      uid
+    );
+
+
+  const senderData =
+    await getUserPublicData(
+      senderUid
+    );
+
+
+  const myData =
+    await getUserPublicData(
+      uid
+    );
+
+
+  /* ========================= */
+  /* AJOUT DES DEUX CÔTÉS */
+  /* ========================= */
+
+  await setDoc(
+    myFriendRef,
+    {
+      uid:
+        senderUid,
+
+      username:
+        senderData.username ||
+        "",
+
+      displayName:
+        senderData.displayName ||
+        senderData.username ||
+        "Utilisateur",
+
+      photoURL:
+        senderData.photoURL ||
+        senderData.avatar ||
+        "",
+
+      addedAt:
+        serverTimestamp()
+    }
+  );
+
+
+  await setDoc(
+    senderFriendRef,
+    {
+      uid:
+        uid,
+
+      username:
+        myData.username ||
+        "",
+
+      displayName:
+        myData.displayName ||
+        myData.username ||
+        "Utilisateur",
+
+      photoURL:
+        myData.photoURL ||
+        myData.avatar ||
+        "",
+
+      addedAt:
+        serverTimestamp()
+    }
+  );
+
+
+  /* ========================= */
+  /* SUPPRESSION DEMANDE */
+  /* ========================= */
+
+  await deleteDoc(
+    requestRef
+  );
+
+}
+
+
+/* ========================= */
+/* REFUSER UNE DEMANDE */
+/* ========================= */
+
+async function rejectFriendRequest(
+  uid,
+  senderUid
+) {
+
+  const requestRef =
+    doc(
+      db,
+      "users",
+      uid,
+      "friendRequests",
+      senderUid
+    );
+
+
+  await deleteDoc(
+    requestRef
+  );
+
+}
+
+
+/* ========================= */
+/* GESTION DES BOUTONS */
+/* ========================= */
+
+async function handleFriendRequestAction(
+  uid,
+  senderUid,
+  action,
+  button
+) {
+
+  const container =
+    button.closest(
+      ".friend-request-item"
+    );
+
+
+  const buttons =
+    container.querySelectorAll(
+      "button"
+    );
+
+
+  buttons.forEach(
+    item => {
+
+      item.disabled =
+        true;
+
+    }
+  );
+
+
+  try {
+
+    if (
+      action ===
+      "accept"
+    ) {
+
+      await acceptFriendRequest(
+        uid,
+        senderUid
+      );
+
+    } else {
+
+      await rejectFriendRequest(
+        uid,
+        senderUid
+      );
+
+    }
+
+
+    await loadContacts(
+      uid
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Friend request action:",
+      error
+    );
+
+
+    buttons.forEach(
+      item => {
+
+        item.disabled =
+          false;
+
+      }
+    );
+
+
+    alert(
+      "Impossible de traiter la demande d'ami."
+    );
+
+  }
+
+}
+
+
+/* ========================= */
 /* CONTACTS */
 /* ========================= */
 
@@ -1292,6 +1903,20 @@ async function loadContacts(
 
   try {
 
+    /* ========================= */
+    /* DEMANDES REÇUES */
+    /* ========================= */
+
+    const requests =
+      await loadFriendRequests(
+        uid
+      );
+
+
+    /* ========================= */
+    /* CONTACTS EXISTANTS */
+    /* ========================= */
+
     const friends =
       await getUserCollection(
         uid,
@@ -1299,28 +1924,67 @@ async function loadContacts(
       );
 
 
-    if (
-      friends.length === 0
+    const result = [];
+
+
+    /* ========================= */
+    /* DEMANDES */
+    /* ========================= */
+
+    for (
+      const request
+      of requests
     ) {
 
-      empty(
-        element,
-        "Aucun contact"
-      );
+      if (
+        request.status &&
+        request.status !==
+        "pending"
+      ) {
 
-      return;
+        continue;
+
+      }
+
+
+      try {
+
+        const senderData =
+          await getUserPublicData(
+            request.senderUid ||
+            request.id
+          );
+
+
+        result.push(
+          createFriendRequest(
+            senderData,
+            request.senderUid ||
+            request.id
+          )
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Friend request profile:",
+          error
+        );
+
+      }
 
     }
 
+
+    /* ========================= */
+    /* CONTACTS */
+    /* ========================= */
 
     const visible =
       friends.slice(
         0,
         6
       );
-
-
-    const result = [];
 
 
     for (
@@ -1374,8 +2038,62 @@ async function loadContacts(
     }
 
 
+    /* ========================= */
+    /* AUCUN CONTACT / DEMANDE */
+    /* ========================= */
+
+    if (
+      result.length === 0
+    ) {
+
+      empty(
+        element,
+        "Aucun contact"
+      );
+
+      return;
+
+    }
+
+
     element.innerHTML =
       result.join("");
+
+
+    /* ========================= */
+    /* BOUTONS DEMANDES */
+    /* ========================= */
+
+    element
+      .querySelectorAll(
+        "[data-action]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              const senderUid =
+                button.dataset.sender;
+
+              const action =
+                button.dataset.action;
+
+
+              await handleFriendRequestAction(
+                uid,
+                senderUid,
+                action,
+                button
+              );
+
+            }
+          );
+
+        }
+      );
 
   } catch (error) {
 
