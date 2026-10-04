@@ -1,189 +1,823 @@
 <!-- Please read COPYRIGHT.md -->
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscription - BlocPlay</title>
 
-  <link rel="icon" href="logo.ico">
+  <title>Créer un compte - BlocPlay</title>
+
+  <link rel="icon" href="/logo.ico">
 
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial;
-      background: #0b0f1a;
+      min-height: 100vh;
+
+      font-family: Arial, sans-serif;
+
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(0, 114, 255, 0.18),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at bottom right,
+          rgba(0, 198, 255, 0.12),
+          transparent 35%
+        ),
+        #0b0f1a;
+
       color: white;
+
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      padding: 10px;
+
+      padding: 25px;
     }
 
-    .box {
-      background: #141a2a;
+    /* =========================
+       CONTAINER
+    ========================= */
+
+    .register-container {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    /* =========================
+       LOGO
+    ========================= */
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 85px;
+      height: 85px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(0 0 15px rgba(0, 198, 255, 0.25));
+
+      animation: logoAppear 0.6s ease;
+    }
+
+    @keyframes logoAppear {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .register-card {
+      background: rgba(20, 26, 42, 0.94);
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
+
+      border-radius: 20px;
+
       padding: 30px;
-      border-radius: 15px;
-      width: 300px;
+
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
+
+      backdrop-filter: blur(12px);
+
+      animation: cardAppear 0.5s ease;
     }
 
-    h2 { text-align: center; }
+    @keyframes cardAppear {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* =========================
+       TITRE
+    ========================= */
+
+    h1 {
+      margin: 0;
+      text-align: center;
+
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin: 8px 0 28px;
+
+      text-align: center;
+
+      color: #9ca3af;
+
+      font-size: 14px;
+    }
+
+    /* =========================
+       LABELS
+    ========================= */
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+
+      font-weight: bold;
+
+      color: #dbeafe;
+    }
+
+    /* =========================
+       INPUTS
+    ========================= */
 
     input {
       width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: none;
+
+      padding: 14px 15px;
+
+      border-radius: 11px;
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
+
+      outline: none;
+
+      background: #0d1424;
+
+      color: white;
+
+      font-size: 15px;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
     }
+
+    input::placeholder {
+      color: #64748b;
+    }
+
+    input:focus {
+      border-color: #22d3ee;
+
+      background: #101a2d;
+
+      box-shadow:
+        0 0 0 3px rgba(34, 211, 238, 0.12);
+    }
+
+    /* =========================
+       BOUTON
+    ========================= */
 
     button {
       width: 100%;
-      padding: 12px;
+
+      padding: 14px;
+
+      margin-top: 5px;
+
       border: none;
-      border-radius: 10px;
-      background: linear-gradient(135deg,#8b5cf6,#22d3ee);
+
+      border-radius: 11px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #8b5cf6,
+          #22d3ee
+        );
+
+      color: white;
+
+      font-size: 15px;
+
       font-weight: bold;
+
       cursor: pointer;
+
+      transition:
+        transform 0.15s ease,
+        filter 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
-    a {
-      color: #22d3ee;
-      display: block;
-      text-align: center;
-      margin-top: 10px;
-      text-decoration: none;
+    button:hover {
+      filter: brightness(1.08);
+
+      box-shadow:
+        0 8px 25px rgba(34, 211, 238, 0.18);
     }
-  #color-status {
-    width: 100%;
-    min-height: 50px;
-    background-color: #141a2a;
-    border-radius: 5px 10px 10px 5px;
-    align-items: stretch;
-    margin-top: 10px;
-    padding: 0;
-  }
-  #status {
-    display: flex;
-    width: calc(100% - 6px);
-    background-color: #141a2a;
-    margin-left: auto;
-    border-radius: 5px;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 5px;
-  }
-  #status-txt {
-    font-family: Arial, sans-serif;
-    color: #90faff;
-  }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+
+      transform: none;
+    }
+
+    /* =========================
+       LIEN
+    ========================= */
+
+    .login-link {
+      display: block;
+
+      margin-top: 20px;
+
+      text-align: center;
+
+      color: #22d3ee;
+
+      text-decoration: none;
+
+      font-size: 14px;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    #color-status {
+      display: none;
+
+      margin-top: 15px;
+
+      width: 100%;
+
+      border-radius: 10px;
+
+      overflow: hidden;
+    }
+
+    #status {
+      width: 100%;
+
+      margin: 0;
+
+      padding: 11px 13px;
+
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #status-txt {
+      margin: 0;
+
+      font-size: 13px;
+
+      line-height: 1.4;
+
+      color: white;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+      margin-top: 18px;
+
+      text-align: center;
+
+      color: #64748b;
+
+      font-size: 11px;
+    }
+
+    @media (max-width: 480px) {
+
+      body {
+        padding: 15px;
+      }
+
+      .register-card {
+        padding: 23px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
 
-<div class="box">
-  <h2>Inscription</h2>
+  <div class="register-container">
 
-  <input type="text" id="username" placeholder="Pseudo">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Mot de passe">
+    <!-- LOGO -->
 
-  <button onclick="signup()">Créer un compte</button>
+    <div class="logo-container">
+      <img src="/icon.png" alt="BlocPlay">
+    </div>
 
-  <a href="/login">Déjà un compte ? Se connecter</a>
-</div>
-    <div id="color-status" style="display: none"><div id="status"><p id="status-txt">text</p></div></div>
 
-<script type="module">
+    <!-- CARD -->
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    <div class="register-card">
 
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  updateProfile 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      <h1>Créer un compte</h1>
 
-import { 
-  getFirestore, 
-  doc, 
-  setDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      <p class="subtitle">
+        Rejoins BlocPlay et commence ton aventure.
+      </p>
 
-  function status(text, color) {
-    const statusColor = document.getElementById("color-status")
-    const status = document.getElementById("status")
-    const statusTxt = document.getElementById("status-txt")
-    statusColor.style.backgroundColor = color;
-    statusColor.style.display = "flex";
-    statusTxt.textContent = text;
-  }
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-  authDomain: "blocplay-a9417.firebaseapp.com",
-  projectId: "blocplay-a9417",
-};
+      <!-- PSEUDO -->
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+      <div class="field">
 
-window.signup = async function () {
+        <label for="username">
+          Pseudo
+        </label>
 
-  const username = document.getElementById("username").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+        <input
+          type="text"
+          id="username"
+          placeholder="Ton pseudo"
+          autocomplete="username"
+          maxlength="30"
+        >
 
-  if (!username || !email || !password) {
-    status("Remplis tous les champs !", "#ff7f00");
-    return;
-  }
+      </div>
 
-  try {
 
-    // 🔐 Création du compte
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+      <!-- EMAIL -->
 
-    // 🔥 Mise à jour du displayName Firebase Auth
-    await updateProfile(user, {
-      displayName: username
-    });
+      <div class="field">
 
-    // 🔥 Création du profil Firestore
-    await setDoc(doc(db, "users", user.uid), {
-      id: Math.floor(Math.random() * 100000000),
-      displayName: username,
-      email: email,
-      photoURL: "",
-      rizoplay: false, // 🔥 IMPORTANT (booléen)
-      createdAt: Date.now()
-    });
+        <label for="email">
+          Email
+        </label>
 
-    status("Compte créé !", "#00ff00");
-    window.location.href = "/login";
+        <input
+          type="email"
+          id="email"
+          placeholder="ton@email.com"
+          autocomplete="email"
+        >
 
-  } catch (error) {
-    let MessageError = "Une erreur est survenue";
-    if (error.code === "auth/weak-password") {
-      MessageError = "Le mot de passe doit contenir au moins 6 caractères";
-    } else if (error.code === "auth/email-already-in-use") {
-      MessageError = "identifiant ou email déjà pris";
-    } else if (error.code === "auth/invalid-email") {
-      MessageError = "e-mail invalide: merci de bien vérifier l'orthographe";
-    } else {
-      MessageError = error.message;
+      </div>
+
+
+      <!-- MOT DE PASSE -->
+
+      <div class="field">
+
+        <label for="password">
+          Mot de passe
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Ton mot de passe"
+          autocomplete="new-password"
+        >
+
+      </div>
+
+
+      <!-- BOUTON -->
+
+      <button id="signupButton" onclick="signup()">
+        Créer mon compte
+      </button>
+
+
+      <!-- STATUS -->
+
+      <div id="color-status">
+
+        <div id="status">
+
+          <p id="status-txt">
+            Chargement...
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- CONNEXION -->
+
+      <a
+        href="/login"
+        class="login-link"
+      >
+        Déjà un compte ? Se connecter
+      </a>
+
+    </div>
+
+
+    <div class="footer">
+      BlocPlay Studios™
+    </div>
+
+  </div>
+
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    function showStatus(text, color) {
+
+      const statusColor =
+        document.getElementById("color-status");
+
+      const statusTxt =
+        document.getElementById("status-txt");
+
+
+      statusColor.style.backgroundColor = color;
+
+      statusColor.style.display = "block";
+
+      statusTxt.textContent = text;
+
     }
-    status (MessageError, "#ff0000");
-  }
-}
-</script>
 
-<script type="module" src="/login/firebase-auth.js"></script>
+
+    /* =========================
+       FIREBASE
+    ========================= */
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+      authDomain:
+        "blocplay-a9417.firebaseapp.com",
+
+      projectId:
+        "blocplay-a9417"
+
+    };
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+
+    const auth =
+      getAuth(app);
+
+
+    const db =
+      getFirestore(app);
+
+
+    /* =========================
+       INSCRIPTION
+    ========================= */
+
+    window.signup = async function () {
+
+      const username =
+        document
+          .getElementById("username")
+          .value
+          .trim();
+
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+
+      const button =
+        document.getElementById("signupButton");
+
+
+      /* =========================
+         VALIDATION
+      ========================= */
+
+      if (!username || !email || !password) {
+
+        showStatus(
+          "Remplis tous les champs !",
+          "#ff7f00"
+        );
+
+        return;
+
+      }
+
+
+      if (username.length < 3) {
+
+        showStatus(
+          "Le pseudo doit contenir au moins 3 caractères.",
+          "#ff7f00"
+        );
+
+        return;
+
+      }
+
+
+      if (password.length < 6) {
+
+        showStatus(
+          "Le mot de passe doit contenir au moins 6 caractères.",
+          "#ff7f00"
+        );
+
+        return;
+
+      }
+
+
+      button.disabled = true;
+
+      button.textContent = "Création du compte...";
+
+
+      try {
+
+        /* =========================
+           CRÉATION AUTH
+        ========================= */
+
+        const userCredential =
+          await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+
+        const user =
+          userCredential.user;
+
+
+        /* =========================
+           DISPLAY NAME FIREBASE AUTH
+        ========================= */
+
+        await updateProfile(user, {
+
+          displayName: username
+
+        });
+
+
+        /* =========================
+           CRÉATION PROFIL FIRESTORE
+        ========================= */
+
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+
+            /*
+             * Identifiant BlocPlay
+             * actuel de ton système.
+             */
+            id:
+              Math.floor(
+                Math.random() * 100000000
+              ),
+
+
+            /*
+             * Pseudo affiché sur BlocPlay.
+             */
+            displayName:
+              username,
+
+
+            /*
+             * Pseudo pratique pour
+             * les futures recherches.
+             */
+            username:
+              username,
+
+
+            /*
+             * Email du compte.
+             * Celui-ci reste une donnée privée.
+             */
+            email:
+              email,
+
+
+            /*
+             * Avatar.
+             */
+            photoURL:
+              "",
+
+
+            /*
+             * RizoPlay.
+             */
+            rizoplay:
+              false,
+
+
+            /*
+             * Nombre d'amis.
+             * On pourra l'utiliser plus tard
+             * sans avoir à compter toute
+             * la sous-collection à chaque fois.
+             */
+            friendsCount:
+              0,
+
+
+            /*
+             * Date réelle fournie par
+             * le serveur Firestore.
+             */
+            createdAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        /* =========================
+           SUCCÈS
+        ========================= */
+
+        showStatus(
+          "Compte créé ! Redirection...",
+          "#00c853"
+        );
+
+
+        button.textContent =
+          "Compte créé";
+
+
+        setTimeout(() => {
+
+          window.location.href =
+            "/login";
+
+        }, 1000);
+
+
+      } catch (error) {
+
+        console.error(
+          "Erreur inscription :",
+          error
+        );
+
+
+        let message =
+          "Une erreur est survenue.";
+
+
+        if (
+          error.code ===
+          "auth/weak-password"
+        ) {
+
+          message =
+            "Le mot de passe doit contenir au moins 6 caractères.";
+
+        }
+
+        else if (
+          error.code ===
+          "auth/email-already-in-use"
+        ) {
+
+          message =
+            "Cet email est déjà utilisé.";
+
+        }
+
+        else if (
+          error.code ===
+          "auth/invalid-email"
+        ) {
+
+          message =
+            "Adresse email invalide.";
+
+        }
+
+        else if (
+          error.code ===
+          "auth/operation-not-allowed"
+        ) {
+
+          message =
+            "L'inscription par email n'est pas activée dans Firebase.";
+
+        }
+
+        else {
+
+          message =
+            error.message;
+
+        }
+
+
+        showStatus(
+          message,
+          "#ff1744"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+          "Créer mon compte";
+
+      }
+
+    };
+
+  </script>
 
 </body>
+
 </html>
