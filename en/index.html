@@ -91,7 +91,6 @@
 
   </div>
 
-  <!-- Les résultats n'apparaissent qu'après Entrée -->
   <div id="searchResults" class="search-results"></div>
 
 </div>
@@ -317,12 +316,22 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+import {
+  getFirestore,
+  doc,
+  getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
+/* ========================= */
 /* FIREBASE */
+/* ========================= */
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  apiKey:
+    "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
 
   authDomain:
     "blocplay-a9417.firebaseapp.com",
@@ -342,9 +351,16 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+
+const auth =
+  getAuth(app);
+
+
+const db =
+  getFirestore(app);
 
 
 /* ========================= */
@@ -358,7 +374,7 @@ const dropdown =
   document.getElementById("dropdown");
 
 
-function renderMenu(user) {
+async function renderMenu(user) {
 
   if (user) {
 
@@ -382,6 +398,89 @@ function renderMenu(user) {
 
     `;
 
+
+    const name =
+      user.displayName ||
+      user.email?.split("@")[0] ||
+      "User";
+
+
+    let photoURL = "";
+
+
+    /* ========================= */
+    /* PHOTO FIRESTORE */
+    /* ========================= */
+
+    try {
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+
+      const userSnap =
+        await getDoc(userRef);
+
+
+      if (userSnap.exists()) {
+
+        const data =
+          userSnap.data();
+
+
+        photoURL =
+          data.photoURL ||
+          data.avatar ||
+          "";
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Photo loading error:",
+        error
+      );
+
+    }
+
+
+    /* ========================= */
+    /* PHOTO FIREBASE AUTH */
+    /* ========================= */
+
+    if (!photoURL) {
+
+      photoURL =
+        user.photoURL ||
+        "";
+
+    }
+
+
+    /* ========================= */
+    /* AFFICHER LA PHOTO */
+    /* ========================= */
+
+    if (photoURL) {
+
+      avatar.src =
+        photoURL;
+
+    } else {
+
+      avatar.src =
+        "https://ui-avatars.com/api/?name=" +
+        encodeURIComponent(name) +
+        "&background=111&color=fff&rounded=true&size=64";
+
+    }
+
+
   } else {
 
     dropdown.innerHTML = `
@@ -396,55 +495,86 @@ function renderMenu(user) {
 
     `;
 
+
+    avatar.src =
+      "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+
   }
 
 }
 
 
+/* ========================= */
 /* AUTH */
+/* ========================= */
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(
+  auth,
+  (user) => {
 
-  renderMenu(user);
-
-});
-
-
-/* OUVERTURE DU MENU */
-
-avatar.addEventListener("click", (event) => {
-
-  event.stopPropagation();
-
-  dropdown.classList.toggle("show");
-
-});
-
-
-/* FERMETURE */
-
-document.addEventListener("click", () => {
-
-  dropdown.classList.remove("show");
-
-});
-
-
-/* DÉCONNEXION */
-
-document.addEventListener("click", async (event) => {
-
-  if (event.target.id === "logout") {
-
-    event.preventDefault();
-
-    await signOut(auth);
-
-    window.location.reload();
+    renderMenu(user);
 
   }
+);
 
-});
+
+/* ========================= */
+/* OUVERTURE DU MENU */
+/* ========================= */
+
+avatar.addEventListener(
+  "click",
+  (event) => {
+
+    event.stopPropagation();
+
+    dropdown.classList.toggle(
+      "show"
+    );
+
+  }
+);
+
+
+/* ========================= */
+/* FERMETURE */
+/* ========================= */
+
+document.addEventListener(
+  "click",
+  () => {
+
+    dropdown.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* ========================= */
+/* DÉCONNEXION */
+/* ========================= */
+
+document.addEventListener(
+  "click",
+  async (event) => {
+
+    if (
+      event.target.id ===
+      "logout"
+    ) {
+
+      event.preventDefault();
+
+      await signOut(auth);
+
+      window.location.reload();
+
+    }
+
+  }
+);
 
 </script>
 
@@ -473,62 +603,77 @@ const closeSearch =
 
 /* OUVRIR */
 
-searchBtn.addEventListener("click", () => {
+searchBtn.addEventListener(
+  "click",
+  () => {
 
-  searchOverlay.classList.add("show");
+    searchOverlay.classList.add(
+      "show"
+    );
 
-  searchInput.focus();
+    searchInput.focus();
 
-});
+  }
+);
 
 
 /* FERMER */
 
-closeSearch.addEventListener("click", () => {
+closeSearch.addEventListener(
+  "click",
+  () => {
 
-  searchOverlay.classList.remove("show");
+    searchOverlay.classList.remove(
+      "show"
+    );
 
-  searchInput.value = "";
+    searchInput.value = "";
 
-  searchResults.innerHTML = "";
+    searchResults.innerHTML = "";
 
-});
+  }
+);
 
 
 /* ENTRÉE UNIQUEMENT */
 
-searchInput.addEventListener("keydown", (event) => {
+searchInput.addEventListener(
+  "keydown",
+  (event) => {
 
-  if (event.key !== "Enter") {
-    return;
+    if (event.key !== "Enter") {
+      return;
+    }
+
+
+    const query =
+      searchInput.value.trim();
+
+
+    if (!query) {
+      return;
+    }
+
+
+    searchResults.innerHTML = `
+
+      <div class="search-result">
+
+        <h3>Résultats de recherche</h3>
+
+        <p>
+          Recherche pour :
+          <strong>
+            ${escapeHTML(query)}
+          </strong>
+        </p>
+
+      </div>
+
+    `;
+
   }
-
-  const query =
-    searchInput.value.trim();
-
-  if (!query) {
-    return;
-  }
-
-
-  /* Résultats */
-
-  searchResults.innerHTML = `
-
-    <div class="search-result">
-
-      <h3>Résultats de recherche</h3>
-
-      <p>
-        Recherche pour :
-        <strong>${escapeHTML(query)}</strong>
-      </p>
-
-    </div>
-
-  `;
-
-});
+);
 
 
 /* Évite l'injection HTML */
@@ -538,7 +683,8 @@ function escapeHTML(text) {
   const div =
     document.createElement("div");
 
-  div.textContent = text;
+  div.textContent =
+    text;
 
   return div.innerHTML;
 
@@ -547,19 +693,27 @@ function escapeHTML(text) {
 
 /* CLIQUER EN DEHORS */
 
-searchOverlay.addEventListener("click", (event) => {
+searchOverlay.addEventListener(
+  "click",
+  (event) => {
 
-  if (event.target === searchOverlay) {
+    if (
+      event.target ===
+      searchOverlay
+    ) {
 
-    searchOverlay.classList.remove("show");
+      searchOverlay.classList.remove(
+        "show"
+      );
 
-    searchInput.value = "";
+      searchInput.value = "";
 
-    searchResults.innerHTML = "";
+      searchResults.innerHTML = "";
+
+    }
 
   }
-
-});
+);
 
 </script>
 
@@ -572,13 +726,16 @@ searchOverlay.addEventListener("click", (event) => {
 
 if ("serviceWorker" in navigator) {
 
-  window.addEventListener("load", () => {
+  window.addEventListener(
+    "load",
+    () => {
 
-    navigator.serviceWorker.register(
-      "/service-worker.js"
-    );
+      navigator.serviceWorker.register(
+        "/service-worker.js"
+      );
 
-  });
+    }
+  );
 
 }
 
