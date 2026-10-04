@@ -4,19 +4,15 @@
 <head>
 
 <script>
-  // Récupère la langue du navigateur (gère la compatibilité)
-  const userLang = navigator.language || navigator.userLanguage;
-  
-  // Extrait les deux premiers caractères (ex: "fr-FR" devient "fr")
-  const shortLang = userLang.substring(0, 2).toLowerCase();
+  (function() {
+    const userLang = (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
+    const targetLang = (userLang === 'fr') ? 'fr' : 'en';
+    const currentPath = window.location.pathname;
 
-  // Redirection selon la langue
-  if (shortLang === 'fr') {
-    window.location.href = '/fr';
-  } else {
-    // Redirige vers /en par défaut pour toutes les autres langues
-    window.location.href = '/en';
-  }
+    if (!currentPath.startsWith('/' + targetLang)) {
+      window.location.replace('/' + targetLang);
+    }
+  })();
 </script>
 
 <meta charset="UTF-8">
