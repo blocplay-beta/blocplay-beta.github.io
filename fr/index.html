@@ -358,45 +358,116 @@ const dropdown =
   document.getElementById("dropdown");
 
 
-function renderMenu(user) {
+async function renderMenu(user) {
 
-  if (user) {
+    if (user) {
 
-    dropdown.innerHTML = `
+        dropdown.innerHTML = `
 
-      <a href="/profile">
-        Profil
-      </a>
+            <a href="/profile">
+                Profil
+            </a>
 
-      <a href="/settings">
-        Paramètres
-      </a>
+            <a href="/settings">
+                Paramètres
+            </a>
 
-      <a href="/rizoplay">
-        RizoPlay
-      </a>
+            <a href="/rizoplay">
+                RizoPlay
+            </a>
 
-      <a href="#" id="logout">
-        Se déconnecter
-      </a>
+            <a href="#" id="logout">
+                Se déconnecter
+            </a>
 
-    `;
+        `;
 
-  } else {
 
-    dropdown.innerHTML = `
+        const name =
+            user.displayName ||
+            user.email?.split("@")[0] ||
+            "User";
 
-      <a href="/login">
-        Se connecter
-      </a>
 
-      <a href="/signup">
-        Créer un compte
-      </a>
+        let photoURL = "";
 
-    `;
 
-  }
+        try {
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
+
+
+            const userSnap =
+                await getDoc(userRef);
+
+
+            if (userSnap.exists()) {
+
+                const data =
+                    userSnap.data();
+
+                photoURL =
+                    data.photoURL || "";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erreur chargement photo :",
+                error
+            );
+
+        }
+
+
+        // Si aucune photo dans Firestore,
+        // on essaie celle de Firebase Auth
+
+        if (!photoURL) {
+
+            photoURL =
+                user.photoURL || "";
+
+        }
+
+
+        // Photo de profil
+
+        if (photoURL) {
+
+            avatar.src =
+                photoURL;
+
+        } else {
+
+            avatar.src =
+                "https://ui-avatars.com/api/?name=" +
+                encodeURIComponent(name) +
+                "&background=111&color=fff&rounded=true&size=64";
+
+        }
+
+    } else {
+
+        dropdown.innerHTML = `
+
+            <a href="/login">
+                Se connecter
+            </a>
+
+            <a href="/signup">
+                Créer un compte
+            </a>
+
+        `;
+
+    }
 
 }
 
