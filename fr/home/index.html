@@ -3,6 +3,21 @@
 
 <head>
 
+<script>
+  (function() {
+    const currentPath = window.location.pathname;
+    const userLang = navigator.language || navigator.userLanguage;
+    const isFrench = userLang.toLowerCase().startsWith('fr');
+      
+    const targetLang = isFrench ? 'fr' : 'en';
+    const targetUrl = `/${targetLang}/home`;
+      
+    if (!currentPath.startsWith(`/${targetLang}/`)) {
+      window.location.replace(targetUrl);
+    }
+  })();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
