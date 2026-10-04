@@ -1,292 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Home - BlocPlay</title>
-
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/logo.ico">
-
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
-
-<style>
-
-/* ========================= */
-/* HOME */
-/* ========================= */
-
-.home-intro {
-  margin-bottom: 20px;
-}
-
-.home-intro h1 {
-  margin-bottom: 6px;
-}
-
-.home-intro p {
-  opacity: 0.7;
-}
-
-
-/* ========================= */
-/* GRILLES */
-/* ========================= */
-
-.home-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit, minmax(180px, 1fr));
-
-  gap: 15px;
-
-  margin-top: 15px;
-}
-
-
-/* ========================= */
-/* CARTE CONTENU */
-/* ========================= */
-
-.home-item {
-  overflow: hidden;
-
-  background: #111827;
-
-  border: 1px solid rgba(255,255,255,0.06);
-
-  border-radius: 12px;
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.home-item:hover {
-  transform: translateY(-2px);
-
-  border-color:
-    rgba(255,255,255,0.14);
-}
-
-
-.home-item-image {
-  width: 100%;
-
-  aspect-ratio: 16 / 9;
-
-  object-fit: cover;
-
-  display: block;
-
-  background: #0b0f1a;
-}
-
-
-.home-item-content {
-  padding: 13px;
-}
-
-
-.home-item-title {
-  margin: 0;
-
-  color: white;
-
-  font-size: 15px;
-
-  font-weight: 600;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-
-.home-item-description {
-  margin: 7px 0 0;
-
-  color: #8d98aa;
-
-  font-size: 12px;
-
-  line-height: 1.4;
-}
-
-
-/* ========================= */
-/* CONTACT */
-/* ========================= */
-
-.contact-item {
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  padding: 13px;
-}
-
-
-.contact-avatar {
-  width: 45px;
-  height: 45px;
-
-  border-radius: 50%;
-
-  object-fit: cover;
-
-  flex-shrink: 0;
-}
-
-
-.contact-info {
-  min-width: 0;
-}
-
-
-.contact-name {
-  color: white;
-
-  font-size: 14px;
-
-  font-weight: 600;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-
-.contact-status {
-  margin-top: 4px;
-
-  color: #7d899c;
-
-  font-size: 11px;
-}
-
-
-/* ========================= */
-/* VIDE */
-/* ========================= */
-
-.home-empty {
-  padding: 25px;
-
-  text-align: center;
-
-  color: #7d899c;
-
-  background: #111827;
-
-  border-radius: 10px;
-
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-
-/* ========================= */
-/* SECTION */
-/* ========================= */
-
-.home-section {
-  margin-bottom: 20px;
-}
-
-
-.home-section-header {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 10px;
-
-  margin-bottom: 10px;
-}
-
-
-.home-section-header h2 {
-  margin: 0;
-}
-
-
-.home-section-header a {
-  color: #8fa8ff;
-
-  text-decoration: none;
-
-  font-size: 13px;
-}
-
-
-.home-section-header a:hover {
-  text-decoration: underline;
-}
-
-
-/* ========================= */
-/* RESPONSIVE */
-/* ========================= */
-
-@media (max-width: 600px) {
-
-  .home-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-}
-
-
-@media (max-width: 400px) {
-
-  .home-grid {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-</style>
-
+<script>
+  (function() {
+    const currentPath = window.location.pathname;
+    const userLang = navigator.language || navigator.userLanguage;
+    const isFrench = userLang.toLowerCase().startsWith('fr');
+      
+    const targetLang = isFrench ? 'fr' : 'en';
+    const targetUrl = `/${targetLang}/home`;
+      
+    if (!currentPath.startsWith(`/${targetLang}/`)) {
+      window.location.replace(targetUrl);
+    }
+  })();
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BlocPlay</title>
+
+  <link rel="icon" href="/logo.ico">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b0f1a">
+
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+    .friend-request-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px;
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      min-width: 0;
+      margin-bottom: 8px;
+    }
+
+    .friend-request-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .friend-request-name {
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .friend-request-label {
+      margin-top: 4px;
+      color: #7d899c;
+      font-size: 11px;
+    }
+
+    .friend-request-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .friend-request-accept,
+    .friend-request-reject {
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 10px;
+      transition: opacity .2s, transform .2s;
+    }
+
+    .friend-request-accept {
+      background: #2563eb;
+      color: white;
+    }
+
+    .friend-request-reject {
+      background: #1f2937;
+      color: #cbd5e1;
+      min-width: 34px;
+    }
+
+    .friend-request-accept:hover,
+    .friend-request-reject:hover {
+      opacity: .85;
+      transform: translateY(-1px);
+    }
+
+    .friend-request-accept:disabled,
+    .friend-request-reject:disabled {
+      opacity: .5;
+      cursor: default;
+      transform: none;
+    }
+  </style>
 </head>
 
 <body>
 
-
-<!-- ========================= -->
-<!-- HEADER -->
-<!-- ========================= -->
-
 <header>
-
   <div class="header-content">
 
     <a href="/" class="logo">
-
-      <img
-        src="/icon.png"
-        alt="BlocPlay"
-      >
-
+      <img src="/icon.png" alt="BlocPlay">
     </a>
 
-
     <div class="header-actions">
-
-      <!-- RECHERCHE -->
 
       <button
         id="searchBtn"
@@ -295,9 +123,6 @@
       >
         🔍
       </button>
-
-
-      <!-- PROFIL -->
 
       <div class="profile-menu">
 
@@ -318,13 +143,10 @@
     </div>
 
   </div>
-
 </header>
 
 
-<!-- ========================= -->
-<!-- RECHERCHE -->
-<!-- ========================= -->
+<!-- SEARCH -->
 
 <div
   id="searchOverlay"
@@ -349,7 +171,6 @@
 
   </div>
 
-
   <div
     id="searchResults"
     class="search-results"
@@ -358,1690 +179,1312 @@
 </div>
 
 
-<!-- ========================= -->
-<!-- CONTENU -->
-<!-- ========================= -->
-
 <main class="container">
 
 
-  <!-- ========================= -->
-  <!-- INTRO -->
-  <!-- ========================= -->
-
-  <div class="home-intro">
-
-    <h1>
-      Home
-    </h1>
-
-    <p>
-      Find your games, friends, and BlocPlay content.
-    </p>
-
-  </div>
-
-
-  <!-- ========================= -->
   <!-- CONTACTS -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Contacts
-      </h2>
-
-      <a href="/f/contacts">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Contacts</h2>
 
     <div
       id="contacts"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- RECENTLY PLAYED -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Recently played
-      </h2>
-
-      <a href="/f/recently-played">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Recently played</h2>
 
     <div
       id="recentlyPlayed"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- FAVORITES -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Favorites
-      </h2>
-
-      <a href="/f/favorites">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Favorites</h2>
 
     <div
       id="favorites"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- RECENTLY OBTAINED -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Recently obtained
-      </h2>
-
-      <a href="/f/recently-obtained">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Recently obtained</h2>
 
     <div
       id="recentlyObtained"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- MY TRIBES -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        My tribes
-      </h2>
-
-      <a href="/f/tribes">
-        See more
-      </a>
-
-    </div>
-
+    <h2>My tribes</h2>
 
     <div
       id="myTribes"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- POPULAR GAMES -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Popular games
-      </h2>
-
-      <a href="/games">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Popular games</h2>
 
     <div
       id="popularGames"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- POPULAR CONTACTS -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Popular contacts
-      </h2>
-
-      <a href="/people">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Popular contacts</h2>
 
     <div
       id="popularContacts"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- POPULAR ARTICLES -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Popular articles
-      </h2>
-
-      <a href="/articles">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Popular articles</h2>
 
     <div
       id="popularArticles"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- ========================= -->
   <!-- POPULAR TRIBES -->
-  <!-- ========================= -->
 
-  <div class="card home-section">
+  <section class="card">
 
-    <div class="home-section-header">
-
-      <h2>
-        Popular tribes
-      </h2>
-
-      <a href="/tribes">
-        See more
-      </a>
-
-    </div>
-
+    <h2>Popular tribes</h2>
 
     <div
       id="popularTribes"
-      class="home-grid"
+      class="items"
     >
-
-      <div class="home-empty">
-        Loading...
-      </div>
-
+      Loading...
     </div>
 
-  </div>
-
+  </section>
 
 </main>
 
 
-<!-- ========================= -->
-<!-- FOOTER -->
-<!-- ========================= -->
-
-<footer class="site-footer">
-
-  <div class="footer-content">
-
-    <div class="footer-column">
-
-      <h3>
-        BlocPlay
-      </h3>
-
-      <p>
-        The gaming platform created by gamers for gamers.
-      </p>
-
-    </div>
-
-
-    <div class="footer-column">
-
-      <h3>
-        About
-      </h3>
-
-      <a href="/about">
-        About BlocPlay
-      </a>
-
-      <a href="/license">
-        Licences
-      </a>
-
-    </div>
-
-
-    <div class="footer-column">
-
-      <h3>
-        Contact us
-      </h3>
-
-      <a href="mailto:blocplaystudios@gmail.com">
-        E-Mail
-      </a>
-
-      <a href="https://discord.gg/QfreSq3t7E">
-        Discord
-      </a>
-
-    </div>
-
-  </div>
-
-
-  <div class="footer-bottom">
-    © BlocPlay Studios™
-  </div>
-
-</footer>
-
-
-<!-- ========================= -->
-<!-- FIREBASE + PROFILE -->
-<!-- ========================= -->
-
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  getFirestore,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  orderBy,
-  limit
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-/* ========================= */
-/* FIREBASE */
-/* ========================= */
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-
-  authDomain:
-    "blocplay-a9417.firebaseapp.com",
-
-  projectId:
-    "blocplay-a9417",
-
-  storageBucket:
-    "blocplay-a9417.firebasestorage.app",
-
-  messagingSenderId:
-    "540161549188",
-
-  appId:
-    "1:540161549188:web:e0ec0350bd044de2f333d1"
-
-};
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-const app =
-  initializeApp(firebaseConfig);
-
-const auth =
-  getAuth(app);
-
-const db =
-  getFirestore(app);
-
-
-/* ========================= */
-/* PROFILE MENU */
-/* ========================= */
-
-const avatar =
-  document.getElementById("avatar");
-
-const dropdown =
-  document.getElementById("dropdown");
+  import {
+    getFirestore,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    orderBy,
+    limit,
+    setDoc,
+    deleteDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-async function renderMenu(user) {
-
-  if (user) {
-
-    dropdown.innerHTML = `
-
-      <a href="/profile">
-        Profile
-      </a>
-
-      <a href="/settings">
-        Settings
-      </a>
-
-      <a href="/rizoplay">
-        RizoPlay
-      </a>
-
-      <a href="#" id="logout">
-        Log out
-      </a>
-
-    `;
+  const firebaseConfig = {
+    apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+    authDomain: "blocplay-a9417.firebaseapp.com",
+    projectId: "blocplay-a9417",
+    storageBucket: "blocplay-a9417.firebasestorage.app",
+    messagingSenderId: "540161549188",
+    appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+  };
 
 
-    const name =
-      user.displayName ||
-      user.email?.split("@")[0] ||
-      "User";
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+  const db = getFirestore(app);
 
 
-    let photoURL = "";
+  const avatar = document.getElementById("avatar");
+
+  const dropdown = document.getElementById("dropdown");
+
+  const searchBtn = document.getElementById("searchBtn");
+
+  const searchOverlay = document.getElementById("searchOverlay");
+
+  const searchInput = document.getElementById("searchInput");
+
+  const closeSearch = document.getElementById("closeSearch");
+
+  const searchResults = document.getElementById("searchResults");
 
 
-    /* ========================= */
-    /* FIRESTORE PHOTO */
-    /* ========================= */
+  let currentUser = null;
+
+
+  /* =========================================================
+     MENU
+  ========================================================= */
+
+  async function renderMenu(user) {
+
+    if (!user) {
+
+      avatar.src =
+        "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+
+      dropdown.innerHTML = `
+        <a href="/login">Log in</a>
+        <a href="/signup">Create an account</a>
+      `;
+
+      return;
+    }
+
+
+    let userData = {};
 
     try {
 
       const userRef =
-        doc(
-          db,
-          "users",
-          user.uid
-        );
-
+        doc(db, "users", user.uid);
 
       const userSnap =
-        await getDoc(
-          userRef
-        );
+        await getDoc(userRef);
 
-
-      if (
-        userSnap.exists()
-      ) {
-
-        const data =
-          userSnap.data();
-
-
-        photoURL =
-          data.photoURL ||
-          data.avatar ||
-          "";
-
+      if (userSnap.exists()) {
+        userData = userSnap.data();
       }
 
     } catch (error) {
 
       console.error(
-        "Photo loading error:",
+        "Error loading user:",
         error
       );
 
     }
 
 
-    /* ========================= */
-    /* FIREBASE AUTH FALLBACK */
-    /* ========================= */
-
-    if (!photoURL) {
-
-      photoURL =
-        user.photoURL ||
-        "";
-
-    }
+    const photo =
+      userData.photoURL ||
+      userData.avatar ||
+      user.photoURL;
 
 
-    /* ========================= */
-    /* DISPLAY PHOTO */
-    /* ========================= */
+    const name =
+      userData.username ||
+      userData.displayName ||
+      user.displayName ||
+      "User";
 
-    if (photoURL) {
 
-      avatar.src =
-        photoURL;
+    if (photo) {
+
+      avatar.src = photo;
 
     } else {
 
       avatar.src =
-        "https://ui-avatars.com/api/?name=" +
-        encodeURIComponent(name) +
-        "&background=111&color=fff&rounded=true&size=64";
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=111&color=fff&rounded=true&size=64`;
 
     }
 
-  } else {
 
     dropdown.innerHTML = `
-
-      <a href="/login">
-        Log in
-      </a>
-
-      <a href="/signup">
-        Create an account
-      </a>
-
+      <a href="/profile">Profile</a>
+      <a href="/settings">Settings</a>
+      <a href="/rizoplay">RizoPlay</a>
+      <a href="#" id="logout">Log out</a>
     `;
 
 
-    avatar.src =
-      "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+    const logout =
+      document.getElementById("logout");
 
-  }
 
-}
+    logout.addEventListener(
+      "click",
+      async (event) => {
 
+        event.preventDefault();
 
-/* ========================= */
-/* AUTH */
-/* ========================= */
+        try {
 
-onAuthStateChanged(
-  auth,
-  async (user) => {
+          await signOut(auth);
 
-    await renderMenu(user);
+          window.location.href = "/";
 
+        } catch (error) {
 
-    if (!user) {
+          console.error(
+            "Logout error:",
+            error
+          );
 
-      window.location.href =
-        "/login";
-
-      return;
-
-    }
-
-
-    await loadHome(
-      user.uid
-    );
-
-  }
-);
-
-
-/* ========================= */
-/* OPEN MENU */
-/* ========================= */
-
-avatar.addEventListener(
-  "click",
-  (event) => {
-
-    event.stopPropagation();
-
-    dropdown.classList.toggle(
-      "show"
-    );
-
-  }
-);
-
-
-/* ========================= */
-/* CLOSE MENU */
-/* ========================= */
-
-document.addEventListener(
-  "click",
-  () => {
-
-    dropdown.classList.remove(
-      "show"
-    );
-
-  }
-);
-
-
-/* ========================= */
-/* LOG OUT */
-/* ========================= */
-
-document.addEventListener(
-  "click",
-  async (event) => {
-
-    if (
-      event.target.id ===
-      "logout"
-    ) {
-
-      event.preventDefault();
-
-      await signOut(auth);
-
-      window.location.reload();
-
-    }
-
-  }
-);
-
-
-/* ========================= */
-/* HELPERS */
-/* ========================= */
-
-function escapeHTML(text) {
-
-  const div =
-    document.createElement("div");
-
-  div.textContent =
-    text ?? "";
-
-  return div.innerHTML;
-
-}
-
-
-function getImage(
-  data,
-  name
-) {
-
-  if (
-    data.image
-  ) {
-
-    return data.image;
-
-  }
-
-  if (
-    data.avatar
-  ) {
-
-    return data.avatar;
-
-  }
-
-  if (
-    data.photoURL
-  ) {
-
-    return data.photoURL;
-
-  }
-
-  return (
-    "https://ui-avatars.com/api/?name=" +
-    encodeURIComponent(
-      name || "BlocPlay"
-    ) +
-    "&background=111&color=fff&rounded=true"
-  );
-
-}
-
-
-/* ========================= */
-/* STANDARD CARD */
-/* ========================= */
-
-function createCard(
-  data,
-  fallbackName
-) {
-
-  const name =
-    data.name ||
-    data.title ||
-    data.username ||
-    data.displayName ||
-    fallbackName;
-
-
-  const description =
-    data.description ||
-    "";
-
-
-  const image =
-    getImage(
-      data,
-      name
-    );
-
-
-  return `
-
-    <div class="home-item">
-
-      <img
-        class="home-item-image"
-        src="${escapeHTML(image)}"
-        alt=""
-        loading="lazy"
-      >
-
-      <div class="home-item-content">
-
-        <h3 class="home-item-title">
-          ${escapeHTML(name)}
-        </h3>
-
-        ${
-          description
-          ?
-          `
-          <p class="home-item-description">
-            ${escapeHTML(description)}
-          </p>
-          `
-          :
-          ""
         }
 
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* ========================= */
-/* CONTACT CARD */
-/* ========================= */
-
-function createContact(
-  data
-) {
-
-  const name =
-    data.username ||
-    data.displayName ||
-    "User";
-
-
-  const image =
-    getImage(
-      data,
-      name
+      }
     );
 
-
-  return `
-
-    <div class="home-item contact-item">
-
-      <img
-        class="contact-avatar"
-        src="${escapeHTML(image)}"
-        alt=""
-        loading="lazy"
-      >
-
-      <div class="contact-info">
-
-        <div class="contact-name">
-          ${escapeHTML(name)}
-        </div>
-
-        <div class="contact-status">
-          BlocPlay contact
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-}
+  }
 
 
-/* ========================= */
-/* EMPTY */
-/* ========================= */
+  /* =========================================================
+     PROFILE MENU
+  ========================================================= */
 
-function empty(
-  element,
-  text
-) {
+  avatar.addEventListener(
+    "click",
+    (event) => {
 
-  element.innerHTML = `
+      event.stopPropagation();
 
-    <div class="home-empty">
-
-      ${escapeHTML(text)}
-
-    </div>
-
-  `;
-
-}
-
-
-/* ========================= */
-/* USER COLLECTION */
-/* ========================= */
-
-async function getUserCollection(
-  uid,
-  collectionName
-) {
-
-  const ref =
-    collection(
-      db,
-      "users",
-      uid,
-      collectionName
-    );
-
-
-  const snapshot =
-    await getDocs(ref);
-
-
-  return snapshot.docs.map(
-    item => ({
-
-      id: item.id,
-
-      ...item.data()
-
-    })
-  );
-
-}
-
-
-/* ========================= */
-/* CONTACTS */
-/* ========================= */
-
-async function loadContacts(
-  uid
-) {
-
-  const element =
-    document.getElementById(
-      "contacts"
-    );
-
-
-  try {
-
-    const friends =
-      await getUserCollection(
-        uid,
-        "friends"
-      );
-
-
-    if (
-      friends.length === 0
-    ) {
-
-      empty(
-        element,
-        "No contacts"
-      );
-
-      return;
+      dropdown.classList.toggle("show");
 
     }
+  );
 
 
-    const visible =
-      friends.slice(
-        0,
-        6
+  document.addEventListener(
+    "click",
+    () => {
+
+      dropdown.classList.remove("show");
+
+    }
+  );
+
+
+  dropdown.addEventListener(
+    "click",
+    (event) => {
+
+      event.stopPropagation();
+
+    }
+  );
+
+
+  /* =========================================================
+     FRIEND REQUESTS
+  ========================================================= */
+
+  function createFriendRequest(
+    data,
+    senderUid
+  ) {
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.className =
+      "friend-request-item";
+
+
+    const info =
+      document.createElement("div");
+
+    info.className =
+      "friend-request-info";
+
+
+    const name =
+      document.createElement("div");
+
+    name.className =
+      "friend-request-name";
+
+
+    name.textContent =
+      data.username ||
+      data.displayName ||
+      "User";
+
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "friend-request-label";
+
+
+    label.textContent =
+      "Friend request";
+
+
+    info.appendChild(name);
+
+    info.appendChild(label);
+
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "friend-request-actions";
+
+
+    const accept =
+      document.createElement("button");
+
+    accept.className =
+      "friend-request-accept";
+
+    accept.textContent =
+      "Accept";
+
+
+    const reject =
+      document.createElement("button");
+
+    reject.className =
+      "friend-request-reject";
+
+    reject.textContent =
+      "X";
+
+
+    accept.dataset.action =
+      "accept";
+
+    accept.dataset.senderUid =
+      senderUid;
+
+
+    reject.dataset.action =
+      "reject";
+
+    reject.dataset.senderUid =
+      senderUid;
+
+
+    actions.appendChild(accept);
+
+    actions.appendChild(reject);
+
+
+    wrapper.appendChild(info);
+
+    wrapper.appendChild(actions);
+
+
+    return wrapper;
+
+  }
+
+
+  async function loadFriendRequests(uid) {
+
+    const requestsRef =
+      collection(
+        db,
+        "users",
+        uid,
+        "friendRequests"
       );
 
 
-    const result = [];
+    const snapshot =
+      await getDocs(requestsRef);
+
+
+    const requests = [];
 
 
     for (
-      const friend
-      of visible
+      const requestDoc
+      of snapshot.docs
     ) {
+
+      const requestData =
+        requestDoc.data();
+
+
+      if (
+        requestData.status !==
+        "pending"
+      ) {
+
+        continue;
+
+      }
+
+
+      const senderUid =
+        requestData.senderUid ||
+        requestDoc.id;
+
+
+      let senderData = {};
+
 
       try {
 
-        const friendDoc =
-          await getDoc(
-            doc(
-              db,
-              "publicUsers",
-              friend.id
-            )
+        const publicRef =
+          doc(
+            db,
+            "publicUsers",
+            senderUid
           );
 
 
-        if (
-          friendDoc.exists()
-        ) {
+        const publicSnap =
+          await getDoc(publicRef);
 
-          result.push(
-            createContact({
-              ...friend,
-              ...friendDoc.data()
-            })
-          );
+
+        if (publicSnap.exists()) {
+
+          senderData =
+            publicSnap.data();
 
         } else {
 
-          result.push(
-            createContact(
-              friend
-            )
-          );
+          const userRef =
+            doc(
+              db,
+              "users",
+              senderUid
+            );
+
+
+          const userSnap =
+            await getDoc(userRef);
+
+
+          if (userSnap.exists()) {
+
+            senderData =
+              userSnap.data();
+
+          }
 
         }
 
-      } catch {
+      } catch (error) {
 
-        result.push(
-          createContact(
-            friend
-          )
+        console.error(
+          "Error loading friend request sender:",
+          error
         );
 
       }
 
-    }
 
-
-    element.innerHTML =
-      result.join("");
-
-  } catch (error) {
-
-    console.error(
-      "Contacts:",
-      error
-    );
-
-    empty(
-      element,
-      "Unable to load contacts"
-    );
-
-  }
-
-}
-
-
-/* ========================= */
-/* RECENTLY PLAYED */
-/* ========================= */
-
-async function loadRecentlyPlayed(
-  uid
-) {
-
-  const element =
-    document.getElementById(
-      "recentlyPlayed"
-    );
-
-
-  try {
-
-    const items =
-      await getUserCollection(
-        uid,
-        "recentlyPlayed"
-      );
-
-
-    if (
-      items.length === 0
-    ) {
-
-      empty(
-        element,
-        "No recently played games"
-      );
-
-      return;
+      requests.push({
+        senderUid,
+        data: senderData
+      });
 
     }
 
 
-    element.innerHTML =
-      items
-        .slice(0, 6)
-        .map(
-          item =>
-            createCard(
-              item,
-              "Game"
-            )
-        )
-        .join("");
-
-  } catch (error) {
-
-    console.error(
-      "Recently played:",
-      error
-    );
-
-    empty(
-      element,
-      "Unable to load games"
-    );
+    return requests;
 
   }
 
-}
 
+  async function getUserPublicData(uid) {
 
-/* ========================= */
-/* FAVORITES */
-/* ========================= */
-
-async function loadFavorites(
-  uid
-) {
-
-  const element =
-    document.getElementById(
-      "favorites"
-    );
-
-
-  try {
-
-    const items =
-      await getUserCollection(
-        uid,
-        "favorites"
-      );
-
-
-    if (
-      items.length === 0
-    ) {
-
-      empty(
-        element,
-        "No favorites"
-      );
-
-      return;
-
-    }
-
-
-    element.innerHTML =
-      items
-        .slice(0, 6)
-        .map(
-          item =>
-            createCard(
-              item,
-              "Favorite"
-            )
-        )
-        .join("");
-
-  } catch (error) {
-
-    console.error(
-      "Favorites:",
-      error
-    );
-
-    empty(
-      element,
-      "Unable to load favorites"
-    );
-
-  }
-
-}
-
-
-/* ========================= */
-/* RECENTLY OBTAINED */
-/* ========================= */
-
-async function loadRecentlyObtained(
-  uid
-) {
-
-  const element =
-    document.getElementById(
-      "recentlyObtained"
-    );
-
-
-  try {
-
-    const items =
-      await getUserCollection(
-        uid,
-        "recentlyObtained"
-      );
-
-
-    if (
-      items.length === 0
-    ) {
-
-      empty(
-        element,
-        "Nothing obtained recently"
-      );
-
-      return;
-
-    }
-
-
-    element.innerHTML =
-      items
-        .slice(0, 6)
-        .map(
-          item =>
-            createCard(
-              item,
-              "Article"
-            )
-        )
-        .join("");
-
-  } catch (error) {
-
-    console.error(
-      "Recently obtained:",
-      error
-    );
-
-    empty(
-      element,
-      "Unable to load items"
-    );
-
-  }
-
-}
-
-
-/* ========================= */
-/* MY TRIBES */
-/* ========================= */
-
-async function loadMyTribes(
-  uid
-) {
-
-  const element =
-    document.getElementById(
-      "myTribes"
-    );
-
-
-  try {
-
-    const items =
-      await getUserCollection(
-        uid,
-        "tribes"
-      );
-
-
-    if (
-      items.length === 0
-    ) {
-
-      empty(
-        element,
-        "No tribes"
-      );
-
-      return;
-
-    }
-
-
-    element.innerHTML =
-      items
-        .slice(0, 6)
-        .map(
-          item =>
-            createCard(
-              item,
-              "Tribe"
-            )
-        )
-        .join("");
-
-  } catch (error) {
-
-    console.error(
-      "My tribes:",
-      error
-    );
-
-    empty(
-      element,
-      "Unable to load tribes"
-    );
-
-  }
-
-}
-
-
-/* ========================= */
-/* POPULAR COLLECTION */
-/* ========================= */
-
-async function loadPopular(
-  collectionName,
-  elementId,
-  emptyText,
-  fallbackName
-) {
-
-  const element =
-    document.getElementById(
-      elementId
-    );
-
-
-  try {
-
-    const ref =
-      collection(
+    const publicRef =
+      doc(
         db,
-        collectionName
+        "publicUsers",
+        uid
       );
 
 
-    let snapshot;
+    const publicSnap =
+      await getDoc(publicRef);
+
+
+    if (publicSnap.exists()) {
+
+      return publicSnap.data();
+
+    }
+
+
+    const userRef =
+      doc(
+        db,
+        "users",
+        uid
+      );
+
+
+    const userSnap =
+      await getDoc(userRef);
+
+
+    if (userSnap.exists()) {
+
+      return userSnap.data();
+
+    }
+
+
+    return {};
+
+  }
+
+
+  async function acceptFriendRequest(
+    uid,
+    senderUid
+  ) {
+
+    const requestRef =
+      doc(
+        db,
+        "users",
+        uid,
+        "friendRequests",
+        senderUid
+      );
+
+
+    const requestSnap =
+      await getDoc(requestRef);
+
+
+    if (!requestSnap.exists()) {
+
+      throw new Error(
+        "This friend request no longer exists."
+      );
+
+    }
+
+
+    const requestData =
+      requestSnap.data();
+
+
+    if (
+      requestData.senderUid !==
+      senderUid
+    ) {
+
+      throw new Error(
+        "Invalid friend request."
+      );
+
+    }
+
+
+    if (
+      requestData.recipientUid &&
+      requestData.recipientUid !== uid
+    ) {
+
+      throw new Error(
+        "Invalid recipient."
+      );
+
+    }
+
+
+    const myData =
+      await getUserPublicData(uid);
+
+
+    const senderData =
+      await getUserPublicData(senderUid);
+
+
+    const myFriendRef =
+      doc(
+        db,
+        "users",
+        uid,
+        "friends",
+        senderUid
+      );
+
+
+    const senderFriendRef =
+      doc(
+        db,
+        "users",
+        senderUid,
+        "friends",
+        uid
+      );
+
+
+    await setDoc(
+      myFriendRef,
+      {
+        uid: senderUid,
+
+        username:
+          senderData.username || "",
+
+        displayName:
+          senderData.displayName ||
+          senderData.username ||
+          "User",
+
+        photoURL:
+          senderData.photoURL ||
+          senderData.avatar ||
+          "",
+
+        addedAt:
+          serverTimestamp()
+      }
+    );
+
+
+    await setDoc(
+      senderFriendRef,
+      {
+        uid,
+
+        username:
+          myData.username || "",
+
+        displayName:
+          myData.displayName ||
+          myData.username ||
+          "User",
+
+        photoURL:
+          myData.photoURL ||
+          myData.avatar ||
+          "",
+
+        addedAt:
+          serverTimestamp()
+      }
+    );
+
+
+    await deleteDoc(
+      requestRef
+    );
+
+  }
+
+
+  async function rejectFriendRequest(
+    uid,
+    senderUid
+  ) {
+
+    const requestRef =
+      doc(
+        db,
+        "users",
+        uid,
+        "friendRequests",
+        senderUid
+      );
+
+
+    await deleteDoc(
+      requestRef
+    );
+
+  }
+
+
+  async function handleFriendRequestAction(
+    button
+  ) {
+
+    const senderUid =
+      button.dataset.senderUid;
+
+
+    const action =
+      button.dataset.action;
+
+
+    if (!senderUid || !action) {
+      return;
+    }
+
+
+    const container =
+      button.closest(
+        ".friend-request-item"
+      );
+
+
+    const buttons =
+      container.querySelectorAll(
+        "button"
+      );
+
+
+    buttons.forEach(
+      (item) => {
+        item.disabled = true;
+      }
+    );
 
 
     try {
 
-      snapshot =
-        await getDocs(
-          query(
-            ref,
-            orderBy(
-              "popularity",
-              "desc"
-            ),
-            limit(6)
-          )
+      if (action === "accept") {
+
+        await acceptFriendRequest(
+          currentUser.uid,
+          senderUid
         );
 
-    } catch {
+      }
 
-      snapshot =
-        await getDocs(
-          query(
-            ref,
-            limit(6)
-          )
+
+      if (action === "reject") {
+
+        await rejectFriendRequest(
+          currentUser.uid,
+          senderUid
         );
 
-    }
+      }
 
 
-    if (
-      snapshot.empty
-    ) {
-
-      empty(
-        element,
-        emptyText
+      await loadContacts(
+        currentUser.uid
       );
 
-      return;
+    } catch (error) {
+
+      console.error(
+        "Friend request error:",
+        error
+      );
+
+
+      buttons.forEach(
+        (item) => {
+          item.disabled = false;
+        }
+      );
+
+
+      alert(
+        "Unable to process this friend request."
+      );
 
     }
-
-
-    element.innerHTML =
-      snapshot.docs
-        .map(
-          item =>
-            createCard(
-              {
-                id: item.id,
-                ...item.data()
-              },
-              fallbackName
-            )
-        )
-        .join("");
-
-  } catch (error) {
-
-    console.error(
-      collectionName + ":",
-      error
-    );
-
-    empty(
-      element,
-      "Unable to load this section"
-    );
 
   }
 
-}
 
+  /* =========================================================
+     CONTACTS
+  ========================================================= */
 
-/* ========================= */
-/* POPULAR CONTACTS */
-/* ========================= */
+  async function loadContacts(uid) {
 
-async function loadPopularContacts() {
-
-  const element =
-    document.getElementById(
-      "popularContacts"
-    );
-
-
-  try {
-
-    const ref =
-      collection(
-        db,
-        "publicUsers"
+    const container =
+      document.getElementById(
+        "contacts"
       );
 
 
-    let snapshot;
+    container.innerHTML =
+      "Loading...";
 
 
     try {
 
-      snapshot =
-        await getDocs(
-          query(
-            ref,
-            orderBy(
-              "popularity",
-              "desc"
-            ),
-            limit(6)
-          )
+      const requests =
+        await loadFriendRequests(
+          uid
         );
 
-    } catch {
 
-      snapshot =
-        await getDocs(
-          query(
-            ref,
-            limit(6)
-          )
+      const friendsRef =
+        collection(
+          db,
+          "users",
+          uid,
+          "friends"
         );
 
-    }
+
+      const friendsQuery =
+        query(
+          friendsRef,
+          orderBy(
+            "addedAt",
+            "desc"
+          ),
+          limit(6)
+        );
 
 
-    if (
-      snapshot.empty
-    ) {
+      const friendsSnapshot =
+        await getDocs(
+          friendsQuery
+        );
 
-      empty(
-        element,
-        "No popular contacts"
+
+      container.innerHTML = "";
+
+
+      /* FRIEND REQUESTS */
+
+      for (
+        const request
+        of requests
+      ) {
+
+        const requestElement =
+          createFriendRequest(
+            request.data,
+            request.senderUid
+          );
+
+
+        container.appendChild(
+          requestElement
+        );
+
+      }
+
+
+      /* FRIENDS */
+
+      for (
+        const friendDoc
+        of friendsSnapshot.docs
+      ) {
+
+        const friend =
+          friendDoc.data();
+
+
+        const friendUid =
+          friend.uid ||
+          friendDoc.id;
+
+
+        let friendData =
+          friend;
+
+
+        try {
+
+          const data =
+            await getUserPublicData(
+              friendUid
+            );
+
+
+          if (
+            data &&
+            Object.keys(data).length
+          ) {
+
+            friendData = {
+              ...friend,
+              ...data
+            };
+
+          }
+
+        } catch (error) {
+
+          console.error(
+            "Error loading friend:",
+            error
+          );
+
+        }
+
+
+        const friendElement =
+          document.createElement(
+            "div"
+          );
+
+
+        friendElement.className =
+          "item";
+
+
+        const friendName =
+          friendData.username ||
+          friendData.displayName ||
+          "User";
+
+
+        friendElement.innerHTML = `
+          <a href="/profile#${friendUid}">
+            ${friendName}
+          </a>
+        `;
+
+
+        container.appendChild(
+          friendElement
+        );
+
+      }
+
+
+      if (
+        !requests.length &&
+        !friendsSnapshot.docs.length
+      ) {
+
+        container.innerHTML =
+          `<div class="empty">No contacts</div>`;
+
+      }
+
+
+      container
+        .querySelectorAll(
+          ".friend-request-actions button"
+        )
+        .forEach(
+          (button) => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                handleFriendRequestAction(
+                  button
+                );
+
+              }
+            );
+
+          }
+        );
+
+
+    } catch (error) {
+
+      console.error(
+        "Error loading contacts:",
+        error
       );
 
-      return;
+
+      container.innerHTML =
+        `<div class="empty">Unable to load contacts</div>`;
 
     }
 
-
-    element.innerHTML =
-      snapshot.docs
-        .map(
-          item =>
-            createContact({
-              id: item.id,
-              ...item.data()
-            })
-        )
-        .join("");
-
-  } catch (error) {
-
-    console.error(
-      "Popular contacts:",
-      error
-    );
-
-    empty(
-      element,
-      "Unable to load popular contacts"
-    );
-
   }
 
-}
+
+  /* =========================================================
+     GENERIC COLLECTION LOADER
+  ========================================================= */
+
+  async function loadCollection(
+    uid,
+    collectionName,
+    elementId,
+    emptyText
+  ) {
+
+    const container =
+      document.getElementById(
+        elementId
+      );
 
 
-/* ========================= */
-/* LOAD HOME */
-/* ========================= */
-
-async function loadHome(
-  uid
-) {
-
-  await Promise.all([
-
-    loadContacts(uid),
-
-    loadRecentlyPlayed(uid),
-
-    loadFavorites(uid),
-
-    loadRecentlyObtained(uid),
-
-    loadMyTribes(uid),
-
-    loadPopular(
-      "games",
-      "popularGames",
-      "No popular games",
-      "Game"
-    ),
-
-    loadPopularContacts(),
-
-    loadPopular(
-      "articles",
-      "popularArticles",
-      "No popular articles",
-      "Article"
-    ),
-
-    loadPopular(
-      "tribes",
-      "popularTribes",
-      "No popular tribes",
-      "Tribe"
-    )
-
-  ]);
-
-}
-
-</script>
+    container.innerHTML =
+      "Loading...";
 
 
-<!-- ========================= -->
-<!-- SEARCH -->
-<!-- ========================= -->
+    try {
 
-<script>
-
-const searchBtn =
-  document.getElementById(
-    "searchBtn"
-  );
-
-
-const searchOverlay =
-  document.getElementById(
-    "searchOverlay"
-  );
+      const ref =
+        collection(
+          db,
+          "users",
+          uid,
+          collectionName
+        );
 
 
-const searchInput =
-  document.getElementById(
-    "searchInput"
-  );
+      const snapshot =
+        await getDocs(
+          ref
+        );
 
 
-const searchResults =
-  document.getElementById(
-    "searchResults"
-  );
+      container.innerHTML = "";
 
 
-const closeSearch =
-  document.getElementById(
-    "closeSearch"
-  );
+      if (snapshot.empty) {
+
+        container.innerHTML =
+          `<div class="empty">${emptyText}</div>`;
+
+        return;
+
+      }
 
 
-/* ========================= */
-/* OPEN */
-/* ========================= */
+      snapshot.forEach(
+        (item) => {
 
-searchBtn.addEventListener(
-  "click",
-  () => {
-
-    searchOverlay.classList.add(
-      "show"
-    );
-
-    searchInput.focus();
-
-  }
-);
+          const data =
+            item.data();
 
 
-/* ========================= */
-/* CLOSE */
-/* ========================= */
-
-closeSearch.addEventListener(
-  "click",
-  () => {
-
-    searchOverlay.classList.remove(
-      "show"
-    );
-
-    searchInput.value = "";
-
-    searchResults.innerHTML = "";
-
-  }
-);
+          const element =
+            document.createElement(
+              "div"
+            );
 
 
-/* ========================= */
-/* ENTER */
-/* ========================= */
+          element.className =
+            "item";
 
-searchInput.addEventListener(
-  "keydown",
-  (event) => {
 
-    if (
-      event.key !== "Enter"
-    ) {
+          const name =
+            data.name ||
+            data.title ||
+            data.username ||
+            data.displayName ||
+            item.id;
 
-      return;
+
+          element.innerHTML =
+            `<span>${name}</span>`;
+
+
+          container.appendChild(
+            element
+          );
+
+        }
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        `Error loading ${collectionName}:`,
+        error
+      );
+
+
+      container.innerHTML =
+        `<div class="empty">${emptyText}</div>`;
 
     }
 
-
-    const query =
-      searchInput.value.trim();
+  }
 
 
-    if (!query) {
+  /* =========================================================
+     POPULAR COLLECTIONS
+  ========================================================= */
 
-      return;
+  async function loadPopular(
+    collectionName,
+    elementId,
+    emptyText
+  ) {
+
+    const container =
+      document.getElementById(
+        elementId
+      );
+
+
+    container.innerHTML =
+      "Loading...";
+
+
+    try {
+
+      const ref =
+        collection(
+          db,
+          collectionName
+        );
+
+
+      const popularQuery =
+        query(
+          ref,
+          limit(6)
+        );
+
+
+      const snapshot =
+        await getDocs(
+          popularQuery
+        );
+
+
+      container.innerHTML = "";
+
+
+      if (snapshot.empty) {
+
+        container.innerHTML =
+          `<div class="empty">${emptyText}</div>`;
+
+        return;
+
+      }
+
+
+      snapshot.forEach(
+        (item) => {
+
+          const data =
+            item.data();
+
+
+          const element =
+            document.createElement(
+              "div"
+            );
+
+
+          element.className =
+            "item";
+
+
+          const name =
+            data.name ||
+            data.title ||
+            data.username ||
+            data.displayName ||
+            item.id;
+
+
+          element.innerHTML =
+            `<span>${name}</span>`;
+
+
+          container.appendChild(
+            element
+          );
+
+        }
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        `Error loading ${collectionName}:`,
+        error
+      );
+
+
+      container.innerHTML =
+        `<div class="empty">${emptyText}</div>`;
 
     }
 
-
-    searchResults.innerHTML = `
-
-      <div class="search-result">
-
-        <h3>
-          Search results
-        </h3>
-
-        <p>
-          Search for:
-          <strong>
-            ${escapeHTML(query)}
-          </strong>
-        </p>
-
-      </div>
-
-    `;
-
   }
-);
 
 
-/* ========================= */
-/* CLICK OUTSIDE */
-/* ========================= */
+  /* =========================================================
+     SEARCH
+  ========================================================= */
 
-searchOverlay.addEventListener(
-  "click",
-  (event) => {
+  searchBtn.addEventListener(
+    "click",
+    () => {
 
-    if (
-      event.target ===
-      searchOverlay
-    ) {
+      searchOverlay.classList.add(
+        "active"
+      );
+
+      searchInput.focus();
+
+    }
+  );
+
+
+  closeSearch.addEventListener(
+    "click",
+    () => {
 
       searchOverlay.classList.remove(
-        "show"
+        "active"
       );
 
       searchInput.value = "";
@@ -2049,58 +1492,336 @@ searchOverlay.addEventListener(
       searchResults.innerHTML = "";
 
     }
-
-  }
-);
+  );
 
 
-/* ========================= */
-/* ESCAPE HTML */
-/* ========================= */
+  searchOverlay.addEventListener(
+    "click",
+    (event) => {
 
-function escapeHTML(text) {
+      if (
+        event.target ===
+        searchOverlay
+      ) {
 
-  const div =
-    document.createElement(
-      "div"
-    );
+        searchOverlay.classList.remove(
+          "active"
+        );
 
-  div.textContent =
-    text;
+      }
 
-  return div.innerHTML;
-
-}
-
-</script>
+    }
+  );
 
 
-<!-- ========================= -->
-<!-- SERVICE WORKER -->
-<!-- ========================= -->
+  searchInput.addEventListener(
+    "keydown",
+    async (event) => {
 
-<script>
+      if (
+        event.key !==
+        "Enter"
+      ) {
 
-if (
-  "serviceWorker"
-  in navigator
-) {
+        return;
 
-  window.addEventListener(
-    "load",
-    () => {
+      }
 
-      navigator.serviceWorker.register(
-        "/service-worker.js"
+
+      const search =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+
+      if (!search) {
+
+        searchResults.innerHTML =
+          "";
+
+        return;
+
+      }
+
+
+      searchResults.innerHTML =
+        "<div>Searching...</div>";
+
+
+      try {
+
+        const results = [];
+
+
+        /* USERS */
+
+        const usersSnapshot =
+          await getDocs(
+            collection(
+              db,
+              "users"
+            )
+          );
+
+
+        usersSnapshot.forEach(
+          (item) => {
+
+            const data =
+              item.data();
+
+
+            const name =
+              data.username ||
+              data.displayName ||
+              "";
+
+
+            if (
+              name
+                .toLowerCase()
+                .includes(search)
+            ) {
+
+              results.push({
+                type: "user",
+                name,
+                url:
+                  `/profile#${data.id || item.id}`
+              });
+
+            }
+
+          }
+        );
+
+
+        /* GAMES */
+
+        const gamesSnapshot =
+          await getDocs(
+            collection(
+              db,
+              "games"
+            )
+          );
+
+
+        gamesSnapshot.forEach(
+          (item) => {
+
+            const data =
+              item.data();
+
+
+            const name =
+              data.name ||
+              data.title ||
+              "";
+
+
+            if (
+              name
+                .toLowerCase()
+                .includes(search)
+            ) {
+
+              results.push({
+                type: "game",
+                name,
+                url:
+                  `/game/${item.id}`
+              });
+
+            }
+
+          }
+        );
+
+
+        searchResults.innerHTML =
+          "";
+
+
+        if (!results.length) {
+
+          searchResults.innerHTML =
+            `<div>Aucun résultat trouvé</div>`;
+
+          return;
+
+        }
+
+
+        results
+          .slice(0, 20)
+          .forEach(
+            (result) => {
+
+              const element =
+                document.createElement(
+                  "a"
+                );
+
+
+              element.href =
+                result.url;
+
+
+              element.className =
+                "search-result";
+
+
+              element.textContent =
+                result.name;
+
+
+              searchResults.appendChild(
+                element
+              );
+
+            }
+          );
+
+
+      } catch (error) {
+
+        console.error(
+          "Search error:",
+          error
+        );
+
+
+        searchResults.innerHTML =
+          "<div>Search error.</div>";
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     AUTH
+  ========================================================= */
+
+  onAuthStateChanged(
+    auth,
+    async (user) => {
+
+      currentUser =
+        user;
+
+
+      await renderMenu(
+        user
+      );
+
+
+      if (!user) {
+
+        window.location.href =
+          "/login";
+
+        return;
+
+      }
+
+
+      await loadContacts(
+        user.uid
+      );
+
+
+      await loadCollection(
+        user.uid,
+        "recentlyPlayed",
+        "recentlyPlayed",
+        "No recently played games"
+      );
+
+
+      await loadCollection(
+        user.uid,
+        "favorites",
+        "favorites",
+        "No favorites"
+      );
+
+
+      await loadCollection(
+        user.uid,
+        "recentlyObtained",
+        "recentlyObtained",
+        "Nothing recently obtained"
+      );
+
+
+      await loadCollection(
+        user.uid,
+        "tribes",
+        "myTribes",
+        "No tribes"
+      );
+
+
+      await loadPopular(
+        "games",
+        "popularGames",
+        "No games available"
+      );
+
+
+      await loadPopular(
+        "publicUsers",
+        "popularContacts",
+        "No popular contacts"
+      );
+
+
+      await loadPopular(
+        "articles",
+        "popularArticles",
+        "No articles available"
+      );
+
+
+      await loadPopular(
+        "tribes",
+        "popularTribes",
+        "No tribes available"
       );
 
     }
   );
 
-}
+
+  /* =========================================================
+     SERVICE WORKER
+  ========================================================= */
+
+  if (
+    "serviceWorker" in navigator
+  ) {
+
+    navigator.serviceWorker
+      .register(
+        "/service-worker.js"
+      )
+      .catch(
+        (error) => {
+
+          console.error(
+            "Service worker error:",
+            error
+          );
+
+        }
+      );
+
+  }
 
 </script>
-
 
 </body>
 </html>
