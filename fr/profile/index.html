@@ -1,0 +1,1025 @@
+<!-- Please read COPYRIGHT.md -->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Profil - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+
+<style>
+
+/* ========================= */
+/* PROFIL */
+/* ========================= */
+
+.profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+
+/* ========================= */
+/* PHOTO PROFIL */
+/* ========================= */
+
+.profile-pic {
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #111;
+
+    border: 3px solid rgba(255,255,255,0.08);
+}
+
+
+/* ========================= */
+/* BADGE RIZOPLAY */
+/* ========================= */
+
+.rizo-badge {
+    position: absolute;
+
+    top: 4px;
+    right: 4px;
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 7px rgba(255,120,0,0.7);
+}
+
+
+/* ========================= */
+/* PROFIL CARD */
+/* ========================= */
+
+.profile-card {
+    text-align: center;
+}
+
+
+.profile-card h1 {
+    margin-bottom: 25px;
+}
+
+
+.profile-card h2 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+
+.profile-card p {
+    margin-top: 0;
+
+    opacity: 0.7;
+}
+
+
+/* ========================= */
+/* ID BLOCPLAY */
+/* ========================= */
+
+.profile-id {
+    margin-top: 10px;
+
+    color: #7f8ca1;
+
+    font-size: 13px;
+}
+
+
+/* ========================= */
+/* PROFIL AUTRE UTILISATEUR */
+/* ========================= */
+
+.profile-viewing {
+    margin-bottom: 15px;
+
+    color: #7f8ca1;
+
+    font-size: 13px;
+}
+
+
+/* ========================= */
+/* ERREUR */
+/* ========================= */
+
+.profile-error {
+    text-align: center;
+
+    padding: 25px;
+}
+
+
+.profile-error h1 {
+    margin-bottom: 10px;
+}
+
+
+.profile-error p {
+    opacity: 0.7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
+
+<header>
+
+  <div class="header-content">
+
+    <a href="/" class="logo">
+
+      <img
+        src="/icon.png"
+        alt="BlocPlay"
+      >
+
+    </a>
+
+
+    <div class="profile-menu">
+
+      <img
+        src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+        class="avatar"
+        id="avatar"
+        alt="Profil"
+      >
+
+
+      <div
+        class="dropdown"
+        id="dropdown"
+      ></div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- ========================= -->
+<!-- CONTENU -->
+<!-- ========================= -->
+
+<div class="container">
+
+
+  <div
+    class="card profile-card"
+    id="profileCard"
+  >
+
+    <h1 id="profileTitle">
+      Mon profil
+    </h1>
+
+
+    <div
+      id="profileViewing"
+      class="profile-viewing"
+      style="display:none;"
+    >
+    </div>
+
+
+    <div class="profile-container">
+
+      <img
+        id="profilePic"
+        class="profile-pic"
+        src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=256"
+        alt="Photo de profil"
+      >
+
+
+      <img
+        src="/rizo-play.png"
+        id="rizoBadge"
+        class="rizo-badge"
+        style="display:none;"
+        alt="RizoPlay"
+      >
+
+    </div>
+
+
+    <h2 id="username">
+      Chargement...
+    </h2>
+
+
+    <p id="email"></p>
+
+
+    <div
+      id="profileId"
+      class="profile-id"
+    ></div>
+
+  </div>
+
+
+</div>
+
+
+<!-- ========================= -->
+<!-- FIREBASE -->
+<!-- ========================= -->
+
+<script type="module">
+
+import {
+    initializeApp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs,
+    limit
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* ========================= */
+/* FIREBASE */
+/* ========================= */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+    authDomain:
+        "blocplay-a9417.firebaseapp.com",
+
+    projectId:
+        "blocplay-a9417"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+
+/* ========================= */
+/* ELEMENTS */
+/* ========================= */
+
+const avatar =
+    document.getElementById(
+        "avatar"
+    );
+
+const dropdown =
+    document.getElementById(
+        "dropdown"
+    );
+
+const profileTitle =
+    document.getElementById(
+        "profileTitle"
+    );
+
+const profileViewing =
+    document.getElementById(
+        "profileViewing"
+    );
+
+const profilePic =
+    document.getElementById(
+        "profilePic"
+    );
+
+const username =
+    document.getElementById(
+        "username"
+    );
+
+const email =
+    document.getElementById(
+        "email"
+    );
+
+const profileId =
+    document.getElementById(
+        "profileId"
+    );
+
+const rizoBadge =
+    document.getElementById(
+        "rizoBadge"
+    );
+
+const profileCard =
+    document.getElementById(
+        "profileCard"
+    );
+
+
+/* ========================= */
+/* MENU PROFIL */
+/* ========================= */
+
+function renderMenu(user) {
+
+    if (user) {
+
+        dropdown.innerHTML = `
+
+            <a href="/profile">
+                Profil
+            </a>
+
+            <a href="/settings">
+                Paramètres
+            </a>
+
+            <a href="/rizoplay">
+                RizoPlay
+            </a>
+
+            <a href="#" id="logout">
+                Se déconnecter
+            </a>
+
+        `;
+
+
+        const name =
+            user.displayName ||
+            user.email?.split("@")[0] ||
+            "User";
+
+
+        if (user.photoURL) {
+
+            avatar.src =
+                user.photoURL;
+
+        } else {
+
+            avatar.src =
+                "https://ui-avatars.com/api/?name=" +
+                encodeURIComponent(name) +
+                "&background=111&color=fff&rounded=true&size=64";
+
+        }
+
+    } else {
+
+        dropdown.innerHTML = `
+
+            <a href="/login">
+                Se connecter
+            </a>
+
+            <a href="/signup">
+                Créer un compte
+            </a>
+
+        `;
+
+    }
+
+}
+
+
+/* ========================= */
+/* OUVERTURE MENU */
+/* ========================= */
+
+avatar.addEventListener(
+    "click",
+    (event) => {
+
+        event.stopPropagation();
+
+        dropdown.classList.toggle(
+            "show"
+        );
+
+    }
+);
+
+
+/* ========================= */
+/* FERMETURE MENU */
+/* ========================= */
+
+document.addEventListener(
+    "click",
+    () => {
+
+        dropdown.classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+/* ========================= */
+/* DÉCONNEXION */
+/* ========================= */
+
+document.addEventListener(
+    "click",
+    async (event) => {
+
+        if (
+            event.target.id ===
+            "logout"
+        ) {
+
+            event.preventDefault();
+
+            await signOut(auth);
+
+            window.location.href =
+                "/login";
+
+        }
+
+    }
+);
+
+
+/* ========================= */
+/* PROFIL INTROUVABLE */
+/* ========================= */
+
+function showNotFound() {
+
+    profileCard.innerHTML = `
+
+        <div class="profile-error">
+
+            <h1>
+                Utilisateur introuvable
+            </h1>
+
+            <p>
+                Aucun profil ne correspond à cet ID BlocPlay.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ========================= */
+/* AFFICHER PROFIL */
+/* ========================= */
+
+function displayProfile(
+    data,
+    isOwnProfile
+) {
+
+    const displayName =
+        data.displayName ||
+        data.username ||
+        "Utilisateur";
+
+
+    const photoURL =
+        data.photoURL ||
+        data.avatar ||
+        (
+            "https://ui-avatars.com/api/?name=" +
+            encodeURIComponent(displayName) +
+            "&background=111&color=fff&rounded=true&size=256"
+        );
+
+
+    /* ========================= */
+    /* TITRE */
+    /* ========================= */
+
+    if (isOwnProfile) {
+
+        profileTitle.textContent =
+            "Mon profil";
+
+        profileViewing.style.display =
+            "none";
+
+    } else {
+
+        profileTitle.textContent =
+            "Profil";
+
+        profileViewing.style.display =
+            "block";
+
+        profileViewing.textContent =
+            "Profil public BlocPlay";
+
+    }
+
+
+    /* ========================= */
+    /* INFOS */
+    /* ========================= */
+
+    username.textContent =
+        displayName;
+
+
+    profilePic.src =
+        photoURL;
+
+
+    profilePic.alt =
+        "Photo de profil de " +
+        displayName;
+
+
+    /* ========================= */
+    /* EMAIL */
+/* ========================= */
+
+    if (isOwnProfile) {
+
+        email.textContent =
+            data.email || "";
+
+    } else {
+
+        email.textContent =
+            "";
+
+    }
+
+
+    /* ========================= */
+    /* ID */
+/* ========================= */
+
+    if (
+        data.id !== undefined &&
+        data.id !== null
+    ) {
+
+        profileId.textContent =
+            "ID BlocPlay : " +
+            data.id;
+
+    } else {
+
+        profileId.textContent =
+            "";
+
+    }
+
+
+    /* ========================= */
+    /* RIZOPLAY */
+/* ========================= */
+
+    const isAdmin =
+        data.email ===
+            "blocplaystudios@gmail.com" &&
+        data.displayName ===
+            "BlocPlay Studios";
+
+
+    const hasRizoPlay =
+        data.rizoplay === true ||
+        isAdmin;
+
+
+    if (hasRizoPlay) {
+
+        rizoBadge.style.display =
+            "block";
+
+    } else {
+
+        rizoBadge.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* ========================= */
+/* RÉCUPÉRER PAR UID */
+/* ========================= */
+
+async function getProfileByUID(
+    uid
+) {
+
+    const profileRef =
+        doc(
+            db,
+            "users",
+            uid
+        );
+
+
+    const profileSnap =
+        await getDoc(
+            profileRef
+        );
+
+
+    if (
+        !profileSnap.exists()
+    ) {
+
+        return null;
+
+    }
+
+
+    return {
+        uid: uid,
+        ...profileSnap.data()
+    };
+
+}
+
+
+/* ========================= */
+/* RÉCUPÉRER PAR ID */
+/* ========================= */
+
+async function getProfileByCustomID(
+    customID
+) {
+
+    const usersRef =
+        collection(
+            db,
+            "users"
+        );
+
+
+    /*
+       Les IDs créés lors de l'inscription
+       sont actuellement des nombres :
+
+       id: Math.floor(Math.random() * 100000000)
+
+       On cherche donc d'abord avec un nombre.
+    */
+
+    const numericID =
+        Number(customID);
+
+
+    if (
+        Number.isNaN(numericID)
+    ) {
+
+        return null;
+
+    }
+
+
+    const q =
+        query(
+            usersRef,
+            where(
+                "id",
+                "==",
+                numericID
+            ),
+            limit(1)
+        );
+
+
+    const snapshot =
+        await getDocs(q);
+
+
+    if (
+        snapshot.empty
+    ) {
+
+        return null;
+
+    }
+
+
+    const userDoc =
+        snapshot.docs[0];
+
+
+    return {
+
+        uid:
+            userDoc.id,
+
+        ...userDoc.data()
+
+    };
+
+}
+
+
+/* ========================= */
+/* CHARGEMENT DU PROFIL */
+/* ========================= */
+
+async function loadProfile(
+    currentUser
+) {
+
+    /*
+       location.hash contient par exemple :
+
+       /profile
+       → ""
+
+       /profile#123456
+       → "#123456"
+    */
+
+    const hash =
+        window.location.hash;
+
+
+    const customID =
+        hash
+            .substring(1)
+            .trim();
+
+
+    let profileData = null;
+
+    let isOwnProfile = false;
+
+
+    /* ========================= */
+    /* /profile */
+/* ========================= */
+
+    if (!customID) {
+
+        profileData =
+            await getProfileByUID(
+                currentUser.uid
+            );
+
+        isOwnProfile = true;
+
+    }
+
+
+    /* ========================= */
+    /* /profile#ID */
+/* ========================= */
+
+    else {
+
+        profileData =
+            await getProfileByCustomID(
+                customID
+            );
+
+
+        /*
+           Si l'ID correspond à ton propre
+           profil, on peut quand même considérer
+           que c'est ton profil.
+        */
+
+        if (
+            profileData &&
+            profileData.uid ===
+                currentUser.uid
+        ) {
+
+            isOwnProfile = true;
+
+        }
+
+    }
+
+
+    /* ========================= */
+    /* PROFIL INTROUVABLE */
+/* ========================= */
+
+    if (!profileData) {
+
+        showNotFound();
+
+        return;
+
+    }
+
+
+    /* ========================= */
+    /* AFFICHAGE */
+/* ========================= */
+
+    displayProfile(
+        profileData,
+        isOwnProfile
+    );
+
+}
+
+
+/* ========================= */
+/* AUTH */
+/* ========================= */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) {
+
+            window.location.href =
+                "/login";
+
+            return;
+
+        }
+
+
+        renderMenu(user);
+
+
+        try {
+
+            await loadProfile(
+                user
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Erreur chargement profil :",
+                error
+            );
+
+            showNotFound();
+
+        }
+
+    }
+);
+
+
+/* ========================= */
+/* HASH CHANGE */
+/* ========================= */
+
+/*
+   Permet de changer directement :
+
+   /profile#123
+   → /profile#456
+
+   sans recharger la page.
+*/
+
+window.addEventListener(
+    "hashchange",
+    async () => {
+
+        const user =
+            auth.currentUser;
+
+
+        if (!user) {
+            return;
+        }
+
+
+        /*
+           On remet le contenu normal
+           avant de recharger le profil.
+        */
+
+        profileCard.innerHTML = `
+
+            <h1 id="profileTitle">
+                Profil
+            </h1>
+
+            <div
+                id="profileViewing"
+                class="profile-viewing"
+            >
+                Chargement...
+            </div>
+
+            <div class="profile-container">
+
+                <img
+                    id="profilePic"
+                    class="profile-pic"
+                    alt="Photo de profil"
+                >
+
+                <img
+                    src="/rizo-play.png"
+                    id="rizoBadge"
+                    class="rizo-badge"
+                    style="display:none;"
+                    alt="RizoPlay"
+                >
+
+            </div>
+
+            <h2 id="username">
+                Chargement...
+            </h2>
+
+            <p id="email"></p>
+
+            <div
+                id="profileId"
+                class="profile-id"
+            ></div>
+
+        `;
+
+
+        /*
+           Les références DOM précédentes sont devenues
+           invalides après innerHTML.
+
+           On recharge simplement la page pour garder
+           le code propre et éviter ce problème.
+        */
+
+        window.location.reload();
+
+    }
+);
+
+</script>
+
+
+<!-- ========================= -->
+<!-- AUTH FIREBASE EXISTANT -->
+<!-- ========================= -->
+
+<script type="module" src="/login/firebase-auth.js"></script>
+
+
+</body>
+</html>
