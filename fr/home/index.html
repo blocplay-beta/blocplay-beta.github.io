@@ -1,1989 +1,1712 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Accueil - BlocPlay</title>
-
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/logo.ico">
-
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
-
-<style>
-
-/* ========================= */
-/* SECTIONS */
-/* ========================= */
-
-.home-section {
-    background: #122a4a;
-    padding: 18px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-
-.home-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.home-section-header h2 {
-    margin: 0;
-    font-size: 21px;
-}
-
-/* ========================= */
-/* VOIR PLUS */
-/* ========================= */
-
-.more-btn {
-    background: #0e2347;
-    color: white;
-
-    border: none;
-    border-radius: 9px;
-
-    padding: 8px 12px;
-
-    font-weight: bold;
-    font-size: 14px;
-
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.more-btn:hover {
-    background: #173b70;
-}
-
-/* ========================= */
-/* ELEMENTS */
-/* ========================= */
-
-.home-items {
-    display: flex;
-    gap: 12px;
-
-    overflow-x: auto;
-
-    padding-bottom: 3px;
-}
-
-.home-items::-webkit-scrollbar {
-    height: 5px;
-}
-
-.home-items::-webkit-scrollbar-thumb {
-    background: #345;
-    border-radius: 10px;
-}
-
-.home-item {
-    flex: 0 0 105px;
-
-    min-height: 125px;
-
-    background: #0e2347;
-
-    border-radius: 12px;
-
-    padding: 10px;
-
-    box-sizing: border-box;
-
-    text-align: center;
-
-    text-decoration: none;
-
-    color: white;
-
-    transition: transform 0.2s ease;
-}
-
-.home-item:hover {
-    transform: translateY(-3px);
-}
-
-.home-item img {
-    width: 65px;
-    height: 65px;
-
-    object-fit: cover;
-
-    border-radius: 12px;
-
-    margin-bottom: 8px;
-}
-
-.home-item-name {
-    display: block;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-
-    font-weight: bold;
-
-    font-size: 14px;
-}
-
-/* ========================= */
-/* MESSAGE VIDE / CHARGEMENT */
-/* ========================= */
-
-.empty-section {
-    text-align: center;
-    color: #9fb4d4;
-
-    padding: 15px 5px;
-}
-
-.loading {
-    color: #9fb4d4;
-}
-
-/* ========================= */
-/* PETITES SECTIONS */
-/* ========================= */
-
-.small-section {
-    padding: 14px 18px;
-}
-
-.small-section .home-section-header {
-    margin-bottom: 0;
-}
-
-/* ========================= */
-/* RECHERCHE */
-/* ========================= */
-
-.search-box {
-    display: flex;
-
-    width: min(600px, calc(100% - 30px));
-
-    position: relative;
-}
-
-.search-box input {
-    width: 100%;
-
-    box-sizing: border-box;
-
-    padding: 14px 50px 14px 16px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: #122a4a;
-
-    color: white;
-
-    font-size: 16px;
-
-    outline: none;
-}
-
-.search-close {
-    position: absolute;
-
-    right: 10px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    border: none;
-
-    background: none;
-
-    color: white;
-
-    font-size: 20px;
-
-    cursor: pointer;
-}
-
-.search-overlay.show {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.search-results {
-    width: min(600px, calc(100% - 30px));
-
-    margin-top: 15px;
-}
-
-.search-result {
-    background: #122a4a;
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    margin-bottom: 10px;
-}
-
-.search-result h3 {
-    margin-top: 0;
-}
-
-</style>
-
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0b0f1a"
+  >
+
+  <title>Accueil - BlocPlay</title>
+
+  <link
+    rel="icon"
+    href="/logo.ico"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/style.css"
+  >
+
+  <style>
+
+    /* ================================
+       HOME BLOCPLAY
+    ================================= */
+
+    .home-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 50px;
+      box-sizing: border-box;
+    }
+
+    .home-title {
+      margin-bottom: 25px;
+    }
+
+    .home-title h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    .home-title p {
+      margin-top: 8px;
+      opacity: 0.7;
+    }
+
+    .home-section {
+      margin-bottom: 35px;
+    }
+
+    .home-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .home-section-header h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .see-more {
+      color: #8ea2ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .see-more:hover {
+      text-decoration: underline;
+    }
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(180px, 1fr)
+      );
+      gap: 15px;
+    }
+
+    .home-card {
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      overflow: hidden;
+      min-height: 150px;
+      transition: transform 0.15s ease,
+                  border-color 0.15s ease;
+    }
+
+    .home-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .home-card-image {
+      width: 100%;
+      height: 105px;
+      object-fit: cover;
+      display: block;
+      background: #0b0f1a;
+    }
+
+    .home-card-content {
+      padding: 12px;
+    }
+
+    .home-card-title {
+      font-weight: 600;
+      font-size: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .home-card-description {
+      margin-top: 5px;
+      font-size: 13px;
+      opacity: 0.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .person-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      min-height: 0;
+    }
+
+    .person-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #0b0f1a;
+      flex-shrink: 0;
+    }
+
+    .person-info {
+      min-width: 0;
+    }
+
+    .person-name {
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .person-subtitle {
+      margin-top: 4px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .empty-card {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 30px 20px;
+      text-align: center;
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      opacity: 0.8;
+    }
+
+    .empty-card-title {
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .empty-card-text {
+      font-size: 14px;
+      opacity: 0.65;
+    }
+
+    .loading-card {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 25px;
+      text-align: center;
+      background: #111827;
+      border-radius: 14px;
+      opacity: 0.7;
+    }
+
+    .error-card {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 25px;
+      text-align: center;
+      background: #24151a;
+      border: 1px solid rgba(255,80,80,0.2);
+      border-radius: 14px;
+    }
+
+    .error-card-title {
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .error-card-text {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+
+      .home-container {
+        padding: 20px 14px 40px;
+      }
+
+      .home-title h1 {
+        font-size: 27px;
+      }
+
+      .home-grid {
+        grid-template-columns: repeat(
+          2,
+          minmax(0, 1fr)
+        );
+      }
+
+      .home-card-image {
+        height: 90px;
+      }
+
+    }
+
+  </style>
 </head>
 
 <body>
 
+  <!-- =================================
+       HEADER
+  ================================== -->
 
-<!-- ========================= -->
-<!-- HEADER -->
-<!-- ========================= -->
+  <header class="header">
 
-<header>
-
-<div class="header-content">
-
-    <a href="/" class="logo">
-        <img src="/icon.png" alt="BlocPlay">
+    <a
+      class="logo"
+      href="/"
+    >
+      <img
+        src="/icon.png"
+        alt="BlocPlay"
+      >
     </a>
 
-    <div style="display:flex;align-items:center;">
+    <nav>
+      <a href="/home">Accueil</a>
+    </nav>
 
-        <button
-            id="searchBtn"
-            class="search-btn"
-            aria-label="Rechercher"
+    <div class="profile-menu">
+
+      <img
+        id="profileAvatar"
+        class="avatar"
+        src="https://ui-avatars.com/api/?name=BlocPlay"
+        alt="Profil"
+      >
+
+      <div
+        id="dropdown"
+        class="dropdown"
+      >
+        <a href="/profile">Profil</a>
+        <a href="/settings">Paramètres</a>
+        <a
+          href="#"
+          id="logoutBtn"
         >
-            🔍
-        </button>
-
-        <div class="profile-menu">
-
-            <img
-                src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-                class="avatar"
-                id="avatar"
-                alt="Profil"
-            >
-
-            <div
-                class="dropdown"
-                id="dropdown"
-            ></div>
-
-        </div>
+          Se déconnecter
+        </a>
+      </div>
 
     </div>
 
-</div>
-
-</header>
+  </header>
 
 
-<!-- ========================= -->
-<!-- RECHERCHE -->
-<!-- ========================= -->
+  <!-- =================================
+       CONTENU
+  ================================== -->
 
-<div
-    id="searchOverlay"
-    class="search-overlay"
->
+  <main class="home-container">
 
-    <div class="search-box">
+    <div class="home-title">
 
-        <input
-            id="searchInput"
-            type="text"
-            placeholder="Rechercher..."
-            autocomplete="off"
+      <h1 id="welcomeTitle">
+        Accueil
+      </h1>
+
+      <p>
+        Bienvenue sur BlocPlay.
+      </p>
+
+    </div>
+
+
+    <!-- ===============================
+         CONTACTS
+    ================================ -->
+
+    <section class="home-section">
+
+      <div class="home-section-header">
+
+        <h2>
+          Contacts
+        </h2>
+
+        <a
+          class="see-more"
+          href="/f/contacts"
         >
+          Voir plus
+        </a>
 
-        <button
-            id="closeSearch"
-            class="search-close"
+      </div>
+
+      <div
+        id="contactsContainer"
+        class="home-grid"
+      >
+
+        <div class="loading-card">
+          Chargement des contacts...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===============================
+         JOUÉ RÉCEMMENT
+    ================================ -->
+
+    <section class="home-section">
+
+      <div class="home-section-header">
+
+        <h2>
+          Joué récemment
+        </h2>
+
+        <a
+          class="see-more"
+          href="/f/recently-played"
         >
-            ✕
-        </button>
-
-    </div>
-
-    <div id="searchResults" class="search-results"></div>
-
-</div>
-
-
-<!-- ========================= -->
-<!-- CONTENU -->
-<!-- ========================= -->
-
-<main class="container">
-
-
-<!-- ========================= -->
-<!-- CONTACTS -->
-<!-- ========================= -->
-
-<section class="home-section">
-
-    <div class="home-section-header">
-
-        <h2>Contacts</h2>
-
-        <a href="/contacts" class="more-btn">
-            Voir plus
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="contactsItems"
-        class="home-items"
-    >
+      <div
+        id="recentlyPlayedContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
 
-<!-- ========================= -->
-<!-- JOUÉ RÉCEMMENT -->
-<!-- ========================= -->
+    <!-- ===============================
+         FAVORIS
+    ================================ -->
 
-<section class="home-section">
+    <section class="home-section">
 
-    <div class="home-section-header">
+      <div class="home-section-header">
 
-        <h2>Joué récemment</h2>
+        <h2>
+          Favoris
+        </h2>
 
-        <a href="/games/recent" class="more-btn">
-            Voir plus
+        <a
+          class="see-more"
+          href="/f/favorites"
+        >
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="recentGamesItems"
-        class="home-items"
-    >
+      <div
+        id="favoritesContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
 
-<!-- ========================= -->
-<!-- FAVORIS -->
-<!-- ========================= -->
+    <!-- ===============================
+         OBTENU RÉCEMMENT
+    ================================ -->
 
-<section class="home-section">
+    <section class="home-section">
 
-    <div class="home-section-header">
+      <div class="home-section-header">
 
-        <h2>Favoris</h2>
+        <h2>
+          Obtenu récemment
+        </h2>
 
-        <a href="/favorites" class="more-btn">
-            Voir plus
+        <a
+          class="see-more"
+          href="/f/recently-obtained"
+        >
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="favoritesItems"
-        class="home-items"
-    >
+      <div
+        id="recentlyObtainedContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
 
-<!-- ========================= -->
-<!-- OBTENU RÉCEMMENT -->
-<!-- ========================= -->
+    <!-- ===============================
+         TRIBUS
+    ================================ -->
 
-<section class="home-section">
+    <section class="home-section">
 
-    <div class="home-section-header">
+      <div class="home-section-header">
 
-        <h2>Obtenu récemment</h2>
+        <h2>
+          Mes tribus
+        </h2>
 
-        <a href="/purchases" class="more-btn">
-            Voir plus
+        <a
+          class="see-more"
+          href="/f/tribes"
+        >
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="ownedItems"
-        class="home-items"
-    >
+      <div
+        id="tribesContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
 
-<!-- ========================= -->
-<!-- TRIBUS -->
-<!-- ========================= -->
+    <!-- ===============================
+         JEUX POPULAIRES
+    ================================ -->
 
-<section class="home-section">
+    <section class="home-section">
 
-    <div class="home-section-header">
+      <div class="home-section-header">
 
-        <h2>Tribus</h2>
+        <h2>
+          Jeux populaires
+        </h2>
 
-        <a href="/tribes" class="more-btn">
-            Voir plus
+        <a
+          class="see-more"
+          href="/games"
+        >
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="tribesItems"
-        class="home-items"
-    >
+      <div
+        id="popularGamesContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
 
-<!-- ========================= -->
-<!-- JEUX POPULAIRES -->
-<!-- ========================= -->
+    <!-- ===============================
+         CONTACTS POPULAIRES
+    ================================ -->
 
-<section class="home-section">
+    <section class="home-section">
 
-    <div class="home-section-header">
+      <div class="home-section-header">
 
-        <h2>Jeux populaires</h2>
+        <h2>
+          Contacts populaires
+        </h2>
 
-        <a href="/games/popular" class="more-btn">
-            Voir plus
+        <a
+          class="see-more"
+          href="/users"
+        >
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="popularGamesItems"
-        class="home-items"
-    >
+      <div
+        id="popularUsersContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
 
-<!-- ========================= -->
-<!-- CONTACTS POPULAIRES -->
-<!-- ========================= -->
+    <!-- ===============================
+         ARTICLES POPULAIRES
+    ================================ -->
 
-<section class="home-section">
+    <section class="home-section">
 
-    <div class="home-section-header">
+      <div class="home-section-header">
 
-        <h2>Contacts populaires</h2>
+        <h2>
+          Articles populaires
+        </h2>
 
-        <a href="/contacts/popular" class="more-btn">
-            Voir plus
+        <a
+          class="see-more"
+          href="/articles"
+        >
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="popularContactsItems"
-        class="home-items"
-    >
+      <div
+        id="popularArticlesContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
 
-<!-- ========================= -->
-<!-- ARTICLES POPULAIRES -->
-<!-- ========================= -->
+    <!-- ===============================
+         TRIBUS POPULAIRES
+    ================================ -->
 
-<section class="home-section">
+    <section class="home-section">
 
-    <div class="home-section-header">
+      <div class="home-section-header">
 
-        <h2>Articles populaires</h2>
+        <h2>
+          Tribus populaires
+        </h2>
 
-        <a href="/articles/popular" class="more-btn">
-            Voir plus
+        <a
+          class="see-more"
+          href="/tribes"
+        >
+          Voir plus
         </a>
 
-    </div>
+      </div>
 
-    <div
-        id="popularArticlesItems"
-        class="home-items"
-    >
+      <div
+        id="popularTribesContainer"
+        class="home-grid"
+      >
 
-        <div class="loading">
-            Chargement...
+        <div class="loading-card">
+          Chargement...
         </div>
 
-    </div>
+      </div>
 
-</section>
+    </section>
 
-
-<!-- ========================= -->
-<!-- TRIBUS POPULAIRES -->
-<!-- ========================= -->
-
-<section class="home-section">
-
-    <div class="home-section-header">
-
-        <h2>Tribus populaires</h2>
-
-        <a href="/tribes/popular" class="more-btn">
-            Voir plus
-        </a>
-
-    </div>
-
-    <div
-        id="popularTribesItems"
-        class="home-items"
-    >
-
-        <div class="loading">
-            Chargement...
-        </div>
-
-    </div>
-
-</section>
+  </main>
 
 
-</main>
+  <!-- =================================
+       FIREBASE
+  ================================== -->
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      orderBy,
+      limit,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-<!-- ========================= -->
-<!-- FIREBASE -->
-<!-- ========================= -->
+    /* ================================
+       FIREBASE CONFIG
+    ================================= */
 
-<script type="module">
+    const firebaseConfig = {
 
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-    getFirestore,
-    collection,
-    doc,
-    getDoc,
-    getDocs,
-    query,
-    where,
-    orderBy,
-    limit
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-/* ========================= */
-/* CONFIG */
-/* ========================= */
-
-const firebaseConfig = {
-
-    apiKey:
+      apiKey:
         "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
 
-    authDomain:
+      authDomain:
         "blocplay-a9417.firebaseapp.com",
 
-    projectId:
+      projectId:
         "blocplay-a9417",
 
-    storageBucket:
+      storageBucket:
         "blocplay-a9417.firebasestorage.app",
 
-    messagingSenderId:
+      messagingSenderId:
         "540161549188",
 
-    appId:
+      appId:
         "1:540161549188:web:e0ec0350bd044de2f333d1"
 
-};
+    };
 
 
-const app =
-    initializeApp(firebaseConfig);
+    const app =
+      initializeApp(firebaseConfig);
 
-const auth =
-    getAuth(app);
+    const auth =
+      getAuth(app);
 
-const db =
-    getFirestore(app);
+    const db =
+      getFirestore(app);
 
 
-/* ========================= */
-/* ELEMENTS */
-/* ========================= */
+    /* ================================
+       ELEMENTS
+    ================================= */
 
-const avatar =
-    document.getElementById("avatar");
+    const profileAvatar =
+      document.getElementById(
+        "profileAvatar"
+      );
 
-const dropdown =
-    document.getElementById("dropdown");
+    const dropdown =
+      document.getElementById(
+        "dropdown"
+      );
 
+    const logoutBtn =
+      document.getElementById(
+        "logoutBtn"
+      );
 
-/* ========================= */
-/* MENU */
-/* ========================= */
+    const welcomeTitle =
+      document.getElementById(
+        "welcomeTitle"
+      );
 
-function renderMenu(user) {
 
-    if (!user) {
+    /* ================================
+       MENU PROFIL
+    ================================= */
 
-        dropdown.innerHTML = `
-
-            <a href="/login">
-                Se connecter
-            </a>
-
-            <a href="/signup">
-                Créer un compte
-            </a>
-
-        `;
-
-        return;
-    }
-
-
-    dropdown.innerHTML = `
-
-        <a href="/profile">
-            Profil
-        </a>
-
-        <a href="/settings">
-            Paramètres
-        </a>
-
-        <a href="/rizoplay">
-            RizoPlay
-        </a>
-
-        <a href="#" id="logout">
-            Se déconnecter
-        </a>
-
-    `;
-
-}
-
-
-/* ========================= */
-/* OUTILS */
-/* ========================= */
-
-function escapeHTML(value) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent =
-        value ?? "";
-
-    return div.innerHTML;
-
-}
-
-
-function showEmpty(element, text) {
-
-    element.innerHTML = `
-        <div class="empty-section">
-            ${escapeHTML(text)}
-        </div>
-    `;
-
-}
-
-
-function getImage(data, fallbackName) {
-
-    if (data.image) {
-        return data.image;
-    }
-
-    if (data.photoURL) {
-        return data.photoURL;
-    }
-
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-        data.name ||
-        data.username ||
-        fallbackName
-    )}&background=111&color=fff`;
-
-}
-
-
-/* ========================= */
-/* CONTACTS */
-/* ========================= */
-
-async function loadContacts(uid) {
-
-    const container =
-        document.getElementById("contactsItems");
-
-    try {
-
-        const q = query(
-            collection(db, "friendships"),
-            where("userId", "==", uid),
-            where("status", "==", "accepted"),
-            limit(20)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Vous n'avez encore aucun contact."
-            );
-
-            return;
-        }
-
-
-        const friends =
-            snapshot.docs.slice(0, 4);
-
-
-        const users =
-            await Promise.all(
-
-                friends.map(async (friendDoc) => {
-
-                    const data =
-                        friendDoc.data();
-
-                    const userSnap =
-                        await getDoc(
-                            doc(
-                                db,
-                                "users",
-                                data.friendId
-                            )
-                        );
-
-                    if (!userSnap.exists()) {
-                        return null;
-                    }
-
-                    return {
-                        id: userSnap.id,
-                        ...userSnap.data()
-                    };
-
-                })
-
-            );
-
-
-        const validUsers =
-            users.filter(Boolean);
-
-
-        if (!validUsers.length) {
-
-            showEmpty(
-                container,
-                "Vous n'avez encore aucun contact."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            validUsers.map(user => `
-
-                <a
-                    href="/profile?id=${encodeURIComponent(user.id)}"
-                    class="home-item"
-                >
-
-                    <img
-                        src="${getImage(user, "Utilisateur")}"
-                        alt=""
-                    >
-
-                    <span class="home-item-name">
-                        ${escapeHTML(user.username || "Utilisateur")}
-                    </span>
-
-                </a>
-
-            `).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur contacts :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les contacts."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* JOUÉ RÉCEMMENT */
-/* ========================= */
-
-async function loadRecentGames(uid) {
-
-    const container =
-        document.getElementById("recentGamesItems");
-
-    try {
-
-        const q = query(
-            collection(db, "recentGames"),
-            where("userId", "==", uid),
-            limit(20)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Vous n'avez encore joué à aucun jeu."
-            );
-
-            return;
-        }
-
-
-        const recent =
-            snapshot.docs
-                .map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }))
-                .sort(
-                    (a, b) =>
-                        (b.lastPlayed?.seconds || 0) -
-                        (a.lastPlayed?.seconds || 0)
-                )
-                .slice(0, 4);
-
-
-        const games =
-            await Promise.all(
-
-                recent.map(async item => {
-
-                    const gameSnap =
-                        await getDoc(
-                            doc(
-                                db,
-                                "games",
-                                item.gameId
-                            )
-                        );
-
-                    if (!gameSnap.exists()) {
-                        return null;
-                    }
-
-                    return {
-                        id: gameSnap.id,
-                        ...gameSnap.data()
-                    };
-
-                })
-
-            );
-
-
-        const validGames =
-            games.filter(Boolean);
-
-
-        if (!validGames.length) {
-
-            showEmpty(
-                container,
-                "Vous n'avez encore joué à aucun jeu."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            validGames.map(game => `
-
-                <a
-                    href="/game/${encodeURIComponent(game.id)}"
-                    class="home-item"
-                >
-
-                    <img
-                        src="${getImage(game, "Jeu")}"
-                        alt=""
-                    >
-
-                    <span class="home-item-name">
-                        ${escapeHTML(game.name || "Jeu")}
-                    </span>
-
-                </a>
-
-            `).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur jeux récents :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les jeux récents."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* FAVORIS */
-/* ========================= */
-
-async function loadFavorites(uid) {
-
-    const container =
-        document.getElementById("favoritesItems");
-
-    try {
-
-        const q = query(
-            collection(db, "favorites"),
-            where("userId", "==", uid),
-            limit(20)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Vous n'avez encore aucun favori."
-            );
-
-            return;
-        }
-
-
-        const favorites =
-            snapshot.docs
-                .map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }))
-                .sort(
-                    (a, b) =>
-                        (b.createdAt?.seconds || 0) -
-                        (a.createdAt?.seconds || 0)
-                )
-                .slice(0, 4);
-
-
-        const items =
-            await Promise.all(
-
-                favorites.map(async favorite => {
-
-                    const collectionName =
-                        favorite.type === "article"
-                            ? "articles"
-                            : "games";
-
-                    const itemSnap =
-                        await getDoc(
-                            doc(
-                                db,
-                                collectionName,
-                                favorite.itemId
-                            )
-                        );
-
-                    if (!itemSnap.exists()) {
-                        return null;
-                    }
-
-                    return {
-                        id: itemSnap.id,
-                        type: favorite.type,
-                        ...itemSnap.data()
-                    };
-
-                })
-
-            );
-
-
-        const validItems =
-            items.filter(Boolean);
-
-
-        if (!validItems.length) {
-
-            showEmpty(
-                container,
-                "Vous n'avez encore aucun favori."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            validItems.map(item => {
-
-                const url =
-                    item.type === "article"
-                        ? `/article/${encodeURIComponent(item.id)}`
-                        : `/game/${encodeURIComponent(item.id)}`;
-
-                const name =
-                    item.type === "article"
-                        ? item.title || "Article"
-                        : item.name || "Jeu";
-
-                return `
-
-                    <a
-                        href="${url}"
-                        class="home-item"
-                    >
-
-                        <img
-                            src="${getImage(item, name)}"
-                            alt=""
-                        >
-
-                        <span class="home-item-name">
-                            ${escapeHTML(name)}
-                        </span>
-
-                    </a>
-
-                `;
-
-            }).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur favoris :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les favoris."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* OBTENU RÉCEMMENT */
-/* ========================= */
-
-async function loadOwnedItems(uid) {
-
-    const container =
-        document.getElementById("ownedItems");
-
-    try {
-
-        const q = query(
-            collection(db, "ownedItems"),
-            where("userId", "==", uid),
-            limit(20)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Aucun article n'a encore été obtenu."
-            );
-
-            return;
-        }
-
-
-        const owned =
-            snapshot.docs
-                .map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }))
-                .sort(
-                    (a, b) =>
-                        (b.obtainedAt?.seconds || 0) -
-                        (a.obtainedAt?.seconds || 0)
-                )
-                .slice(0, 4);
-
-
-        const items =
-            await Promise.all(
-
-                owned.map(async item => {
-
-                    const itemSnap =
-                        await getDoc(
-                            doc(
-                                db,
-                                "articles",
-                                item.itemId
-                            )
-                        );
-
-                    if (!itemSnap.exists()) {
-                        return null;
-                    }
-
-                    return {
-                        id: itemSnap.id,
-                        ...itemSnap.data()
-                    };
-
-                })
-
-            );
-
-
-        const validItems =
-            items.filter(Boolean);
-
-
-        if (!validItems.length) {
-
-            showEmpty(
-                container,
-                "Aucun article n'a encore été obtenu."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            validItems.map(item => `
-
-                <a
-                    href="/article/${encodeURIComponent(item.id)}"
-                    class="home-item"
-                >
-
-                    <img
-                        src="${getImage(item, "Article")}"
-                        alt=""
-                    >
-
-                    <span class="home-item-name">
-                        ${escapeHTML(item.title || "Article")}
-                    </span>
-
-                </a>
-
-            `).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur articles obtenus :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les articles."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* TRIBUS */
-/* ========================= */
-
-async function loadTribes(uid) {
-
-    const container =
-        document.getElementById("tribesItems");
-
-    try {
-
-        const q = query(
-            collection(db, "tribeMembers"),
-            where("userId", "==", uid),
-            limit(20)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Vous n'avez rejoint aucune tribu."
-            );
-
-            return;
-        }
-
-
-        const memberships =
-            snapshot.docs.slice(0, 4);
-
-
-        const tribes =
-            await Promise.all(
-
-                memberships.map(async member => {
-
-                    const data =
-                        member.data();
-
-                    const tribeSnap =
-                        await getDoc(
-                            doc(
-                                db,
-                                "tribes",
-                                data.tribeId
-                            )
-                        );
-
-                    if (!tribeSnap.exists()) {
-                        return null;
-                    }
-
-                    return {
-                        id: tribeSnap.id,
-                        ...tribeSnap.data()
-                    };
-
-                })
-
-            );
-
-
-        const validTribes =
-            tribes.filter(Boolean);
-
-
-        if (!validTribes.length) {
-
-            showEmpty(
-                container,
-                "Vous n'avez rejoint aucune tribu."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            validTribes.map(tribe => `
-
-                <a
-                    href="/tribe/${encodeURIComponent(tribe.id)}"
-                    class="home-item"
-                >
-
-                    <img
-                        src="${getImage(tribe, "Tribu")}"
-                        alt=""
-                    >
-
-                    <span class="home-item-name">
-                        ${escapeHTML(tribe.name || "Tribu")}
-                    </span>
-
-                </a>
-
-            `).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur tribus :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les tribus."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* JEUX POPULAIRES */
-/* ========================= */
-
-async function loadPopularGames() {
-
-    const container =
-        document.getElementById("popularGamesItems");
-
-    try {
-
-        const q = query(
-            collection(db, "games"),
-            orderBy("players", "desc"),
-            limit(4)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Aucun jeu populaire pour le moment."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            snapshot.docs.map(gameDoc => {
-
-                const game = {
-                    id: gameDoc.id,
-                    ...gameDoc.data()
-                };
-
-                return `
-
-                    <a
-                        href="/game/${encodeURIComponent(game.id)}"
-                        class="home-item"
-                    >
-
-                        <img
-                            src="${getImage(game, "Jeu")}"
-                            alt=""
-                        >
-
-                        <span class="home-item-name">
-                            ${escapeHTML(game.name || "Jeu")}
-                        </span>
-
-                    </a>
-
-                `;
-
-            }).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur jeux populaires :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les jeux populaires."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* CONTACTS POPULAIRES */
-/* ========================= */
-
-async function loadPopularContacts() {
-
-    const container =
-        document.getElementById("popularContactsItems");
-
-    try {
-
-        const q = query(
-            collection(db, "users"),
-            orderBy("activityScore", "desc"),
-            limit(4)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Aucun contact populaire pour le moment."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            snapshot.docs.map(userDoc => {
-
-                const user = {
-                    id: userDoc.id,
-                    ...userDoc.data()
-                };
-
-                return `
-
-                    <a
-                        href="/profile?id=${encodeURIComponent(user.id)}"
-                        class="home-item"
-                    >
-
-                        <img
-                            src="${getImage(user, "Utilisateur")}"
-                            alt=""
-                        >
-
-                        <span class="home-item-name">
-                            ${escapeHTML(user.username || "Utilisateur")}
-                        </span>
-
-                    </a>
-
-                `;
-
-            }).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur contacts populaires :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les contacts populaires."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* ARTICLES POPULAIRES */
-/* ========================= */
-
-async function loadPopularArticles() {
-
-    const container =
-        document.getElementById("popularArticlesItems");
-
-    try {
-
-        const q = query(
-            collection(db, "articles"),
-            orderBy("purchasesCount", "desc"),
-            limit(4)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Aucun article populaire pour le moment."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            snapshot.docs.map(articleDoc => {
-
-                const article = {
-                    id: articleDoc.id,
-                    ...articleDoc.data()
-                };
-
-                return `
-
-                    <a
-                        href="/article/${encodeURIComponent(article.id)}"
-                        class="home-item"
-                    >
-
-                        <img
-                            src="${getImage(article, "Article")}"
-                            alt=""
-                        >
-
-                        <span class="home-item-name">
-                            ${escapeHTML(article.title || "Article")}
-                        </span>
-
-                    </a>
-
-                `;
-
-            }).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur articles populaires :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les articles populaires."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* TRIBUS POPULAIRES */
-/* ========================= */
-
-async function loadPopularTribes() {
-
-    const container =
-        document.getElementById("popularTribesItems");
-
-    try {
-
-        const q = query(
-            collection(db, "tribes"),
-            orderBy("membersCount", "desc"),
-            limit(4)
-        );
-
-        const snapshot =
-            await getDocs(q);
-
-
-        if (snapshot.empty) {
-
-            showEmpty(
-                container,
-                "Aucune tribu populaire pour le moment."
-            );
-
-            return;
-        }
-
-
-        container.innerHTML =
-            snapshot.docs.map(tribeDoc => {
-
-                const tribe = {
-                    id: tribeDoc.id,
-                    ...tribeDoc.data()
-                };
-
-                return `
-
-                    <a
-                        href="/tribe/${encodeURIComponent(tribe.id)}"
-                        class="home-item"
-                    >
-
-                        <img
-                            src="${getImage(tribe, "Tribu")}"
-                            alt=""
-                        >
-
-                        <span class="home-item-name">
-                            ${escapeHTML(tribe.name || "Tribu")}
-                        </span>
-
-                    </a>
-
-                `;
-
-            }).join("");
-
-    } catch (error) {
-
-        console.error(
-            "Erreur tribus populaires :",
-            error
-        );
-
-        showEmpty(
-            container,
-            "Impossible de charger les tribus populaires."
-        );
-
-    }
-
-}
-
-
-/* ========================= */
-/* AUTH + CHARGEMENT HOME */
-/* ========================= */
-
-onAuthStateChanged(
-    auth,
-    async (user) => {
-
-        renderMenu(user);
-
-
-        if (!user) {
-
-            window.location.href = "/login";
-
-            return;
-        }
-
-
-        /* Avatar Firebase */
-
-        if (user.photoURL) {
-
-            avatar.src =
-                user.photoURL;
-
-        } else {
-
-            avatar.src =
-                `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                    user.displayName || "User"
-                )}&background=111&color=fff&rounded=true&size=64`;
-
-        }
-
-
-        /* Chargement des sections */
-
-        await Promise.all([
-
-            loadContacts(user.uid),
-
-            loadRecentGames(user.uid),
-
-            loadFavorites(user.uid),
-
-            loadOwnedItems(user.uid),
-
-            loadTribes(user.uid),
-
-            loadPopularGames(),
-
-            loadPopularContacts(),
-
-            loadPopularArticles(),
-
-            loadPopularTribes()
-
-        ]);
-
-    }
-);
-
-
-/* ========================= */
-/* MENU PROFIL */
-/* ========================= */
-
-avatar.addEventListener(
-    "click",
-    event => {
+    profileAvatar.addEventListener(
+      "click",
+      (event) => {
 
         event.stopPropagation();
 
-        dropdown.classList.toggle("show");
+        dropdown.classList.toggle(
+          "show"
+        );
 
-    }
-);
-
-
-document.addEventListener(
-    "click",
-    () => {
-
-        dropdown.classList.remove("show");
-
-    }
-);
+      }
+    );
 
 
-document.addEventListener(
-    "click",
-    async event => {
+    document.addEventListener(
+      "click",
+      () => {
 
-        if (event.target.id === "logout") {
+        dropdown.classList.remove(
+          "show"
+        );
 
-            event.preventDefault();
+      }
+    );
 
-            await signOut(auth);
 
-            window.location.href = "/login";
+    dropdown.addEventListener(
+      "click",
+      (event) => {
+
+        event.stopPropagation();
+
+      }
+    );
+
+
+    /* ================================
+       DÉCONNEXION
+    ================================= */
+
+    logoutBtn.addEventListener(
+      "click",
+      async (event) => {
+
+        event.preventDefault();
+
+        try {
+
+          await signOut(auth);
+
+          window.location.href =
+            "/login";
+
+        } catch (error) {
+
+          console.error(
+            "Erreur déconnexion :",
+            error
+          );
 
         }
 
-    }
-);
-
-</script>
+      }
+    );
 
 
-<!-- ========================= -->
-<!-- RECHERCHE -->
-<!-- ========================= -->
+    /* ================================
+       OUTILS
+    ================================= */
 
-<script>
+    function escapeHTML(value) {
 
-const searchBtn =
-    document.getElementById("searchBtn");
+      if (value === undefined ||
+          value === null) {
 
-const searchOverlay =
-    document.getElementById("searchOverlay");
+        return "";
 
-const searchInput =
-    document.getElementById("searchInput");
+      }
 
-const searchResults =
-    document.getElementById("searchResults");
-
-const closeSearch =
-    document.getElementById("closeSearch");
-
-
-searchBtn.addEventListener(
-    "click",
-    () => {
-
-        searchOverlay.classList.add("show");
-
-        searchInput.focus();
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
     }
-);
 
 
-closeSearch.addEventListener(
-    "click",
-    () => {
+    function avatarURL(
+      photoURL,
+      name
+    ) {
 
-        searchOverlay.classList.remove("show");
+      if (
+        photoURL &&
+        typeof photoURL === "string"
+      ) {
 
-        searchInput.value = "";
+        return photoURL;
 
-        searchResults.innerHTML = "";
+      }
+
+      return (
+        "https://ui-avatars.com/api/?name=" +
+        encodeURIComponent(
+          name || "BlocPlay"
+        )
+      );
 
     }
-);
 
 
-searchInput.addEventListener(
-    "keydown",
-    event => {
+    function showEmpty(
+      container,
+      title,
+      text
+    ) {
 
-        if (event.key !== "Enter") {
-            return;
-        }
+      container.innerHTML = `
 
-        const query =
-            searchInput.value.trim();
+        <div class="empty-card">
 
-        if (!query) {
-            return;
-        }
+          <div class="empty-card-title">
+            ${escapeHTML(title)}
+          </div>
 
-        searchResults.innerHTML = `
+          <div class="empty-card-text">
+            ${escapeHTML(text)}
+          </div>
 
-            <div class="search-result">
+        </div>
 
-                <h3>Résultats de recherche</h3>
+      `;
 
-                <p>
-                    Recherche pour :
-                    <strong>
-                        ${escapeHTML(query)}
-                    </strong>
-                </p>
+    }
 
+
+    function showError(
+      container,
+      text
+    ) {
+
+      container.innerHTML = `
+
+        <div class="error-card">
+
+          <div class="error-card-title">
+            Impossible de charger les données
+          </div>
+
+          <div class="error-card-text">
+            ${escapeHTML(text)}
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+
+    function showLoading(
+      container,
+      text = "Chargement..."
+    ) {
+
+      container.innerHTML = `
+
+        <div class="loading-card">
+          ${escapeHTML(text)}
+        </div>
+
+      `;
+
+    }
+
+
+    /* ================================
+       CARTE STANDARD
+    ================================= */
+
+    function createContentCard(
+      data,
+      fallbackTitle = "Sans nom"
+    ) {
+
+      const title =
+        data.name ||
+        data.title ||
+        data.displayName ||
+        data.username ||
+        fallbackTitle;
+
+      const image =
+        data.image ||
+        data.imageURL ||
+        data.photoURL ||
+        data.avatar ||
+        avatarURL(
+          "",
+          title
+        );
+
+      const description =
+        data.description || "";
+
+      return `
+
+        <div class="home-card">
+
+          <img
+            class="home-card-image"
+            src="${escapeHTML(image)}"
+            alt=""
+            loading="lazy"
+          >
+
+          <div class="home-card-content">
+
+            <div class="home-card-title">
+              ${escapeHTML(title)}
             </div>
 
-        `;
+            ${
+              description
+              ?
+              `
+                <div class="home-card-description">
+                  ${escapeHTML(description)}
+                </div>
+              `
+              :
+              ""
+            }
+
+          </div>
+
+        </div>
+
+      `;
 
     }
-);
 
 
-function escapeHTML(text) {
+    /* ================================
+       CARTE UTILISATEUR
+    ================================= */
 
-    const div =
-        document.createElement("div");
+    function createPersonCard(
+      data
+    ) {
 
-    div.textContent =
-        text;
+      const name =
+        data.username ||
+        data.displayName ||
+        "Utilisateur";
 
-    return div.innerHTML;
+      const avatar =
+        avatarURL(
+          data.avatar ||
+          data.photoURL,
+          name
+        );
 
-}
+      const subtitle =
+        data.popularity !== undefined
+          ? `${data.popularity} popularité`
+          : "Contact BlocPlay";
+
+      return `
+
+        <div class="home-card person-card">
+
+          <img
+            class="person-avatar"
+            src="${escapeHTML(avatar)}"
+            alt=""
+            loading="lazy"
+          >
+
+          <div class="person-info">
+
+            <div class="person-name">
+              ${escapeHTML(name)}
+            </div>
+
+            <div class="person-subtitle">
+              ${escapeHTML(subtitle)}
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
 
 
-searchOverlay.addEventListener(
-    "click",
-    event => {
+    /* ================================
+       CONTACTS
+    ================================= */
 
-        if (event.target === searchOverlay) {
+    async function loadContacts(
+      user
+    ) {
 
-            searchOverlay.classList.remove("show");
+      const container =
+        document.getElementById(
+          "contactsContainer"
+        );
 
-            searchInput.value = "";
+      try {
 
-            searchResults.innerHTML = "";
+        console.log(
+          "[BlocPlay] Chargement contacts pour :",
+          user.uid
+        );
+
+        const friendsRef =
+          collection(
+            db,
+            "users",
+            user.uid,
+            "friends"
+          );
+
+        const snapshot =
+          await getDocs(
+            friendsRef
+          );
+
+        console.log(
+          "[BlocPlay] Contacts trouvés :",
+          snapshot.size
+        );
+
+        if (snapshot.empty) {
+
+          showEmpty(
+            container,
+            "Aucun contact",
+            "Tu n'as pas encore ajouté de contact."
+          );
+
+          return;
 
         }
 
+        const friends =
+          snapshot.docs
+            .slice(0, 8)
+            .map(
+              (friendDoc) => ({
+                id: friendDoc.id,
+                ...friendDoc.data()
+              })
+            );
+
+        container.innerHTML =
+          friends
+            .map(
+              createPersonCard
+            )
+            .join("");
+
+      } catch (error) {
+
+        console.error(
+          "[BlocPlay] Erreur contacts :",
+          error
+        );
+
+        showError(
+          container,
+          error.code ||
+          error.message ||
+          "Erreur Firestore."
+        );
+
+      }
+
     }
-);
-
-</script>
 
 
-<!-- ========================= -->
-<!-- SERVICE WORKER -->
-<!-- ========================= -->
+    /* ================================
+       JOUÉ RÉCEMMENT
+    ================================= */
 
-<script>
+    async function loadRecentlyPlayed(
+      user
+    ) {
 
-if ("serviceWorker" in navigator) {
+      const container =
+        document.getElementById(
+          "recentlyPlayedContainer"
+        );
 
-    window.addEventListener(
-        "load",
-        () => {
+      try {
 
-            navigator.serviceWorker.register(
-                "/service-worker.js"
+        const ref =
+          collection(
+            db,
+            "users",
+            user.uid,
+            "recentlyPlayed"
+          );
+
+        const q =
+          query(
+            ref,
+            orderBy(
+              "playedAt",
+              "desc"
+            ),
+            limit(8)
+          );
+
+        const snapshot =
+          await getDocs(q);
+
+        if (snapshot.empty) {
+
+          showEmpty(
+            container,
+            "Aucun jeu récemment joué",
+            "Les jeux auxquels tu joueras apparaîtront ici."
+          );
+
+          return;
+
+        }
+
+        container.innerHTML =
+          snapshot.docs
+            .map(
+              item =>
+                createContentCard(
+                  item.data(),
+                  item.id
+                )
+            )
+            .join("");
+
+      } catch (error) {
+
+        console.error(
+          "[BlocPlay] Erreur joué récemment :",
+          error
+        );
+
+        showError(
+          container,
+          error.code ||
+          error.message ||
+          "Erreur Firestore."
+        );
+
+      }
+
+    }
+
+
+    /* ================================
+       FAVORIS
+    ================================= */
+
+    async function loadFavorites(
+      user
+    ) {
+
+      const container =
+        document.getElementById(
+          "favoritesContainer"
+        );
+
+      try {
+
+        const ref =
+          collection(
+            db,
+            "users",
+            user.uid,
+            "favorites"
+          );
+
+        const q =
+          query(
+            ref,
+            orderBy(
+              "addedAt",
+              "desc"
+            ),
+            limit(8)
+          );
+
+        const snapshot =
+          await getDocs(q);
+
+        if (snapshot.empty) {
+
+          showEmpty(
+            container,
+            "Aucun favori",
+            "Tes jeux et articles favoris apparaîtront ici."
+          );
+
+          return;
+
+        }
+
+        container.innerHTML =
+          snapshot.docs
+            .map(
+              item =>
+                createContentCard(
+                  item.data(),
+                  item.id
+                )
+            )
+            .join("");
+
+      } catch (error) {
+
+        console.error(
+          "[BlocPlay] Erreur favoris :",
+          error
+        );
+
+        showError(
+          container,
+          error.code ||
+          error.message ||
+          "Erreur Firestore."
+        );
+
+      }
+
+    }
+
+
+    /* ================================
+       OBTENU RÉCEMMENT
+    ================================= */
+
+    async function loadRecentlyObtained(
+      user
+    ) {
+
+      const container =
+        document.getElementById(
+          "recentlyObtainedContainer"
+        );
+
+      try {
+
+        const ref =
+          collection(
+            db,
+            "users",
+            user.uid,
+            "recentlyObtained"
+          );
+
+        const q =
+          query(
+            ref,
+            orderBy(
+              "obtainedAt",
+              "desc"
+            ),
+            limit(8)
+          );
+
+        const snapshot =
+          await getDocs(q);
+
+        if (snapshot.empty) {
+
+          showEmpty(
+            container,
+            "Rien obtenu récemment",
+            "Les éléments que tu obtiendras apparaîtront ici."
+          );
+
+          return;
+
+        }
+
+        container.innerHTML =
+          snapshot.docs
+            .map(
+              item =>
+                createContentCard(
+                  item.data(),
+                  item.id
+                )
+            )
+            .join("");
+
+      } catch (error) {
+
+        console.error(
+          "[BlocPlay] Erreur obtenu récemment :",
+          error
+        );
+
+        showError(
+          container,
+          error.code ||
+          error.message ||
+          "Erreur Firestore."
+        );
+
+      }
+
+    }
+
+
+    /* ================================
+       MES TRIBUS
+    ================================= */
+
+    async function loadMyTribes(
+      user
+    ) {
+
+      const container =
+        document.getElementById(
+          "tribesContainer"
+        );
+
+      try {
+
+        const ref =
+          collection(
+            db,
+            "users",
+            user.uid,
+            "tribes"
+          );
+
+        const snapshot =
+          await getDocs(ref);
+
+        if (snapshot.empty) {
+
+          showEmpty(
+            container,
+            "Aucune tribu",
+            "Les tribus que tu rejoindras apparaîtront ici."
+          );
+
+          return;
+
+        }
+
+        container.innerHTML =
+          snapshot.docs
+            .slice(0, 8)
+            .map(
+              item =>
+                createContentCard(
+                  item.data(),
+                  item.id
+                )
+            )
+            .join("");
+
+      } catch (error) {
+
+        console.error(
+          "[BlocPlay] Erreur mes tribus :",
+          error
+        );
+
+        showError(
+          container,
+          error.code ||
+          error.message ||
+          "Erreur Firestore."
+        );
+
+      }
+
+    }
+
+
+    /* ================================
+       COLLECTIONS POPULAIRES
+    ================================= */
+
+    async function loadPopularCollection(
+      collectionName,
+      containerId,
+      emptyTitle,
+      emptyText
+    ) {
+
+      const container =
+        document.getElementById(
+          containerId
+        );
+
+      try {
+
+        const ref =
+          collection(
+            db,
+            collectionName
+          );
+
+        const q =
+          query(
+            ref,
+            orderBy(
+              "popularity",
+              "desc"
+            ),
+            limit(8)
+          );
+
+        const snapshot =
+          await getDocs(q);
+
+        if (snapshot.empty) {
+
+          showEmpty(
+            container,
+            emptyTitle,
+            emptyText
+          );
+
+          return;
+
+        }
+
+        container.innerHTML =
+          snapshot.docs
+            .map(
+              item =>
+                createContentCard(
+                  item.data(),
+                  item.id
+                )
+            )
+            .join("");
+
+      } catch (error) {
+
+        console.error(
+          `[BlocPlay] Erreur ${collectionName} :`,
+          error
+        );
+
+        showError(
+          container,
+          error.code ||
+          error.message ||
+          "Erreur Firestore."
+        );
+
+      }
+
+    }
+
+
+    /* ================================
+       CONTACTS POPULAIRES
+    ================================= */
+
+    async function loadPopularUsers() {
+
+      const container =
+        document.getElementById(
+          "popularUsersContainer"
+        );
+
+      try {
+
+        const ref =
+          collection(
+            db,
+            "publicUsers"
+          );
+
+        const q =
+          query(
+            ref,
+            orderBy(
+              "popularity",
+              "desc"
+            ),
+            limit(8)
+          );
+
+        const snapshot =
+          await getDocs(q);
+
+        if (snapshot.empty) {
+
+          showEmpty(
+            container,
+            "Aucun contact populaire",
+            "Les utilisateurs populaires apparaîtront ici."
+          );
+
+          return;
+
+        }
+
+        container.innerHTML =
+          snapshot.docs
+            .map(
+              item =>
+                createPersonCard(
+                  item.data()
+                )
+            )
+            .join("");
+
+      } catch (error) {
+
+        console.error(
+          "[BlocPlay] Erreur contacts populaires :",
+          error
+        );
+
+        showError(
+          container,
+          error.code ||
+          error.message ||
+          "Erreur Firestore."
+        );
+
+      }
+
+    }
+
+
+    /* ================================
+       CHARGEMENT COMPLET
+    ================================= */
+
+    async function loadHome(
+      user
+    ) {
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+      try {
+
+        const userSnapshot =
+          await getDoc(
+            userRef
+          );
+
+        if (userSnapshot.exists()) {
+
+          const data =
+            userSnapshot.data();
+
+          const username =
+            data.username ||
+            data.displayName ||
+            user.displayName ||
+            "joueur";
+
+          welcomeTitle.textContent =
+            `Bonjour ${username} !`;
+
+          profileAvatar.src =
+            avatarURL(
+              data.photoURL ||
+              user.photoURL,
+              username
+            );
+
+        } else {
+
+          const username =
+            user.displayName ||
+            "joueur";
+
+          welcomeTitle.textContent =
+            `Bonjour ${username} !`;
+
+          profileAvatar.src =
+            avatarURL(
+              user.photoURL,
+              username
             );
 
         }
+
+      } catch (error) {
+
+        console.error(
+          "[BlocPlay] Erreur profil :",
+          error
+        );
+
+        const username =
+          user.displayName ||
+          "joueur";
+
+        welcomeTitle.textContent =
+          `Bonjour ${username} !`;
+
+      }
+
+
+      /*
+       * On lance les chargements séparément.
+       * Ainsi, si une collection pose problème,
+       * les autres peuvent quand même fonctionner.
+       */
+
+      await Promise.all([
+        loadContacts(user),
+        loadRecentlyPlayed(user),
+        loadFavorites(user),
+        loadRecentlyObtained(user),
+        loadMyTribes(user),
+        loadPopularCollection(
+          "games",
+          "popularGamesContainer",
+          "Aucun jeu populaire",
+          "Les jeux populaires apparaîtront ici."
+        ),
+        loadPopularUsers(),
+        loadPopularCollection(
+          "articles",
+          "popularArticlesContainer",
+          "Aucun article populaire",
+          "Les articles populaires apparaîtront ici."
+        ),
+        loadPopularCollection(
+          "tribes",
+          "popularTribesContainer",
+          "Aucune tribu populaire",
+          "Les tribus populaires apparaîtront ici."
+        )
+      ]);
+
+    }
+
+
+    /* ================================
+       AUTH
+    ================================= */
+
+    onAuthStateChanged(
+      auth,
+      async (user) => {
+
+        if (!user) {
+
+          window.location.href =
+            "/login";
+
+          return;
+
+        }
+
+        console.log(
+          "[BlocPlay] Utilisateur connecté :",
+          user.uid
+        );
+
+        await loadHome(user);
+
+      }
     );
 
-}
-
-</script>
+  </script>
 
 </body>
 </html>
