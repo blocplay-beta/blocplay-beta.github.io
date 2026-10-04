@@ -823,7 +823,7 @@ const dropdown =
   document.getElementById("dropdown");
 
 
-function renderMenu(user) {
+async function renderMenu(user) {
 
   if (user) {
 
@@ -847,17 +847,84 @@ function renderMenu(user) {
 
     `;
 
-    if (user.photoURL) {
+
+    const name =
+      user.displayName ||
+      user.email?.split("@")[0] ||
+      "User";
+
+
+    let photoURL = "";
+
+
+    /* ========================= */
+    /* PHOTO FIRESTORE */
+    /* ========================= */
+
+    try {
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+
+      const userSnap =
+        await getDoc(
+          userRef
+        );
+
+
+      if (
+        userSnap.exists()
+      ) {
+
+        const data =
+          userSnap.data();
+
+
+        photoURL =
+          data.photoURL ||
+          data.avatar ||
+          "";
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Photo loading error:",
+        error
+      );
+
+    }
+
+
+    /* ========================= */
+    /* FALLBACK FIREBASE AUTH */
+    /* ========================= */
+
+    if (!photoURL) {
+
+      photoURL =
+        user.photoURL ||
+        "";
+
+    }
+
+
+    /* ========================= */
+    /* AFFICHAGE PHOTO */
+    /* ========================= */
+
+    if (photoURL) {
 
       avatar.src =
-        user.photoURL;
+        photoURL;
 
     } else {
-
-      const name =
-        user.displayName ||
-        user.email?.split("@")[0] ||
-        "User";
 
       avatar.src =
         "https://ui-avatars.com/api/?name=" +
@@ -880,6 +947,10 @@ function renderMenu(user) {
 
     `;
 
+
+    avatar.src =
+      "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+
   }
 
 }
@@ -893,7 +964,7 @@ onAuthStateChanged(
   auth,
   async (user) => {
 
-    renderMenu(user);
+    await renderMenu(user);
 
 
     if (!user) {
