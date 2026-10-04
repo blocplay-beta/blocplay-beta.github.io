@@ -32,7 +32,6 @@
         content="#0b0f1a"
     >
 
-
     <style>
 
         .search-page-card {
@@ -48,15 +47,19 @@
 
 
         .search-page-input {
+
             flex: 1;
+
             min-width: 0;
 
             padding: 14px 16px;
 
             border: none;
+
             border-radius: 12px;
 
-            background: rgba(255, 255, 255, 0.07);
+            background:
+                rgba(255, 255, 255, 0.07);
 
             color: white;
 
@@ -65,21 +68,30 @@
             font-size: 16px;
 
             box-sizing: border-box;
+
         }
 
 
         .search-page-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+
+            color:
+                rgba(255, 255, 255, 0.5);
+
         }
 
 
         .search-page-input:focus {
-            background: rgba(255, 255, 255, 0.10);
+
+            background:
+                rgba(255, 255, 255, 0.10);
+
         }
 
 
         .search-page-button {
+
             border: none;
+
             border-radius: 12px;
 
             padding: 0 20px;
@@ -95,44 +107,56 @@
             transition:
                 transform 0.15s ease,
                 opacity 0.15s ease;
+
         }
 
 
         .search-page-button:hover {
-            transform: translateY(-1px);
+
+            transform:
+                translateY(-1px);
+
             opacity: 0.9;
-        }
 
-
-        .search-query {
-            opacity: 0.7;
         }
 
 
         .search-group {
+
             margin-bottom: 20px;
+
         }
 
 
         .search-group:last-child {
+
             margin-bottom: 0;
+
         }
 
 
         .search-group-title {
+
             margin-bottom: 14px;
+
         }
 
 
         .search-result-list {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 10px;
+
         }
 
 
         .search-result {
+
             display: flex;
+
             align-items: center;
 
             gap: 14px;
@@ -141,7 +165,8 @@
 
             border-radius: 14px;
 
-            background: rgba(255, 255, 255, 0.045);
+            background:
+                rgba(255, 255, 255, 0.045);
 
             color: inherit;
 
@@ -150,20 +175,26 @@
             transition:
                 background 0.15s ease,
                 transform 0.15s ease;
+
         }
 
 
         .search-result:hover {
-            background: rgba(255, 255, 255, 0.08);
+
+            background:
+                rgba(255, 255, 255, 0.08);
 
             transform:
                 translateY(-1px);
+
         }
 
 
         .search-result-image,
         .search-result-icon {
+
             width: 52px;
+
             height: 52px;
 
             min-width: 52px;
@@ -173,28 +204,37 @@
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
             object-fit: cover;
 
             background:
                 rgba(255, 255, 255, 0.08);
+
         }
 
 
         .search-result-icon {
+
             font-size: 25px;
+
         }
 
 
         .search-result-content {
+
             flex: 1;
+
             min-width: 0;
+
         }
 
 
         .search-result-content h3 {
-            margin: 0 0 4px 0;
+
+            margin:
+                0 0 4px 0;
 
             font-size: 16px;
 
@@ -203,10 +243,12 @@
             overflow: hidden;
 
             text-overflow: ellipsis;
+
         }
 
 
         .search-result-content p {
+
             margin: 0;
 
             opacity: 0.6;
@@ -218,10 +260,12 @@
             overflow: hidden;
 
             text-overflow: ellipsis;
+
         }
 
 
         .search-result-type {
+
             display: inline-block;
 
             margin-top: 5px;
@@ -229,64 +273,79 @@
             font-size: 11px;
 
             opacity: 0.5;
+
         }
 
 
         .search-result-arrow {
+
             opacity: 0.45;
 
             font-size: 20px;
 
             padding-right: 5px;
+
         }
 
 
         .search-loading {
+
             text-align: center;
 
             opacity: 0.65;
 
             padding: 20px;
+
         }
 
 
         .search-empty {
+
             text-align: center;
 
             padding: 25px 10px;
+
         }
 
 
         .search-empty-icon {
+
             font-size: 38px;
 
             margin-bottom: 10px;
+
         }
 
 
         .search-error {
+
             text-align: center;
 
             padding: 20px;
 
-            color: #ff7777;
         }
 
 
         @media (max-width: 600px) {
 
             .search-page-form {
+
                 gap: 8px;
+
             }
 
 
             .search-page-button {
+
                 padding: 0 15px;
+
             }
 
 
             .search-result {
+
                 padding: 11px;
+
             }
 
 
@@ -294,6 +353,7 @@
             .search-result-icon {
 
                 width: 46px;
+
                 height: 46px;
 
                 min-width: 46px;
@@ -302,7 +362,9 @@
 
 
             .search-result-arrow {
+
                 display: none;
+
             }
 
         }
@@ -376,6 +438,11 @@
 <main class="container">
 
 
+    <!-- ========================= -->
+    <!-- RECHERCHE -->
+    <!-- ========================= -->
+
+
     <div class="card search-page-card">
 
 
@@ -421,16 +488,9 @@
     </div>
 
 
-    <div
-        id="searchInfo"
-        class="card search-page-card"
-    >
-
-        <p>
-            Entrez une recherche ci-dessus.
-        </p>
-
-    </div>
+    <!-- ========================= -->
+    <!-- RÉSULTATS -->
+    <!-- ========================= -->
 
 
     <div
@@ -523,12 +583,12 @@
 </footer>
 
 
+<!-- ========================= -->
+<!-- FIREBASE -->
+<!-- ========================= -->
+
+
 <script type="module">
-
-
-/* =========================================================
-   FIREBASE
-========================================================= */
 
 
 import {
@@ -561,13 +621,19 @@ import {
 
     getFirestore,
 
+    doc,
+
+    getDoc,
+
     collection,
+
+    query,
+
+    where,
 
     getDocs,
 
-    doc,
-
-    getDoc
+    limit
 
 }
 
@@ -576,121 +642,90 @@ from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
+/* ========================= */
+/* FIREBASE */
+/* ========================= */
+
+
 const firebaseConfig = {
 
-
     apiKey:
-
         "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwEtMmEtUkn04",
 
-
     authDomain:
-
         "blocplay-a9417.firebaseapp.com",
 
-
     projectId:
-
-        "blocplay-a9417",
-
-
-    storageBucket:
-
-        "blocplay-a9417.firebasestorage.app",
-
-
-    messagingSenderId:
-
-        "540161549188",
-
-
-    appId:
-
-        "1:540161549188:web:e0ec0350bd044de2f333d1"
+        "blocplay-a9417"
 
 };
 
 
 const app =
-
     initializeApp(
         firebaseConfig
     );
 
 
 const auth =
-
     getAuth(
         app
     );
 
 
 const db =
-
     getFirestore(
         app
     );
 
 
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+/* ========================= */
+/* ELEMENTS */
+/* ========================= */
 
 
 const avatar =
-
     document.getElementById(
         "avatar"
     );
 
 
 const dropdown =
-
     document.getElementById(
         "dropdown"
     );
 
 
 const searchBtn =
-
     document.getElementById(
         "searchBtn"
     );
 
 
 const searchForm =
-
     document.getElementById(
         "searchForm"
     );
 
 
 const pageSearchInput =
-
     document.getElementById(
         "pageSearchInput"
     );
 
 
-const searchInfo =
-
-    document.getElementById(
-        "searchInfo"
-    );
-
-
 const resultsContainer =
-
     document.getElementById(
         "resultsContainer"
     );
 
 
 
-/* =========================================================
-   BOUTON RECHERCHE DU HEADER
-========================================================= */
+/* ========================= */
+/* BOUTON RECHERCHE HEADER */
+/* ========================= */
 
 
 searchBtn.addEventListener(
@@ -708,12 +743,12 @@ searchBtn.addEventListener(
 
 
 
-/* =========================================================
-   MENU PROFIL
-========================================================= */
+/* ========================= */
+/* MENU PROFIL */
+/* ========================= */
 
 
-async function renderMenu(
+function renderMenu(
     user
 ) {
 
@@ -754,88 +789,14 @@ async function renderMenu(
             "User";
 
 
-        let photoURL = "";
-
-
-        try {
-
-
-            const userRef =
-
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
-
-
-            const userSnap =
-
-                await getDoc(
-                    userRef
-                );
-
-
-            if (
-                userSnap.exists()
-            ) {
-
-
-                const data =
-
-                    userSnap.data();
-
-
-                photoURL =
-
-                    data.photoURL ||
-
-                    data.avatar ||
-
-                    "";
-
-            }
-
-
-        }
-
-        catch (error) {
-
-
-            console.warn(
-
-                "Impossible de récupérer le profil Firebase :",
-
-                error
-
-            );
-
-        }
-
-
-        if (!photoURL) {
-
-
-            photoURL =
-
-                user.photoURL ||
-
-                "";
-
-        }
-
-
-        if (photoURL) {
-
+        if (user.photoURL) {
 
             avatar.src =
-                photoURL;
-
+                user.photoURL;
 
         }
 
         else {
-
 
             avatar.src =
 
@@ -878,6 +839,11 @@ async function renderMenu(
 
 
 
+/* ========================= */
+/* AUTH FIREBASE */
+/* ========================= */
+
+
 onAuthStateChanged(
 
     auth,
@@ -894,15 +860,18 @@ onAuthStateChanged(
 
 
 
+/* ========================= */
+/* MENU AVATAR */
+/* ========================= */
+
+
 avatar.addEventListener(
 
     "click",
 
     event => {
 
-
         event.stopPropagation();
-
 
         dropdown.classList.toggle(
             "show"
@@ -911,7 +880,6 @@ avatar.addEventListener(
     }
 
 );
-
 
 
 document.addEventListener(
@@ -928,6 +896,11 @@ document.addEventListener(
 
 );
 
+
+
+/* ========================= */
+/* DÉCONNEXION */
+/* ========================= */
 
 
 document.addEventListener(
@@ -948,26 +921,19 @@ document.addEventListener(
 
             try {
 
-
                 await signOut(
                     auth
                 );
 
-
                 window.location.reload();
-
 
             }
 
             catch (error) {
 
-
                 console.error(
-
                     "Erreur déconnexion :",
-
                     error
-
                 );
 
             }
@@ -980,15 +946,14 @@ document.addEventListener(
 
 
 
-/* =========================================================
-   OUTILS
-========================================================= */
+/* ========================= */
+/* OUTILS */
+/* ========================= */
 
 
 function normalizeText(
     value
 ) {
-
 
     return String(
         value || ""
@@ -1015,43 +980,15 @@ function escapeHTML(
     value
 ) {
 
-
     const div =
-
         document.createElement(
             "div"
         );
 
-
     div.textContent =
         value || "";
 
-
     return div.innerHTML;
-
-}
-
-
-
-function getName(
-    data,
-    fallback
-) {
-
-
-    return (
-
-        data?.displayName ||
-
-        data?.username ||
-
-        data?.name ||
-
-        data?.title ||
-
-        fallback
-
-    );
 
 }
 
@@ -1061,10 +998,11 @@ function getImage(
     data
 ) {
 
-
     return (
 
         data?.photoURL ||
+
+        data?.avatar ||
 
         data?.imageURL ||
 
@@ -1084,6 +1022,34 @@ function getImage(
 
 
 
+function getName(
+    data,
+    fallback
+) {
+
+    return (
+
+        data?.displayName ||
+
+        data?.username ||
+
+        data?.name ||
+
+        data?.title ||
+
+        fallback
+
+    );
+
+}
+
+
+
+/* ========================= */
+/* HASH */
+/* ========================= */
+
+
 function getSearchQuery() {
 
 
@@ -1100,7 +1066,6 @@ function getSearchQuery() {
 
     try {
 
-
         return decodeURIComponent(
             hash.substring(1)
         );
@@ -1108,7 +1073,6 @@ function getSearchQuery() {
     }
 
     catch {
-
 
         return hash.substring(1);
 
@@ -1118,9 +1082,9 @@ function getSearchQuery() {
 
 
 
-/* =========================================================
-   ICÔNE PAR DÉFAUT
-========================================================= */
+/* ========================= */
+/* ICÔNE */
+/* ========================= */
 
 
 function createIcon(
@@ -1129,7 +1093,6 @@ function createIcon(
 
 
     const element =
-
         document.createElement(
             "div"
         );
@@ -1149,9 +1112,9 @@ function createIcon(
 
 
 
-/* =========================================================
-   CRÉATION D'UN RÉSULTAT
-========================================================= */
+/* ========================= */
+/* RÉSULTAT */
+/* ========================= */
 
 
 function createResult(
@@ -1165,7 +1128,6 @@ function createResult(
 
 
     const result =
-
         document.createElement(
             "a"
         );
@@ -1183,7 +1145,6 @@ function createResult(
 
 
         const imageElement =
-
             document.createElement(
                 "img"
             );
@@ -1202,7 +1163,6 @@ function createResult(
 
 
         imageElement.onerror =
-
             () => {
 
                 imageElement.replaceWith(
@@ -1222,7 +1182,6 @@ function createResult(
 
     else {
 
-
         result.appendChild(
             createIcon(
                 icon
@@ -1234,7 +1193,6 @@ function createResult(
 
 
     const content =
-
         document.createElement(
             "div"
         );
@@ -1268,7 +1226,6 @@ function createResult(
 
 
     const arrow =
-
         document.createElement(
             "span"
         );
@@ -1293,9 +1250,9 @@ function createResult(
 
 
 
-/* =========================================================
-   GROUPE DE RÉSULTATS
-========================================================= */
+/* ========================= */
+/* GROUPE */
+/* ========================= */
 
 
 function createGroup(
@@ -1305,7 +1262,7 @@ function createGroup(
 
 
     if (
-        !results.length
+        results.length === 0
     ) {
 
         return null;
@@ -1314,7 +1271,6 @@ function createGroup(
 
 
     const card =
-
         document.createElement(
             "div"
         );
@@ -1325,7 +1281,6 @@ function createGroup(
 
 
     const heading =
-
         document.createElement(
             "h2"
         );
@@ -1346,7 +1301,6 @@ function createGroup(
 
 
     const list =
-
         document.createElement(
             "div"
         );
@@ -1396,23 +1350,36 @@ function createGroup(
 
 
 
-/* =========================================================
-   RECHERCHE UTILISATEURS
-========================================================= */
+/* ========================================================= */
+/* RECHERCHE UTILISATEURS */
+/* ========================================================= */
 
 
 async function searchUsers(
-    query
+    search
 ) {
 
 
     const results = [];
 
 
+    const normalizedSearch =
+        normalizeText(
+            search
+        );
+
+
     try {
 
 
-        const snapshot =
+        /*
+            On récupère les utilisateurs
+            depuis la vraie collection
+            "users" de ton Firebase.
+        */
+
+
+        const usersSnapshot =
 
             await getDocs(
 
@@ -1424,39 +1391,34 @@ async function searchUsers(
             );
 
 
-        const normalized =
+        usersSnapshot.forEach(
 
-            normalizeText(
-                query
-            );
-
-
-        snapshot.forEach(
-
-            documentSnapshot => {
+            userDocument => {
 
 
                 const data =
-
-                    documentSnapshot.data();
+                    userDocument.data();
 
 
                 const displayName =
-
                     normalizeText(
                         data.displayName
                     );
 
 
                 const username =
-
                     normalizeText(
                         data.username
                     );
 
 
-                const email =
+                /*
+                    L'email est volontairement
+                    également recherché ici.
+                */
 
+
+                const email =
                     normalizeText(
                         data.email
                     );
@@ -1466,7 +1428,7 @@ async function searchUsers(
 
 
                     displayName.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -1474,7 +1436,7 @@ async function searchUsers(
 
 
                     username.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -1482,70 +1444,85 @@ async function searchUsers(
 
 
                     email.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
                 ) {
 
 
-                    const profileID =
-
-                        data.id ??
-
-                        documentSnapshot.id;
-
-
-                    results.push({
-
-                        type:
-                            "Utilisateur",
+                    /*
+                        Ton profil utilise
+                        un ID numérique personnalisé.
+                    */
 
 
-                        icon:
-                            "👤",
+                    const customID =
+                        data.id;
 
 
-                        title:
-
-                            getName(
-                                data,
-                                "Utilisateur"
-                            ),
+                    /*
+                        Si l'ID existe,
+                        on utilise /profile#ID.
+                    */
 
 
-                        description:
+                    if (
+                        customID !== undefined &&
+                        customID !== null
+                    ) {
 
-                            data.username
 
-                                ?
+                        results.push({
 
-                                "@" +
+                            type:
+                                "Utilisateur",
+
+
+                            icon:
+                                "👤",
+
+
+                            title:
+
+                                getName(
+                                    data,
+                                    "Utilisateur"
+                                ),
+
+
+                            description:
+
                                 data.username
 
-                                :
+                                    ?
 
-                                data.email ||
+                                    "@" +
+                                    data.username
 
-                                "Utilisateur BlocPlay",
+                                    :
 
-
-                        url:
-
-                            "/fr/profile#" +
-
-                            encodeURIComponent(
-                                profileID
-                            ),
+                                    "Utilisateur BlocPlay",
 
 
-                        image:
+                            url:
 
-                            getImage(
-                                data
-                            )
+                                "/fr/profile#" +
 
-                    });
+                                encodeURIComponent(
+                                    customID
+                                ),
+
+
+                            image:
+
+                                getImage(
+                                    data
+                                )
+
+                        });
+
+                    }
 
                 }
 
@@ -1561,7 +1538,7 @@ async function searchUsers(
 
         console.error(
 
-            "Erreur recherche utilisateurs :",
+            "Erreur Firebase - utilisateurs :",
 
             error
 
@@ -1579,17 +1556,23 @@ async function searchUsers(
 
 
 
-/* =========================================================
-   RECHERCHE JEUX
-========================================================= */
+/* ========================================================= */
+/* RECHERCHE JEUX */
+/* ========================================================= */
 
 
 async function searchGames(
-    query
+    search
 ) {
 
 
     const results = [];
+
+
+    const normalizedSearch =
+        normalizeText(
+            search
+        );
 
 
     try {
@@ -1607,25 +1590,16 @@ async function searchGames(
             );
 
 
-        const normalized =
-
-            normalizeText(
-                query
-            );
-
-
         snapshot.forEach(
 
-            documentSnapshot => {
+            gameDocument => {
 
 
                 const data =
-
-                    documentSnapshot.data();
+                    gameDocument.data();
 
 
                 const name =
-
                     normalizeText(
 
                         data.name ||
@@ -1638,7 +1612,6 @@ async function searchGames(
 
 
                 const description =
-
                     normalizeText(
                         data.description
                     );
@@ -1648,7 +1621,7 @@ async function searchGames(
 
 
                     name.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -1656,7 +1629,7 @@ async function searchGames(
 
 
                     description.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -1693,7 +1666,7 @@ async function searchGames(
                             "/fr/game#" +
 
                             encodeURIComponent(
-                                documentSnapshot.id
+                                gameDocument.id
                             ),
 
 
@@ -1719,7 +1692,7 @@ async function searchGames(
 
         console.error(
 
-            "Erreur recherche jeux :",
+            "Erreur Firebase - jeux :",
 
             error
 
@@ -1737,17 +1710,23 @@ async function searchGames(
 
 
 
-/* =========================================================
-   RECHERCHE TRIBUS
-========================================================= */
+/* ========================================================= */
+/* RECHERCHE TRIBUS */
+/* ========================================================= */
 
 
 async function searchTribes(
-    query
+    search
 ) {
 
 
     const results = [];
+
+
+    const normalizedSearch =
+        normalizeText(
+            search
+        );
 
 
     try {
@@ -1765,25 +1744,16 @@ async function searchTribes(
             );
 
 
-        const normalized =
-
-            normalizeText(
-                query
-            );
-
-
         snapshot.forEach(
 
-            documentSnapshot => {
+            tribeDocument => {
 
 
                 const data =
-
-                    documentSnapshot.data();
+                    tribeDocument.data();
 
 
                 const name =
-
                     normalizeText(
 
                         data.name ||
@@ -1796,7 +1766,6 @@ async function searchTribes(
 
 
                 const description =
-
                     normalizeText(
                         data.description
                     );
@@ -1806,7 +1775,7 @@ async function searchTribes(
 
 
                     name.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -1814,7 +1783,7 @@ async function searchTribes(
 
 
                     description.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -1851,7 +1820,7 @@ async function searchTribes(
                             "/fr/tribe#" +
 
                             encodeURIComponent(
-                                documentSnapshot.id
+                                tribeDocument.id
                             ),
 
 
@@ -1877,7 +1846,7 @@ async function searchTribes(
 
         console.error(
 
-            "Erreur recherche tribus :",
+            "Erreur Firebase - tribus :",
 
             error
 
@@ -1895,17 +1864,23 @@ async function searchTribes(
 
 
 
-/* =========================================================
-   RECHERCHE ARTICLES
-========================================================= */
+/* ========================================================= */
+/* RECHERCHE ARTICLES */
+/* ========================================================= */
 
 
 async function searchArticles(
-    query
+    search
 ) {
 
 
     const results = [];
+
+
+    const normalizedSearch =
+        normalizeText(
+            search
+        );
 
 
     try {
@@ -1923,25 +1898,16 @@ async function searchArticles(
             );
 
 
-        const normalized =
-
-            normalizeText(
-                query
-            );
-
-
         snapshot.forEach(
 
-            documentSnapshot => {
+            articleDocument => {
 
 
                 const data =
-
-                    documentSnapshot.data();
+                    articleDocument.data();
 
 
                 const title =
-
                     normalizeText(
 
                         data.title ||
@@ -1952,7 +1918,6 @@ async function searchArticles(
 
 
                 const description =
-
                     normalizeText(
 
                         data.description ||
@@ -1966,7 +1931,7 @@ async function searchArticles(
 
 
                     title.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -1974,7 +1939,7 @@ async function searchArticles(
 
 
                     description.includes(
-                        normalized
+                        normalizedSearch
                     )
 
 
@@ -2013,7 +1978,7 @@ async function searchArticles(
                             "/fr/article#" +
 
                             encodeURIComponent(
-                                documentSnapshot.id
+                                articleDocument.id
                             ),
 
 
@@ -2039,7 +2004,7 @@ async function searchArticles(
 
         console.error(
 
-            "Erreur recherche articles :",
+            "Erreur Firebase - articles :",
 
             error
 
@@ -2057,43 +2022,34 @@ async function searchArticles(
 
 
 
-/* =========================================================
-   LANCER LA RECHERCHE
-========================================================= */
+/* ========================================================= */
+/* RECHERCHE PRINCIPALE */
+/* ========================================================= */
 
 
 async function performSearch() {
 
 
-    const query =
-
+    const search =
         getSearchQuery();
 
 
     pageSearchInput.value =
-        query;
+        search;
+
+
+    resultsContainer.innerHTML =
+        "";
 
 
 
-    if (!query) {
+    /*
+        Pas de recherche :
+        on ne montre rien sous la carte.
+    */
 
 
-        searchInfo.innerHTML = `
-
-            <p>
-
-                Entrez une recherche ci-dessus
-                pour trouver des utilisateurs,
-                jeux, tribus ou articles.
-
-            </p>
-
-        `;
-
-
-        resultsContainer.innerHTML =
-            "";
-
+    if (!search) {
 
         return;
 
@@ -2101,22 +2057,9 @@ async function performSearch() {
 
 
 
-    searchInfo.innerHTML = `
-
-        <p>
-
-            Résultats pour :
-
-            <strong class="search-query">
-
-                ${escapeHTML(query)}
-
-            </strong>
-
-        </p>
-
-    `;
-
+    /*
+        Recherche en cours.
+    */
 
 
     resultsContainer.innerHTML = `
@@ -2135,20 +2078,34 @@ async function performSearch() {
 
 
 
+    /*
+        Les quatre recherches
+        utilisent Firebase.
+    */
+
+
     const users =
-        await searchUsers(query);
+        await searchUsers(
+            search
+        );
 
 
     const games =
-        await searchGames(query);
+        await searchGames(
+            search
+        );
 
 
     const tribes =
-        await searchTribes(query);
+        await searchTribes(
+            search
+        );
 
 
     const articles =
-        await searchArticles(query);
+        await searchArticles(
+            search
+        );
 
 
 
@@ -2167,6 +2124,11 @@ async function performSearch() {
     resultsContainer.innerHTML =
         "";
 
+
+
+    /*
+        Aucun résultat.
+    */
 
 
     if (
@@ -2194,7 +2156,7 @@ async function performSearch() {
                         à
 
                         <strong>
-                            ${escapeHTML(query)}
+                            ${escapeHTML(search)}
                         </strong>.
 
                     </p>
@@ -2212,42 +2174,35 @@ async function performSearch() {
 
 
 
+    /*
+        Affichage des catégories.
+    */
+
+
     const groups = [
 
 
         createGroup(
-
             "👤 Utilisateurs",
-
             users
-
         ),
 
 
         createGroup(
-
             "🎮 Jeux",
-
             games
-
         ),
 
 
         createGroup(
-
             "🏠 Tribus",
-
             tribes
-
         ),
 
 
         createGroup(
-
             "📰 Articles",
-
             articles
-
         )
 
     ];
@@ -2260,7 +2215,6 @@ async function performSearch() {
 
 
             if (group) {
-
 
                 resultsContainer.appendChild(
                     group
@@ -2276,9 +2230,9 @@ async function performSearch() {
 
 
 
-/* =========================================================
-   FORMULAIRE
-========================================================= */
+/* ========================================================= */
+/* FORMULAIRE */
+/* ========================================================= */
 
 
 searchForm.addEventListener(
@@ -2291,16 +2245,13 @@ searchForm.addEventListener(
         event.preventDefault();
 
 
-        const query =
-
+        const search =
             pageSearchInput.value.trim();
 
 
-        if (!query) {
-
+        if (!search) {
 
             pageSearchInput.focus();
-
 
             return;
 
@@ -2312,7 +2263,7 @@ searchForm.addEventListener(
             "/fr/search/#" +
 
             encodeURIComponent(
-                query
+                search
             );
 
     }
@@ -2321,9 +2272,9 @@ searchForm.addEventListener(
 
 
 
-/* =========================================================
-   CHANGEMENT DU HASH
-========================================================= */
+/* ========================================================= */
+/* CHANGEMENT DE RECHERCHE */
+/* ========================================================= */
 
 
 window.addEventListener(
@@ -2336,9 +2287,9 @@ window.addEventListener(
 
 
 
-/* =========================================================
-   LANCEMENT INITIAL
-========================================================= */
+/* ========================================================= */
+/* LANCEMENT */
+/* ========================================================= */
 
 
 performSearch();
@@ -2348,6 +2299,11 @@ performSearch();
 
 
 <script>
+
+
+/* ========================= */
+/* SERVICE WORKER */
+/* ========================= */
 
 
 if (
@@ -2367,6 +2323,7 @@ if (
                 "/service-worker.js"
 
             );
+
 
         }
 
