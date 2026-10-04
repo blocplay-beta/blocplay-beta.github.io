@@ -15,6 +15,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b0f1a">
 
+
 <style>
 
 /* ========================= */
@@ -108,11 +109,11 @@
 
 
 /* ========================= */
-/* PROFIL AUTRE UTILISATEUR */
+/* DATE DE CRÉATION */
 /* ========================= */
 
-.profile-viewing {
-    margin-bottom: 15px;
+.profile-created {
+    margin-top: 5px;
 
     color: #7f8ca1;
 
@@ -144,6 +145,7 @@
 
 </head>
 
+
 <body>
 
 
@@ -165,26 +167,76 @@
     </a>
 
 
-    <div class="profile-menu">
+    <div class="header-actions">
 
-      <img
-        src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-        class="avatar"
-        id="avatar"
-        alt="Profil"
+      <button
+        id="searchBtn"
+        class="header-button"
+        aria-label="Rechercher"
       >
+        🔍
+      </button>
 
 
-      <div
-        class="dropdown"
-        id="dropdown"
-      ></div>
+      <div class="profile-menu">
+
+        <img
+          src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+          class="avatar"
+          id="avatar"
+          alt="Profil"
+        >
+
+
+        <div
+          class="dropdown"
+          id="dropdown"
+        ></div>
+
+      </div>
 
     </div>
 
   </div>
 
 </header>
+
+
+<!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
+
+<div
+  id="searchOverlay"
+  class="search-overlay"
+>
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Rechercher sur BlocPlay..."
+      autocomplete="off"
+    >
+
+
+    <button
+      id="closeSearch"
+      class="search-close"
+    >
+      ✕
+    </button>
+
+  </div>
+
+
+  <div
+    id="searchResults"
+    class="search-results"
+  ></div>
+
+</div>
 
 
 <!-- ========================= -->
@@ -199,20 +251,14 @@
     id="profileCard"
   >
 
+
     <h1 id="profileTitle">
       Mon profil
     </h1>
 
 
-    <div
-      id="profileViewing"
-      class="profile-viewing"
-      style="display:none;"
-    >
-    </div>
-
-
     <div class="profile-container">
+
 
       <img
         id="profilePic"
@@ -246,6 +292,13 @@
       class="profile-id"
     ></div>
 
+
+    <div
+      id="profileCreated"
+      class="profile-created"
+    ></div>
+
+
   </div>
 
 
@@ -257,6 +310,7 @@
 <!-- ========================= -->
 
 <script type="module">
+
 
 import {
     initializeApp
@@ -306,8 +360,10 @@ const firebaseConfig = {
 const app =
     initializeApp(firebaseConfig);
 
+
 const auth =
     getAuth(app);
+
 
 const db =
     getFirestore(app);
@@ -322,45 +378,54 @@ const avatar =
         "avatar"
     );
 
+
 const dropdown =
     document.getElementById(
         "dropdown"
     );
+
 
 const profileTitle =
     document.getElementById(
         "profileTitle"
     );
 
-const profileViewing =
-    document.getElementById(
-        "profileViewing"
-    );
 
 const profilePic =
     document.getElementById(
         "profilePic"
     );
 
+
 const username =
     document.getElementById(
         "username"
     );
+
 
 const email =
     document.getElementById(
         "email"
     );
 
+
 const profileId =
     document.getElementById(
         "profileId"
     );
 
+
+const profileCreated =
+    document.getElementById(
+        "profileCreated"
+    );
+
+
 const rizoBadge =
     document.getElementById(
         "rizoBadge"
     );
+
 
 const profileCard =
     document.getElementById(
@@ -522,6 +587,75 @@ function showNotFound() {
 
 
 /* ========================= */
+/* FORMAT DATE */
+/* ========================= */
+
+function formatCreationDate(
+    createdAt
+) {
+
+    if (!createdAt) {
+        return "";
+    }
+
+
+    let date;
+
+
+    if (
+        typeof createdAt.toDate ===
+        "function"
+    ) {
+
+        date =
+            createdAt.toDate();
+
+    } else if (
+        createdAt instanceof Date
+    ) {
+
+        date =
+            createdAt;
+
+    } else if (
+        typeof createdAt ===
+        "number"
+    ) {
+
+        date =
+            new Date(createdAt);
+
+    } else {
+
+        return "";
+
+    }
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    return date.toLocaleDateString(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* ========================= */
 /* AFFICHER PROFIL */
 /* ========================= */
 
@@ -529,6 +663,7 @@ function displayProfile(
     data,
     isOwnProfile
 ) {
+
 
     const displayName =
         data.displayName ||
@@ -555,19 +690,10 @@ function displayProfile(
         profileTitle.textContent =
             "Mon profil";
 
-        profileViewing.style.display =
-            "none";
-
     } else {
 
         profileTitle.textContent =
             "Profil";
-
-        profileViewing.style.display =
-            "block";
-
-        profileViewing.textContent =
-            "Profil public BlocPlay";
 
     }
 
@@ -591,7 +717,7 @@ function displayProfile(
 
     /* ========================= */
     /* EMAIL */
-/* ========================= */
+    /* ========================= */
 
     if (isOwnProfile) {
 
@@ -608,7 +734,7 @@ function displayProfile(
 
     /* ========================= */
     /* ID */
-/* ========================= */
+    /* ========================= */
 
     if (
         data.id !== undefined &&
@@ -628,8 +754,32 @@ function displayProfile(
 
 
     /* ========================= */
+    /* DATE DE CRÉATION */
+    /* ========================= */
+
+    const creationDate =
+        formatCreationDate(
+            data.createdAt
+        );
+
+
+    if (creationDate) {
+
+        profileCreated.textContent =
+            "Compte créé le " +
+            creationDate;
+
+    } else {
+
+        profileCreated.textContent =
+            "";
+
+    }
+
+
+    /* ========================= */
     /* RIZOPLAY */
-/* ========================= */
+    /* ========================= */
 
     const isAdmin =
         data.email ===
@@ -690,8 +840,12 @@ async function getProfileByUID(
 
 
     return {
-        uid: uid,
+
+        uid:
+            uid,
+
         ...profileSnap.data()
+
     };
 
 }
@@ -705,6 +859,7 @@ async function getProfileByCustomID(
     customID
 ) {
 
+
     const usersRef =
         collection(
             db,
@@ -713,13 +868,14 @@ async function getProfileByCustomID(
 
 
     /*
-       Les IDs créés lors de l'inscription
-       sont actuellement des nombres :
+        Les IDs créés lors de l'inscription
+        sont actuellement des nombres :
 
-       id: Math.floor(Math.random() * 100000000)
+        id: Math.floor(Math.random() * 100000000)
 
-       On cherche donc d'abord avec un nombre.
+        On cherche donc d'abord avec un nombre.
     */
+
 
     const numericID =
         Number(customID);
@@ -783,15 +939,17 @@ async function loadProfile(
     currentUser
 ) {
 
+
     /*
-       location.hash contient par exemple :
+        location.hash contient par exemple :
 
-       /profile
-       → ""
+        /profile
+        → ""
 
-       /profile#123456
-       → "#123456"
+        /profile#123456
+        → "#123456"
     */
+
 
     const hash =
         window.location.hash;
@@ -810,7 +968,7 @@ async function loadProfile(
 
     /* ========================= */
     /* /profile */
-/* ========================= */
+    /* ========================= */
 
     if (!customID) {
 
@@ -826,7 +984,7 @@ async function loadProfile(
 
     /* ========================= */
     /* /profile#ID */
-/* ========================= */
+    /* ========================= */
 
     else {
 
@@ -837,10 +995,11 @@ async function loadProfile(
 
 
         /*
-           Si l'ID correspond à ton propre
-           profil, on peut quand même considérer
-           que c'est ton profil.
+            Si l'ID correspond à ton propre
+            profil, on peut quand même considérer
+            que c'est ton profil.
         */
+
 
         if (
             profileData &&
@@ -857,7 +1016,7 @@ async function loadProfile(
 
     /* ========================= */
     /* PROFIL INTROUVABLE */
-/* ========================= */
+    /* ========================= */
 
     if (!profileData) {
 
@@ -870,7 +1029,7 @@ async function loadProfile(
 
     /* ========================= */
     /* AFFICHAGE */
-/* ========================= */
+    /* ========================= */
 
     displayProfile(
         profileData,
@@ -927,12 +1086,12 @@ onAuthStateChanged(
 /* ========================= */
 
 /*
-   Permet de changer directement :
+    Permet de changer directement :
 
-   /profile#123
-   → /profile#456
+    /profile#123
+    → /profile#456
 
-   sans recharger la page.
+    sans recharger la page.
 */
 
 window.addEventListener(
@@ -949,61 +1108,8 @@ window.addEventListener(
 
 
         /*
-           On remet le contenu normal
-           avant de recharger le profil.
-        */
-
-        profileCard.innerHTML = `
-
-            <h1 id="profileTitle">
-                Profil
-            </h1>
-
-            <div
-                id="profileViewing"
-                class="profile-viewing"
-            >
-                Chargement...
-            </div>
-
-            <div class="profile-container">
-
-                <img
-                    id="profilePic"
-                    class="profile-pic"
-                    alt="Photo de profil"
-                >
-
-                <img
-                    src="/rizo-play.png"
-                    id="rizoBadge"
-                    class="rizo-badge"
-                    style="display:none;"
-                    alt="RizoPlay"
-                >
-
-            </div>
-
-            <h2 id="username">
-                Chargement...
-            </h2>
-
-            <p id="email"></p>
-
-            <div
-                id="profileId"
-                class="profile-id"
-            ></div>
-
-        `;
-
-
-        /*
-           Les références DOM précédentes sont devenues
-           invalides après innerHTML.
-
-           On recharge simplement la page pour garder
-           le code propre et éviter ce problème.
+            On recharge simplement le profil
+            en rechargeant la page.
         */
 
         window.location.reload();
@@ -1015,10 +1121,196 @@ window.addEventListener(
 
 
 <!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
+
+<script>
+
+const searchBtn =
+    document.getElementById(
+        "searchBtn"
+    );
+
+
+const searchOverlay =
+    document.getElementById(
+        "searchOverlay"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+const searchResults =
+    document.getElementById(
+        "searchResults"
+    );
+
+
+const closeSearch =
+    document.getElementById(
+        "closeSearch"
+    );
+
+
+searchBtn.addEventListener(
+    "click",
+    () => {
+
+        searchOverlay.classList.add(
+            "show"
+        );
+
+        searchInput.focus();
+
+    }
+);
+
+
+closeSearch.addEventListener(
+    "click",
+    () => {
+
+        searchOverlay.classList.remove(
+            "show"
+        );
+
+        searchInput.value = "";
+
+        searchResults.innerHTML = "";
+
+    }
+);
+
+
+searchInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key !==
+            "Enter"
+        ) {
+
+            return;
+
+        }
+
+
+        const query =
+            searchInput.value.trim();
+
+
+        if (!query) {
+            return;
+        }
+
+
+        searchResults.innerHTML = `
+
+            <div class="search-result">
+
+                <h3>
+                    Résultats de recherche
+                </h3>
+
+                <p>
+                    Recherche pour :
+                    <strong>
+                        ${escapeHTML(query)}
+                    </strong>
+                </p>
+
+            </div>
+
+        `;
+
+    }
+);
+
+
+function escapeHTML(
+    text
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+searchOverlay.addEventListener(
+    "click",
+    (event) => {
+
+        if (
+            event.target ===
+            searchOverlay
+        ) {
+
+            searchOverlay.classList.remove(
+                "show"
+            );
+
+            searchInput.value = "";
+
+            searchResults.innerHTML = "";
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- ========================= -->
 <!-- AUTH FIREBASE EXISTANT -->
 <!-- ========================= -->
 
-<script type="module" src="/login/firebase-auth.js"></script>
+<script
+  type="module"
+  src="/login/firebase-auth.js"
+></script>
+
+
+<!-- ========================= -->
+<!-- SERVICE WORKER -->
+<!-- ========================= -->
+
+<script>
+
+if (
+    "serviceWorker" in
+    navigator
+) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker.register(
+                "/service-worker.js"
+            );
+
+        }
+    );
+
+}
+
+</script>
 
 
 </body>
