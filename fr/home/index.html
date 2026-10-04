@@ -2,2120 +2,2034 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#0b0f1a"
-    >
-
-    <title>Accueil - BlocPlay</title>
-
-    <link
-        rel="icon"
-        href="/logo.ico"
-    >
-
-    <link
-        rel="stylesheet"
-        href="/style.css"
-    >
-
-    <style>
-
-        /* =========================================================
-           BLOCPLAY HOME
-           ========================================================= */
-
-        body {
-            background: #0b0f1a;
-        }
-
-        .home-container {
-            width: min(1200px, calc(100% - 32px));
-            margin: 0 auto;
-            padding: 32px 0 50px;
-        }
-
-        /* ---------------------------------------------------------
-           HEADER
-           --------------------------------------------------------- */
-
-        .home-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .home-header-spacer {
-            flex: 1;
-        }
-
-        .home-search-button {
-            width: 42px;
-            height: 42px;
-
-            border: 0;
-            border-radius: 12px;
-
-            background: #151c2b;
-            color: #ffffff;
-
-            cursor: pointer;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 18px;
-
-            transition:
-                background 0.2s,
-                transform 0.2s;
-        }
-
-        .home-search-button:hover {
-            background: #1c2639;
-            transform: translateY(-1px);
-        }
-
-        /* ---------------------------------------------------------
-           TITRES
-           --------------------------------------------------------- */
-
-        .home-title {
-            margin: 0;
-            color: #ffffff;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .home-subtitle {
-            margin: 7px 0 0;
-            color: #8e99ad;
-            font-size: 14px;
-        }
-
-        .section {
-            margin-top: 30px;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-
-            margin-bottom: 13px;
-        }
-
-        .section-title {
-            margin: 0;
-            color: #ffffff;
-            font-size: 19px;
-            font-weight: 650;
-        }
-
-        .section-link {
-            color: #8fa8ff;
-            text-decoration: none;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-
-        .section-link:hover {
-            text-decoration: underline;
-        }
-
-        /* ---------------------------------------------------------
-           GRILLES
-           --------------------------------------------------------- */
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(
-                auto-fit,
-                minmax(180px, 1fr)
-            );
-
-            gap: 14px;
-        }
 
-        .cards.small {
-            grid-template-columns: repeat(
-                auto-fit,
-                minmax(155px, 1fr)
-            );
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* ---------------------------------------------------------
-           CARTE
-           --------------------------------------------------------- */
+<title>Accueil - BlocPlay</title>
 
-        .home-card {
-            min-width: 0;
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
 
-            background: #111827;
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
 
-            border: 1px solid #1c2638;
-            border-radius: 14px;
+<style>
 
-            overflow: hidden;
+/* ========================= */
+/* HOME */
+/* ========================= */
 
-            transition:
-                transform 0.2s,
-                border-color 0.2s,
-                background 0.2s;
-        }
+.home-intro {
+  margin-bottom: 20px;
+}
 
-        .home-card:hover {
-            transform: translateY(-2px);
-            background: #141d2d;
-            border-color: #293750;
-        }
+.home-intro h1 {
+  margin-bottom: 6px;
+}
 
-        .card-image {
-            width: 100%;
-            aspect-ratio: 16 / 9;
+.home-intro p {
+  opacity: 0.7;
+}
 
-            background: #0e1522;
 
-            object-fit: cover;
-            display: block;
-        }
+/* ========================= */
+/* GRILLES */
+/* ========================= */
 
-        .card-content {
-            padding: 13px;
-        }
+.home-grid {
+  display: grid;
 
-        .card-title {
-            margin: 0;
+  grid-template-columns:
+    repeat(auto-fit, minmax(180px, 1fr));
 
-            color: #ffffff;
+  gap: 15px;
 
-            font-size: 14px;
-            font-weight: 600;
+  margin-top: 15px;
+}
 
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
 
-        .card-description {
-            margin: 6px 0 0;
+/* ========================= */
+/* CARTE CONTENU */
+/* ========================= */
 
-            color: #8995aa;
+.home-item {
+  overflow: hidden;
 
-            font-size: 12px;
-            line-height: 1.45;
+  background: #111827;
 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+  border: 1px solid rgba(255,255,255,0.06);
 
-        .card-meta {
-            margin-top: 9px;
+  border-radius: 12px;
 
-            color: #68758b;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
 
-            font-size: 11px;
-        }
+.home-item:hover {
+  transform: translateY(-2px);
 
-        /* ---------------------------------------------------------
-           CONTACTS
-           --------------------------------------------------------- */
+  border-color:
+    rgba(255,255,255,0.14);
+}
 
-        .contact-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
 
-            padding: 13px;
-        }
+.home-item-image {
+  width: 100%;
 
-        .contact-avatar {
-            width: 43px;
-            height: 43px;
+  aspect-ratio: 16 / 9;
 
-            border-radius: 50%;
+  object-fit: cover;
 
-            object-fit: cover;
+  display: block;
 
-            background: #1c2638;
+  background: #0b0f1a;
+}
 
-            flex-shrink: 0;
-        }
 
-        .contact-info {
-            min-width: 0;
-        }
+.home-item-content {
+  padding: 13px;
+}
 
-        .contact-name {
-            color: #ffffff;
 
-            font-size: 14px;
-            font-weight: 600;
+.home-item-title {
+  margin: 0;
 
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+  color: white;
 
-        .contact-subtitle {
-            margin-top: 4px;
+  font-size: 15px;
 
-            color: #77849a;
+  font-weight: 600;
 
-            font-size: 11px;
-        }
+  overflow: hidden;
 
-        /* ---------------------------------------------------------
-           EMPTY
-           --------------------------------------------------------- */
+  text-overflow: ellipsis;
 
-        .empty-card {
-            min-height: 105px;
+  white-space: nowrap;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
 
-            text-align: center;
+.home-item-description {
+  margin: 7px 0 0;
 
-            padding: 20px;
+  color: #8d98aa;
 
-            color: #737f94;
+  font-size: 12px;
 
-            background: #111827;
+  line-height: 1.4;
+}
 
-            border: 1px solid #1c2638;
-            border-radius: 14px;
 
-            font-size: 13px;
-        }
+/* ========================= */
+/* CONTACT */
+/* ========================= */
 
-        /* ---------------------------------------------------------
-           SEARCH
-           --------------------------------------------------------- */
+.contact-item {
+  display: flex;
 
-        .home-search-overlay {
-            position: fixed;
+  align-items: center;
 
-            inset: 0;
+  gap: 12px;
 
-            z-index: 1000;
+  padding: 13px;
+}
 
-            background: rgba(7, 10, 17, 0.82);
 
-            backdrop-filter: blur(8px);
+.contact-avatar {
+  width: 45px;
+  height: 45px;
 
-            display: none;
+  border-radius: 50%;
 
-            align-items: flex-start;
-            justify-content: center;
+  object-fit: cover;
 
-            padding: 80px 20px;
-        }
+  flex-shrink: 0;
+}
 
-        .home-search-overlay.active {
-            display: flex;
-        }
 
-        .home-search-box {
-            width: min(650px, 100%);
+.contact-info {
+  min-width: 0;
+}
 
-            background: #111827;
 
-            border: 1px solid #26334a;
-            border-radius: 15px;
+.contact-name {
+  color: white;
 
-            padding: 14px;
+  font-size: 14px;
 
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.35);
-        }
+  font-weight: 600;
 
-        .home-search-row {
-            display: flex;
-            gap: 10px;
-        }
+  overflow: hidden;
 
-        .home-search-input {
-            flex: 1;
+  text-overflow: ellipsis;
 
-            min-width: 0;
+  white-space: nowrap;
+}
 
-            border: 1px solid #26334a;
-            border-radius: 10px;
 
-            outline: none;
+.contact-status {
+  margin-top: 4px;
 
-            padding: 12px 13px;
+  color: #7d899c;
 
-            background: #0b0f1a;
-            color: #ffffff;
+  font-size: 11px;
+}
 
-            font-size: 14px;
-        }
 
-        .home-search-input::placeholder {
-            color: #68758b;
-        }
+/* ========================= */
+/* VIDE */
+/* ========================= */
 
-        .home-search-close {
-            width: 43px;
+.home-empty {
+  padding: 25px;
 
-            border: 0;
-            border-radius: 10px;
+  text-align: center;
 
-            background: #1b2536;
-            color: #ffffff;
+  color: #7d899c;
 
-            cursor: pointer;
+  background: #111827;
 
-            font-size: 17px;
-        }
+  border-radius: 10px;
 
-        .home-search-results {
-            margin-top: 12px;
-        }
+  border: 1px solid rgba(255,255,255,0.05);
+}
 
-        .search-result {
-            padding: 11px 10px;
 
-            color: #dbe2ef;
+/* ========================= */
+/* SECTION */
+/* ========================= */
 
-            border-radius: 8px;
+.home-section {
+  margin-bottom: 20px;
+}
 
-            cursor: pointer;
-        }
 
-        .search-result:hover {
-            background: #192235;
-        }
+.home-section-header {
+  display: flex;
 
-        /* ---------------------------------------------------------
-           FOOTER
-           --------------------------------------------------------- */
+  align-items: center;
 
-        .home-footer {
-            margin-top: 55px;
+  justify-content: space-between;
 
-            padding-top: 28px;
+  gap: 10px;
 
-            border-top: 1px solid #1b2434;
+  margin-bottom: 10px;
+}
 
-            display: grid;
 
-            grid-template-columns:
-                minmax(180px, 1.5fr)
-                repeat(2, minmax(150px, 1fr));
+.home-section-header h2 {
+  margin: 0;
+}
 
-            gap: 30px;
-        }
 
-        .footer-column h3 {
-            margin: 0 0 11px;
+.home-section-header a {
+  color: #8fa8ff;
 
-            color: #ffffff;
+  text-decoration: none;
 
-            font-size: 14px;
-        }
+  font-size: 13px;
+}
 
-        .footer-column p {
-            margin: 0;
 
-            color: #78859a;
+.home-section-header a:hover {
+  text-decoration: underline;
+}
 
-            font-size: 12px;
-            line-height: 1.6;
-        }
 
-        .footer-column a {
-            display: block;
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
 
-            margin-bottom: 8px;
+@media (max-width: 600px) {
 
-            color: #8996aa;
+  .home-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
 
-            text-decoration: none;
+}
 
-            font-size: 12px;
-        }
 
-        .footer-column a:hover {
-            color: #ffffff;
-        }
+@media (max-width: 400px) {
 
-        .footer-bottom {
-            margin-top: 28px;
-            padding-top: 17px;
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
 
-            border-top: 1px solid #151e2d;
+}
 
-            color: #626e82;
+</style>
 
-            font-size: 11px;
-
-            text-align: center;
-        }
-
-        /* ---------------------------------------------------------
-           RESPONSIVE
-           --------------------------------------------------------- */
-
-        @media (max-width: 700px) {
-
-            .home-container {
-                width: min(
-                    100% - 22px,
-                    1200px
-                );
-
-                padding-top: 22px;
-            }
-
-            .home-title {
-                font-size: 23px;
-            }
-
-            .section-title {
-                font-size: 17px;
-            }
-
-            .cards {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .cards.small {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .home-footer {
-                grid-template-columns: 1fr;
-                gap: 22px;
-            }
-        }
-
-        @media (max-width: 430px) {
-
-            .cards {
-                grid-template-columns: 1fr;
-            }
-
-            .cards.small {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style>
 </head>
 
 <body>
 
-    <!-- =========================================================
-         HEADER
-         ========================================================= -->
 
-    <header class="header">
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
 
-        <a
-            class="logo"
-            href="/"
+<header>
+
+  <div class="header-content">
+
+    <a href="/" class="logo">
+
+      <img
+        src="/icon.png"
+        alt="BlocPlay"
+      >
+
+    </a>
+
+
+    <div class="header-actions">
+
+      <!-- RECHERCHE -->
+
+      <button
+        id="searchBtn"
+        class="header-button"
+        aria-label="Rechercher"
+      >
+        🔍
+      </button>
+
+
+      <!-- PROFIL -->
+
+      <div class="profile-menu">
+
+        <img
+          src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+          class="avatar"
+          id="avatar"
+          alt="Profil"
         >
-            <img
-                src="/icon.png"
-                alt="BlocPlay"
-            >
-        </a>
 
-        <div class="home-header-spacer"></div>
+        <div
+          class="dropdown"
+          id="dropdown"
+        ></div>
 
-        <button
-            id="searchToggle"
-            class="home-search-button"
-            aria-label="Rechercher"
-            title="Rechercher"
-        >
-            🔍
-        </button>
+      </div>
 
-        <div class="profile-menu">
+    </div>
 
-            <img
-                id="avatar"
-                class="avatar"
-                src="https://ui-avatars.com/api/?name=BlocPlay"
-                alt="Profil"
-            >
+  </div>
 
-            <div
-                id="dropdown"
-                class="dropdown"
-            ></div>
-
-        </div>
-
-    </header>
+</header>
 
 
-    <!-- =========================================================
-         RECHERCHE
-         ========================================================= -->
+<!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
 
-    <div
-        id="searchOverlay"
-        class="home-search-overlay"
+<div
+  id="searchOverlay"
+  class="search-overlay"
+>
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Rechercher sur BlocPlay..."
+      autocomplete="off"
     >
 
-        <div class="home-search-box">
+    <button
+      id="closeSearch"
+      class="search-close"
+    >
+      ✕
+    </button>
 
-            <div class="home-search-row">
+  </div>
 
-                <input
-                    id="searchInput"
-                    class="home-search-input"
-                    type="search"
-                    placeholder="Rechercher sur BlocPlay..."
-                    autocomplete="off"
-                >
 
-                <button
-                    id="searchClose"
-                    class="home-search-close"
-                    aria-label="Fermer"
-                >
-                    ✕
-                </button>
+  <div
+    id="searchResults"
+    class="search-results"
+  ></div>
 
-            </div>
+</div>
 
-            <div
-                id="searchResults"
-                class="home-search-results"
-            ></div>
 
-        </div>
+<!-- ========================= -->
+<!-- CONTENU -->
+<!-- ========================= -->
+
+<main class="container">
+
+
+  <!-- ========================= -->
+  <!-- INTRO -->
+  <!-- ========================= -->
+
+  <div class="home-intro">
+
+    <h1>
+      Accueil
+    </h1>
+
+    <p>
+      Retrouvez vos jeux, vos amis et vos contenus BlocPlay.
+    </p>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- CONTACTS -->
+  <!-- ========================= -->
+
+  <div class="card home-section">
+
+    <div class="home-section-header">
+
+      <h2>
+        Contacts
+      </h2>
+
+      <a href="/f/contacts">
+        Voir plus
+      </a>
 
     </div>
 
 
-    <!-- =========================================================
-         CONTENU
-         ========================================================= -->
+    <div
+      id="contacts"
+      class="home-grid"
+    >
 
-    <main class="home-container">
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-        <h1 class="home-title">
-            Accueil
-        </h1>
+    </div>
 
-        <p class="home-subtitle">
-            Retrouvez vos jeux, vos amis et vos contenus BlocPlay.
-        </p>
+  </div>
 
 
-        <!-- =====================================================
-             CONTACTS
-             ===================================================== -->
+  <!-- ========================= -->
+  <!-- JOUÉ RÉCEMMENT -->
+  <!-- ========================= -->
 
-        <section class="section">
+  <div class="card home-section">
 
-            <div class="section-header">
+    <div class="home-section-header">
 
-                <h2 class="section-title">
-                    Contacts
-                </h2>
+      <h2>
+        Joué récemment
+      </h2>
 
-                <a
-                    href="/f/contacts"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+      <a href="/f/recently-played">
+        Voir plus
+      </a>
 
-            </div>
+    </div>
 
-            <div
-                id="contacts"
-                class="cards small"
-            >
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
+    <div
+      id="recentlyPlayed"
+      class="home-grid"
+    >
 
-            </div>
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-        </section>
+    </div>
 
+  </div>
 
-        <!-- =====================================================
-             JOUÉ RÉCEMMENT
-             ===================================================== -->
 
-        <section class="section">
+  <!-- ========================= -->
+  <!-- FAVORIS -->
+  <!-- ========================= -->
 
-            <div class="section-header">
+  <div class="card home-section">
 
-                <h2 class="section-title">
-                    Joué récemment
-                </h2>
+    <div class="home-section-header">
 
-                <a
-                    href="/f/recently-played"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+      <h2>
+        Favoris
+      </h2>
 
-            </div>
+      <a href="/f/favorites">
+        Voir plus
+      </a>
 
-            <div
-                id="recentlyPlayed"
-                class="cards"
-            >
+    </div>
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
 
-            </div>
+    <div
+      id="favorites"
+      class="home-grid"
+    >
 
-        </section>
+      <div class="home-empty">
+        Chargement...
+      </div>
 
+    </div>
 
-        <!-- =====================================================
-             FAVORIS
-             ===================================================== -->
+  </div>
 
-        <section class="section">
 
-            <div class="section-header">
+  <!-- ========================= -->
+  <!-- OBTENU RÉCEMMENT -->
+  <!-- ========================= -->
 
-                <h2 class="section-title">
-                    Favoris
-                </h2>
+  <div class="card home-section">
 
-                <a
-                    href="/f/favorites"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+    <div class="home-section-header">
 
-            </div>
+      <h2>
+        Obtenu récemment
+      </h2>
 
-            <div
-                id="favorites"
-                class="cards"
-            >
+      <a href="/f/recently-obtained">
+        Voir plus
+      </a>
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
+    </div>
 
-            </div>
 
-        </section>
+    <div
+      id="recentlyObtained"
+      class="home-grid"
+    >
 
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-        <!-- =====================================================
-             OBTENU RÉCEMMENT
-             ===================================================== -->
+    </div>
 
-        <section class="section">
+  </div>
 
-            <div class="section-header">
 
-                <h2 class="section-title">
-                    Obtenu récemment
-                </h2>
+  <!-- ========================= -->
+  <!-- MES TRIBUS -->
+  <!-- ========================= -->
 
-                <a
-                    href="/f/recently-obtained"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+  <div class="card home-section">
 
-            </div>
+    <div class="home-section-header">
 
-            <div
-                id="recentlyObtained"
-                class="cards"
-            >
+      <h2>
+        Mes tribus
+      </h2>
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
+      <a href="/f/tribes">
+        Voir plus
+      </a>
 
-            </div>
+    </div>
 
-        </section>
 
+    <div
+      id="myTribes"
+      class="home-grid"
+    >
 
-        <!-- =====================================================
-             MES TRIBUS
-             ===================================================== -->
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-        <section class="section">
+    </div>
 
-            <div class="section-header">
+  </div>
 
-                <h2 class="section-title">
-                    Mes tribus
-                </h2>
 
-                <a
-                    href="/f/tribes"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+  <!-- ========================= -->
+  <!-- JEUX POPULAIRES -->
+  <!-- ========================= -->
 
-            </div>
+  <div class="card home-section">
 
-            <div
-                id="myTribes"
-                class="cards"
-            >
+    <div class="home-section-header">
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
+      <h2>
+        Jeux populaires
+      </h2>
 
-            </div>
+      <a href="/games">
+        Voir plus
+      </a>
 
-        </section>
+    </div>
 
 
-        <!-- =====================================================
-             JEUX POPULAIRES
-             ===================================================== -->
+    <div
+      id="popularGames"
+      class="home-grid"
+    >
 
-        <section class="section">
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-            <div class="section-header">
+    </div>
 
-                <h2 class="section-title">
-                    Jeux populaires
-                </h2>
+  </div>
 
-                <a
-                    href="/games"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
 
-            </div>
+  <!-- ========================= -->
+  <!-- CONTACTS POPULAIRES -->
+  <!-- ========================= -->
 
-            <div
-                id="popularGames"
-                class="cards"
-            >
+  <div class="card home-section">
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
+    <div class="home-section-header">
 
-            </div>
+      <h2>
+        Contacts populaires
+      </h2>
 
-        </section>
+      <a href="/people">
+        Voir plus
+      </a>
 
+    </div>
 
-        <!-- =====================================================
-             CONTACTS POPULAIRES
-             ===================================================== -->
 
-        <section class="section">
+    <div
+      id="popularContacts"
+      class="home-grid"
+    >
 
-            <div class="section-header">
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-                <h2 class="section-title">
-                    Contacts populaires
-                </h2>
+    </div>
 
-                <a
-                    href="/people"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+  </div>
 
-            </div>
 
-            <div
-                id="popularContacts"
-                class="cards small"
-            >
+  <!-- ========================= -->
+  <!-- ARTICLES POPULAIRES -->
+  <!-- ========================= -->
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
+  <div class="card home-section">
 
-            </div>
+    <div class="home-section-header">
 
-        </section>
+      <h2>
+        Articles populaires
+      </h2>
 
+      <a href="/articles">
+        Voir plus
+      </a>
 
-        <!-- =====================================================
-             ARTICLES POPULAIRES
-             ===================================================== -->
+    </div>
 
-        <section class="section">
 
-            <div class="section-header">
+    <div
+      id="popularArticles"
+      class="home-grid"
+    >
 
-                <h2 class="section-title">
-                    Articles populaires
-                </h2>
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-                <a
-                    href="/articles"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+    </div>
 
-            </div>
+  </div>
 
-            <div
-                id="popularArticles"
-                class="cards"
-            >
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
+  <!-- ========================= -->
+  <!-- TRIBUS POPULAIRES -->
+  <!-- ========================= -->
 
-            </div>
+  <div class="card home-section">
 
-        </section>
+    <div class="home-section-header">
 
+      <h2>
+        Tribus populaires
+      </h2>
 
-        <!-- =====================================================
-             TRIBUS POPULAIRES
-             ===================================================== -->
+      <a href="/tribes">
+        Voir plus
+      </a>
 
-        <section class="section">
+    </div>
 
-            <div class="section-header">
 
-                <h2 class="section-title">
-                    Tribus populaires
-                </h2>
+    <div
+      id="popularTribes"
+      class="home-grid"
+    >
 
-                <a
-                    href="/tribes"
-                    class="section-link"
-                >
-                    Voir plus
-                </a>
+      <div class="home-empty">
+        Chargement...
+      </div>
 
-            </div>
+    </div>
 
-            <div
-                id="popularTribes"
-                class="cards"
-            >
+  </div>
 
-                <div class="empty-card">
-                    Chargement...
-                </div>
 
-            </div>
+</main>
 
-        </section>
 
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
 
-        <!-- =====================================================
-             FOOTER
-             ===================================================== -->
+<footer class="site-footer">
 
-        <footer class="home-footer">
+  <div class="footer-content">
 
-            <div class="footer-column">
+    <div class="footer-column">
 
-                <h3>
-                    BlocPlay
-                </h3>
+      <h3>
+        BlocPlay
+      </h3>
 
-                <p>
-                    La plateforme de jeux créée par et pour les gamers.
-                </p>
+      <p>
+        La plateforme de jeux créée par et pour les gamers.
+      </p>
 
-            </div>
+    </div>
 
 
-            <div class="footer-column">
+    <div class="footer-column">
 
-                <h3>
-                    Ressources
-                </h3>
+      <h3>
+        À propos
+      </h3>
 
-                <a href="https://blocplay-beta.github.io/contact/">
-                    BlocPlay Contact
-                </a>
+      <a href="/about">
+        À propos de BlocPlay
+      </a>
 
-                <a href="https://bp-discord.github.io/">
-                    BlocPlay Discord
-                </a>
+      <a href="/license">
+        Licences
+      </a>
 
-                <a href="/help">
-                    Aide BlocPlay
-                </a>
+    </div>
 
-            </div>
 
+    <div class="footer-column">
 
-            <div class="footer-column">
+      <h3>
+        Nous contacter
+      </h3>
 
-                <h3>
-                    À propos
-                </h3>
+      <a href="mailto:blocplaystudios@gmail.com">
+        E-Mail
+      </a>
 
-                <a href="/about">
-                    À propos de BlocPlay
-                </a>
+      <a href="https://discord.gg/QfreSq3t7E">
+        Discord
+      </a>
 
-                <a href="/github">
-                    Licences
-                </a>
+    </div>
 
-                <a href="mailto:blocplaystudios@gmail.com">
-                    E-Mail
-                </a>
+  </div>
 
-                <a href="https://discord.gg/45P7g8MTvn">
-                    Discord
-                </a>
 
-            </div>
+  <div class="footer-bottom">
+    © BlocPlay Studios™
+  </div>
 
-        </footer>
+</footer>
 
 
-        <div class="footer-bottom">
-            © BlocPlay Studios™
+<!-- ========================= -->
+<!-- FIREBASE + PROFIL -->
+<!-- ========================= -->
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  orderBy,
+  limit
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* ========================= */
+/* FIREBASE */
+/* ========================= */
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+  authDomain:
+    "blocplay-a9417.firebaseapp.com",
+
+  projectId:
+    "blocplay-a9417",
+
+  storageBucket:
+    "blocplay-a9417.firebasestorage.app",
+
+  messagingSenderId:
+    "540161549188",
+
+  appId:
+    "1:540161549188:web:e0ec0350bd044de2f333d1"
+
+};
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+const auth =
+  getAuth(app);
+
+const db =
+  getFirestore(app);
+
+
+/* ========================= */
+/* MENU PROFIL */
+/* ========================= */
+
+const avatar =
+  document.getElementById("avatar");
+
+const dropdown =
+  document.getElementById("dropdown");
+
+
+function renderMenu(user) {
+
+  if (user) {
+
+    dropdown.innerHTML = `
+
+      <a href="/profile">
+        Profil
+      </a>
+
+      <a href="/settings">
+        Paramètres
+      </a>
+
+      <a href="/rizoplay">
+        RizoPlay
+      </a>
+
+      <a href="#" id="logout">
+        Se déconnecter
+      </a>
+
+    `;
+
+    if (user.photoURL) {
+
+      avatar.src =
+        user.photoURL;
+
+    } else {
+
+      const name =
+        user.displayName ||
+        user.email?.split("@")[0] ||
+        "User";
+
+      avatar.src =
+        "https://ui-avatars.com/api/?name=" +
+        encodeURIComponent(name) +
+        "&background=111&color=fff&rounded=true&size=64";
+
+    }
+
+  } else {
+
+    dropdown.innerHTML = `
+
+      <a href="/login">
+        Se connecter
+      </a>
+
+      <a href="/signup">
+        Créer un compte
+      </a>
+
+    `;
+
+  }
+
+}
+
+
+/* ========================= */
+/* AUTH */
+/* ========================= */
+
+onAuthStateChanged(
+  auth,
+  async (user) => {
+
+    renderMenu(user);
+
+
+    if (!user) {
+
+      window.location.href =
+        "/login";
+
+      return;
+
+    }
+
+
+    await loadHome(
+      user.uid
+    );
+
+  }
+);
+
+
+/* ========================= */
+/* OUVERTURE MENU */
+/* ========================= */
+
+avatar.addEventListener(
+  "click",
+  (event) => {
+
+    event.stopPropagation();
+
+    dropdown.classList.toggle(
+      "show"
+    );
+
+  }
+);
+
+
+/* ========================= */
+/* FERMETURE MENU */
+/* ========================= */
+
+document.addEventListener(
+  "click",
+  () => {
+
+    dropdown.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* ========================= */
+/* DÉCONNEXION */
+/* ========================= */
+
+document.addEventListener(
+  "click",
+  async (event) => {
+
+    if (
+      event.target.id ===
+      "logout"
+    ) {
+
+      event.preventDefault();
+
+      await signOut(auth);
+
+      window.location.reload();
+
+    }
+
+  }
+);
+
+
+/* ========================= */
+/* HELPERS */
+/* ========================= */
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    text ?? "";
+
+  return div.innerHTML;
+
+}
+
+
+function getImage(
+  data,
+  name
+) {
+
+  if (
+    data.image
+  ) {
+
+    return data.image;
+
+  }
+
+  if (
+    data.avatar
+  ) {
+
+    return data.avatar;
+
+  }
+
+  if (
+    data.photoURL
+  ) {
+
+    return data.photoURL;
+
+  }
+
+  return (
+    "https://ui-avatars.com/api/?name=" +
+    encodeURIComponent(
+      name || "BlocPlay"
+    ) +
+    "&background=111&color=fff&rounded=true"
+  );
+
+}
+
+
+/* ========================= */
+/* CARTE CLASSIQUE */
+/* ========================= */
+
+function createCard(
+  data,
+  fallbackName
+) {
+
+  const name =
+    data.name ||
+    data.title ||
+    data.username ||
+    data.displayName ||
+    fallbackName;
+
+
+  const description =
+    data.description ||
+    "";
+
+
+  const image =
+    getImage(
+      data,
+      name
+    );
+
+
+  return `
+
+    <div class="home-item">
+
+      <img
+        class="home-item-image"
+        src="${escapeHTML(image)}"
+        alt=""
+        loading="lazy"
+      >
+
+      <div class="home-item-content">
+
+        <h3 class="home-item-title">
+          ${escapeHTML(name)}
+        </h3>
+
+        ${
+          description
+          ?
+          `
+          <p class="home-item-description">
+            ${escapeHTML(description)}
+          </p>
+          `
+          :
+          ""
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ========================= */
+/* CARTE CONTACT */
+/* ========================= */
+
+function createContact(
+  data
+) {
+
+  const name =
+    data.username ||
+    data.displayName ||
+    "Utilisateur";
+
+
+  const image =
+    getImage(
+      data,
+      name
+    );
+
+
+  return `
+
+    <div class="home-item contact-item">
+
+      <img
+        class="contact-avatar"
+        src="${escapeHTML(image)}"
+        alt=""
+        loading="lazy"
+      >
+
+      <div class="contact-info">
+
+        <div class="contact-name">
+          ${escapeHTML(name)}
         </div>
 
-    </main>
+        <div class="contact-status">
+          Contact BlocPlay
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
 
 
-    <!-- =========================================================
-         FIREBASE
-         ========================================================= -->
+/* ========================= */
+/* EMPTY */
+/* ========================= */
 
-    <script type="module">
+function empty(
+  element,
+  text
+) {
 
-        import {
-            initializeApp
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  element.innerHTML = `
 
-        import {
-            getAuth,
-            onAuthStateChanged,
-            signOut
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    <div class="home-empty">
 
-        import {
-            getFirestore,
-            collection,
-            doc,
-            getDocs,
-            getDoc,
-            query,
-            orderBy,
-            limit
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      ${escapeHTML(text)}
+
+    </div>
+
+  `;
+
+}
 
 
-        /* =====================================================
-           FIREBASE CONFIG
-           ===================================================== */
+/* ========================= */
+/* COLLECTION UTILISATEUR */
+/* ========================= */
 
-        const firebaseConfig = {
+async function getUserCollection(
+  uid,
+  collectionName
+) {
 
-            apiKey:
-                "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-
-            authDomain:
-                "blocplay-a9417.firebaseapp.com",
-
-            projectId:
-                "blocplay-a9417",
-
-            storageBucket:
-                "blocplay-a9417.firebasestorage.app",
-
-            messagingSenderId:
-                "540161549188",
-
-            appId:
-                "1:540161549188:web:e0ec0350bd044de2f333d1"
-
-        };
+  const ref =
+    collection(
+      db,
+      "users",
+      uid,
+      collectionName
+    );
 
 
-        const app =
-            initializeApp(firebaseConfig);
-
-        const auth =
-            getAuth(app);
-
-        const db =
-            getFirestore(app);
+  const snapshot =
+    await getDocs(ref);
 
 
-        /* =====================================================
-           ELEMENTS
-           ===================================================== */
+  return snapshot.docs.map(
+    item => ({
 
-        const avatar =
-            document.getElementById("avatar");
+      id: item.id,
 
-        const dropdown =
-            document.getElementById("dropdown");
+      ...item.data()
 
-        const searchToggle =
-            document.getElementById("searchToggle");
+    })
+  );
 
-        const searchOverlay =
-            document.getElementById("searchOverlay");
-
-        const searchClose =
-            document.getElementById("searchClose");
-
-        const searchInput =
-            document.getElementById("searchInput");
-
-        const searchResults =
-            document.getElementById("searchResults");
+}
 
 
-        /* =====================================================
-           HELPERS
-           ===================================================== */
+/* ========================= */
+/* CONTACTS */
+/* ========================= */
 
-        function escapeHTML(value) {
+async function loadContacts(
+  uid
+) {
 
-            if (value === undefined ||
-                value === null) {
-
-                return "";
-
-            }
-
-            return String(value)
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&#039;");
-        }
+  const element =
+    document.getElementById(
+      "contacts"
+    );
 
 
-        function imageOrAvatar(
-            image,
-            name
+  try {
+
+    const friends =
+      await getUserCollection(
+        uid,
+        "friends"
+      );
+
+
+    if (
+      friends.length === 0
+    ) {
+
+      empty(
+        element,
+        "Aucun contact"
+      );
+
+      return;
+
+    }
+
+
+    const visible =
+      friends.slice(
+        0,
+        6
+      );
+
+
+    const result = [];
+
+
+    for (
+      const friend
+      of visible
+    ) {
+
+      try {
+
+        const friendDoc =
+          await getDoc(
+            doc(
+              db,
+              "publicUsers",
+              friend.id
+            )
+          );
+
+
+        if (
+          friendDoc.exists()
         ) {
 
-            if (image) {
+          result.push(
+            createContact({
+              ...friend,
+              ...friendDoc.data()
+            })
+          );
 
-                return image;
+        } else {
 
-            }
-
-            return (
-                "https://ui-avatars.com/api/" +
-                "?name=" +
-                encodeURIComponent(name || "BlocPlay") +
-                "&background=1b2536" +
-                "&color=ffffff"
-            );
-
-        }
-
-
-        function showEmpty(
-            element,
-            text
-        ) {
-
-            element.innerHTML = `
-                <div class="empty-card">
-                    ${escapeHTML(text)}
-                </div>
-            `;
+          result.push(
+            createContact(
+              friend
+            )
+          );
 
         }
 
-
-        function showLoading(
-            element
-        ) {
-
-            element.innerHTML = `
-                <div class="empty-card">
-                    Chargement...
-                </div>
-            `;
-
-        }
-
-
-        /* =====================================================
-           PROFILE
-           ===================================================== */
-
-        function updateProfileMenu(
-            user
-        ) {
-
-            if (!user) {
-                return;
-            }
-
-            const name =
-                user.displayName ||
-                user.email?.split("@")[0] ||
-                "BlocPlay";
-
-            avatar.src =
-                imageOrAvatar(
-                    user.photoURL,
-                    name
-                );
-
-            dropdown.innerHTML = `
-
-                <a href="/profile">
-                    Profil
-                </a>
-
-                <a href="/settings">
-                    Paramètres
-                </a>
-
-                <button id="logoutButton">
-                    Se déconnecter
-                </button>
-
-            `;
-
-            const logoutButton =
-                document.getElementById(
-                    "logoutButton"
-                );
-
-            logoutButton.addEventListener(
-                "click",
-                async () => {
-
-                    await signOut(auth);
-
-                    window.location.href =
-                        "/login";
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           CARD GAME / ARTICLE / TRIBE
-           ===================================================== */
-
-        function createContentCard(
-            data,
-            fallbackTitle
-        ) {
-
-            const title =
-                data.name ||
-                data.title ||
-                data.displayName ||
-                fallbackTitle ||
-                "Sans nom";
-
-            const image =
-                imageOrAvatar(
-                    data.image ||
-                    data.avatar ||
-                    data.photoURL,
-                    title
-                );
-
-            const description =
-                data.description || "";
-
-            const popularity =
-                data.popularity;
-
-            return `
-
-                <article class="home-card">
-
-                    <img
-                        class="card-image"
-                        src="${escapeHTML(image)}"
-                        alt=""
-                        loading="lazy"
-                    >
-
-                    <div class="card-content">
-
-                        <h3 class="card-title">
-                            ${escapeHTML(title)}
-                        </h3>
-
-                        ${
-                            description
-                            ?
-                            `
-                            <p class="card-description">
-                                ${escapeHTML(description)}
-                            </p>
-                            `
-                            :
-                            ""
-                        }
-
-                        ${
-                            popularity !== undefined
-                            ?
-                            `
-                            <div class="card-meta">
-                                ${escapeHTML(popularity)} popularité
-                            </div>
-                            `
-                            :
-                            ""
-                        }
-
-                    </div>
-
-                </article>
-
-            `;
-
-        }
-
-
-        /* =====================================================
-           CONTACT CARD
-           ===================================================== */
-
-        function createContactCard(
-            data
-        ) {
-
-            const name =
-                data.username ||
-                data.displayName ||
-                "Utilisateur";
-
-            const image =
-                imageOrAvatar(
-                    data.avatar ||
-                    data.photoURL,
-                    name
-                );
-
-            return `
-
-                <article class="home-card contact-card">
-
-                    <img
-                        class="contact-avatar"
-                        src="${escapeHTML(image)}"
-                        alt=""
-                        loading="lazy"
-                    >
-
-                    <div class="contact-info">
-
-                        <div class="contact-name">
-                            ${escapeHTML(name)}
-                        </div>
-
-                        <div class="contact-subtitle">
-                            Contact BlocPlay
-                        </div>
-
-                    </div>
-
-                </article>
-
-            `;
-
-        }
-
-
-        /* =====================================================
-           USER SUBCOLLECTION
-           ===================================================== */
-
-        async function loadUserCollection(
-            userId,
-            collectionName
-        ) {
-
-            const reference =
-                collection(
-                    db,
-                    "users",
-                    userId,
-                    collectionName
-                );
-
-            const snapshot =
-                await getDocs(reference);
-
-            return snapshot.docs.map(
-                item => ({
-                    id: item.id,
-                    ...item.data()
-                })
-            );
-
-        }
-
-
-        /* =====================================================
-           CONTACTS
-           ===================================================== */
-
-        async function loadContacts(
-            userId
-        ) {
-
-            const element =
-                document.getElementById(
-                    "contacts"
-                );
-
-            try {
-
-                const friends =
-                    await loadUserCollection(
-                        userId,
-                        "friends"
-                    );
-
-                if (!friends.length) {
-
-                    showEmpty(
-                        element,
-                        "Aucun contact"
-                    );
-
-                    return;
-
-                }
-
-                const visible =
-                    friends.slice(0, 6);
-
-                const cards =
-                    await Promise.all(
-                        visible.map(
-                            async friend => {
-
-                                try {
-
-                                    const friendDoc =
-                                        await getDoc(
-                                            doc(
-                                                db,
-                                                "publicUsers",
-                                                friend.id
-                                            )
-                                        );
-
-                                    if (
-                                        friendDoc.exists()
-                                    ) {
-
-                                        return createContactCard({
-                                            ...friend,
-                                            ...friendDoc.data()
-                                        });
-
-                                    }
-
-                                } catch (error) {
-
-                                    console.warn(
-                                        "Impossible de charger le contact",
-                                        error
-                                    );
-
-                                }
-
-                                return createContactCard(
-                                    friend
-                                );
-
-                            }
-                        )
-                    );
-
-                element.innerHTML =
-                    cards.join("");
-
-            } catch (error) {
-
-                console.error(
-                    "Contacts:",
-                    error
-                );
-
-                showEmpty(
-                    element,
-                    "Impossible de charger les contacts"
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           RECENTLY PLAYED
-           ===================================================== */
-
-        async function loadRecentlyPlayed(
-            userId
-        ) {
-
-            const element =
-                document.getElementById(
-                    "recentlyPlayed"
-                );
-
-            try {
-
-                const items =
-                    await loadUserCollection(
-                        userId,
-                        "recentlyPlayed"
-                    );
-
-                if (!items.length) {
-
-                    showEmpty(
-                        element,
-                        "Aucun jeu récemment joué"
-                    );
-
-                    return;
-
-                }
-
-                const cards =
-                    items
-                        .slice(0, 6)
-                        .map(
-                            item =>
-                                createContentCard(
-                                    item,
-                                    "Jeu"
-                                )
-                        );
-
-                element.innerHTML =
-                    cards.join("");
-
-            } catch (error) {
-
-                console.error(
-                    "Joué récemment:",
-                    error
-                );
-
-                showEmpty(
-                    element,
-                    "Impossible de charger les jeux"
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           FAVORITES
-           ===================================================== */
-
-        async function loadFavorites(
-            userId
-        ) {
-
-            const element =
-                document.getElementById(
-                    "favorites"
-                );
-
-            try {
-
-                const items =
-                    await loadUserCollection(
-                        userId,
-                        "favorites"
-                    );
-
-                if (!items.length) {
-
-                    showEmpty(
-                        element,
-                        "Aucun favori"
-                    );
-
-                    return;
-
-                }
-
-                const cards =
-                    items
-                        .slice(0, 6)
-                        .map(
-                            item =>
-                                createContentCard(
-                                    item,
-                                    "Favori"
-                                )
-                        );
-
-                element.innerHTML =
-                    cards.join("");
-
-            } catch (error) {
-
-                console.error(
-                    "Favoris:",
-                    error
-                );
-
-                showEmpty(
-                    element,
-                    "Impossible de charger les favoris"
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           RECENTLY OBTAINED
-           ===================================================== */
-
-        async function loadRecentlyObtained(
-            userId
-        ) {
-
-            const element =
-                document.getElementById(
-                    "recentlyObtained"
-                );
-
-            try {
-
-                const items =
-                    await loadUserCollection(
-                        userId,
-                        "recentlyObtained"
-                    );
-
-                if (!items.length) {
-
-                    showEmpty(
-                        element,
-                        "Rien obtenu récemment"
-                    );
-
-                    return;
-
-                }
-
-                const cards =
-                    items
-                        .slice(0, 6)
-                        .map(
-                            item =>
-                                createContentCard(
-                                    item,
-                                    "Article"
-                                )
-                        );
-
-                element.innerHTML =
-                    cards.join("");
-
-            } catch (error) {
-
-                console.error(
-                    "Obtenu récemment:",
-                    error
-                );
-
-                showEmpty(
-                    element,
-                    "Impossible de charger les objets"
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           MY TRIBES
-           ===================================================== */
-
-        async function loadMyTribes(
-            userId
-        ) {
-
-            const element =
-                document.getElementById(
-                    "myTribes"
-                );
-
-            try {
-
-                const items =
-                    await loadUserCollection(
-                        userId,
-                        "tribes"
-                    );
-
-                if (!items.length) {
-
-                    showEmpty(
-                        element,
-                        "Aucune tribu"
-                    );
-
-                    return;
-
-                }
-
-                const cards =
-                    items
-                        .slice(0, 6)
-                        .map(
-                            item =>
-                                createContentCard(
-                                    item,
-                                    "Tribu"
-                                )
-                        );
-
-                element.innerHTML =
-                    cards.join("");
-
-            } catch (error) {
-
-                console.error(
-                    "Mes tribus:",
-                    error
-                );
-
-                showEmpty(
-                    element,
-                    "Impossible de charger les tribus"
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           POPULAR COLLECTION
-           ===================================================== */
-
-        async function loadPopular(
-            collectionName,
-            elementId,
-            emptyText,
-            fallbackName
-        ) {
-
-            const element =
-                document.getElementById(
-                    elementId
-                );
-
-            try {
-
-                const reference =
-                    collection(
-                        db,
-                        collectionName
-                    );
-
-                let snapshot;
-
-                try {
-
-                    snapshot =
-                        await getDocs(
-                            query(
-                                reference,
-                                orderBy(
-                                    "popularity",
-                                    "desc"
-                                ),
-                                limit(6)
-                            )
-                        );
-
-                } catch (orderError) {
-
-                    console.warn(
-                        "Tri popularity impossible, chargement simple.",
-                        orderError
-                    );
-
-                    snapshot =
-                        await getDocs(
-                            limitQuery(
-                                reference,
-                                6
-                            )
-                        );
-
-                }
-
-                if (snapshot.empty) {
-
-                    showEmpty(
-                        element,
-                        emptyText
-                    );
-
-                    return;
-
-                }
-
-                const cards =
-                    snapshot.docs.map(
-                        item =>
-                            createContentCard(
-                                {
-                                    id: item.id,
-                                    ...item.data()
-                                },
-                                fallbackName
-                            )
-                    );
-
-                element.innerHTML =
-                    cards.join("");
-
-            } catch (error) {
-
-                console.error(
-                    collectionName,
-                    error
-                );
-
-                showEmpty(
-                    element,
-                    "Impossible de charger cette section"
-                );
-
-            }
-
-        }
-
-
-        function limitQuery(
-            reference,
-            amount
-        ) {
-
-            return query(
-                reference,
-                limit(amount)
-            );
-
-        }
-
-
-        /* =====================================================
-           POPULAR CONTACTS
-           ===================================================== */
-
-        async function loadPopularContacts() {
-
-            const element =
-                document.getElementById(
-                    "popularContacts"
-                );
-
-            try {
-
-                const reference =
-                    collection(
-                        db,
-                        "publicUsers"
-                    );
-
-                let snapshot;
-
-                try {
-
-                    snapshot =
-                        await getDocs(
-                            query(
-                                reference,
-                                orderBy(
-                                    "popularity",
-                                    "desc"
-                                ),
-                                limit(6)
-                            )
-                        );
-
-                } catch (error) {
-
-                    snapshot =
-                        await getDocs(
-                            query(
-                                reference,
-                                limit(6)
-                            )
-                        );
-
-                }
-
-                if (snapshot.empty) {
-
-                    showEmpty(
-                        element,
-                        "Aucun contact populaire"
-                    );
-
-                    return;
-
-                }
-
-                element.innerHTML =
-                    snapshot.docs
-                        .map(
-                            item =>
-                                createContactCard({
-                                    id: item.id,
-                                    ...item.data()
-                                })
-                        )
-                        .join("");
-
-            } catch (error) {
-
-                console.error(
-                    "Contacts populaires:",
-                    error
-                );
-
-                showEmpty(
-                    element,
-                    "Impossible de charger les contacts populaires"
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           SEARCH
-           ===================================================== */
-
-        searchToggle.addEventListener(
-            "click",
-            () => {
-
-                searchOverlay.classList.add(
-                    "active"
-                );
-
-                searchInput.focus();
-
-            }
+      } catch {
+
+        result.push(
+          createContact(
+            friend
+          )
         );
 
+      }
 
-        searchClose.addEventListener(
-            "click",
-            () => {
+    }
 
-                searchOverlay.classList.remove(
-                    "active"
-                );
 
-                searchInput.value = "";
+    element.innerHTML =
+      result.join("");
 
-                searchResults.innerHTML = "";
+  } catch (error) {
 
-            }
+    console.error(
+      "Contacts :",
+      error
+    );
+
+    empty(
+      element,
+      "Impossible de charger les contacts"
+    );
+
+  }
+
+}
+
+
+/* ========================= */
+/* JOUÉ RÉCEMMENT */
+/* ========================= */
+
+async function loadRecentlyPlayed(
+  uid
+) {
+
+  const element =
+    document.getElementById(
+      "recentlyPlayed"
+    );
+
+
+  try {
+
+    const items =
+      await getUserCollection(
+        uid,
+        "recentlyPlayed"
+      );
+
+
+    if (
+      items.length === 0
+    ) {
+
+      empty(
+        element,
+        "Aucun jeu récemment joué"
+      );
+
+      return;
+
+    }
+
+
+    element.innerHTML =
+      items
+        .slice(0, 6)
+        .map(
+          item =>
+            createCard(
+              item,
+              "Jeu"
+            )
+        )
+        .join("");
+
+  } catch (error) {
+
+    console.error(
+      "Joué récemment :",
+      error
+    );
+
+    empty(
+      element,
+      "Impossible de charger les jeux"
+    );
+
+  }
+
+}
+
+
+/* ========================= */
+/* FAVORIS */
+/* ========================= */
+
+async function loadFavorites(
+  uid
+) {
+
+  const element =
+    document.getElementById(
+      "favorites"
+    );
+
+
+  try {
+
+    const items =
+      await getUserCollection(
+        uid,
+        "favorites"
+      );
+
+
+    if (
+      items.length === 0
+    ) {
+
+      empty(
+        element,
+        "Aucun favori"
+      );
+
+      return;
+
+    }
+
+
+    element.innerHTML =
+      items
+        .slice(0, 6)
+        .map(
+          item =>
+            createCard(
+              item,
+              "Favori"
+            )
+        )
+        .join("");
+
+  } catch (error) {
+
+    console.error(
+      "Favoris :",
+      error
+    );
+
+    empty(
+      element,
+      "Impossible de charger les favoris"
+    );
+
+  }
+
+}
+
+
+/* ========================= */
+/* OBTENU RÉCEMMENT */
+/* ========================= */
+
+async function loadRecentlyObtained(
+  uid
+) {
+
+  const element =
+    document.getElementById(
+      "recentlyObtained"
+    );
+
+
+  try {
+
+    const items =
+      await getUserCollection(
+        uid,
+        "recentlyObtained"
+      );
+
+
+    if (
+      items.length === 0
+    ) {
+
+      empty(
+        element,
+        "Rien obtenu récemment"
+      );
+
+      return;
+
+    }
+
+
+    element.innerHTML =
+      items
+        .slice(0, 6)
+        .map(
+          item =>
+            createCard(
+              item,
+              "Article"
+            )
+        )
+        .join("");
+
+  } catch (error) {
+
+    console.error(
+      "Obtenu récemment :",
+      error
+    );
+
+    empty(
+      element,
+      "Impossible de charger les éléments"
+    );
+
+  }
+
+}
+
+
+/* ========================= */
+/* MES TRIBUS */
+/* ========================= */
+
+async function loadMyTribes(
+  uid
+) {
+
+  const element =
+    document.getElementById(
+      "myTribes"
+    );
+
+
+  try {
+
+    const items =
+      await getUserCollection(
+        uid,
+        "tribes"
+      );
+
+
+    if (
+      items.length === 0
+    ) {
+
+      empty(
+        element,
+        "Aucune tribu"
+      );
+
+      return;
+
+    }
+
+
+    element.innerHTML =
+      items
+        .slice(0, 6)
+        .map(
+          item =>
+            createCard(
+              item,
+              "Tribu"
+            )
+        )
+        .join("");
+
+  } catch (error) {
+
+    console.error(
+      "Mes tribus :",
+      error
+    );
+
+    empty(
+      element,
+      "Impossible de charger les tribus"
+    );
+
+  }
+
+}
+
+
+/* ========================= */
+/* COLLECTION POPULAIRE */
+/* ========================= */
+
+async function loadPopular(
+  collectionName,
+  elementId,
+  emptyText,
+  fallbackName
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+
+  try {
+
+    const ref =
+      collection(
+        db,
+        collectionName
+      );
+
+
+    let snapshot;
+
+
+    try {
+
+      snapshot =
+        await getDocs(
+          query(
+            ref,
+            orderBy(
+              "popularity",
+              "desc"
+            ),
+            limit(6)
+          )
         );
 
+    } catch {
 
-        searchOverlay.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    searchOverlay
-                ) {
-
-                    searchOverlay.classList.remove(
-                        "active"
-                    );
-
-                }
-
-            }
+      snapshot =
+        await getDocs(
+          query(
+            ref,
+            limit(6)
+          )
         );
 
+    }
 
-        searchInput.addEventListener(
-            "keydown",
-            event => {
 
-                if (
-                    event.key !== "Enter"
-                ) {
-                    return;
-                }
+    if (
+      snapshot.empty
+    ) {
 
-                const value =
-                    searchInput.value.trim();
+      empty(
+        element,
+        emptyText
+      );
 
-                if (!value) {
-                    return;
-                }
+      return;
 
-                window.location.href =
-                    "/search?q=" +
-                    encodeURIComponent(value);
+    }
 
-            }
+
+    element.innerHTML =
+      snapshot.docs
+        .map(
+          item =>
+            createCard(
+              {
+                id: item.id,
+                ...item.data()
+              },
+              fallbackName
+            )
+        )
+        .join("");
+
+  } catch (error) {
+
+    console.error(
+      collectionName + " :",
+      error
+    );
+
+    empty(
+      element,
+      "Impossible de charger cette section"
+    );
+
+  }
+
+}
+
+
+/* ========================= */
+/* CONTACTS POPULAIRES */
+/* ========================= */
+
+async function loadPopularContacts() {
+
+  const element =
+    document.getElementById(
+      "popularContacts"
+    );
+
+
+  try {
+
+    const ref =
+      collection(
+        db,
+        "publicUsers"
+      );
+
+
+    let snapshot;
+
+
+    try {
+
+      snapshot =
+        await getDocs(
+          query(
+            ref,
+            orderBy(
+              "popularity",
+              "desc"
+            ),
+            limit(6)
+          )
         );
 
+    } catch {
 
-        /* =====================================================
-           PROFILE DROPDOWN
-           ===================================================== */
-
-        avatar.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                dropdown.classList.toggle(
-                    "show"
-                );
-
-            }
+      snapshot =
+        await getDocs(
+          query(
+            ref,
+            limit(6)
+          )
         );
 
-
-        document.addEventListener(
-            "click",
-            () => {
-
-                dropdown.classList.remove(
-                    "show"
-                );
-
-            }
-        );
+    }
 
 
-        dropdown.addEventListener(
-            "click",
-            event => {
+    if (
+      snapshot.empty
+    ) {
 
-                event.stopPropagation();
+      empty(
+        element,
+        "Aucun contact populaire"
+      );
 
-            }
-        );
+      return;
+
+    }
 
 
-        /* =====================================================
-           AUTH
-           ===================================================== */
+    element.innerHTML =
+      snapshot.docs
+        .map(
+          item =>
+            createContact({
+              id: item.id,
+              ...item.data()
+            })
+        )
+        .join("");
 
-        onAuthStateChanged(
-            auth,
-            async user => {
+  } catch (error) {
 
-                if (!user) {
+    console.error(
+      "Contacts populaires :",
+      error
+    );
 
-                    window.location.href =
-                        "/login";
+    empty(
+      element,
+      "Impossible de charger les contacts populaires"
+    );
 
-                    return;
+  }
 
-                }
+}
 
-                updateProfileMenu(
-                    user
-                );
 
-                await Promise.all([
-                    loadContacts(user.uid),
-                    loadRecentlyPlayed(user.uid),
-                    loadFavorites(user.uid),
-                    loadRecentlyObtained(user.uid),
-                    loadMyTribes(user.uid),
-                    loadPopular(
-                        "games",
-                        "popularGames",
-                        "Aucun jeu populaire",
-                        "Jeu"
-                    ),
-                    loadPopularContacts(),
-                    loadPopular(
-                        "articles",
-                        "popularArticles",
-                        "Aucun article populaire",
-                        "Article"
-                    ),
-                    loadPopular(
-                        "tribes",
-                        "popularTribes",
-                        "Aucune tribu populaire",
-                        "Tribu"
-                    )
-                ]);
+/* ========================= */
+/* CHARGEMENT HOME */
+/* ========================= */
 
-            }
-        );
+async function loadHome(
+  uid
+) {
 
-    </script>
+  await Promise.all([
+
+    loadContacts(uid),
+
+    loadRecentlyPlayed(uid),
+
+    loadFavorites(uid),
+
+    loadRecentlyObtained(uid),
+
+    loadMyTribes(uid),
+
+    loadPopular(
+      "games",
+      "popularGames",
+      "Aucun jeu populaire",
+      "Jeu"
+    ),
+
+    loadPopularContacts(),
+
+    loadPopular(
+      "articles",
+      "popularArticles",
+      "Aucun article populaire",
+      "Article"
+    ),
+
+    loadPopular(
+      "tribes",
+      "popularTribes",
+      "Aucune tribu populaire",
+      "Tribu"
+    )
+
+  ]);
+
+}
+
+</script>
+
+
+<!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
+
+<script>
+
+const searchBtn =
+  document.getElementById(
+    "searchBtn"
+  );
+
+
+const searchOverlay =
+  document.getElementById(
+    "searchOverlay"
+  );
+
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+
+const searchResults =
+  document.getElementById(
+    "searchResults"
+  );
+
+
+const closeSearch =
+  document.getElementById(
+    "closeSearch"
+  );
+
+
+/* ========================= */
+/* OUVRIR */
+/* ========================= */
+
+searchBtn.addEventListener(
+  "click",
+  () => {
+
+    searchOverlay.classList.add(
+      "show"
+    );
+
+    searchInput.focus();
+
+  }
+);
+
+
+/* ========================= */
+/* FERMER */
+/* ========================= */
+
+closeSearch.addEventListener(
+  "click",
+  () => {
+
+    searchOverlay.classList.remove(
+      "show"
+    );
+
+    searchInput.value = "";
+
+    searchResults.innerHTML = "";
+
+  }
+);
+
+
+/* ========================= */
+/* ENTRÉE */
+/* ========================= */
+
+searchInput.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (
+      event.key !== "Enter"
+    ) {
+
+      return;
+
+    }
+
+
+    const query =
+      searchInput.value.trim();
+
+
+    if (!query) {
+
+      return;
+
+    }
+
+
+    searchResults.innerHTML = `
+
+      <div class="search-result">
+
+        <h3>
+          Résultats de recherche
+        </h3>
+
+        <p>
+          Recherche pour :
+          <strong>
+            ${escapeHTML(query)}
+          </strong>
+        </p>
+
+      </div>
+
+    `;
+
+  }
+);
+
+
+/* ========================= */
+/* CLIQUER DEHORS */
+/* ========================= */
+
+searchOverlay.addEventListener(
+  "click",
+  (event) => {
+
+    if (
+      event.target ===
+      searchOverlay
+    ) {
+
+      searchOverlay.classList.remove(
+        "show"
+      );
+
+      searchInput.value = "";
+
+      searchResults.innerHTML = "";
+
+    }
+
+  }
+);
+
+
+/* ========================= */
+/* ESCAPE HTML */
+/* ========================= */
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.textContent =
+    text;
+
+  return div.innerHTML;
+
+}
+
+</script>
+
+
+<!-- ========================= -->
+<!-- SERVICE WORKER -->
+<!-- ========================= -->
+
+<script>
+
+if (
+  "serviceWorker"
+  in navigator
+) {
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker.register(
+        "/service-worker.js"
+      );
+
+    }
+  );
+
+}
+
+</script>
+
 
 </body>
-
 </html>
