@@ -122,6 +122,66 @@
 
 
 /* ========================= */
+/* DEMANDE D'AMI */
+/* ========================= */
+
+.friend-request-container {
+    margin-top: 20px;
+
+    display: flex;
+
+    justify-content: center;
+}
+
+
+.friend-request-button {
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 10px 18px;
+
+    background: #5865f2;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.friend-request-button:hover {
+    opacity: 0.9;
+}
+
+
+.friend-request-button:active {
+    transform: scale(0.97);
+}
+
+
+.friend-request-button.cancel {
+    background: #333b4d;
+}
+
+
+.friend-request-button:disabled {
+    opacity: 0.6;
+
+    cursor: default;
+
+    transform: none;
+}
+
+
+/* ========================= */
 /* ERREUR */
 /* ========================= */
 
@@ -296,6 +356,27 @@
       class="profile-created"
     ></div>
 
+
+    <!-- ========================= -->
+    <!-- BOUTON DEMANDE D'AMI -->
+    <!-- ========================= -->
+
+    <div
+      id="friendRequestContainer"
+      class="friend-request-container"
+      style="display:none;"
+    >
+
+      <button
+        id="friendRequestButton"
+        class="friend-request-button"
+        type="button"
+      >
+        Faire une demande d'ami
+      </button>
+
+    </div>
+
   </div>
 
 </div>
@@ -306,7 +387,6 @@
 <!-- ========================= -->
 
 <script type="module">
-
 
 import {
     initializeApp
@@ -326,11 +406,14 @@ import {
     getFirestore,
     doc,
     getDoc,
+    setDoc,
+    deleteDoc,
     collection,
     query,
     where,
     getDocs,
-    limit
+    limit,
+    serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -429,11 +512,35 @@ const profileCard =
     );
 
 
+const friendRequestContainer =
+    document.getElementById(
+        "friendRequestContainer"
+    );
+
+
+const friendRequestButton =
+    document.getElementById(
+        "friendRequestButton"
+    );
+
+
+/* ========================= */
+/* PROFIL ACTUEL */
+/* ========================= */
+
+let currentUser = null;
+
+let viewedProfileUID = null;
+
+let friendRequestState =
+    "none";
+
+
 /* ========================= */
 /* MENU PROFIL */
 /* ========================= */
 
-function renderMenu(user) {
+async function renderMenu(user) {
 
     if (user) {
 
@@ -464,10 +571,63 @@ function renderMenu(user) {
             "User";
 
 
-        if (user.photoURL) {
+        let photoURL = "";
+
+
+        try {
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
+
+
+            const userSnap =
+                await getDoc(
+                    userRef
+                );
+
+
+            if (
+                userSnap.exists()
+            ) {
+
+                const data =
+                    userSnap.data();
+
+
+                photoURL =
+                    data.photoURL ||
+                    data.avatar ||
+                    "";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erreur chargement photo :",
+                error
+            );
+
+        }
+
+
+        if (!photoURL) {
+
+            photoURL =
+                user.photoURL ||
+                "";
+
+        }
+
+
+        if (photoURL) {
 
             avatar.src =
-                user.photoURL;
+                photoURL;
 
         } else {
 
@@ -491,6 +651,10 @@ function renderMenu(user) {
             </a>
 
         `;
+
+
+        avatar.src =
+            "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
 
     }
 
@@ -652,10 +816,317 @@ function formatCreationDate(
 
 
 /* ========================= */
+/* VÉRIFIER AMITIÉ */
+/* ========================= */
+
+async function areFriends(
+    userUID,
+    otherUID
+) {
+
+    const friendRef =
+        doc(
+            db,
+            "users",
+            userUID,
+            "friends",
+            otherUID
+        );
+
+
+    const friendSnap =
+        await getDoc(
+            friendRef
+        );
+
+
+    return friendSnap.exists();
+
+}
+
+
+/* ========================= */
+/* VÉRIFIER DEMANDE */
+/* ========================= */
+
+async function hasFriendRequest(
+    senderUID,
+    recipientUID
+) {
+
+    const requestRef =
+        doc(
+            db,
+            "users",
+            recipientUID,
+            "friendRequests",
+            senderUID
+        );
+
+
+    const requestSnap =
+        await getDoc(
+            requestRef
+        );
+
+
+    return requestSnap.exists();
+
+}
+
+
+/* ========================= */
+/* METTRE À JOUR BOUTON AMI */
+/* ========================= */
+
+async function updateFriendButton() {
+
+    if (
+        !currentUser ||
+        !viewedProfileUID ||
+        currentUser.uid === viewedProfileUID
+    ) {
+
+        friendRequestContainer.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    friendRequestContainer.style.display =
+        "flex";
+
+
+    friendRequestButton.disabled =
+        true;
+
+
+    friendRequestButton.textContent =
+        "Chargement...";
+
+
+    try {
+
+        const alreadyFriends =
+            await areFriends(
+                currentUser.uid,
+                viewedProfileUID
+            );
+
+
+        if (alreadyFriends) {
+
+            friendRequestContainer.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        const requestExists =
+            await hasFriendRequest(
+                currentUser.uid,
+                viewedProfileUID
+            );
+
+
+        if (requestExists) {
+
+            friendRequestState =
+                "sent";
+
+            friendRequestButton.textContent =
+                "Annuler la demande d'ami";
+
+            friendRequestButton.classList.add(
+                "cancel"
+            );
+
+        } else {
+
+            friendRequestState =
+                "none";
+
+            friendRequestButton.textContent =
+                "Faire une demande d'ami";
+
+            friendRequestButton.classList.remove(
+                "cancel"
+            );
+
+        }
+
+
+        friendRequestButton.disabled =
+            false;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur vérification ami :",
+            error
+        );
+
+
+        friendRequestContainer.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* ========================= */
+/* ENVOYER / ANNULER */
+/* ========================= */
+
+friendRequestButton.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            !currentUser ||
+            !viewedProfileUID ||
+            currentUser.uid === viewedProfileUID
+        ) {
+
+            return;
+
+        }
+
+
+        friendRequestButton.disabled =
+            true;
+
+
+        try {
+
+            /* ========================= */
+            /* ANNULATION */
+            /* ========================= */
+
+            if (
+                friendRequestState ===
+                "sent"
+            ) {
+
+                const requestRef =
+                    doc(
+                        db,
+                        "users",
+                        viewedProfileUID,
+                        "friendRequests",
+                        currentUser.uid
+                    );
+
+
+                await deleteDoc(
+                    requestRef
+                );
+
+
+                friendRequestState =
+                    "none";
+
+
+                friendRequestButton.textContent =
+                    "Faire une demande d'ami";
+
+
+                friendRequestButton.classList.remove(
+                    "cancel"
+                );
+
+
+                friendRequestButton.disabled =
+                    false;
+
+
+                return;
+
+            }
+
+
+            /* ========================= */
+            /* NOUVELLE DEMANDE */
+            /* ========================= */
+
+            const requestRef =
+                doc(
+                    db,
+                    "users",
+                    viewedProfileUID,
+                    "friendRequests",
+                    currentUser.uid
+                );
+
+
+            await setDoc(
+                requestRef,
+                {
+
+                    senderUid:
+                        currentUser.uid,
+
+                    recipientUid:
+                        viewedProfileUID,
+
+                    status:
+                        "pending",
+
+                    createdAt:
+                        serverTimestamp()
+
+                }
+            );
+
+
+            friendRequestState =
+                "sent";
+
+
+            friendRequestButton.textContent =
+                "Annuler la demande d'ami";
+
+
+            friendRequestButton.classList.add(
+                "cancel"
+            );
+
+
+            friendRequestButton.disabled =
+                false;
+
+        } catch (error) {
+
+            console.error(
+                "Erreur demande d'ami :",
+                error
+            );
+
+
+            alert(
+                "Impossible de modifier la demande d'ami."
+            );
+
+
+            friendRequestButton.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* ========================= */
 /* AFFICHER PROFIL */
 /* ========================= */
 
-function displayProfile(
+async function displayProfile(
     data,
     isOwnProfile
 ) {
@@ -695,7 +1166,7 @@ function displayProfile(
 
     /* ========================= */
     /* INFOS */
-    /* ========================= */
+/* ========================= */
 
     username.textContent =
         displayName;
@@ -712,7 +1183,7 @@ function displayProfile(
 
     /* ========================= */
     /* EMAIL */
-    /* ========================= */
+/* ========================= */
 
     if (isOwnProfile) {
 
@@ -729,7 +1200,7 @@ function displayProfile(
 
     /* ========================= */
     /* ID */
-    /* ========================= */
+/* ========================= */
 
     if (
         data.id !== undefined &&
@@ -750,7 +1221,7 @@ function displayProfile(
 
     /* ========================= */
     /* DATE DE CRÉATION */
-    /* ========================= */
+/* ========================= */
 
     const creationDate =
         formatCreationDate(
@@ -774,7 +1245,7 @@ function displayProfile(
 
     /* ========================= */
     /* RIZOPLAY */
-    /* ========================= */
+/* ========================= */
 
     const isAdmin =
         data.email ===
@@ -797,6 +1268,26 @@ function displayProfile(
 
         rizoBadge.style.display =
             "none";
+
+    }
+
+
+    /* ========================= */
+    /* DEMANDE D'AMI */
+/* ========================= */
+
+    viewedProfileUID =
+        data.uid || null;
+
+
+    if (isOwnProfile) {
+
+        friendRequestContainer.style.display =
+            "none";
+
+    } else {
+
+        await updateFriendButton();
 
     }
 
@@ -920,7 +1411,7 @@ async function getProfileByCustomID(
 /* ========================= */
 
 async function loadProfile(
-    currentUser
+    user
 ) {
 
     const hash =
@@ -933,23 +1424,27 @@ async function loadProfile(
             .trim();
 
 
-    let profileData = null;
+    let profileData =
+        null;
 
-    let isOwnProfile = false;
+
+    let isOwnProfile =
+        false;
 
 
     /* ========================= */
     /* PROFIL PERSONNEL */
-    /* ========================= */
+/* ========================= */
 
     if (!customID) {
 
         profileData =
             await getProfileByUID(
-                currentUser.uid
+                user.uid
             );
 
-        isOwnProfile = true;
+        isOwnProfile =
+            true;
 
     }
 
@@ -969,10 +1464,11 @@ async function loadProfile(
         if (
             profileData &&
             profileData.uid ===
-                currentUser.uid
+                user.uid
         ) {
 
-            isOwnProfile = true;
+            isOwnProfile =
+                true;
 
         }
 
@@ -981,7 +1477,7 @@ async function loadProfile(
 
     /* ========================= */
     /* PROFIL INTROUVABLE */
-    /* ========================= */
+/* ========================= */
 
     if (!profileData) {
 
@@ -992,7 +1488,7 @@ async function loadProfile(
     }
 
 
-    displayProfile(
+    await displayProfile(
         profileData,
         isOwnProfile
     );
@@ -1018,7 +1514,13 @@ onAuthStateChanged(
         }
 
 
-        renderMenu(user);
+        currentUser =
+            user;
+
+
+        await renderMenu(
+            user
+        );
 
 
         try {
@@ -1034,6 +1536,7 @@ onAuthStateChanged(
                 error
             );
 
+
             showNotFound();
 
         }
@@ -1048,64 +1551,12 @@ onAuthStateChanged(
 
 window.addEventListener(
     "hashchange",
-    async () => {
-
-        const user =
-            auth.currentUser;
-
-
-        if (!user) {
-            return;
-        }
-
+    () => {
 
         window.location.reload();
 
     }
 );
-
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        avatar.src =
-            "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
-        return;
-    }
-
-    try {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        let photoURL = "";
-
-        if (userSnap.exists()) {
-            const data = userSnap.data();
-            photoURL = data.photoURL || "";
-        }
-
-        // Si aucune photo n'est enregistrée dans Firestore,
-        // on utilise celle de Firebase Auth
-        if (!photoURL) {
-            photoURL = user.photoURL || "";
-        }
-
-        if (photoURL) {
-            avatar.src = photoURL;
-        } else {
-            const name =
-                user.displayName ||
-                user.email?.split("@")[0] ||
-                "User";
-
-            avatar.src =
-                "https://ui-avatars.com/api/?name=" +
-                encodeURIComponent(name) +
-                "&background=111&color=fff&rounded=true&size=64";
-        }
-
-    } catch (error) {
-        console.error("Erreur lors du chargement de la photo :", error);
-    }
-});
 
 </script>
 
