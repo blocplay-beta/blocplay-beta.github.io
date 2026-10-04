@@ -1,1712 +1,2153 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta charset="UTF-8">
 
-  <meta
-    name="theme-color"
-    content="#0b0f1a"
-  >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Accueil - BlocPlay</title>
+    <meta
+        name="theme-color"
+        content="#0b0f1a"
+    >
 
-  <link
-    rel="icon"
-    href="/logo.ico"
-  >
+    <title>Accueil - BlocPlay</title>
 
-  <link
-    rel="stylesheet"
-    href="/style.css"
-  >
+    <link
+        rel="icon"
+        href="/logo.ico"
+    >
 
-  <style>
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
 
-    /* ================================
-       HOME BLOCPLAY
-    ================================= */
+    <style>
 
-    .home-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 30px 20px 50px;
-      box-sizing: border-box;
-    }
+        /* ==================================================
+           BASE
+        ================================================== */
 
-    .home-title {
-      margin-bottom: 25px;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    .home-title h1 {
-      margin: 0;
-      font-size: 32px;
-    }
+        body {
+            margin: 0;
+            background: #0b0f1a;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-    .home-title p {
-      margin-top: 8px;
-      opacity: 0.7;
-    }
+        a {
+            color: inherit;
+        }
 
-    .home-section {
-      margin-bottom: 35px;
-    }
 
-    .home-section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
+        /* ==================================================
+           HEADER
+        ================================================== */
 
-    .home-section-header h2 {
-      margin: 0;
-      font-size: 22px;
-    }
+        .home-header {
+            width: 100%;
+            height: 70px;
 
-    .see-more {
-      color: #8ea2ff;
-      text-decoration: none;
-      font-size: 14px;
-    }
+            display: flex;
+            align-items: center;
 
-    .see-more:hover {
-      text-decoration: underline;
-    }
+            padding: 0 25px;
 
-    .home-grid {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fill,
-        minmax(180px, 1fr)
-      );
-      gap: 15px;
-    }
+            background: #0f1422;
 
-    .home-card {
-      background: #111827;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      overflow: hidden;
-      min-height: 150px;
-      transition: transform 0.15s ease,
-                  border-color 0.15s ease;
-    }
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.06);
 
-    .home-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.14);
-    }
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    .home-card-image {
-      width: 100%;
-      height: 105px;
-      object-fit: cover;
-      display: block;
-      background: #0b0f1a;
-    }
+        .home-logo {
+            display: flex;
+            align-items: center;
 
-    .home-card-content {
-      padding: 12px;
-    }
+            text-decoration: none;
 
-    .home-card-title {
-      font-weight: 600;
-      font-size: 15px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+            flex-shrink: 0;
+        }
 
-    .home-card-description {
-      margin-top: 5px;
-      font-size: 13px;
-      opacity: 0.65;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
+        .home-logo img {
+            width: 42px;
+            height: 42px;
 
-    .person-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 15px;
-      min-height: 0;
-    }
+            object-fit: contain;
+        }
 
-    .person-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #0b0f1a;
-      flex-shrink: 0;
-    }
+        .home-nav {
+            display: flex;
+            align-items: center;
 
-    .person-info {
-      min-width: 0;
-    }
+            margin-left: 22px;
 
-    .person-name {
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+            gap: 18px;
+        }
 
-    .person-subtitle {
-      margin-top: 4px;
-      font-size: 12px;
-      opacity: 0.6;
-    }
+        .home-nav a {
+            text-decoration: none;
 
-    .empty-card {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 30px 20px;
-      text-align: center;
-      background: #111827;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      opacity: 0.8;
-    }
+            color: #ffffff;
 
-    .empty-card-title {
-      font-weight: 600;
-      margin-bottom: 7px;
-    }
+            font-size: 15px;
 
-    .empty-card-text {
-      font-size: 14px;
-      opacity: 0.65;
-    }
+            opacity: 0.85;
+        }
 
-    .loading-card {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 25px;
-      text-align: center;
-      background: #111827;
-      border-radius: 14px;
-      opacity: 0.7;
-    }
+        .home-nav a:hover {
+            opacity: 1;
+        }
 
-    .error-card {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 25px;
-      text-align: center;
-      background: #24151a;
-      border: 1px solid rgba(255,80,80,0.2);
-      border-radius: 14px;
-    }
 
-    .error-card-title {
-      font-weight: 600;
-      margin-bottom: 7px;
-    }
+        /* ==================================================
+           RECHERCHE
+        ================================================== */
 
-    .error-card-text {
-      font-size: 13px;
-      opacity: 0.7;
-    }
+        .home-search {
+            flex: 1;
 
-    @media (max-width: 600px) {
+            display: flex;
+            justify-content: center;
 
-      .home-container {
-        padding: 20px 14px 40px;
-      }
+            padding: 0 25px;
+        }
 
-      .home-title h1 {
-        font-size: 27px;
-      }
+        .home-search-box {
+            width: 100%;
+            max-width: 500px;
 
-      .home-grid {
-        grid-template-columns: repeat(
-          2,
-          minmax(0, 1fr)
-        );
-      }
+            height: 42px;
 
-      .home-card-image {
-        height: 90px;
-      }
+            display: flex;
+            align-items: center;
 
-    }
+            background: #171d2d;
 
-  </style>
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .home-search-box input {
+            flex: 1;
+
+            height: 100%;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            color: #ffffff;
+
+            padding: 0 15px;
+
+            font-size: 14px;
+        }
+
+        .home-search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .home-search-button {
+            width: 48px;
+            height: 100%;
+
+            border: none;
+
+            background: transparent;
+
+            color: #ffffff;
+
+            cursor: pointer;
+
+            font-size: 17px;
+        }
+
+
+        /* ==================================================
+           PROFIL
+        ================================================== */
+
+        .home-profile {
+            position: relative;
+
+            flex-shrink: 0;
+        }
+
+        .home-profile-button {
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            padding: 0;
+        }
+
+        .home-profile-avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #171d2d;
+        }
+
+        .home-profile-menu {
+            display: none;
+
+            position: absolute;
+
+            right: 0;
+            top: 52px;
+
+            width: 190px;
+
+            background: #151b2a;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            border-radius: 12px;
+
+            padding: 7px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.4);
+        }
+
+        .home-profile-menu.open {
+            display: block;
+        }
+
+        .home-profile-menu a,
+        .home-profile-menu button {
+            width: 100%;
+
+            display: block;
+
+            border: none;
+
+            background: transparent;
+
+            color: #ffffff;
+
+            text-align: left;
+
+            text-decoration: none;
+
+            padding: 10px 12px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            cursor: pointer;
+        }
+
+        .home-profile-menu a:hover,
+        .home-profile-menu button:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+
+        /* ==================================================
+           CONTENU
+        ================================================== */
+
+        .home-content {
+            width: 100%;
+            max-width: 1250px;
+
+            margin: 0 auto;
+
+            padding:
+                35px 25px 60px;
+        }
+
+
+        /* ==================================================
+           BIENVENUE
+        ================================================== */
+
+        .welcome {
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            margin: 0;
+
+            font-size: 30px;
+
+            font-weight: 700;
+        }
+
+        .welcome p {
+            margin: 8px 0 0;
+
+            color:
+                rgba(255, 255, 255, 0.58);
+
+            font-size: 15px;
+        }
+
+
+        /* ==================================================
+           SECTIONS
+        ================================================== */
+
+        .home-section {
+            margin-bottom: 38px;
+        }
+
+        .section-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 14px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+
+            font-size: 20px;
+
+            font-weight: 650;
+        }
+
+        .section-header a {
+            color: #8da2ff;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+        .section-header a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* ==================================================
+           LISTE HORIZONTALE
+        ================================================== */
+
+        .cards-row {
+            width: 100%;
+
+            display: flex;
+
+            gap: 14px;
+
+            overflow-x: auto;
+
+            padding-bottom: 4px;
+
+            scrollbar-width: thin;
+        }
+
+        .cards-row::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .cards-row::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .cards-row::-webkit-scrollbar-thumb {
+            background: #252d40;
+            border-radius: 10px;
+        }
+
+
+        /* ==================================================
+           CARTE
+        ================================================== */
+
+        .content-card {
+            width: 190px;
+
+            min-width: 190px;
+
+            background: #121827;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.055);
+
+            border-radius: 13px;
+
+            overflow: hidden;
+
+            transition:
+                transform 0.15s ease,
+                border-color 0.15s ease;
+
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+
+            border-color:
+                rgba(255, 255, 255, 0.14);
+        }
+
+        .content-card-image {
+            width: 100%;
+            height: 110px;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #0e1421;
+        }
+
+        .content-card-body {
+            padding: 11px 12px 13px;
+        }
+
+        .content-card-name {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .content-card-description {
+            margin-top: 5px;
+
+            color:
+                rgba(255, 255, 255, 0.52);
+
+            font-size: 12px;
+
+            line-height: 1.4;
+
+            display: -webkit-box;
+
+            -webkit-line-clamp: 2;
+
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+
+        /* ==================================================
+           CARTE PERSONNE
+        ================================================== */
+
+        .person-card {
+            width: 190px;
+
+            min-width: 190px;
+
+            background: #121827;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.055);
+
+            border-radius: 13px;
+
+            padding: 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .person-avatar {
+            width: 48px;
+            height: 48px;
+
+            min-width: 48px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background: #0e1421;
+        }
+
+        .person-name {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            overflow: hidden;
+
+            white-space: nowrap;
+
+            text-overflow: ellipsis;
+        }
+
+        .person-info {
+            min-width: 0;
+        }
+
+        .person-subtitle {
+            margin-top: 4px;
+
+            font-size: 11px;
+
+            color:
+                rgba(255, 255, 255, 0.45);
+        }
+
+
+        /* ==================================================
+           ÉTATS VIDES
+        ================================================== */
+
+        .empty-state {
+            width: 100%;
+
+            min-height: 105px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background: #121827;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.055);
+
+            border-radius: 13px;
+
+            text-align: center;
+        }
+
+        .empty-state-title {
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .empty-state-text {
+            margin-top: 5px;
+
+            color:
+                rgba(255, 255, 255, 0.48);
+
+            font-size: 12px;
+        }
+
+
+        /* ==================================================
+           FOOTER
+        ================================================== */
+
+        .home-footer {
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+
+            background: #0a0e18;
+
+            padding:
+                40px 25px 25px;
+        }
+
+        .footer-content {
+            width: 100%;
+            max-width: 1250px;
+
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns:
+                2fr
+                1fr
+                1fr
+                1fr;
+
+            gap: 35px;
+        }
+
+        .footer-brand img {
+            width: 45px;
+            height: 45px;
+
+            object-fit: contain;
+
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            max-width: 300px;
+
+            margin: 0;
+
+            color:
+                rgba(255, 255, 255, 0.45);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .footer-column h3 {
+            margin:
+                0 0 12px;
+
+            font-size: 14px;
+        }
+
+        .footer-column a {
+            display: block;
+
+            width: fit-content;
+
+            margin-bottom: 8px;
+
+            color:
+                rgba(255, 255, 255, 0.5);
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+        .footer-column a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            width: 100%;
+            max-width: 1250px;
+
+            margin: 35px auto 0;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.05);
+
+            color:
+                rgba(255, 255, 255, 0.35);
+
+            font-size: 12px;
+        }
+
+
+        /* ==================================================
+           MOBILE
+        ================================================== */
+
+        @media (max-width: 700px) {
+
+            .home-header {
+                padding: 0 15px;
+            }
+
+            .home-nav {
+                display: none;
+            }
+
+            .home-search {
+                padding: 0 12px;
+            }
+
+            .home-content {
+                padding:
+                    25px 15px 45px;
+            }
+
+            .welcome h1 {
+                font-size: 26px;
+            }
+
+            .content-card {
+                width: 165px;
+                min-width: 165px;
+            }
+
+            .person-card {
+                width: 165px;
+                min-width: 165px;
+            }
+
+            .content-card-image {
+                height: 95px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 450px) {
+
+            .home-logo img {
+                width: 37px;
+                height: 37px;
+            }
+
+            .home-profile-avatar {
+                width: 37px;
+                height: 37px;
+            }
+
+            .home-search-box {
+                height: 38px;
+            }
+
+            .home-search-button {
+                width: 40px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-  <!-- =================================
-       HEADER
-  ================================== -->
 
-  <header class="header">
+<!-- ======================================================
+     HEADER
+====================================================== -->
+
+<header class="home-header">
+
 
     <a
-      class="logo"
-      href="/"
+        class="home-logo"
+        href="/"
     >
-      <img
-        src="/icon.png"
-        alt="BlocPlay"
-      >
+
+        <img
+            src="/icon.png"
+            alt="BlocPlay"
+        >
+
     </a>
 
-    <nav>
-      <a href="/home">Accueil</a>
+
+    <nav class="home-nav">
+
+        <a href="/home">
+            Accueil
+        </a>
+
     </nav>
 
-    <div class="profile-menu">
 
-      <img
-        id="profileAvatar"
-        class="avatar"
-        src="https://ui-avatars.com/api/?name=BlocPlay"
-        alt="Profil"
-      >
+    <div class="home-search">
 
-      <div
-        id="dropdown"
-        class="dropdown"
-      >
-        <a href="/profile">Profil</a>
-        <a href="/settings">Paramètres</a>
-        <a
-          href="#"
-          id="logoutBtn"
+        <form
+            class="home-search-box"
+            id="searchForm"
         >
-          Se déconnecter
-        </a>
-      </div>
 
-    </div>
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Rechercher sur BlocPlay..."
+                autocomplete="off"
+            >
 
-  </header>
+            <button
+                class="home-search-button"
+                type="submit"
+                aria-label="Rechercher"
+            >
+                🔍
+            </button>
 
-
-  <!-- =================================
-       CONTENU
-  ================================== -->
-
-  <main class="home-container">
-
-    <div class="home-title">
-
-      <h1 id="welcomeTitle">
-        Accueil
-      </h1>
-
-      <p>
-        Bienvenue sur BlocPlay.
-      </p>
+        </form>
 
     </div>
 
 
-    <!-- ===============================
+    <div class="home-profile">
+
+        <button
+            class="home-profile-button"
+            id="profileButton"
+            type="button"
+        >
+
+            <img
+                id="profileAvatar"
+                class="home-profile-avatar"
+                src="https://ui-avatars.com/api/?name=BlocPlay"
+                alt="Profil"
+            >
+
+        </button>
+
+
+        <div
+            class="home-profile-menu"
+            id="profileMenu"
+        >
+
+            <a href="/profile">
+                Profil
+            </a>
+
+            <a href="/settings">
+                Paramètres
+            </a>
+
+            <button
+                type="button"
+                id="logoutButton"
+            >
+                Se déconnecter
+            </button>
+
+        </div>
+
+    </div>
+
+
+</header>
+
+
+
+<!-- ======================================================
+     CONTENU
+====================================================== -->
+
+<main class="home-content">
+
+
+    <div class="welcome">
+
+        <h1 id="welcomeTitle">
+            Bonjour !
+        </h1>
+
+        <p>
+            Bienvenue sur BlocPlay.
+        </p>
+
+    </div>
+
+
+
+    <!-- ==================================================
          CONTACTS
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Contacts
-        </h2>
+            <h2>
+                Contacts
+            </h2>
 
-        <a
-          class="see-more"
-          href="/f/contacts"
-        >
-          Voir plus
-        </a>
+            <a href="/f/contacts">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="contactsContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement des contacts...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="contactsContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          JOUÉ RÉCEMMENT
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Joué récemment
-        </h2>
+            <h2>
+                Joué récemment
+            </h2>
 
-        <a
-          class="see-more"
-          href="/f/recently-played"
-        >
-          Voir plus
-        </a>
+            <a href="/f/recently-played">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="recentlyPlayedContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="recentlyPlayedContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          FAVORIS
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Favoris
-        </h2>
+            <h2>
+                Favoris
+            </h2>
 
-        <a
-          class="see-more"
-          href="/f/favorites"
-        >
-          Voir plus
-        </a>
+            <a href="/f/favorites">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="favoritesContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="favoritesContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          OBTENU RÉCEMMENT
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Obtenu récemment
-        </h2>
+            <h2>
+                Obtenu récemment
+            </h2>
 
-        <a
-          class="see-more"
-          href="/f/recently-obtained"
-        >
-          Voir plus
-        </a>
+            <a href="/f/recently-obtained">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="recentlyObtainedContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="recentlyObtainedContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          TRIBUS
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Mes tribus
-        </h2>
+            <h2>
+                Mes tribus
+            </h2>
 
-        <a
-          class="see-more"
-          href="/f/tribes"
-        >
-          Voir plus
-        </a>
+            <a href="/f/tribes">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="tribesContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="tribesContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          JEUX POPULAIRES
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Jeux populaires
-        </h2>
+            <h2>
+                Jeux populaires
+            </h2>
 
-        <a
-          class="see-more"
-          href="/games"
-        >
-          Voir plus
-        </a>
+            <a href="/games">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="popularGamesContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="popularGamesContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          CONTACTS POPULAIRES
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Contacts populaires
-        </h2>
+            <h2>
+                Contacts populaires
+            </h2>
 
-        <a
-          class="see-more"
-          href="/users"
-        >
-          Voir plus
-        </a>
+            <a href="/users">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="popularUsersContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="popularUsersContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          ARTICLES POPULAIRES
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Articles populaires
-        </h2>
+            <h2>
+                Articles populaires
+            </h2>
 
-        <a
-          class="see-more"
-          href="/articles"
-        >
-          Voir plus
-        </a>
+            <a href="/articles">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="popularArticlesContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="popularArticlesContainer"
+        ></div>
 
     </section>
 
 
-    <!-- ===============================
+
+    <!-- ==================================================
          TRIBUS POPULAIRES
-    ================================ -->
+    =================================================== -->
 
     <section class="home-section">
 
-      <div class="home-section-header">
+        <div class="section-header">
 
-        <h2>
-          Tribus populaires
-        </h2>
+            <h2>
+                Tribus populaires
+            </h2>
 
-        <a
-          class="see-more"
-          href="/tribes"
-        >
-          Voir plus
-        </a>
+            <a href="/tribes">
+                Voir plus
+            </a>
 
-      </div>
-
-      <div
-        id="popularTribesContainer"
-        class="home-grid"
-      >
-
-        <div class="loading-card">
-          Chargement...
         </div>
 
-      </div>
+        <div
+            class="cards-row"
+            id="popularTribesContainer"
+        ></div>
 
     </section>
 
-  </main>
+
+</main>
 
 
-  <!-- =================================
+
+<!-- ======================================================
+     FOOTER
+====================================================== -->
+
+<footer class="home-footer">
+
+    <div class="footer-content">
+
+
+        <div class="footer-brand">
+
+            <img
+                src="/icon.png"
+                alt="BlocPlay"
+            >
+
+            <p>
+                BlocPlay, une plateforme de jeux
+                créée par des gamers pour des gamers.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                BlocPlay
+            </h3>
+
+            <a href="/home">
+                Accueil
+            </a>
+
+            <a href="/games">
+                Jeux
+            </a>
+
+            <a href="/articles">
+                Articles
+            </a>
+
+            <a href="/tribes">
+                Tribus
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Communauté
+            </h3>
+
+            <a href="/users">
+                Utilisateurs
+            </a>
+
+            <a href="/f/contacts">
+                Contacts
+            </a>
+
+            <a href="/f/favorites">
+                Favoris
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Compte
+            </h3>
+
+            <a href="/profile">
+                Profil
+            </a>
+
+            <a href="/settings">
+                Paramètres
+            </a>
+
+            <a href="/login">
+                Connexion
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        © BlocPlay Studios™ — Tous droits réservés.
+
+    </div>
+
+</footer>
+
+
+
+<!-- ======================================================
+     FIREBASE
+====================================================== -->
+
+<script type="module">
+
+    import {
+        initializeApp
+    } from
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+    import {
+        getAuth,
+        onAuthStateChanged,
+        signOut
+    } from
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+    import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        orderBy,
+        limit,
+        doc,
+        getDoc
+    } from
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
+    /* ==================================================
        FIREBASE
-  ================================== -->
-
-  <script type="module">
-
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      query,
-      orderBy,
-      limit,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-    /* ================================
-       FIREBASE CONFIG
-    ================================= */
+    =================================================== */
 
     const firebaseConfig = {
 
-      apiKey:
-        "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+        apiKey:
+            "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
 
-      authDomain:
-        "blocplay-a9417.firebaseapp.com",
+        authDomain:
+            "blocplay-a9417.firebaseapp.com",
 
-      projectId:
-        "blocplay-a9417",
+        projectId:
+            "blocplay-a9417",
 
-      storageBucket:
-        "blocplay-a9417.firebasestorage.app",
+        storageBucket:
+            "blocplay-a9417.firebasestorage.app",
 
-      messagingSenderId:
-        "540161549188",
+        messagingSenderId:
+            "540161549188",
 
-      appId:
-        "1:540161549188:web:e0ec0350bd044de2f333d1"
+        appId:
+            "1:540161549188:web:e0ec0350bd044de2f333d1"
 
     };
 
 
     const app =
-      initializeApp(firebaseConfig);
+        initializeApp(firebaseConfig);
 
     const auth =
-      getAuth(app);
+        getAuth(app);
 
     const db =
-      getFirestore(app);
+        getFirestore(app);
 
 
-    /* ================================
+
+    /* ==================================================
        ELEMENTS
-    ================================= */
+    =================================================== */
 
-    const profileAvatar =
-      document.getElementById(
-        "profileAvatar"
-      );
-
-    const dropdown =
-      document.getElementById(
-        "dropdown"
-      );
-
-    const logoutBtn =
-      document.getElementById(
-        "logoutBtn"
-      );
-
-    const welcomeTitle =
-      document.getElementById(
-        "welcomeTitle"
-      );
-
-
-    /* ================================
-       MENU PROFIL
-    ================================= */
-
-    profileAvatar.addEventListener(
-      "click",
-      (event) => {
-
-        event.stopPropagation();
-
-        dropdown.classList.toggle(
-          "show"
+    const profileButton =
+        document.getElementById(
+            "profileButton"
         );
 
-      }
+    const profileMenu =
+        document.getElementById(
+            "profileMenu"
+        );
+
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
+
+    const profileAvatar =
+        document.getElementById(
+            "profileAvatar"
+        );
+
+    const welcomeTitle =
+        document.getElementById(
+            "welcomeTitle"
+        );
+
+
+
+    /* ==================================================
+       MENU PROFIL
+    =================================================== */
+
+    profileButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            profileMenu.classList.toggle(
+                "open"
+            );
+
+        }
     );
 
 
     document.addEventListener(
-      "click",
-      () => {
+        "click",
+        function() {
 
-        dropdown.classList.remove(
-          "show"
-        );
-
-      }
-    );
-
-
-    dropdown.addEventListener(
-      "click",
-      (event) => {
-
-        event.stopPropagation();
-
-      }
-    );
-
-
-    /* ================================
-       DÉCONNEXION
-    ================================= */
-
-    logoutBtn.addEventListener(
-      "click",
-      async (event) => {
-
-        event.preventDefault();
-
-        try {
-
-          await signOut(auth);
-
-          window.location.href =
-            "/login";
-
-        } catch (error) {
-
-          console.error(
-            "Erreur déconnexion :",
-            error
-          );
+            profileMenu.classList.remove(
+                "open"
+            );
 
         }
-
-      }
     );
 
 
-    /* ================================
+    profileMenu.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+        }
+    );
+
+
+
+    /* ==================================================
+       RECHERCHE
+    =================================================== */
+
+    document
+        .getElementById("searchForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+                const value =
+                    document
+                        .getElementById(
+                            "searchInput"
+                        )
+                        .value
+                        .trim();
+
+                if (!value) {
+                    return;
+                }
+
+                window.location.href =
+                    "/search?q=" +
+                    encodeURIComponent(value);
+
+            }
+        );
+
+
+
+    /* ==================================================
+       DECONNEXION
+    =================================================== */
+
+    logoutButton.addEventListener(
+        "click",
+        async function() {
+
+            try {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "/login";
+
+            } catch (error) {
+
+                console.error(
+                    "[BlocPlay] Déconnexion :",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+
+    /* ==================================================
        OUTILS
-    ================================= */
+    =================================================== */
 
     function escapeHTML(value) {
 
-      if (value === undefined ||
-          value === null) {
-
-        return "";
-
-      }
-
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-    }
-
-
-    function avatarURL(
-      photoURL,
-      name
-    ) {
-
-      if (
-        photoURL &&
-        typeof photoURL === "string"
-      ) {
-
-        return photoURL;
-
-      }
-
-      return (
-        "https://ui-avatars.com/api/?name=" +
-        encodeURIComponent(
-          name || "BlocPlay"
-        )
-      );
-
-    }
-
-
-    function showEmpty(
-      container,
-      title,
-      text
-    ) {
-
-      container.innerHTML = `
-
-        <div class="empty-card">
-
-          <div class="empty-card-title">
-            ${escapeHTML(title)}
-          </div>
-
-          <div class="empty-card-text">
-            ${escapeHTML(text)}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function showError(
-      container,
-      text
-    ) {
-
-      container.innerHTML = `
-
-        <div class="error-card">
-
-          <div class="error-card-title">
-            Impossible de charger les données
-          </div>
-
-          <div class="error-card-text">
-            ${escapeHTML(text)}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    function showLoading(
-      container,
-      text = "Chargement..."
-    ) {
-
-      container.innerHTML = `
-
-        <div class="loading-card">
-          ${escapeHTML(text)}
-        </div>
-
-      `;
-
-    }
-
-
-    /* ================================
-       CARTE STANDARD
-    ================================= */
-
-    function createContentCard(
-      data,
-      fallbackTitle = "Sans nom"
-    ) {
-
-      const title =
-        data.name ||
-        data.title ||
-        data.displayName ||
-        data.username ||
-        fallbackTitle;
-
-      const image =
-        data.image ||
-        data.imageURL ||
-        data.photoURL ||
-        data.avatar ||
-        avatarURL(
-          "",
-          title
-        );
-
-      const description =
-        data.description || "";
-
-      return `
-
-        <div class="home-card">
-
-          <img
-            class="home-card-image"
-            src="${escapeHTML(image)}"
-            alt=""
-            loading="lazy"
-          >
-
-          <div class="home-card-content">
-
-            <div class="home-card-title">
-              ${escapeHTML(title)}
-            </div>
-
-            ${
-              description
-              ?
-              `
-                <div class="home-card-description">
-                  ${escapeHTML(description)}
-                </div>
-              `
-              :
-              ""
-            }
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    /* ================================
-       CARTE UTILISATEUR
-    ================================= */
-
-    function createPersonCard(
-      data
-    ) {
-
-      const name =
-        data.username ||
-        data.displayName ||
-        "Utilisateur";
-
-      const avatar =
-        avatarURL(
-          data.avatar ||
-          data.photoURL,
-          name
-        );
-
-      const subtitle =
-        data.popularity !== undefined
-          ? `${data.popularity} popularité`
-          : "Contact BlocPlay";
-
-      return `
-
-        <div class="home-card person-card">
-
-          <img
-            class="person-avatar"
-            src="${escapeHTML(avatar)}"
-            alt=""
-            loading="lazy"
-          >
-
-          <div class="person-info">
-
-            <div class="person-name">
-              ${escapeHTML(name)}
-            </div>
-
-            <div class="person-subtitle">
-              ${escapeHTML(subtitle)}
-            </div>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    /* ================================
-       CONTACTS
-    ================================= */
-
-    async function loadContacts(
-      user
-    ) {
-
-      const container =
-        document.getElementById(
-          "contactsContainer"
-        );
-
-      try {
-
-        console.log(
-          "[BlocPlay] Chargement contacts pour :",
-          user.uid
-        );
-
-        const friendsRef =
-          collection(
-            db,
-            "users",
-            user.uid,
-            "friends"
-          );
-
-        const snapshot =
-          await getDocs(
-            friendsRef
-          );
-
-        console.log(
-          "[BlocPlay] Contacts trouvés :",
-          snapshot.size
-        );
-
-        if (snapshot.empty) {
-
-          showEmpty(
-            container,
-            "Aucun contact",
-            "Tu n'as pas encore ajouté de contact."
-          );
-
-          return;
+        if (
+            value === undefined ||
+            value === null
+        ) {
+
+            return "";
 
         }
 
-        const friends =
-          snapshot.docs
-            .slice(0, 8)
-            .map(
-              (friendDoc) => ({
-                id: friendDoc.id,
-                ...friendDoc.data()
-              })
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    function getAvatar(
+        photo,
+        name
+    ) {
+
+        if (photo) {
+
+            return photo;
+
+        }
+
+        return (
+            "https://ui-avatars.com/api/?name=" +
+            encodeURIComponent(
+                name || "BlocPlay"
+            )
+        );
+
+    }
+
+
+
+    /* ==================================================
+       ETAT VIDE
+    =================================================== */
+
+    function emptyState(
+        container,
+        title,
+        text
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div class="empty-state-title">
+                    ${escapeHTML(title)}
+                </div>
+
+                <div class="empty-state-text">
+                    ${escapeHTML(text)}
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* ==================================================
+       CARTE CONTENU
+    =================================================== */
+
+    function contentCard(
+        data,
+        fallbackName
+    ) {
+
+        const name =
+            data.name ||
+            data.title ||
+            data.displayName ||
+            data.username ||
+            fallbackName ||
+            "Sans nom";
+
+
+        const image =
+            data.image ||
+            data.imageURL ||
+            data.photoURL ||
+            data.avatar ||
+            getAvatar(
+                "",
+                name
             );
 
-        container.innerHTML =
-          friends
-            .map(
-              createPersonCard
-            )
-            .join("");
 
-      } catch (error) {
+        const description =
+            data.description || "";
 
-        console.error(
-          "[BlocPlay] Erreur contacts :",
-          error
-        );
 
-        showError(
-          container,
-          error.code ||
-          error.message ||
-          "Erreur Firestore."
-        );
+        return `
 
-      }
+            <article class="content-card">
+
+                <img
+                    class="content-card-image"
+                    src="${escapeHTML(image)}"
+                    alt=""
+                    loading="lazy"
+                >
+
+                <div class="content-card-body">
+
+                    <div class="content-card-name">
+                        ${escapeHTML(name)}
+                    </div>
+
+                    ${
+                        description
+                        ?
+                        `
+                            <div class="content-card-description">
+                                ${escapeHTML(description)}
+                            </div>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+
+            </article>
+
+        `;
 
     }
 
 
-    /* ================================
-       JOUÉ RÉCEMMENT
-    ================================= */
 
-    async function loadRecentlyPlayed(
-      user
+    /* ==================================================
+       CARTE PERSONNE
+    =================================================== */
+
+    function personCard(
+        data
     ) {
 
-      const container =
-        document.getElementById(
-          "recentlyPlayedContainer"
-        );
+        const name =
+            data.username ||
+            data.displayName ||
+            "Utilisateur";
 
-      try {
 
-        const ref =
-          collection(
-            db,
-            "users",
-            user.uid,
-            "recentlyPlayed"
-          );
+        const avatar =
+            getAvatar(
+                data.avatar ||
+                data.photoURL,
+                name
+            );
 
-        const q =
-          query(
-            ref,
-            orderBy(
-              "playedAt",
-              "desc"
-            ),
-            limit(8)
-          );
 
-        const snapshot =
-          await getDocs(q);
+        return `
 
-        if (snapshot.empty) {
+            <article class="person-card">
 
-          showEmpty(
-            container,
-            "Aucun jeu récemment joué",
-            "Les jeux auxquels tu joueras apparaîtront ici."
-          );
+                <img
+                    class="person-avatar"
+                    src="${escapeHTML(avatar)}"
+                    alt=""
+                    loading="lazy"
+                >
 
-          return;
+                <div class="person-info">
+
+                    <div class="person-name">
+                        ${escapeHTML(name)}
+                    </div>
+
+                    <div class="person-subtitle">
+                        Contact BlocPlay
+                    </div>
+
+                </div>
+
+            </article>
+
+        `;
+
+    }
+
+
+
+    /* ==================================================
+       CONTACTS
+    =================================================== */
+
+    async function loadContacts(user) {
+
+        const container =
+            document.getElementById(
+                "contactsContainer"
+            );
+
+
+        try {
+
+            const ref =
+                collection(
+                    db,
+                    "users",
+                    user.uid,
+                    "friends"
+                );
+
+
+            const snapshot =
+                await getDocs(ref);
+
+
+            if (snapshot.empty) {
+
+                emptyState(
+                    container,
+                    "Aucun contact",
+                    "Tu n'as pas encore ajouté de contact."
+                );
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                snapshot.docs
+                    .slice(0, 8)
+                    .map(
+                        docSnap =>
+                            personCard(
+                                docSnap.data()
+                            )
+                    )
+                    .join("");
+
+        } catch (error) {
+
+            console.error(
+                "[BlocPlay] Contacts :",
+                error
+            );
+
+            emptyState(
+                container,
+                "Aucun contact",
+                "Tu n'as pas encore ajouté de contact."
+            );
 
         }
 
-        container.innerHTML =
-          snapshot.docs
-            .map(
-              item =>
-                createContentCard(
-                  item.data(),
-                  item.id
-                )
-            )
-            .join("");
-
-      } catch (error) {
-
-        console.error(
-          "[BlocPlay] Erreur joué récemment :",
-          error
-        );
-
-        showError(
-          container,
-          error.code ||
-          error.message ||
-          "Erreur Firestore."
-        );
-
-      }
-
     }
 
 
-    /* ================================
-       FAVORIS
-    ================================= */
 
-    async function loadFavorites(
-      user
+    /* ==================================================
+       COLLECTION UTILISATEUR
+    =================================================== */
+
+    async function loadUserCollection(
+        user,
+        collectionName,
+        containerId,
+        emptyTitle,
+        emptyText,
+        timestampField
     ) {
 
-      const container =
-        document.getElementById(
-          "favoritesContainer"
-        );
+        const container =
+            document.getElementById(
+                containerId
+            );
 
-      try {
 
-        const ref =
-          collection(
-            db,
-            "users",
-            user.uid,
-            "favorites"
-          );
+        try {
 
-        const q =
-          query(
-            ref,
-            orderBy(
-              "addedAt",
-              "desc"
-            ),
-            limit(8)
-          );
+            const ref =
+                collection(
+                    db,
+                    "users",
+                    user.uid,
+                    collectionName
+                );
 
-        const snapshot =
-          await getDocs(q);
 
-        if (snapshot.empty) {
+            let snapshot;
 
-          showEmpty(
-            container,
-            "Aucun favori",
-            "Tes jeux et articles favoris apparaîtront ici."
-          );
 
-          return;
+            if (timestampField) {
+
+                const q =
+                    query(
+                        ref,
+                        orderBy(
+                            timestampField,
+                            "desc"
+                        ),
+                        limit(8)
+                    );
+
+                snapshot =
+                    await getDocs(q);
+
+            } else {
+
+                snapshot =
+                    await getDocs(ref);
+
+            }
+
+
+            if (snapshot.empty) {
+
+                emptyState(
+                    container,
+                    emptyTitle,
+                    emptyText
+                );
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                snapshot.docs
+                    .slice(0, 8)
+                    .map(
+                        docSnap =>
+                            contentCard(
+                                docSnap.data(),
+                                docSnap.id
+                            )
+                    )
+                    .join("");
+
+        } catch (error) {
+
+            console.error(
+                `[BlocPlay] ${collectionName} :`,
+                error
+            );
+
+            emptyState(
+                container,
+                emptyTitle,
+                emptyText
+            );
 
         }
 
-        container.innerHTML =
-          snapshot.docs
-            .map(
-              item =>
-                createContentCard(
-                  item.data(),
-                  item.id
-                )
-            )
-            .join("");
-
-      } catch (error) {
-
-        console.error(
-          "[BlocPlay] Erreur favoris :",
-          error
-        );
-
-        showError(
-          container,
-          error.code ||
-          error.message ||
-          "Erreur Firestore."
-        );
-
-      }
-
     }
 
 
-    /* ================================
-       OBTENU RÉCEMMENT
-    ================================= */
 
-    async function loadRecentlyObtained(
-      user
+    /* ==================================================
+       COLLECTION PUBLIQUE
+    =================================================== */
+
+    async function loadPublicCollection(
+        collectionName,
+        containerId,
+        emptyTitle,
+        emptyText
     ) {
 
-      const container =
-        document.getElementById(
-          "recentlyObtainedContainer"
-        );
+        const container =
+            document.getElementById(
+                containerId
+            );
 
-      try {
 
-        const ref =
-          collection(
-            db,
-            "users",
-            user.uid,
-            "recentlyObtained"
-          );
+        try {
 
-        const q =
-          query(
-            ref,
-            orderBy(
-              "obtainedAt",
-              "desc"
-            ),
-            limit(8)
-          );
+            const ref =
+                collection(
+                    db,
+                    collectionName
+                );
 
-        const snapshot =
-          await getDocs(q);
 
-        if (snapshot.empty) {
+            const q =
+                query(
+                    ref,
+                    orderBy(
+                        "popularity",
+                        "desc"
+                    ),
+                    limit(8)
+                );
 
-          showEmpty(
-            container,
-            "Rien obtenu récemment",
-            "Les éléments que tu obtiendras apparaîtront ici."
-          );
 
-          return;
+            const snapshot =
+                await getDocs(q);
+
+
+            if (snapshot.empty) {
+
+                emptyState(
+                    container,
+                    emptyTitle,
+                    emptyText
+                );
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                snapshot.docs
+                    .map(
+                        docSnap =>
+                            contentCard(
+                                docSnap.data(),
+                                docSnap.id
+                            )
+                    )
+                    .join("");
+
+        } catch (error) {
+
+            console.error(
+                `[BlocPlay] ${collectionName} :`,
+                error
+            );
+
+            emptyState(
+                container,
+                emptyTitle,
+                emptyText
+            );
 
         }
 
-        container.innerHTML =
-          snapshot.docs
-            .map(
-              item =>
-                createContentCard(
-                  item.data(),
-                  item.id
-                )
-            )
-            .join("");
-
-      } catch (error) {
-
-        console.error(
-          "[BlocPlay] Erreur obtenu récemment :",
-          error
-        );
-
-        showError(
-          container,
-          error.code ||
-          error.message ||
-          "Erreur Firestore."
-        );
-
-      }
-
     }
 
 
-    /* ================================
-       MES TRIBUS
-    ================================= */
 
-    async function loadMyTribes(
-      user
-    ) {
-
-      const container =
-        document.getElementById(
-          "tribesContainer"
-        );
-
-      try {
-
-        const ref =
-          collection(
-            db,
-            "users",
-            user.uid,
-            "tribes"
-          );
-
-        const snapshot =
-          await getDocs(ref);
-
-        if (snapshot.empty) {
-
-          showEmpty(
-            container,
-            "Aucune tribu",
-            "Les tribus que tu rejoindras apparaîtront ici."
-          );
-
-          return;
-
-        }
-
-        container.innerHTML =
-          snapshot.docs
-            .slice(0, 8)
-            .map(
-              item =>
-                createContentCard(
-                  item.data(),
-                  item.id
-                )
-            )
-            .join("");
-
-      } catch (error) {
-
-        console.error(
-          "[BlocPlay] Erreur mes tribus :",
-          error
-        );
-
-        showError(
-          container,
-          error.code ||
-          error.message ||
-          "Erreur Firestore."
-        );
-
-      }
-
-    }
-
-
-    /* ================================
-       COLLECTIONS POPULAIRES
-    ================================= */
-
-    async function loadPopularCollection(
-      collectionName,
-      containerId,
-      emptyTitle,
-      emptyText
-    ) {
-
-      const container =
-        document.getElementById(
-          containerId
-        );
-
-      try {
-
-        const ref =
-          collection(
-            db,
-            collectionName
-          );
-
-        const q =
-          query(
-            ref,
-            orderBy(
-              "popularity",
-              "desc"
-            ),
-            limit(8)
-          );
-
-        const snapshot =
-          await getDocs(q);
-
-        if (snapshot.empty) {
-
-          showEmpty(
-            container,
-            emptyTitle,
-            emptyText
-          );
-
-          return;
-
-        }
-
-        container.innerHTML =
-          snapshot.docs
-            .map(
-              item =>
-                createContentCard(
-                  item.data(),
-                  item.id
-                )
-            )
-            .join("");
-
-      } catch (error) {
-
-        console.error(
-          `[BlocPlay] Erreur ${collectionName} :`,
-          error
-        );
-
-        showError(
-          container,
-          error.code ||
-          error.message ||
-          "Erreur Firestore."
-        );
-
-      }
-
-    }
-
-
-    /* ================================
-       CONTACTS POPULAIRES
-    ================================= */
+    /* ==================================================
+       UTILISATEURS POPULAIRES
+    =================================================== */
 
     async function loadPopularUsers() {
 
-      const container =
-        document.getElementById(
-          "popularUsersContainer"
-        );
+        const container =
+            document.getElementById(
+                "popularUsersContainer"
+            );
 
-      try {
 
-        const ref =
-          collection(
-            db,
-            "publicUsers"
-          );
+        try {
 
-        const q =
-          query(
-            ref,
-            orderBy(
-              "popularity",
-              "desc"
+            const ref =
+                collection(
+                    db,
+                    "publicUsers"
+                );
+
+
+            const q =
+                query(
+                    ref,
+                    orderBy(
+                        "popularity",
+                        "desc"
+                    ),
+                    limit(8)
+                );
+
+
+            const snapshot =
+                await getDocs(q);
+
+
+            if (snapshot.empty) {
+
+                emptyState(
+                    container,
+                    "Aucun contact populaire",
+                    "Les utilisateurs populaires apparaîtront ici."
+                );
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                snapshot.docs
+                    .map(
+                        docSnap =>
+                            personCard(
+                                docSnap.data()
+                            )
+                    )
+                    .join("");
+
+        } catch (error) {
+
+            console.error(
+                "[BlocPlay] publicUsers :",
+                error
+            );
+
+            emptyState(
+                container,
+                "Aucun contact populaire",
+                "Les utilisateurs populaires apparaîtront ici."
+            );
+
+        }
+
+    }
+
+
+
+    /* ==================================================
+       PROFIL + HOME
+    =================================================== */
+
+    async function loadHome(user) {
+
+        try {
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
+
+
+            const snapshot =
+                await getDoc(
+                    userRef
+                );
+
+
+            if (snapshot.exists()) {
+
+                const data =
+                    snapshot.data();
+
+
+                const username =
+                    data.username ||
+                    data.displayName ||
+                    user.displayName ||
+                    "joueur";
+
+
+                welcomeTitle.textContent =
+                    `Bonjour ${username} !`;
+
+
+                profileAvatar.src =
+                    getAvatar(
+                        data.photoURL ||
+                        user.photoURL,
+                        username
+                    );
+
+            } else {
+
+                const username =
+                    user.displayName ||
+                    "joueur";
+
+
+                welcomeTitle.textContent =
+                    `Bonjour ${username} !`;
+
+
+                profileAvatar.src =
+                    getAvatar(
+                        user.photoURL,
+                        username
+                    );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "[BlocPlay] Profil :",
+                error
+            );
+
+        }
+
+
+        await Promise.all([
+
+            loadContacts(user),
+
+            loadUserCollection(
+                user,
+                "recentlyPlayed",
+                "recentlyPlayedContainer",
+                "Aucun jeu récemment joué",
+                "Les jeux auxquels tu joueras apparaîtront ici.",
+                "playedAt"
             ),
-            limit(8)
-          );
 
-        const snapshot =
-          await getDocs(q);
+            loadUserCollection(
+                user,
+                "favorites",
+                "favoritesContainer",
+                "Aucun favori",
+                "Tes jeux et articles favoris apparaîtront ici.",
+                "addedAt"
+            ),
 
-        if (snapshot.empty) {
+            loadUserCollection(
+                user,
+                "recentlyObtained",
+                "recentlyObtainedContainer",
+                "Rien obtenu récemment",
+                "Les éléments que tu obtiendras apparaîtront ici.",
+                "obtainedAt"
+            ),
 
-          showEmpty(
-            container,
-            "Aucun contact populaire",
-            "Les utilisateurs populaires apparaîtront ici."
-          );
+            loadUserCollection(
+                user,
+                "tribes",
+                "tribesContainer",
+                "Aucune tribu",
+                "Les tribus que tu rejoindras apparaîtront ici.",
+                null
+            ),
 
-          return;
+            loadPublicCollection(
+                "games",
+                "popularGamesContainer",
+                "Aucun jeu populaire",
+                "Les jeux populaires apparaîtront ici."
+            ),
 
-        }
+            loadPopularUsers(),
 
-        container.innerHTML =
-          snapshot.docs
-            .map(
-              item =>
-                createPersonCard(
-                  item.data()
-                )
+            loadPublicCollection(
+                "articles",
+                "popularArticlesContainer",
+                "Aucun article populaire",
+                "Les articles populaires apparaîtront ici."
+            ),
+
+            loadPublicCollection(
+                "tribes",
+                "popularTribesContainer",
+                "Aucune tribu populaire",
+                "Les tribus populaires apparaîtront ici."
             )
-            .join("");
 
-      } catch (error) {
-
-        console.error(
-          "[BlocPlay] Erreur contacts populaires :",
-          error
-        );
-
-        showError(
-          container,
-          error.code ||
-          error.message ||
-          "Erreur Firestore."
-        );
-
-      }
+        ]);
 
     }
 
 
-    /* ================================
-       CHARGEMENT COMPLET
-    ================================= */
 
-    async function loadHome(
-      user
-    ) {
-
-      const userRef =
-        doc(
-          db,
-          "users",
-          user.uid
-        );
-
-      try {
-
-        const userSnapshot =
-          await getDoc(
-            userRef
-          );
-
-        if (userSnapshot.exists()) {
-
-          const data =
-            userSnapshot.data();
-
-          const username =
-            data.username ||
-            data.displayName ||
-            user.displayName ||
-            "joueur";
-
-          welcomeTitle.textContent =
-            `Bonjour ${username} !`;
-
-          profileAvatar.src =
-            avatarURL(
-              data.photoURL ||
-              user.photoURL,
-              username
-            );
-
-        } else {
-
-          const username =
-            user.displayName ||
-            "joueur";
-
-          welcomeTitle.textContent =
-            `Bonjour ${username} !`;
-
-          profileAvatar.src =
-            avatarURL(
-              user.photoURL,
-              username
-            );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "[BlocPlay] Erreur profil :",
-          error
-        );
-
-        const username =
-          user.displayName ||
-          "joueur";
-
-        welcomeTitle.textContent =
-          `Bonjour ${username} !`;
-
-      }
-
-
-      /*
-       * On lance les chargements séparément.
-       * Ainsi, si une collection pose problème,
-       * les autres peuvent quand même fonctionner.
-       */
-
-      await Promise.all([
-        loadContacts(user),
-        loadRecentlyPlayed(user),
-        loadFavorites(user),
-        loadRecentlyObtained(user),
-        loadMyTribes(user),
-        loadPopularCollection(
-          "games",
-          "popularGamesContainer",
-          "Aucun jeu populaire",
-          "Les jeux populaires apparaîtront ici."
-        ),
-        loadPopularUsers(),
-        loadPopularCollection(
-          "articles",
-          "popularArticlesContainer",
-          "Aucun article populaire",
-          "Les articles populaires apparaîtront ici."
-        ),
-        loadPopularCollection(
-          "tribes",
-          "popularTribesContainer",
-          "Aucune tribu populaire",
-          "Les tribus populaires apparaîtront ici."
-        )
-      ]);
-
-    }
-
-
-    /* ================================
-       AUTH
-    ================================= */
+    /* ==================================================
+       AUTHENTIFICATION
+    =================================================== */
 
     onAuthStateChanged(
-      auth,
-      async (user) => {
+        auth,
+        async function(user) {
 
-        if (!user) {
+            if (!user) {
 
-          window.location.href =
-            "/login";
+                window.location.href =
+                    "/login";
 
-          return;
+                return;
+
+            }
+
+
+            console.log(
+                "[BlocPlay] Connecté :",
+                user.uid
+            );
+
+
+            await loadHome(user);
 
         }
-
-        console.log(
-          "[BlocPlay] Utilisateur connecté :",
-          user.uid
-        );
-
-        await loadHome(user);
-
-      }
     );
 
-  </script>
+</script>
+
 
 </body>
+
 </html>
