@@ -33,11 +33,11 @@
     >
 
 
-    <!-- ================================= -->
-    <!-- STYLE RECHERCHE -->
-    <!-- ================================= -->
-
     <style>
+
+        /* ============================== */
+        /* BARRE DE RECHERCHE */
+        /* ============================== */
 
         .search-page-card {
             margin-bottom: 20px;
@@ -54,37 +54,50 @@
         .search-page-input {
             flex: 1;
             min-width: 0;
+
             padding: 14px 16px;
+
             border: none;
             border-radius: 12px;
-            background: rgba(255,255,255,0.07);
+
+            background: rgba(255, 255, 255, 0.07);
+
             color: white;
+
             outline: none;
+
             font-size: 16px;
+
             box-sizing: border-box;
         }
 
 
         .search-page-input::placeholder {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
         }
 
 
         .search-page-input:focus {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.10);
         }
 
 
         .search-page-button {
             border: none;
             border-radius: 12px;
+
             padding: 0 20px;
+
             cursor: pointer;
+
             font-size: 18px;
+
             background: #5865f2;
             color: white;
-            transition: transform 0.15s ease,
-                        opacity 0.15s ease;
+
+            transition:
+                transform 0.15s ease,
+                opacity 0.15s ease;
         }
 
 
@@ -94,10 +107,18 @@
         }
 
 
+        /* ============================== */
+        /* INFORMATIONS */
+        /* ============================== */
+
         .search-query {
             opacity: 0.7;
         }
 
+
+        /* ============================== */
+        /* GROUPES */
+        /* ============================== */
 
         .search-group {
             margin-bottom: 20px;
@@ -110,9 +131,13 @@
 
 
         .search-group-title {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
+
+        /* ============================== */
+        /* LISTE */
+        /* ============================== */
 
         .search-result-list {
             display: flex;
@@ -121,16 +146,21 @@
         }
 
 
+        /* ============================== */
+        /* RÉSULTAT */
+        /* ============================== */
+
         .search-result {
             display: flex;
             align-items: center;
+
             gap: 14px;
 
             padding: 13px;
 
             border-radius: 14px;
 
-            background: rgba(255,255,255,0.045);
+            background: rgba(255, 255, 255, 0.045);
 
             color: inherit;
             text-decoration: none;
@@ -142,10 +172,16 @@
 
 
         .search-result:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.08);
+
+            transform:
+                translateY(-1px);
         }
 
+
+        /* ============================== */
+        /* IMAGE */
+        /* ============================== */
 
         .search-result-image,
         .search-result-icon {
@@ -157,12 +193,14 @@
             border-radius: 12px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             object-fit: cover;
 
-            background: rgba(255,255,255,0.08);
+            background:
+                rgba(255, 255, 255, 0.08);
         }
 
 
@@ -170,6 +208,10 @@
             font-size: 25px;
         }
 
+
+        /* ============================== */
+        /* TEXTE */
+        /* ============================== */
 
         .search-result-content {
             flex: 1;
@@ -183,7 +225,9 @@
             font-size: 16px;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
@@ -196,7 +240,9 @@
             font-size: 13px;
 
             white-space: nowrap;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
         }
 
@@ -214,28 +260,47 @@
 
         .search-result-arrow {
             opacity: 0.45;
+
             font-size: 20px;
+
+            padding-right: 5px;
         }
 
 
+        /* ============================== */
+        /* CHARGEMENT */
+        /* ============================== */
+
+        .search-loading {
+            text-align: center;
+
+            opacity: 0.65;
+
+            padding: 20px;
+        }
+
+
+        /* ============================== */
+        /* AUCUN RÉSULTAT */
+        /* ============================== */
+
         .search-empty {
             text-align: center;
+
             padding: 25px 10px;
         }
 
 
         .search-empty-icon {
             font-size: 38px;
+
             margin-bottom: 10px;
         }
 
 
-        .search-loading {
-            text-align: center;
-            opacity: 0.65;
-            padding: 20px;
-        }
-
+        /* ============================== */
+        /* MOBILE */
+        /* ============================== */
 
         @media (max-width: 600px) {
 
@@ -243,20 +308,25 @@
                 gap: 8px;
             }
 
+
             .search-page-button {
                 padding: 0 15px;
             }
+
 
             .search-result {
                 padding: 11px;
             }
 
+
             .search-result-image,
             .search-result-icon {
                 width: 46px;
                 height: 46px;
+
                 min-width: 46px;
             }
+
 
             .search-result-arrow {
                 display: none;
@@ -272,13 +342,14 @@
 <body>
 
 
-<!-- ================================= -->
+<!-- ================================== -->
 <!-- HEADER -->
-<!-- ================================= -->
+<!-- ================================== -->
 
 <header>
 
     <div class="header-content">
+
 
         <a
             href="/fr/"
@@ -295,6 +366,9 @@
 
         <div class="header-actions">
 
+
+            <!-- RECHERCHE -->
+
             <button
                 id="searchBtn"
                 class="header-button"
@@ -303,6 +377,8 @@
                 🔍
             </button>
 
+
+            <!-- PROFIL -->
 
             <div class="profile-menu">
 
@@ -328,55 +404,19 @@
 </header>
 
 
-<!-- ================================= -->
-<!-- OVERLAY RECHERCHE -->
-<!-- ================================= -->
-
-<div
-    id="searchOverlay"
-    class="search-overlay"
->
-
-    <div class="search-box">
-
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Rechercher sur BlocPlay..."
-            autocomplete="off"
-        >
-
-
-        <button
-            id="closeSearch"
-            class="search-close"
-        >
-            ✕
-        </button>
-
-    </div>
-
-
-    <div
-        id="searchResults"
-        class="search-results"
-    ></div>
-
-</div>
-
-
-<!-- ================================= -->
+<!-- ================================== -->
 <!-- CONTENU -->
-<!-- ================================= -->
+<!-- ================================== -->
 
 <main class="container">
 
 
-    <!-- ================================= -->
+    <!-- ================================== -->
     <!-- BARRE DE RECHERCHE -->
-    <!-- ================================= -->
+    <!-- ================================== -->
 
     <div class="card search-page-card">
+
 
         <h1>
             Recherche
@@ -384,8 +424,9 @@
 
 
         <p>
-            Recherchez un utilisateur, un jeu,
-            une tribu ou un article sur BlocPlay.
+            Recherchez un utilisateur,
+            un jeu, une tribu ou un article
+            sur BlocPlay.
         </p>
 
 
@@ -393,6 +434,7 @@
             id="searchForm"
             class="search-page-form"
         >
+
 
             <input
                 type="text"
@@ -408,17 +450,21 @@
                 class="search-page-button"
                 aria-label="Rechercher"
             >
+
                 🔍
+
             </button>
 
+
         </form>
+
 
     </div>
 
 
-    <!-- ================================= -->
-    <!-- TEXTE RECHERCHE -->
-    <!-- ================================= -->
+    <!-- ================================== -->
+    <!-- INFORMATIONS -->
+    <!-- ================================== -->
 
     <div
         id="searchInfo"
@@ -432,70 +478,87 @@
     </div>
 
 
-    <!-- ================================= -->
+    <!-- ================================== -->
     <!-- RÉSULTATS -->
-    <!-- ================================= -->
+    <!-- ================================== -->
 
-    <div id="resultsContainer">
-
-    </div>
+    <div
+        id="resultsContainer"
+    ></div>
 
 
 </main>
 
 
-<!-- ================================= -->
+<!-- ================================== -->
 <!-- FOOTER -->
-<!-- ================================= -->
+<!-- ================================== -->
 
 <footer class="site-footer">
+
 
     <div class="footer-content">
 
 
         <div class="footer-column">
 
+
             <h3>
                 BlocPlay
             </h3>
 
+
             <p>
-                La plateforme de jeux créée par et pour les gamers.
+                La plateforme de jeux créée
+                par et pour les gamers.
             </p>
+
 
         </div>
 
 
         <div class="footer-column">
+
 
             <h3>
                 À propos
             </h3>
 
+
             <a href="/fr/about">
                 À propos de BlocPlay
             </a>
 
+
             <a href="/fr/license">
                 Licences
             </a>
+
 
         </div>
 
 
         <div class="footer-column">
 
+
             <h3>
                 Nous contacter
             </h3>
 
-            <a href="mailto:blocplaystudios@gmail.com">
+
+            <a
+                href="mailto:blocplaystudios@gmail.com"
+            >
                 E-Mail
             </a>
 
-            <a href="https://discord.gg/QfreSq3t7E">
+
+            <a
+                href="https://discord.gg/QfreSq3t7E"
+            >
                 Discord
             </a>
+
 
         </div>
 
@@ -509,19 +572,22 @@
 
     </div>
 
+
 </footer>
 
 
-<!-- ================================= -->
+<!-- ================================== -->
 <!-- FIREBASE -->
-<!-- ================================= -->
+<!-- ================================== -->
 
 <script type="module">
+
 
 import {
     initializeApp
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
 import {
@@ -529,7 +595,8 @@ import {
     onAuthStateChanged,
     signOut
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
@@ -539,29 +606,36 @@ import {
     collection,
     getDocs
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-/* ================================= */
-/* FIREBASE CONFIG */
-/* ================================= */
+/* ================================== */
+/* CONFIGURATION FIREBASE */
+/* ================================== */
 
 const firebaseConfig = {
+
 
     apiKey:
         "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwEtMmEtUkn04",
 
+
     authDomain:
         "blocplay-a9417.firebaseapp.com",
+
 
     projectId:
         "blocplay-a9417",
 
+
     storageBucket:
         "blocplay-a9417.firebasestorage.app",
 
+
     messagingSenderId:
         "540161549188",
+
 
     appId:
         "1:540161549188:web:e0ec0350bd044de2f333d1"
@@ -576,16 +650,20 @@ const app =
 
 
 const auth =
-    getAuth(app);
+    getAuth(
+        app
+    );
 
 
 const db =
-    getFirestore(app);
+    getFirestore(
+        app
+    );
 
 
-/* ================================= */
-/* ELEMENTS */
-/* ================================= */
+/* ================================== */
+/* ÉLÉMENTS */
+/* ================================== */
 
 const avatar =
     document.getElementById(
@@ -599,21 +677,9 @@ const dropdown =
     );
 
 
-const resultsContainer =
+const searchBtn =
     document.getElementById(
-        "resultsContainer"
-    );
-
-
-const searchInfo =
-    document.getElementById(
-        "searchInfo"
-    );
-
-
-const pageSearchInput =
-    document.getElementById(
-        "pageSearchInput"
+        "searchBtn"
     );
 
 
@@ -623,13 +689,50 @@ const searchForm =
     );
 
 
-/* ================================= */
-/* MENU PROFIL */
-/* ================================= */
+const pageSearchInput =
+    document.getElementById(
+        "pageSearchInput"
+    );
 
-async function renderMenu(user) {
+
+const searchInfo =
+    document.getElementById(
+        "searchInfo"
+    );
+
+
+const resultsContainer =
+    document.getElementById(
+        "resultsContainer"
+    );
+
+
+/* ================================== */
+/* BOUTON RECHERCHE HEADER */
+/* ================================== */
+
+searchBtn.addEventListener(
+    "click",
+    () => {
+
+        window.location.href =
+            "/fr/search/";
+
+    }
+);
+
+
+/* ================================== */
+/* MENU PROFIL */
+/* ================================== */
+
+async function renderMenu(
+    user
+) {
+
 
     if (user) {
+
 
         dropdown.innerHTML = `
 
@@ -645,7 +748,10 @@ async function renderMenu(user) {
                 RizoPlay
             </a>
 
-            <a href="#" id="logout">
+            <a
+                href="#"
+                id="logout"
+            >
                 Se déconnecter
             </a>
 
@@ -662,6 +768,7 @@ async function renderMenu(user) {
 
 
         try {
+
 
             const userRef =
                 doc(
@@ -681,6 +788,7 @@ async function renderMenu(user) {
                 userSnap.exists()
             ) {
 
+
                 const data =
                     userSnap.data();
 
@@ -692,17 +800,21 @@ async function renderMenu(user) {
 
             }
 
+
         } catch (error) {
 
-            console.error(
-                "Erreur photo Firestore :",
+
+            console.warn(
+                "Erreur chargement photo :",
                 error
             );
+
 
         }
 
 
         if (!photoURL) {
+
 
             photoURL =
                 user.photoURL ||
@@ -713,20 +825,26 @@ async function renderMenu(user) {
 
         if (photoURL) {
 
+
             avatar.src =
                 photoURL;
 
+
         } else {
+
 
             avatar.src =
                 "https://ui-avatars.com/api/?name=" +
-                encodeURIComponent(name) +
+                encodeURIComponent(
+                    name
+                ) +
                 "&background=111&color=fff&rounded=true&size=64";
 
         }
 
 
     } else {
+
 
         dropdown.innerHTML = `
 
@@ -749,25 +867,32 @@ async function renderMenu(user) {
 }
 
 
-/* ================================= */
-/* AUTH */
-/* ================================= */
+/* ================================== */
+/* AUTHENTIFICATION */
+/* ================================== */
 
 onAuthStateChanged(
     auth,
-    renderMenu
+    user => {
+
+        renderMenu(
+            user
+        );
+
+    }
 );
 
 
-/* ================================= */
-/* MENU PROFIL */
-/* ================================= */
+/* ================================== */
+/* OUVERTURE MENU PROFIL */
+/* ================================== */
 
 avatar.addEventListener(
     "click",
     event => {
 
         event.stopPropagation();
+
 
         dropdown.classList.toggle(
             "show"
@@ -776,6 +901,10 @@ avatar.addEventListener(
     }
 );
 
+
+/* ================================== */
+/* FERMETURE MENU PROFIL */
+/* ================================== */
 
 document.addEventListener(
     "click",
@@ -789,22 +918,41 @@ document.addEventListener(
 );
 
 
+/* ================================== */
+/* DÉCONNEXION */
+/* ================================== */
+
 document.addEventListener(
     "click",
     async event => {
+
 
         if (
             event.target.id ===
             "logout"
         ) {
 
+
             event.preventDefault();
 
-            await signOut(
-                auth
-            );
 
-            window.location.reload();
+            try {
+
+                await signOut(
+                    auth
+                );
+
+                window.location.reload();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur déconnexion :",
+                    error
+                );
+
+            }
 
         }
 
@@ -812,18 +960,21 @@ document.addEventListener(
 );
 
 
-/* ================================= */
-/* OUTILS */
-/* ================================= */
+/* ================================== */
+/* NORMALISATION */
+/* ================================== */
 
 function normalizeText(
     value
 ) {
 
+
     return String(
         value || ""
     )
-    .normalize("NFD")
+    .normalize(
+        "NFD"
+    )
     .replace(
         /[\u0300-\u036f]/g,
         ""
@@ -834,61 +985,93 @@ function normalizeText(
 }
 
 
+/* ================================== */
+/* PROTECTION HTML */
+/* ================================== */
+
 function escapeHTML(
     value
 ) {
+
 
     const div =
         document.createElement(
             "div"
         );
 
+
     div.textContent =
         value || "";
+
 
     return div.innerHTML;
 
 }
 
 
+/* ================================== */
+/* IMAGE */
+/* ================================== */
+
 function getImage(
     data
 ) {
 
+
     return (
+
         data?.photoURL ||
+
         data?.imageURL ||
+
         data?.imageUrl ||
+
         data?.thumbnail ||
+
         data?.iconURL ||
+
         data?.icon ||
+
         ""
+
     );
 
 }
 
+
+/* ================================== */
+/* NOM */
+/* ================================== */
 
 function getName(
     data,
     fallback
 ) {
 
+
     return (
+
         data?.displayName ||
+
         data?.username ||
+
         data?.name ||
+
         data?.title ||
+
         fallback
+
     );
 
 }
 
 
-/* ================================= */
-/* HASH */
-/* ================================= */
+/* ================================== */
+/* RÉCUPÉRER LE HASH */
+/* ================================== */
 
 function getSearchQuery() {
+
 
     const hash =
         window.location.hash;
@@ -903,11 +1086,14 @@ function getSearchQuery() {
 
     try {
 
+
         return decodeURIComponent(
             hash.substring(1)
         );
 
+
     } catch {
+
 
         return hash.substring(1);
 
@@ -916,9 +1102,37 @@ function getSearchQuery() {
 }
 
 
-/* ================================= */
+/* ================================== */
+/* CRÉER UNE ICÔNE */
+/* ================================== */
+
+function createIcon(
+    icon
+) {
+
+
+    const element =
+        document.createElement(
+            "div"
+        );
+
+
+    element.className =
+        "search-result-icon";
+
+
+    element.textContent =
+        icon;
+
+
+    return element;
+
+}
+
+
+/* ================================== */
 /* CRÉER UN RÉSULTAT */
-/* ================================= */
+/* ================================== */
 
 function createResult(
     type,
@@ -928,6 +1142,7 @@ function createResult(
     url,
     image
 ) {
+
 
     const result =
         document.createElement(
@@ -943,19 +1158,12 @@ function createResult(
         "search-result";
 
 
-    const safeTitle =
-        escapeHTML(
-            title
-        );
-
-
-    const safeDescription =
-        escapeHTML(
-            description
-        );
-
+    /* ============================== */
+    /* IMAGE */
+    /* ============================== */
 
     if (image) {
+
 
         const imageElement =
             document.createElement(
@@ -991,7 +1199,9 @@ function createResult(
             imageElement
         );
 
+
     } else {
+
 
         result.appendChild(
             createIcon(
@@ -1001,6 +1211,10 @@ function createResult(
 
     }
 
+
+    /* ============================== */
+    /* TEXTE */
+    /* ============================== */
 
     const content =
         document.createElement(
@@ -1015,11 +1229,11 @@ function createResult(
     content.innerHTML = `
 
         <h3>
-            ${safeTitle}
+            ${escapeHTML(title)}
         </h3>
 
         <p>
-            ${safeDescription}
+            ${escapeHTML(description)}
         </p>
 
         <span class="search-result-type">
@@ -1033,6 +1247,10 @@ function createResult(
         content
     );
 
+
+    /* ============================== */
+    /* FLÈCHE */
+    /* ============================== */
 
     const arrow =
         document.createElement(
@@ -1058,41 +1276,15 @@ function createResult(
 }
 
 
-/* ================================= */
-/* ICÔNE RÉSULTAT */
-/* ================================= */
-
-function createIcon(
-    icon
-) {
-
-    const element =
-        document.createElement(
-            "div"
-        );
-
-
-    element.className =
-        "search-result-icon";
-
-
-    element.textContent =
-        icon;
-
-
-    return element;
-
-}
-
-
-/* ================================= */
-/* GROUPE */
-/* ================================= */
+/* ================================== */
+/* CRÉER UN GROUPE */
+/* ================================== */
 
 function createGroup(
     title,
     results
 ) {
+
 
     if (
         !results.length
@@ -1145,15 +1337,25 @@ function createGroup(
     results.forEach(
         result => {
 
+
             list.appendChild(
+
                 createResult(
+
                     result.type,
+
                     result.icon,
+
                     result.title,
+
                     result.description,
+
                     result.url,
+
                     result.image
+
                 )
+
             );
 
         }
@@ -1170,108 +1372,139 @@ function createGroup(
 }
 
 
-/* ================================= */
-/* UTILISATEURS */
-/* ================================= */
+/* ================================== */
+/* RECHERCHE UTILISATEURS */
+/* ================================== */
 
 async function searchUsers(
     query
 ) {
 
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "users"
-            )
-        );
-
-
-    const normalized =
-        normalizeText(
-            query
-        );
-
 
     const results = [];
 
 
-    snapshot.forEach(
-        documentSnapshot => {
-
-            const data =
-                documentSnapshot.data();
+    try {
 
 
-            const displayName =
-                normalizeText(
-                    data.displayName
-                );
-
-
-            const username =
-                normalizeText(
-                    data.username
-                );
-
-
-            if (
-                displayName.includes(
-                    normalized
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "publicUsers"
                 )
-                ||
-                username.includes(
-                    normalized
-                )
-            ) {
-
-                const customID =
-                    data.id;
+            );
 
 
-                const profileID =
-                    customID !== undefined &&
-                    customID !== null
-                        ? customID
-                        : documentSnapshot.id;
+        const normalized =
+            normalizeText(
+                query
+            );
 
 
-                results.push({
+        snapshot.forEach(
+            documentSnapshot => {
 
-                    type:
-                        "Utilisateur",
 
-                    icon:
-                        "👤",
+                const data =
+                    documentSnapshot.data();
 
-                    title:
-                        getName(
-                            data,
-                            "Utilisateur"
-                        ),
 
-                    description:
+                const displayName =
+                    normalizeText(
+                        data.displayName
+                    );
+
+
+                const username =
+                    normalizeText(
                         data.username
-                            ? "@" + data.username
-                            : "Utilisateur BlocPlay",
+                    );
 
-                    url:
-                        "/fr/profile#" +
-                        encodeURIComponent(
-                            profileID
-                        ),
 
-                    image:
-                        getImage(
-                            data
-                        )
+                if (
 
-                });
+                    displayName.includes(
+                        normalized
+                    )
+
+                    ||
+
+                    username.includes(
+                        normalized
+                    )
+
+                ) {
+
+
+                    const profileID =
+                        data.id ??
+                        documentSnapshot.id;
+
+
+                    results.push({
+
+                        type:
+                            "Utilisateur",
+
+
+                        icon:
+                            "👤",
+
+
+                        title:
+                            getName(
+                                data,
+                                "Utilisateur"
+                            ),
+
+
+                        description:
+
+                            data.username
+
+                                ?
+
+                                "@" +
+                                data.username
+
+                                :
+
+                                "Utilisateur BlocPlay",
+
+
+                        url:
+
+                            "/fr/profile#" +
+
+                            encodeURIComponent(
+                                profileID
+                            ),
+
+
+                        image:
+                            getImage(
+                                data
+                            )
+
+                    });
+
+                }
 
             }
+        );
 
-        }
-    );
+
+    } catch (error) {
+
+
+        console.warn(
+            "Recherche utilisateurs indisponible :",
+            error
+        );
+
+
+    }
 
 
     return results.slice(
@@ -1282,98 +1515,133 @@ async function searchUsers(
 }
 
 
-/* ================================= */
-/* JEUX */
-/* ================================= */
+/* ================================== */
+/* RECHERCHE JEUX */
+/* ================================== */
 
 async function searchGames(
     query
 ) {
 
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "games"
-            )
-        );
-
-
-    const normalized =
-        normalizeText(
-            query
-        );
-
 
     const results = [];
 
 
-    snapshot.forEach(
-        documentSnapshot => {
-
-            const data =
-                documentSnapshot.data();
+    try {
 
 
-            const name =
-                normalizeText(
-                    data.name ||
-                    data.title ||
-                    data.displayName
-                );
-
-
-            const description =
-                normalizeText(
-                    data.description
-                );
-
-
-            if (
-                name.includes(
-                    normalized
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "games"
                 )
-                ||
-                description.includes(
-                    normalized
-                )
-            ) {
+            );
 
-                results.push({
 
-                    type:
-                        "Jeu",
+        const normalized =
+            normalizeText(
+                query
+            );
 
-                    icon:
-                        "🎮",
 
-                    title:
-                        getName(
-                            data,
-                            "Jeu"
-                        ),
+        snapshot.forEach(
+            documentSnapshot => {
 
-                    description:
-                        data.description ||
-                        "Jeu disponible sur BlocPlay",
 
-                    url:
-                        "/fr/game#" +
-                        encodeURIComponent(
-                            documentSnapshot.id
-                        ),
+                const data =
+                    documentSnapshot.data();
 
-                    image:
-                        getImage(
-                            data
-                        )
 
-                });
+                const name =
+                    normalizeText(
+
+                        data.name ||
+
+                        data.title ||
+
+                        data.displayName
+
+                    );
+
+
+                const description =
+                    normalizeText(
+                        data.description
+                    );
+
+
+                if (
+
+                    name.includes(
+                        normalized
+                    )
+
+                    ||
+
+                    description.includes(
+                        normalized
+                    )
+
+                ) {
+
+
+                    results.push({
+
+                        type:
+                            "Jeu",
+
+
+                        icon:
+                            "🎮",
+
+
+                        title:
+                            getName(
+                                data,
+                                "Jeu"
+                            ),
+
+
+                        description:
+
+                            data.description ||
+
+                            "Jeu disponible sur BlocPlay",
+
+
+                        url:
+
+                            "/fr/game#" +
+
+                            encodeURIComponent(
+                                documentSnapshot.id
+                            ),
+
+
+                        image:
+                            getImage(
+                                data
+                            )
+
+                    });
+
+                }
 
             }
+        );
 
-        }
-    );
+
+    } catch (error) {
+
+
+        console.warn(
+            "Recherche jeux indisponible :",
+            error
+        );
+
+
+    }
 
 
     return results.slice(
@@ -1384,98 +1652,133 @@ async function searchGames(
 }
 
 
-/* ================================= */
-/* TRIBUS */
-/* ================================= */
+/* ================================== */
+/* RECHERCHE TRIBUS */
+/* ================================== */
 
 async function searchTribes(
     query
 ) {
 
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "tribes"
-            )
-        );
-
-
-    const normalized =
-        normalizeText(
-            query
-        );
-
 
     const results = [];
 
 
-    snapshot.forEach(
-        documentSnapshot => {
-
-            const data =
-                documentSnapshot.data();
+    try {
 
 
-            const name =
-                normalizeText(
-                    data.name ||
-                    data.title ||
-                    data.displayName
-                );
-
-
-            const description =
-                normalizeText(
-                    data.description
-                );
-
-
-            if (
-                name.includes(
-                    normalized
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "tribes"
                 )
-                ||
-                description.includes(
-                    normalized
-                )
-            ) {
+            );
 
-                results.push({
 
-                    type:
-                        "Tribu",
+        const normalized =
+            normalizeText(
+                query
+            );
 
-                    icon:
-                        "🏠",
 
-                    title:
-                        getName(
-                            data,
-                            "Tribu"
-                        ),
+        snapshot.forEach(
+            documentSnapshot => {
 
-                    description:
-                        data.description ||
-                        "Tribu BlocPlay",
 
-                    url:
-                        "/fr/tribe#" +
-                        encodeURIComponent(
-                            documentSnapshot.id
-                        ),
+                const data =
+                    documentSnapshot.data();
 
-                    image:
-                        getImage(
-                            data
-                        )
 
-                });
+                const name =
+                    normalizeText(
+
+                        data.name ||
+
+                        data.title ||
+
+                        data.displayName
+
+                    );
+
+
+                const description =
+                    normalizeText(
+                        data.description
+                    );
+
+
+                if (
+
+                    name.includes(
+                        normalized
+                    )
+
+                    ||
+
+                    description.includes(
+                        normalized
+                    )
+
+                ) {
+
+
+                    results.push({
+
+                        type:
+                            "Tribu",
+
+
+                        icon:
+                            "🏠",
+
+
+                        title:
+                            getName(
+                                data,
+                                "Tribu"
+                            ),
+
+
+                        description:
+
+                            data.description ||
+
+                            "Tribu BlocPlay",
+
+
+                        url:
+
+                            "/fr/tribe#" +
+
+                            encodeURIComponent(
+                                documentSnapshot.id
+                            ),
+
+
+                        image:
+                            getImage(
+                                data
+                            )
+
+                    });
+
+                }
 
             }
+        );
 
-        }
-    );
+
+    } catch (error) {
+
+
+        console.warn(
+            "Recherche tribus indisponible :",
+            error
+        );
+
+
+    }
 
 
     return results.slice(
@@ -1486,99 +1789,137 @@ async function searchTribes(
 }
 
 
-/* ================================= */
-/* ARTICLES */
-/* ================================= */
+/* ================================== */
+/* RECHERCHE ARTICLES */
+/* ================================== */
 
 async function searchArticles(
     query
 ) {
 
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                "articles"
-            )
-        );
-
-
-    const normalized =
-        normalizeText(
-            query
-        );
-
 
     const results = [];
 
 
-    snapshot.forEach(
-        documentSnapshot => {
-
-            const data =
-                documentSnapshot.data();
+    try {
 
 
-            const title =
-                normalizeText(
-                    data.title ||
-                    data.name
-                );
-
-
-            const description =
-                normalizeText(
-                    data.description ||
-                    data.excerpt
-                );
-
-
-            if (
-                title.includes(
-                    normalized
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "articles"
                 )
-                ||
-                description.includes(
-                    normalized
-                )
-            ) {
+            );
 
-                results.push({
 
-                    type:
-                        "Article",
+        const normalized =
+            normalizeText(
+                query
+            );
 
-                    icon:
-                        "📰",
 
-                    title:
-                        getName(
-                            data,
-                            "Article"
-                        ),
+        snapshot.forEach(
+            documentSnapshot => {
 
-                    description:
+
+                const data =
+                    documentSnapshot.data();
+
+
+                const title =
+                    normalizeText(
+
+                        data.title ||
+
+                        data.name
+
+                    );
+
+
+                const description =
+                    normalizeText(
+
                         data.description ||
-                        data.excerpt ||
-                        "Article BlocPlay",
 
-                    url:
-                        "/fr/article#" +
-                        encodeURIComponent(
-                            documentSnapshot.id
-                        ),
+                        data.excerpt
 
-                    image:
-                        getImage(
-                            data
-                        )
+                    );
 
-                });
+
+                if (
+
+                    title.includes(
+                        normalized
+                    )
+
+                    ||
+
+                    description.includes(
+                        normalized
+                    )
+
+                ) {
+
+
+                    results.push({
+
+                        type:
+                            "Article",
+
+
+                        icon:
+                            "📰",
+
+
+                        title:
+                            getName(
+                                data,
+                                "Article"
+                            ),
+
+
+                        description:
+
+                            data.description ||
+
+                            data.excerpt ||
+
+                            "Article BlocPlay",
+
+
+                        url:
+
+                            "/fr/article#" +
+
+                            encodeURIComponent(
+                                documentSnapshot.id
+                            ),
+
+
+                        image:
+                            getImage(
+                                data
+                            )
+
+                    });
+
+                }
 
             }
+        );
 
-        }
-    );
+
+    } catch (error) {
+
+
+        console.warn(
+            "Recherche articles indisponible :",
+            error
+        );
+
+
+    }
 
 
     return results.slice(
@@ -1589,11 +1930,12 @@ async function searchArticles(
 }
 
 
-/* ================================= */
+/* ================================== */
 /* EFFECTUER LA RECHERCHE */
-/* ================================= */
+/* ================================== */
 
 async function performSearch() {
+
 
     const query =
         getSearchQuery();
@@ -1603,7 +1945,12 @@ async function performSearch() {
         query;
 
 
+    /* ============================== */
+    /* AUCUNE RECHERCHE */
+    /* ============================== */
+
     if (!query) {
+
 
         searchInfo.innerHTML = `
 
@@ -1619,29 +1966,45 @@ async function performSearch() {
         resultsContainer.innerHTML =
             "";
 
+
         return;
 
     }
 
 
+    /* ============================== */
+    /* INFOS */
+    /* ============================== */
+
     searchInfo.innerHTML = `
 
         <p>
+
             Résultats pour :
+
             <strong class="search-query">
+
                 ${escapeHTML(query)}
+
             </strong>
+
         </p>
 
     `;
 
+
+    /* ============================== */
+    /* CHARGEMENT */
+    /* ============================== */
 
     resultsContainer.innerHTML = `
 
         <div class="card">
 
             <div class="search-loading">
+
                 Recherche en cours...
+
             </div>
 
         </div>
@@ -1649,128 +2012,71 @@ async function performSearch() {
     `;
 
 
-    try {
+    /* ============================== */
+    /* RECHERCHES INDÉPENDANTES */
+    /* ============================== */
 
-        const [
-            users,
-            games,
-            tribes,
-            articles
-        ] = await Promise.all([
+    const [
 
-            searchUsers(
-                query
-            ),
+        users,
 
-            searchGames(
-                query
-            ),
+        games,
 
-            searchTribes(
-                query
-            ),
+        tribes,
 
-            searchArticles(
-                query
-            )
+        articles
 
-        ]);
+    ] = await Promise.all([
 
 
-        const total =
-            users.length +
-            games.length +
-            tribes.length +
-            articles.length;
+        searchUsers(
+            query
+        ),
 
 
-        resultsContainer.innerHTML =
-            "";
+        searchGames(
+            query
+        ),
 
 
-        if (
-            total === 0
-        ) {
-
-            resultsContainer.innerHTML = `
-
-                <div class="card">
-
-                    <div class="search-empty">
-
-                        <div class="search-empty-icon">
-                            🔎
-                        </div>
-
-                        <h2>
-                            Aucun résultat trouvé
-                        </h2>
-
-                        <p>
-                            Aucun résultat ne correspond
-                            à
-                            <strong>
-                                ${escapeHTML(query)}
-                            </strong>.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
+        searchTribes(
+            query
+        ),
 
 
-        const groups = [
+        searchArticles(
+            query
+        )
 
-            createGroup(
-                "👤 Utilisateurs",
-                users
-            ),
-
-            createGroup(
-                "🎮 Jeux",
-                games
-            ),
-
-            createGroup(
-                "🏠 Tribus",
-                tribes
-            ),
-
-            createGroup(
-                "📰 Articles",
-                articles
-            )
-
-        ];
+    ]);
 
 
-        groups.forEach(
-            group => {
+    /* ============================== */
+    /* TOTAL */
+    /* ============================== */
 
-                if (group) {
+    const total =
 
-                    resultsContainer.appendChild(
-                        group
-                    );
+        users.length +
 
-                }
+        games.length +
 
-            }
-        );
+        tribes.length +
+
+        articles.length;
 
 
-    } catch (error) {
+    resultsContainer.innerHTML =
+        "";
 
-        console.error(
-            "Erreur recherche :",
-            error
-        );
+
+    /* ============================== */
+    /* AUCUN RÉSULTAT */
+    /* ============================== */
+
+    if (
+        total === 0
+    ) {
 
 
         resultsContainer.innerHTML = `
@@ -1779,18 +2085,28 @@ async function performSearch() {
 
                 <div class="search-empty">
 
+
                     <div class="search-empty-icon">
-                        ⚠️
+                        🔎
                     </div>
 
+
                     <h2>
-                        Impossible de charger les résultats
+                        Aucun résultat trouvé
                     </h2>
 
+
                     <p>
-                        Une erreur est survenue
-                        pendant la recherche.
+
+                        Aucun résultat ne correspond
+                        à
+
+                        <strong>
+                            ${escapeHTML(query)}
+                        </strong>.
+
                     </p>
+
 
                 </div>
 
@@ -1798,18 +2114,74 @@ async function performSearch() {
 
         `;
 
+
+        return;
+
     }
+
+
+    /* ============================== */
+    /* GROUPES */
+    /* ============================== */
+
+    const groups = [
+
+
+        createGroup(
+            "👤 Utilisateurs",
+            users
+        ),
+
+
+        createGroup(
+            "🎮 Jeux",
+            games
+        ),
+
+
+        createGroup(
+            "🏠 Tribus",
+            tribes
+        ),
+
+
+        createGroup(
+            "📰 Articles",
+            articles
+        )
+
+
+    ];
+
+
+    groups.forEach(
+        group => {
+
+
+            if (group) {
+
+
+                resultsContainer.appendChild(
+                    group
+                );
+
+
+            }
+
+        }
+    );
 
 }
 
 
-/* ================================= */
-/* FORMULAIRE DE LA PAGE */
-/* ================================= */
+/* ================================== */
+/* FORMULAIRE */
+/* ================================== */
 
 searchForm.addEventListener(
     "submit",
     event => {
+
 
         event.preventDefault();
 
@@ -1820,7 +2192,9 @@ searchForm.addEventListener(
 
         if (!query) {
 
+
             pageSearchInput.focus();
+
 
             return;
 
@@ -1828,7 +2202,9 @@ searchForm.addEventListener(
 
 
         window.location.href =
+
             "/fr/search/#" +
+
             encodeURIComponent(
                 query
             );
@@ -1837,9 +2213,9 @@ searchForm.addEventListener(
 );
 
 
-/* ================================= */
-/* HASH CHANGE */
-/* ================================= */
+/* ================================== */
+/* CHANGEMENT HASH */
+/* ================================== */
 
 window.addEventListener(
     "hashchange",
@@ -1847,171 +2223,18 @@ window.addEventListener(
 );
 
 
-/* ================================= */
+/* ================================== */
 /* LANCEMENT */
-/* ================================= */
+/* ================================== */
 
 performSearch();
 
 </script>
 
 
-<!-- ================================= -->
-<!-- RECHERCHE DU HEADER -->
-<!-- ================================= -->
-
-<script>
-
-const searchBtn =
-    document.getElementById(
-        "searchBtn"
-    );
-
-
-const searchOverlay =
-    document.getElementById(
-        "searchOverlay"
-    );
-
-
-const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
-
-
-const searchResults =
-    document.getElementById(
-        "searchResults"
-    );
-
-
-const closeSearch =
-    document.getElementById(
-        "closeSearch"
-    );
-
-
-/* ================================= */
-/* OUVRIR */
-/* ================================= */
-
-searchBtn.addEventListener(
-    "click",
-    () => {
-
-        searchOverlay.classList.add(
-            "show"
-        );
-
-        searchInput.value =
-            getSearchQuery();
-
-
-        searchInput.focus();
-
-    }
-);
-
-
-/* ================================= */
-/* FERMER */
-/* ================================= */
-
-closeSearch.addEventListener(
-    "click",
-    () => {
-
-        searchOverlay.classList.remove(
-            "show"
-        );
-
-        searchInput.value =
-            "";
-
-        searchResults.innerHTML =
-            "";
-
-    }
-);
-
-
-/* ================================= */
-/* ENTRÉE */
-/* ================================= */
-
-searchInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key !==
-            "Enter"
-        ) {
-
-            return;
-
-        }
-
-
-        event.preventDefault();
-
-
-        const query =
-            searchInput.value.trim();
-
-
-        if (!query) {
-
-            return;
-
-        }
-
-
-        window.location.href =
-            "/fr/search/#" +
-            encodeURIComponent(
-                query
-            );
-
-    }
-);
-
-
-/* ================================= */
-/* CLIC EN DEHORS */
-/* ================================= */
-
-searchOverlay.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            searchOverlay
-        ) {
-
-            searchOverlay.classList.remove(
-                "show"
-            );
-
-            searchInput.value =
-                "";
-
-            searchResults.innerHTML =
-                "";
-
-        }
-
-    }
-);
-
-</script>
-
-
-<!-- ================================= -->
+<!-- ================================== -->
 <!-- SERVICE WORKER -->
-<!-- ================================= -->
+<!-- ================================== -->
 
 <script>
 
@@ -2019,16 +2242,20 @@ if (
     "serviceWorker" in navigator
 ) {
 
+
     window.addEventListener(
         "load",
         () => {
+
 
             navigator.serviceWorker.register(
                 "/service-worker.js"
             );
 
+
         }
     );
+
 
 }
 
