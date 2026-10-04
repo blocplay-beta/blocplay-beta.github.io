@@ -3,6 +3,22 @@
 
 <head>
 
+<script>
+  // Récupère la langue du navigateur (gère la compatibilité)
+  const userLang = navigator.language || navigator.userLanguage;
+  
+  // Extrait les deux premiers caractères (ex: "fr-FR" devient "fr")
+  const shortLang = userLang.substring(0, 2).toLowerCase();
+
+  // Redirection selon la langue
+  if (shortLang === 'fr') {
+    window.location.href = '/fr';
+  } else {
+    // Redirige vers /en par défaut pour toutes les autres langues
+    window.location.href = '/en';
+  }
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
