@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
 
@@ -291,7 +291,7 @@
       <button
         id="searchBtn"
         class="header-button"
-        aria-label="Rechercher"
+        aria-label="Search"
       >
         🔍
       </button>
@@ -305,7 +305,7 @@
           src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
           class="avatar"
           id="avatar"
-          alt="Profil"
+          alt="Profile"
         >
 
         <div
@@ -416,7 +416,7 @@
 
 
   <!-- ========================= -->
-  <!-- JOUÉ RÉCEMMENT -->
+  <!-- RECENTLY PLAYED -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -449,7 +449,7 @@
 
 
   <!-- ========================= -->
-  <!-- FAVORIS -->
+  <!-- FAVORITES -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -482,7 +482,7 @@
 
 
   <!-- ========================= -->
-  <!-- OBTENU RÉCEMMENT -->
+  <!-- RECENTLY OBTAINED -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -515,7 +515,7 @@
 
 
   <!-- ========================= -->
-  <!-- MES TRIBUS -->
+  <!-- MY TRIBES -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -548,7 +548,7 @@
 
 
   <!-- ========================= -->
-  <!-- JEUX POPULAIRES -->
+  <!-- POPULAR GAMES -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -581,7 +581,7 @@
 
 
   <!-- ========================= -->
-  <!-- CONTACTS POPULAIRES -->
+  <!-- POPULAR CONTACTS -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -614,7 +614,7 @@
 
 
   <!-- ========================= -->
-  <!-- ARTICLES POPULAIRES -->
+  <!-- POPULAR ARTICLES -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -647,7 +647,7 @@
 
 
   <!-- ========================= -->
-  <!-- TRIBUS POPULAIRES -->
+  <!-- POPULAR TRIBES -->
   <!-- ========================= -->
 
   <div class="card home-section">
@@ -747,7 +747,7 @@
 
 
 <!-- ========================= -->
-<!-- FIREBASE + PROFIL -->
+<!-- FIREBASE + PROFILE -->
 <!-- ========================= -->
 
 <script type="module">
@@ -813,7 +813,7 @@ const db =
 
 
 /* ========================= */
-/* MENU PROFIL */
+/* PROFILE MENU */
 /* ========================= */
 
 const avatar =
@@ -823,18 +823,18 @@ const dropdown =
   document.getElementById("dropdown");
 
 
-function renderMenu(user) {
+async function renderMenu(user) {
 
   if (user) {
 
     dropdown.innerHTML = `
 
       <a href="/profile">
-        Profil
+        Profile
       </a>
 
       <a href="/settings">
-        Paramètres
+        Settings
       </a>
 
       <a href="/rizoplay">
@@ -842,22 +842,89 @@ function renderMenu(user) {
       </a>
 
       <a href="#" id="logout">
-        Se déconnecter
+        Log out
       </a>
 
     `;
 
-    if (user.photoURL) {
+
+    const name =
+      user.displayName ||
+      user.email?.split("@")[0] ||
+      "User";
+
+
+    let photoURL = "";
+
+
+    /* ========================= */
+    /* FIRESTORE PHOTO */
+    /* ========================= */
+
+    try {
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+
+      const userSnap =
+        await getDoc(
+          userRef
+        );
+
+
+      if (
+        userSnap.exists()
+      ) {
+
+        const data =
+          userSnap.data();
+
+
+        photoURL =
+          data.photoURL ||
+          data.avatar ||
+          "";
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Photo loading error:",
+        error
+      );
+
+    }
+
+
+    /* ========================= */
+    /* FIREBASE AUTH FALLBACK */
+    /* ========================= */
+
+    if (!photoURL) {
+
+      photoURL =
+        user.photoURL ||
+        "";
+
+    }
+
+
+    /* ========================= */
+    /* DISPLAY PHOTO */
+    /* ========================= */
+
+    if (photoURL) {
 
       avatar.src =
-        user.photoURL;
+        photoURL;
 
     } else {
-
-      const name =
-        user.displayName ||
-        user.email?.split("@")[0] ||
-        "User";
 
       avatar.src =
         "https://ui-avatars.com/api/?name=" +
@@ -871,14 +938,18 @@ function renderMenu(user) {
     dropdown.innerHTML = `
 
       <a href="/login">
-        Se connecter
+        Log in
       </a>
 
       <a href="/signup">
-        Créer un compte
+        Create an account
       </a>
 
     `;
+
+
+    avatar.src =
+      "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
 
   }
 
@@ -893,7 +964,7 @@ onAuthStateChanged(
   auth,
   async (user) => {
 
-    renderMenu(user);
+    await renderMenu(user);
 
 
     if (!user) {
@@ -915,7 +986,7 @@ onAuthStateChanged(
 
 
 /* ========================= */
-/* OUVERTURE MENU */
+/* OPEN MENU */
 /* ========================= */
 
 avatar.addEventListener(
@@ -933,7 +1004,7 @@ avatar.addEventListener(
 
 
 /* ========================= */
-/* FERMETURE MENU */
+/* CLOSE MENU */
 /* ========================= */
 
 document.addEventListener(
@@ -949,7 +1020,7 @@ document.addEventListener(
 
 
 /* ========================= */
-/* DÉCONNEXION */
+/* LOG OUT */
 /* ========================= */
 
 document.addEventListener(
@@ -1031,7 +1102,7 @@ function getImage(
 
 
 /* ========================= */
-/* CARTE CLASSIQUE */
+/* STANDARD CARD */
 /* ========================= */
 
 function createCard(
@@ -1098,7 +1169,7 @@ function createCard(
 
 
 /* ========================= */
-/* CARTE CONTACT */
+/* CONTACT CARD */
 /* ========================= */
 
 function createContact(
@@ -1108,7 +1179,7 @@ function createContact(
   const name =
     data.username ||
     data.displayName ||
-    "Utilisateur";
+    "User";
 
 
   const image =
@@ -1136,7 +1207,7 @@ function createContact(
         </div>
 
         <div class="contact-status">
-          Contact BlocPlay
+          BlocPlay contact
         </div>
 
       </div>
@@ -1171,7 +1242,7 @@ function empty(
 
 
 /* ========================= */
-/* COLLECTION UTILISATEUR */
+/* USER COLLECTION */
 /* ========================= */
 
 async function getUserCollection(
@@ -1234,7 +1305,7 @@ async function loadContacts(
 
       empty(
         element,
-        "Aucun contact"
+        "No contacts"
       );
 
       return;
@@ -1309,13 +1380,13 @@ async function loadContacts(
   } catch (error) {
 
     console.error(
-      "Contacts :",
+      "Contacts:",
       error
     );
 
     empty(
       element,
-      "Impossible de charger les contacts"
+      "Unable to load contacts"
     );
 
   }
@@ -1324,7 +1395,7 @@ async function loadContacts(
 
 
 /* ========================= */
-/* JOUÉ RÉCEMMENT */
+/* RECENTLY PLAYED */
 /* ========================= */
 
 async function loadRecentlyPlayed(
@@ -1352,7 +1423,7 @@ async function loadRecentlyPlayed(
 
       empty(
         element,
-        "Aucun jeu récemment joué"
+        "No recently played games"
       );
 
       return;
@@ -1367,7 +1438,7 @@ async function loadRecentlyPlayed(
           item =>
             createCard(
               item,
-              "Jeu"
+              "Game"
             )
         )
         .join("");
@@ -1375,13 +1446,13 @@ async function loadRecentlyPlayed(
   } catch (error) {
 
     console.error(
-      "Joué récemment :",
+      "Recently played:",
       error
     );
 
     empty(
       element,
-      "Impossible de charger les jeux"
+      "Unable to load games"
     );
 
   }
@@ -1390,7 +1461,7 @@ async function loadRecentlyPlayed(
 
 
 /* ========================= */
-/* FAVORIS */
+/* FAVORITES */
 /* ========================= */
 
 async function loadFavorites(
@@ -1418,7 +1489,7 @@ async function loadFavorites(
 
       empty(
         element,
-        "Aucun favori"
+        "No favorites"
       );
 
       return;
@@ -1433,7 +1504,7 @@ async function loadFavorites(
           item =>
             createCard(
               item,
-              "Favori"
+              "Favorite"
             )
         )
         .join("");
@@ -1441,13 +1512,13 @@ async function loadFavorites(
   } catch (error) {
 
     console.error(
-      "Favoris :",
+      "Favorites:",
       error
     );
 
     empty(
       element,
-      "Impossible de charger les favoris"
+      "Unable to load favorites"
     );
 
   }
@@ -1456,7 +1527,7 @@ async function loadFavorites(
 
 
 /* ========================= */
-/* OBTENU RÉCEMMENT */
+/* RECENTLY OBTAINED */
 /* ========================= */
 
 async function loadRecentlyObtained(
@@ -1484,7 +1555,7 @@ async function loadRecentlyObtained(
 
       empty(
         element,
-        "Rien obtenu récemment"
+        "Nothing obtained recently"
       );
 
       return;
@@ -1507,13 +1578,13 @@ async function loadRecentlyObtained(
   } catch (error) {
 
     console.error(
-      "Obtenu récemment :",
+      "Recently obtained:",
       error
     );
 
     empty(
       element,
-      "Impossible de charger les éléments"
+      "Unable to load items"
     );
 
   }
@@ -1522,7 +1593,7 @@ async function loadRecentlyObtained(
 
 
 /* ========================= */
-/* MES TRIBUS */
+/* MY TRIBES */
 /* ========================= */
 
 async function loadMyTribes(
@@ -1550,7 +1621,7 @@ async function loadMyTribes(
 
       empty(
         element,
-        "Aucune tribu"
+        "No tribes"
       );
 
       return;
@@ -1565,7 +1636,7 @@ async function loadMyTribes(
           item =>
             createCard(
               item,
-              "Tribu"
+              "Tribe"
             )
         )
         .join("");
@@ -1573,13 +1644,13 @@ async function loadMyTribes(
   } catch (error) {
 
     console.error(
-      "Mes tribus :",
+      "My tribes:",
       error
     );
 
     empty(
       element,
-      "Impossible de charger les tribus"
+      "Unable to load tribes"
     );
 
   }
@@ -1588,7 +1659,7 @@ async function loadMyTribes(
 
 
 /* ========================= */
-/* COLLECTION POPULAIRE */
+/* POPULAR COLLECTION */
 /* ========================= */
 
 async function loadPopular(
@@ -1674,13 +1745,13 @@ async function loadPopular(
   } catch (error) {
 
     console.error(
-      collectionName + " :",
+      collectionName + ":",
       error
     );
 
     empty(
       element,
-      "Impossible de charger cette section"
+      "Unable to load this section"
     );
 
   }
@@ -1689,7 +1760,7 @@ async function loadPopular(
 
 
 /* ========================= */
-/* CONTACTS POPULAIRES */
+/* POPULAR CONTACTS */
 /* ========================= */
 
 async function loadPopularContacts() {
@@ -1745,7 +1816,7 @@ async function loadPopularContacts() {
 
       empty(
         element,
-        "Aucun contact populaire"
+        "No popular contacts"
       );
 
       return;
@@ -1767,13 +1838,13 @@ async function loadPopularContacts() {
   } catch (error) {
 
     console.error(
-      "Contacts populaires :",
+      "Popular contacts:",
       error
     );
 
     empty(
       element,
-      "Impossible de charger les contacts populaires"
+      "Unable to load popular contacts"
     );
 
   }
@@ -1782,7 +1853,7 @@ async function loadPopularContacts() {
 
 
 /* ========================= */
-/* CHARGEMENT HOME */
+/* LOAD HOME */
 /* ========================= */
 
 async function loadHome(
@@ -1804,8 +1875,8 @@ async function loadHome(
     loadPopular(
       "games",
       "popularGames",
-      "Aucun jeu populaire",
-      "Jeu"
+      "No popular games",
+      "Game"
     ),
 
     loadPopularContacts(),
@@ -1813,15 +1884,15 @@ async function loadHome(
     loadPopular(
       "articles",
       "popularArticles",
-      "Aucun article populaire",
+      "No popular articles",
       "Article"
     ),
 
     loadPopular(
       "tribes",
       "popularTribes",
-      "Aucune tribu populaire",
-      "Tribu"
+      "No popular tribes",
+      "Tribe"
     )
 
   ]);
@@ -1832,7 +1903,7 @@ async function loadHome(
 
 
 <!-- ========================= -->
-<!-- RECHERCHE -->
+<!-- SEARCH -->
 <!-- ========================= -->
 
 <script>
@@ -1868,7 +1939,7 @@ const closeSearch =
 
 
 /* ========================= */
-/* OUVRIR */
+/* OPEN */
 /* ========================= */
 
 searchBtn.addEventListener(
@@ -1886,7 +1957,7 @@ searchBtn.addEventListener(
 
 
 /* ========================= */
-/* FERMER */
+/* CLOSE */
 /* ========================= */
 
 closeSearch.addEventListener(
@@ -1906,7 +1977,7 @@ closeSearch.addEventListener(
 
 
 /* ========================= */
-/* ENTRÉE */
+/* ENTER */
 /* ========================= */
 
 searchInput.addEventListener(
@@ -1938,11 +2009,11 @@ searchInput.addEventListener(
       <div class="search-result">
 
         <h3>
-          Résultats de recherche
+          Search results
         </h3>
 
         <p>
-          Recherche pour :
+          Search for:
           <strong>
             ${escapeHTML(query)}
           </strong>
@@ -1957,7 +2028,7 @@ searchInput.addEventListener(
 
 
 /* ========================= */
-/* CLIQUER DEHORS */
+/* CLICK OUTSIDE */
 /* ========================= */
 
 searchOverlay.addEventListener(
