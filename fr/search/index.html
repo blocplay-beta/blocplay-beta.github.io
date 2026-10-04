@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0f1a"
+    >
+
+    <meta
+        name="description"
+        content="Rechercher sur BlocPlay."
+    >
+
+    <title>Recherche - BlocPlay</title>
+
+    <link
+        rel="icon"
+        href="/logo.ico"
+    >
+
+    <link
+        rel="manifest"
+        href="/manifest.json"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            background: #0b0f1a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            width: 100%;
+        }
+
+
+        .header-content {
+            width: min(
+                1200px,
+                calc(100% - 30px)
+            );
+
+            margin: auto;
+
+            min-height: 70px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .logo {
+            display: flex;
+
+            align-items: center;
+
+            text-decoration: none;
+        }
+
+
+        .logo img {
+            width: 42px;
+            height: 42px;
+
+            object-fit: contain;
+        }
+
+
+        .header-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .header-button {
+            width: 42px;
+            height: 42px;
+
+            border: 0;
+
+            border-radius: 50%;
+
+            background: #111827;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .header-button:hover {
+            background: #1f2937;
+        }
+
+
+        .profile-menu {
+            position: relative;
+        }
+
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            cursor: pointer;
+
+            border: 2px solid transparent;
+        }
+
+
+        .avatar:hover {
+            border-color: #2563eb;
+        }
+
+
+        .dropdown {
+            position: absolute;
+
+            top: 52px;
+            right: 0;
+
+            width: 190px;
+
+            background: #111827;
+
+            border: 1px solid rgba(
+                255,
+                255,
+                255,
+                .08
+            );
+
+            border-radius: 10px;
+
+            padding: 6px;
+
+            box-shadow:
+                0 12px 35px rgba(
+                    0,
+                    0,
+                    0,
+                    .35
+                );
+
+            display: none;
+
+            z-index: 1000;
+        }
+
+
+        .dropdown.show {
+            display: block;
+        }
+
+
+        .dropdown a {
+            display: block;
+
+            padding: 10px 12px;
+
+            color: #e5e7eb;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+        }
+
+
+        .dropdown a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .search-page {
+            width: min(
+                1000px,
+                calc(100% - 30px)
+            );
+
+            margin: 30px auto 60px;
+        }
+
+
+        .search-header {
+            margin-bottom: 25px;
+        }
+
+
+        .search-title {
+            margin: 0;
+
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+
+        .search-subtitle {
+            margin: 8px 0 0;
+
+            color: #7d899c;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           SEARCH BAR
+        ========================= */
+
+        .search-form {
+            display: flex;
+
+            gap: 10px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .search-input {
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 14px 16px;
+
+            border-radius: 10px;
+
+            border: 1px solid #263247;
+
+            outline: none;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 15px;
+        }
+
+
+        .search-input::placeholder {
+            color: #64748b;
+        }
+
+
+        .search-input:focus {
+            border-color: #2563eb;
+        }
+
+
+        .search-submit {
+            border: 0;
+
+            border-radius: 10px;
+
+            padding: 0 20px;
+
+            background: #2563eb;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .search-submit:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .search-status {
+            color: #7d899c;
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .search-status strong {
+            color: white;
+        }
+
+
+        /* =========================
+           RESULT GROUP
+        ========================= */
+
+        .result-group {
+            margin-bottom: 28px;
+        }
+
+
+        .result-group-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+
+        .result-count {
+            color: #64748b;
+
+            font-size: 12px;
+
+            font-weight: normal;
+        }
+
+
+        .results {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result-card {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            width: 100%;
+
+            padding: 13px;
+
+            background: #111827;
+
+            border: 1px solid rgba(
+                255,
+                255,
+                255,
+                .06
+            );
+
+            border-radius: 12px;
+
+            color: white;
+
+            text-decoration: none;
+
+            transition:
+                background .18s,
+                transform .18s,
+                border-color .18s;
+        }
+
+
+        .result-card:hover {
+            background: #172033;
+
+            border-color: rgba(
+                37,
+                99,
+                235,
+                .45
+            );
+
+            transform: translateY(-1px);
+        }
+
+
+        .result-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 10px;
+
+            flex-shrink: 0;
+
+            background: #1f2937;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            font-size: 22px;
+        }
+
+
+        .result-icon img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        .result-info {
+            min-width: 0;
+
+            flex: 1;
+        }
+
+
+        .result-name {
+            font-size: 15px;
+
+            font-weight: 600;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+
+        .result-description {
+            margin-top: 4px;
+
+            color: #7d899c;
+
+            font-size: 12px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+
+        .result-arrow {
+            color: #64748b;
+
+            font-size: 18px;
+
+            flex-shrink: 0;
+        }
+
+
+        .result-card:hover .result-arrow {
+            color: #60a5fa;
+        }
+
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty-search {
+            padding: 50px 20px;
+
+            text-align: center;
+
+            background: #111827;
+
+            border: 1px solid rgba(
+                255,
+                255,
+                255,
+                .06
+            );
+
+            border-radius: 14px;
+        }
+
+
+        .empty-icon {
+            font-size: 38px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .empty-title {
+            font-size: 17px;
+
+            font-weight: 600;
+        }
+
+
+        .empty-text {
+            margin-top: 7px;
+
+            color: #7d899c;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading {
+            padding: 45px 20px;
+
+            text-align: center;
+
+            color: #7d899c;
+        }
+
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+
+            margin: 0 auto 12px;
+
+            border: 3px solid #263247;
+
+            border-top-color: #2563eb;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .search-page {
+                margin-top: 20px;
+            }
+
+
+            .search-title {
+                font-size: 24px;
+            }
+
+
+            .search-form {
+                flex-direction: column;
+            }
+
+
+            .search-submit {
+                min-height: 45px;
+            }
+
+
+            .result-card {
+                padding: 11px;
+            }
+
+
+            .result-icon {
+                width: 43px;
+                height: 43px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="header-content">
+
+
+        <a
+            href="/"
+            class="logo"
+        >
+
+            <img
+                src="/icon.png"
+                alt="BlocPlay"
+            >
+
+        </a>
+
+
+        <div class="header-actions">
+
+
+            <button
+                id="searchBtn"
+                class="header-button"
+                aria-label="Rechercher"
+                type="button"
+            >
+                🔍
+            </button>
+
+
+            <div class="profile-menu">
+
+
+                <img
+                    src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+                    class="avatar"
+                    id="avatar"
+                    alt="Profil"
+                >
+
+
+                <div
+                    class="dropdown"
+                    id="dropdown"
+                ></div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="search-page">
+
+
+    <div class="search-header">
+
+        <h1 class="search-title">
+            Recherche
+        </h1>
+
+        <p class="search-subtitle">
+            Recherchez des utilisateurs, jeux, tribus et articles sur BlocPlay.
+        </p>
+
+    </div>
+
+
+    <form
+        class="search-form"
+        id="searchForm"
+    >
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Rechercher sur BlocPlay..."
+            autocomplete="off"
+            spellcheck="false"
+        >
+
+
+        <button
+            type="submit"
+            class="search-submit"
+        >
+            Rechercher
+        </button>
+
+    </form>
+
+
+    <div
+        id="searchContent"
+    >
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            Recherche en cours...
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<script type="module">
+
+
+/* =========================================
+   FIREBASE
+========================================= */
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+    authDomain:
+        "blocplay-a9417.firebaseapp.com",
+
+    projectId:
+        "blocplay-a9417",
+
+    storageBucket:
+        "blocplay-a9417.firebasestorage.app",
+
+    messagingSenderId:
+        "540161549188",
+
+    appId:
+        "1:540161549188:web:e0ec0350bd044de2f333d1"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const db =
+    getFirestore(app);
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const avatar =
+    document.getElementById("avatar");
+
+
+const dropdown =
+    document.getElementById("dropdown");
+
+
+const searchBtn =
+    document.getElementById("searchBtn");
+
+
+const searchForm =
+    document.getElementById("searchForm");
+
+
+const searchInput =
+    document.getElementById("searchInput");
+
+
+const searchContent =
+    document.getElementById("searchContent");
+
+
+/* =========================================
+   UTILITAIRES
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+function normalize(value) {
+
+    return String(value ?? "")
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .toLowerCase()
+        .trim();
+
+}
+
+
+function encodeHash(value) {
+
+    return encodeURIComponent(
+        String(value ?? "")
+    );
+
+}
+
+
+function getAvatarURL(data) {
+
+    if (
+        data &&
+        data.photoURL
+    ) {
+
+        return data.photoURL;
+
+    }
+
+
+    if (
+        data &&
+        data.avatar
+    ) {
+
+        return data.avatar;
+
+    }
+
+
+    const name =
+        encodeURIComponent(
+            data?.displayName ||
+            data?.username ||
+            "User"
+        );
+
+
+    return (
+        "https://ui-avatars.com/api/" +
+        `?name=${name}` +
+        "&background=111" +
+        "&color=fff" +
+        "&rounded=true" +
+        "&size=96"
+    );
+
+}
+
+
+/* =========================================
+   MENU PROFIL
+========================================= */
+
+async function renderMenu(user) {
+
+    if (!user) {
+
+        avatar.src =
+            "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+
+
+        dropdown.innerHTML = `
+
+            <a href="/login">
+                Se connecter
+            </a>
+
+            <a href="/signup">
+                Créer un compte
+            </a>
+
+        `;
+
+        return;
+
+    }
+
+
+    try {
+
+        const snapshot =
+            await getDoc(
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                )
+            );
+
+
+        const data =
+            snapshot.exists()
+                ? snapshot.data()
+                : {};
+
+
+        avatar.src =
+            getAvatarURL(data);
+
+
+        dropdown.innerHTML = `
+
+            <a href="/profile">
+                Profil
+            </a>
+
+            <a href="/settings">
+                Paramètres
+            </a>
+
+            <a href="/rizoplay">
+                RizoPlay
+            </a>
+
+            <a href="#" id="logout">
+                Se déconnecter
+            </a>
+
+        `;
+
+
+        const logout =
+            document.getElementById(
+                "logout"
+            );
+
+
+        logout.addEventListener(
+            "click",
+            async event => {
+
+                event.preventDefault();
+
+                try {
+
+                    await signOut(auth);
+
+                } catch (error) {
+
+                    console.error(error);
+
+                }
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        dropdown.innerHTML = `
+
+            <a href="/profile">
+                Profil
+            </a>
+
+            <a href="/settings">
+                Paramètres
+            </a>
+
+            <a href="/rizoplay">
+                RizoPlay
+            </a>
+
+            <a href="#" id="logout">
+                Se déconnecter
+            </a>
+
+        `;
+
+
+        document
+            .getElementById("logout")
+            ?.addEventListener(
+                "click",
+                async event => {
+
+                    event.preventDefault();
+
+                    await signOut(auth);
+
+                }
+            );
+
+    }
+
+}
+
+
+avatar.addEventListener(
+    "click",
+    event => {
+
+        event.stopPropagation();
+
+        dropdown.classList.toggle(
+            "show"
+        );
+
+    }
+);
+
+
+document.addEventListener(
+    "click",
+    () => {
+
+        dropdown.classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+dropdown.addEventListener(
+    "click",
+    event => {
+
+        event.stopPropagation();
+
+    }
+);
+
+
+/* =========================================
+   OUVRIR LA RECHERCHE
+========================================= */
+
+searchBtn.addEventListener(
+    "click",
+    () => {
+
+        searchInput.focus();
+
+        searchInput.select();
+
+    }
+);
+
+
+/* =========================================
+   RÉSULTATS
+========================================= */
+
+function createResult(
+    type,
+    title,
+    description,
+    url,
+    image,
+    icon
+) {
+
+    const safeTitle =
+        escapeHTML(title);
+
+
+    const safeDescription =
+        escapeHTML(description);
+
+
+    const visual =
+        image
+
+            ?
+
+            `<img
+                src="${escapeHTML(image)}"
+                alt=""
+                loading="lazy"
+            >`
+
+            :
+
+            icon;
+
+
+    return `
+
+        <a
+            class="result-card"
+            href="${escapeHTML(url)}"
+        >
+
+            <div class="result-icon">
+                ${visual}
+            </div>
+
+
+            <div class="result-info">
+
+                <div class="result-name">
+                    ${safeTitle}
+                </div>
+
+                <div class="result-description">
+                    ${safeDescription}
+                </div>
+
+            </div>
+
+
+            <div class="result-arrow">
+                ›
+            </div>
+
+        </a>
+
+    `;
+
+}
+
+
+/* =========================================
+   RECHERCHE UTILISATEURS
+========================================= */
+
+async function searchUsers(query) {
+
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "users"
+            )
+        );
+
+
+    const normalizedQuery =
+        normalize(query);
+
+
+    return snapshot.docs
+        .map(item => ({
+
+            uid: item.id,
+
+            ...item.data()
+
+        }))
+        .filter(user => {
+
+            const displayName =
+                normalize(
+                    user.displayName
+                );
+
+
+            const username =
+                normalize(
+                    user.username
+                );
+
+
+            const email =
+                normalize(
+                    user.email
+                );
+
+
+            return (
+                displayName.includes(
+                    normalizedQuery
+                )
+                ||
+                username.includes(
+                    normalizedQuery
+                )
+                ||
+                email.includes(
+                    normalizedQuery
+                )
+            );
+
+        })
+        .slice(0, 20)
+        .map(user => ({
+
+            type: "user",
+
+            title:
+                user.displayName ||
+                user.username ||
+                "Utilisateur",
+
+            description:
+                "Utilisateur BlocPlay",
+
+            url:
+                user.id !== undefined &&
+                user.id !== null
+
+                    ?
+
+                    `/profile#${encodeHash(user.id)}`
+
+                    :
+
+                    `/profile#${encodeHash(user.uid)}`,
+
+            image:
+                getAvatarURL(user),
+
+            icon:
+                "👤"
+
+        }));
+
+}
+
+
+/* =========================================
+   RECHERCHE JEUX
+========================================= */
+
+async function searchGames(query) {
+
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "games"
+            )
+        );
+
+
+    const normalizedQuery =
+        normalize(query);
+
+
+    return snapshot.docs
+        .map(item => ({
+
+            id: item.id,
+
+            ...item.data()
+
+        }))
+        .filter(game => {
+
+            const name =
+                normalize(
+                    game.name ||
+                    game.title ||
+                    game.displayName
+                );
+
+
+            const description =
+                normalize(
+                    game.description
+                );
+
+
+            return (
+                name.includes(
+                    normalizedQuery
+                )
+                ||
+                description.includes(
+                    normalizedQuery
+                )
+            );
+
+        })
+        .slice(0, 20)
+        .map(game => {
+
+            const title =
+                game.name ||
+                game.title ||
+                game.displayName ||
+                "Jeu";
+
+
+            return {
+
+                type: "game",
+
+                title: title,
+
+                description:
+                    "Jeu BlocPlay",
+
+                /*
+                 * Si tes jeux utilisent un autre chemin,
+                 * on pourra simplement modifier cette URL.
+                 */
+
+                url:
+                    `/fr/game#${encodeHash(
+                        game.id
+                    )}`,
+
+                image:
+                    game.imageURL ||
+                    game.imageUrl ||
+                    game.thumbnail ||
+                    game.iconURL ||
+                    game.icon ||
+                    "",
+
+                icon:
+                    "🎮"
+
+            };
+
+        });
+
+}
+
+
+/* =========================================
+   RECHERCHE TRIBUS
+========================================= */
+
+async function searchTribes(query) {
+
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "tribes"
+            )
+        );
+
+
+    const normalizedQuery =
+        normalize(query);
+
+
+    return snapshot.docs
+        .map(item => ({
+
+            id: item.id,
+
+            ...item.data()
+
+        }))
+        .filter(tribe => {
+
+            const name =
+                normalize(
+                    tribe.name ||
+                    tribe.title ||
+                    tribe.displayName
+                );
+
+
+            const description =
+                normalize(
+                    tribe.description
+                );
+
+
+            return (
+                name.includes(
+                    normalizedQuery
+                )
+                ||
+                description.includes(
+                    normalizedQuery
+                )
+            );
+
+        })
+        .slice(0, 20)
+        .map(tribe => {
+
+            const title =
+                tribe.name ||
+                tribe.title ||
+                tribe.displayName ||
+                "Tribu";
+
+
+            return {
+
+                type: "tribe",
+
+                title: title,
+
+                description:
+                    "Tribu BlocPlay",
+
+                url:
+                    `/fr/tribe#${encodeHash(
+                        tribe.id
+                    )}`,
+
+                image:
+                    tribe.imageURL ||
+                    tribe.imageUrl ||
+                    tribe.iconURL ||
+                    tribe.icon ||
+                    "",
+
+                icon:
+                    "🏠"
+
+            };
+
+        });
+
+}
+
+
+/* =========================================
+   RECHERCHE ARTICLES
+========================================= */
+
+async function searchArticles(query) {
+
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "articles"
+            )
+        );
+
+
+    const normalizedQuery =
+        normalize(query);
+
+
+    return snapshot.docs
+        .map(item => ({
+
+            id: item.id,
+
+            ...item.data()
+
+        }))
+        .filter(article => {
+
+            const title =
+                normalize(
+                    article.title ||
+                    article.name
+                );
+
+
+            const description =
+                normalize(
+                    article.description ||
+                    article.excerpt ||
+                    article.content
+                );
+
+
+            return (
+                title.includes(
+                    normalizedQuery
+                )
+                ||
+                description.includes(
+                    normalizedQuery
+                )
+            );
+
+        })
+        .slice(0, 20)
+        .map(article => {
+
+            const title =
+                article.title ||
+                article.name ||
+                "Article";
+
+
+            return {
+
+                type: "article",
+
+                title: title,
+
+                description:
+                    "Article BlocPlay",
+
+                url:
+                    `/fr/article#${encodeHash(
+                        article.id
+                    )}`,
+
+                image:
+                    article.imageURL ||
+                    article.imageUrl ||
+                    article.thumbnail ||
+                    "",
+
+                icon:
+                    "📰"
+
+            };
+
+        });
+
+}
+
+
+/* =========================================
+   AFFICHAGE
+========================================= */
+
+function renderGroup(
+    title,
+    icon,
+    results
+) {
+
+    if (!results.length) {
+        return "";
+    }
+
+
+    return `
+
+        <section class="result-group">
+
+            <h2 class="result-group-title">
+
+                <span>
+                    ${icon}
+                </span>
+
+                <span>
+                    ${title}
+                </span>
+
+                <span class="result-count">
+                    ${results.length}
+                </span>
+
+            </h2>
+
+
+            <div class="results">
+
+                ${
+                    results
+                        .map(result =>
+                            createResult(
+                                result.type,
+                                result.title,
+                                result.description,
+                                result.url,
+                                result.image,
+                                result.icon
+                            )
+                        )
+                        .join("")
+                }
+
+            </div>
+
+        </section>
+
+    `;
+
+}
+
+
+/* =========================================
+   LANCER LA RECHERCHE
+========================================= */
+
+async function performSearch(
+    query
+) {
+
+    const cleanQuery =
+        query.trim();
+
+
+    if (!cleanQuery) {
+
+        searchContent.innerHTML = `
+
+            <div class="empty-search">
+
+                <div class="empty-icon">
+                    🔍
+                </div>
+
+                <div class="empty-title">
+                    Recherchez quelque chose
+                </div>
+
+                <div class="empty-text">
+                    Entrez le nom d'un utilisateur,
+                    jeu, tribu ou article.
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    searchContent.innerHTML = `
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            Recherche de
+            <strong>${escapeHTML(
+                cleanQuery
+            )}</strong>...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        /*
+         * Les quatre recherches sont lancées
+         * en parallèle.
+         */
+
+        const [
+            users,
+            games,
+            tribes,
+            articles
+        ] = await Promise.all([
+
+            searchUsers(
+                cleanQuery
+            ),
+
+            searchGames(
+                cleanQuery
+            ),
+
+            searchTribes(
+                cleanQuery
+            ),
+
+            searchArticles(
+                cleanQuery
+            )
+
+        ]);
+
+
+        const total =
+            users.length +
+            games.length +
+            tribes.length +
+            articles.length;
+
+
+        if (total === 0) {
+
+            searchContent.innerHTML = `
+
+                <div class="empty-search">
+
+                    <div class="empty-icon">
+                        🔎
+                    </div>
+
+                    <div class="empty-title">
+                        Aucun résultat trouvé
+                    </div>
+
+                    <div class="empty-text">
+                        Aucun utilisateur, jeu, tribu ou article
+                        ne correspond à
+                        « ${escapeHTML(
+                            cleanQuery
+                        )} ».
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        searchContent.innerHTML = `
+
+            <div class="search-status">
+
+                Résultats pour
+                <strong>
+                    « ${escapeHTML(
+                        cleanQuery
+                    )} »
+                </strong>
+
+                · ${total} résultat${
+                    total > 1
+                        ? "s"
+                        : ""
+                }
+
+            </div>
+
+
+            ${renderGroup(
+                "Utilisateurs",
+                "👤",
+                users
+            )}
+
+
+            ${renderGroup(
+                "Jeux",
+                "🎮",
+                games
+            )}
+
+
+            ${renderGroup(
+                "Tribus",
+                "🏠",
+                tribes
+            )}
+
+
+            ${renderGroup(
+                "Articles",
+                "📰",
+                articles
+            )}
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur recherche :",
+            error
+        );
+
+
+        searchContent.innerHTML = `
+
+            <div class="empty-search">
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                <div class="empty-title">
+                    Impossible d'effectuer la recherche
+                </div>
+
+                <div class="empty-text">
+                    Une erreur est survenue lors
+                    de la recherche.
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   FORMULAIRE
+========================================= */
+
+searchForm.addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+
+        const query =
+            searchInput.value.trim();
+
+
+        if (!query) {
+
+            window.location.href =
+                "/search/";
+
+            return;
+
+        }
+
+
+        /*
+         * La recherche est stockée
+         * directement dans le hash.
+         */
+
+        window.location.href =
+            "/search/#" +
+            encodeHash(query);
+
+    }
+);
+
+
+/* =========================================
+   CHARGEMENT DE LA RECHERCHE
+========================================= */
+
+function getSearchFromURL() {
+
+    const hash =
+        window.location.hash;
+
+
+    if (!hash) {
+        return "";
+    }
+
+
+    return decodeURIComponent(
+        hash.substring(1)
+    );
+
+}
+
+
+/* =========================================
+   CHANGEMENT DU HASH
+========================================= */
+
+window.addEventListener(
+    "hashchange",
+    () => {
+
+        const query =
+            getSearchFromURL();
+
+
+        searchInput.value =
+            query;
+
+
+        performSearch(
+            query
+        );
+
+    }
+);
+
+
+/* =========================================
+   AUTHENTIFICATION
+========================================= */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        await renderMenu(
+            user
+        );
+
+
+        /*
+         * Les collections Firebase utilisées
+         * par la recherche nécessitent actuellement
+         * une authentification selon les règles
+         * Firestore du projet.
+         */
+
+        if (!user) {
+
+            searchContent.innerHTML = `
+
+                <div class="empty-search">
+
+                    <div class="empty-icon">
+                        🔐
+                    </div>
+
+                    <div class="empty-title">
+                        Connectez-vous pour rechercher
+                    </div>
+
+                    <div class="empty-text">
+                        Vous devez être connecté à BlocPlay
+                        pour utiliser la recherche.
+                    </div>
+
+                    <br>
+
+                    <a
+                        href="/login"
+                        class="search-submit"
+                        style="
+                            display:inline-flex;
+                            align-items:center;
+                            justify-content:center;
+                            min-height:42px;
+                            text-decoration:none;
+                            padding:0 18px;
+                        "
+                    >
+                        Se connecter
+                    </a>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const query =
+            getSearchFromURL();
+
+
+        searchInput.value =
+            query;
+
+
+        await performSearch(
+            query
+        );
+
+    }
+);
+
+
+/* =========================================
+   SERVICE WORKER
+========================================= */
+
+if (
+    "serviceWorker" in navigator
+) {
+
+    navigator.serviceWorker
+        .register(
+            "/service-worker.js"
+        )
+        .catch(
+            error => {
+
+                console.error(
+                    "Service Worker :",
+                    error
+                );
+
+            }
+        );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
