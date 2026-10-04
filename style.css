@@ -1,4 +1,5 @@
 /* Please read COPYRIGHT.md */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -7,7 +8,10 @@ body {
     color: white;
 }
 
+/* ========================= */
 /* HEADER */
+/* ========================= */
+
 header {
     background: #0e2347;
     padding: 10px 20px;
@@ -15,41 +19,99 @@ header {
 
 .header-content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 }
 
 .logo img {
     height: 40px;
+    width: auto;
+    display: block;
 }
 
+/* ACTIONS HEADER */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* BOUTON RECHERCHE */
+
+.header-button {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    border: none;
+
+    color: white;
+    font-size: 22px;
+
+    border-radius: 50%;
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.header-button:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* ========================= */
 /* PROFIL */
+/* ========================= */
+
 .profile-menu {
     position: relative;
+
+    display: flex;
+    align-items: center;
 }
 
 .avatar {
     width: 42px;
     height: 42px;
+
     border-radius: 50%;
     cursor: pointer;
+
     border: 2px solid white;
+
+    object-fit: cover;
 }
 
-/* MENU */
+/* ========================= */
+/* MENU PROFIL */
+/* ========================= */
+
 .dropdown {
     position: absolute;
+
     right: 0;
     top: 55px;
 
     display: none;
     flex-direction: column;
+
     gap: 10px;
 
     background: #102a52;
+
     padding: 12px;
+
     border-radius: 12px;
+
     min-width: 220px;
+
+    z-index: 1001;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
 }
 
 .dropdown.show {
@@ -58,43 +120,148 @@ header {
 
 .dropdown a {
     padding: 12px;
+
     border-radius: 10px;
+
     text-decoration: none;
     color: white;
+
     font-weight: bold;
     text-align: center;
 }
 
+.dropdown a:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* ========================= */
 /* CONTAINER */
+/* ========================= */
+
 .container {
     padding: 20px;
+
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-/* CARD */
+/* ========================= */
+/* CARDS */
+/* ========================= */
+
 .card {
     background: #122a4a;
+
     padding: 20px;
+
     margin-bottom: 20px;
+
     border-radius: 12px;
 
-    transition: transform 0.2s ease, filter 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+
+    box-sizing: border-box;
 }
 
-/* agrandissement sections */
+/* Agrandissement sections */
+
 .card:hover,
 .card:active {
     transform: scale(1.03);
 }
 
+/* ========================= */
+/* PREMIÈRE CARTE */
+/* ========================= */
+
+.card h1 {
+    margin-top: 0;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+/* ========================= */
+/* APPLI BLOCPLAY */
+/* ========================= */
+
+.app-download-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 20px;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+}
+
+/* Aperçus de l'application */
+
+.app-screenshot {
+    background: #0b1b3a;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    min-height: 120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-screenshot img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* Le troisième aperçu prend toute la largeur */
+
+.app-screenshot:nth-child(3) {
+    grid-column: 1 / -1;
+}
+
+/* ========================= */
+/* BOUTON TÉLÉCHARGEMENT */
+/* ========================= */
+
+.download-button-container {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 18px;
+}
+
+/* ========================= */
 /* BOUTONS */
+/* ========================= */
+
 .btn {
     display: inline-flex;
+
     align-items: center;
+    justify-content: center;
 
     padding: 12px 18px;
+
     border-radius: 10px;
 
     text-decoration: none;
+
     font-weight: bold;
 
     color: white;
@@ -102,7 +269,10 @@ header {
     transform: none !important;
 
     -webkit-tap-highlight-color: transparent;
+
     touch-action: manipulation;
+
+    box-sizing: border-box;
 }
 
 .btn:hover,
@@ -112,15 +282,20 @@ header {
 }
 
 /* ICÔNES */
+
 .btn img {
     width: 18px;
     height: 18px;
+
     margin-right: 8px;
 
     filter: brightness(0) invert(1);
 }
 
-/* COULEURS */
+/* ========================= */
+/* COULEURS BOUTONS */
+/* ========================= */
+
 .btn-dark {
     background: #333;
 }
@@ -130,59 +305,374 @@ header {
 }
 
 .btn-gradient {
-    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    background: linear-gradient(
+        45deg,
+        #00c6ff,
+        #0072ff
+    );
 }
+
+/* ========================= */
+/* RESSOURCES */
+/* ========================= */
+
+.resources {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.resource-button {
+    display: block;
+
+    padding: 12px 15px;
+
+    background: #0e2347;
+
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    transition: background 0.2s ease;
+}
+
+.resource-button:hover {
+    background: #173b70;
+}
+
+/* ========================= */
+/* RÉSEAUX SOCIAUX */
+/* ========================= */
+
+.social-links {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.social-button {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 12px 15px;
+
+    background: #0e2347;
+
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    transition: background 0.2s ease;
+}
+
+.social-button:hover {
+    background: #173b70;
+}
+
+.social-url {
+    color: #9fb4d4;
+
+    font-weight: normal;
+
+    margin-left: auto;
+}
+
+/* ========================= */
+/* RECHERCHE */
+/* ========================= */
+
+.search-overlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.78);
+
+    align-items: flex-start;
+    justify-content: center;
+
+    padding-top: 75px;
+
+    box-sizing: border-box;
+
+    z-index: 1000;
+}
+
+.search-overlay.show {
+    display: flex;
+}
+
+.search-box {
+    width: min(700px, calc(100% - 40px));
+
+    display: flex;
+
+    align-items: center;
+
+    background: #122a4a;
+
+    border-radius: 12px;
+
+    padding: 8px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+}
+
+.search-box input {
+    flex: 1;
+
+    min-width: 0;
+
+    background: transparent;
+
+    border: none;
+    outline: none;
+
+    color: white;
+
+    font-size: 18px;
+
+    padding: 12px;
+}
+
+.search-box input::placeholder {
+    color: #9fb4d4;
+}
+
+/* Bouton fermer */
+
+.search-close {
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #333;
+
+    color: white;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+/* ========================= */
+/* RÉSULTATS RECHERCHE */
+/* ========================= */
+
+.search-results {
+    position: absolute;
+
+    top: 140px;
+
+    width: min(700px, calc(100% - 40px));
+
+    box-sizing: border-box;
+}
+
+.search-result {
+    background: #122a4a;
+
+    padding: 18px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+.search-result h3 {
+    margin-top: 0;
+}
+
+/* ========================= */
+/* PROFIL */
+/* ========================= */
 
 .profile-card {
     text-align: center;
 }
 
-.home-card {
-    text-align: center;
-    background: #0F53A6;
-}
-
 .profile-pic {
     width: 100px;
     height: 100px;
+
     border-radius: 50%;
+
     margin: 20px 0;
+
     border: 3px solid white;
+
+    object-fit: cover;
 }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* ========================= */
+/* FOOTER */
+/* ========================= */
+
+.site-footer {
+    background: #0e2347;
+
+    margin-top: 30px;
+
+    padding: 35px 20px 20px;
 }
 
-.profile-menu {
-  display: flex;
-  align-items: center;
+.footer-content {
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 30px;
 }
 
-.search-btn {
-  margin-right: 10px;
+.footer-column {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
 }
 
-.search-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
+.footer-column h3 {
+    margin: 0 0 5px;
 }
 
-.search-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 80px;
-  z-index: 999;
+.footer-column p {
+    margin: 0;
+
+    color: #9fb4d4;
+
+    line-height: 1.5;
+}
+
+.footer-column a {
+    color: #cbd8ea;
+
+    text-decoration: none;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    max-width: 1000px;
+
+    margin: 30px auto 0;
+
+    padding-top: 15px;
+
+    border-top: 1px solid rgba(255,255,255,0.1);
+
+    text-align: center;
+
+    color: #9fb4d4;
+
+    font-size: 14px;
+}
+
+/* ========================= */
+/* HOME CARD */
+/* ========================= */
+
+.home-card {
+    text-align: center;
+
+    background: #0F53A6;
+}
+
+/* ========================= */
+/* RESPONSIVE MOBILE */
+/* ========================= */
+
+@media (max-width: 600px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .app-download-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .app-screenshot:nth-child(3) {
+        grid-column: auto;
+    }
+
+    .social-url {
+        font-size: 13px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .search-overlay {
+        padding-top: 65px;
+    }
+
+}
+
+/* ========================= */
+/* TRÈS PETITS ÉCRANS */
+/* ========================= */
+
+@media (max-width: 400px) {
+
+    header {
+        padding: 10px 15px;
+    }
+
+    .logo img {
+        height: 36px;
+    }
+
+    .avatar,
+    .header-button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .search-box {
+        width: calc(100% - 25px);
+    }
+
 }
