@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Utilisateurs - Administration BlocPlay</title>
+
+    <link
+        rel="icon"
+        href="/logo.ico"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0f1a"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #0b0f1a;
+            color: #e5e7eb;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-layout {
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            background: #111827;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .topbar-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+        }
+
+        .topbar-title {
+            font-weight: 700;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .topbar-path {
+            color: #64748b;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .back-button {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #1f2937;
+            font-size: 13px;
+        }
+
+        .back-button:hover {
+            background: #293548;
+        }
+
+        .content {
+            width: min(1250px, calc(100% - 30px));
+            margin: 28px auto;
+        }
+
+        .breadcrumb {
+            color: #64748b;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .breadcrumb span {
+            color: #cbd5e1;
+        }
+
+        .header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 27px;
+        }
+
+        .header p {
+            margin: 7px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .search {
+            width: 280px;
+            max-width: 100%;
+            background: #111827;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 9px;
+            padding: 10px 12px;
+            color: white;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #3b82f6;
+        }
+
+        .card {
+            background: #111827;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .table-header,
+        .user-row {
+            display: grid;
+            grid-template-columns:
+                minmax(230px, 1.5fr)
+                minmax(180px, 1fr)
+                120px
+                120px
+                180px;
+            gap: 15px;
+            align-items: center;
+            padding: 13px 16px;
+        }
+
+        .table-header {
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+
+        .user-row {
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            transition: background .15s;
+        }
+
+        .user-row:last-child {
+            border-bottom: 0;
+        }
+
+        .user-row:hover {
+            background: rgba(255,255,255,.025);
+        }
+
+        .user-main {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-uid {
+            margin-top: 3px;
+            color: #475569;
+            font-family: Consolas, monospace;
+            font-size: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .email {
+            color: #94a3b8;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .role {
+            display: inline-flex;
+            width: max-content;
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: #1f2937;
+            color: #cbd5e1;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .role.admin {
+            background: rgba(168,85,247,.15);
+            color: #d8b4fe;
+        }
+
+        .role.staff {
+            background: rgba(37,99,235,.15);
+            color: #93c5fd;
+        }
+
+        .status {
+            font-size: 11px;
+        }
+
+        .status.active {
+            color: #86efac;
+        }
+
+        .status.banned {
+            color: #fca5a5;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .action-button {
+            border: 0;
+            border-radius: 7px;
+            padding: 7px 9px;
+            color: #cbd5e1;
+            background: #1f2937;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .action-button:hover {
+            background: #293548;
+        }
+
+        .action-button.danger:hover {
+            background: rgba(239,68,68,.15);
+            color: #fca5a5;
+        }
+
+        .loading,
+        .empty {
+            padding: 35px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0,0,0,.65);
+            z-index: 1000;
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal {
+            width: min(520px, 100%);
+            max-height: calc(100vh - 40px);
+            overflow: auto;
+            background: #111827;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 25px 80px rgba(0,0,0,.5);
+        }
+
+        .modal h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+        .modal-description {
+            margin: 7px 0 20px;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+            color: #cbd5e1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .field select,
+        .field input {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 8px;
+            padding: 10px;
+            background: #0b1220;
+            color: white;
+            outline: none;
+        }
+
+        .field select:focus,
+        .field input:focus {
+            border-color: #3b82f6;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .modal-button {
+            border: 0;
+            border-radius: 8px;
+            padding: 9px 13px;
+            cursor: pointer;
+            background: #1f2937;
+            color: #cbd5e1;
+        }
+
+        .modal-button.primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .modal-button.danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .password-result {
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 9px;
+            background: #0b1220;
+            border: 1px solid rgba(255,255,255,.07);
+        }
+
+        .password-result-title {
+            color: #94a3b8;
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .temporary-password {
+            font-family: Consolas, monospace;
+            color: white;
+            word-break: break-all;
+        }
+
+        .notice {
+            margin-bottom: 20px;
+            padding: 11px 13px;
+            border-radius: 9px;
+            background: rgba(37,99,235,.1);
+            border: 1px solid rgba(37,99,235,.2);
+            color: #93c5fd;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 950px) {
+
+            .table-header {
+                display: none;
+            }
+
+            .user-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .actions {
+                justify-content: flex-start;
+            }
+
+            .header {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="admin-layout">
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+
+            <img
+                src="/icon.png"
+                class="topbar-logo"
+                alt="BlocPlay"
+            >
+
+            <span class="topbar-title">
+                BlocPlay
+            </span>
+
+            <span class="topbar-path">
+                / administrator / manage / users
+            </span>
+
+        </div>
+
+        <a
+            href="/administrator/"
+            class="back-button"
+        >
+            Administration
+        </a>
+
+    </header>
+
+
+    <main class="content">
+
+        <div class="breadcrumb">
+            BlocPlay /
+            administrator /
+            manage /
+            <span>users</span>
+        </div>
+
+
+        <div class="header">
+
+            <div>
+
+                <h1>
+                    Utilisateurs
+                </h1>
+
+                <p>
+                    Gestion des comptes et des permissions BlocPlay.
+                </p>
+
+            </div>
+
+            <input
+                id="search"
+                class="search"
+                type="search"
+                placeholder="Rechercher un utilisateur..."
+            >
+
+        </div>
+
+
+        <div class="notice">
+
+            🔐 Seuls les comptes avec le rôle
+            <strong>admin</strong>
+            peuvent modifier les rôles,
+            bannir un compte ou réinitialiser son mot de passe.
+
+        </div>
+
+
+        <section class="card">
+
+            <div class="table-header">
+
+                <div>
+                    Utilisateur
+                </div>
+
+                <div>
+                    E-mail
+                </div>
+
+                <div>
+                    Rôle
+                </div>
+
+                <div>
+                    Statut
+                </div>
+
+                <div>
+                    Actions
+                </div>
+
+            </div>
+
+
+            <div id="userList">
+
+                <div class="loading">
+                    Chargement des utilisateurs...
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- MODAL RÔLE -->
+
+<div
+    id="roleModal"
+    class="modal-backdrop"
+>
+
+    <div class="modal">
+
+        <h2>
+            Modifier le rôle
+        </h2>
+
+        <p
+            id="roleDescription"
+            class="modal-description"
+        ></p>
+
+        <div class="field">
+
+            <label for="roleSelect">
+                Nouveau rôle
+            </label>
+
+            <select id="roleSelect">
+
+                <option value="user">
+                    Utilisateur
+                </option>
+
+                <option value="staff_site">
+                    Staff site
+                </option>
+
+                <option value="staff_roblox">
+                    Staff Roblox
+                </option>
+
+                <option value="staff_discord">
+                    Staff Discord
+                </option>
+
+                <option value="staff_application">
+                    Staff application
+                </option>
+
+                <option value="admin">
+                    Administrateur
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                id="cancelRole"
+            >
+                Annuler
+            </button>
+
+            <button
+                class="modal-button primary"
+                id="saveRole"
+            >
+                Enregistrer
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- MODAL BAN -->
+
+<div
+    id="banModal"
+    class="modal-backdrop"
+>
+
+    <div class="modal">
+
+        <h2 id="banTitle">
+            Bannir le compte
+        </h2>
+
+        <p
+            id="banDescription"
+            class="modal-description"
+        ></p>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                id="cancelBan"
+            >
+                Annuler
+            </button>
+
+            <button
+                class="modal-button danger"
+                id="confirmBan"
+            >
+                Bannir
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- MODAL MOT DE PASSE -->
+
+<div
+    id="passwordModal"
+    class="modal-backdrop"
+>
+
+    <div class="modal">
+
+        <h2>
+            Réinitialiser le mot de passe
+        </h2>
+
+        <p
+            id="passwordDescription"
+            class="modal-description"
+        ></p>
+
+        <div class="field">
+
+            <label for="newPassword">
+                Nouveau mot de passe temporaire
+            </label>
+
+            <input
+                id="newPassword"
+                type="text"
+                minlength="6"
+                autocomplete="off"
+                placeholder="Minimum 6 caractères"
+            >
+
+        </div>
+
+        <div
+            id="passwordResult"
+            class="password-result"
+            style="display:none;"
+        >
+
+            <div class="password-result-title">
+                Mot de passe temporaire
+            </div>
+
+            <div
+                id="temporaryPassword"
+                class="temporary-password"
+            ></div>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                id="cancelPassword"
+            >
+                Fermer
+            </button>
+
+            <button
+                class="modal-button primary"
+                id="confirmPassword"
+            >
+                Réinitialiser
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+    getFunctions,
+    httpsCallable
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js";
+
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+    authDomain: "blocplay-a9417.firebaseapp.com",
+
+    projectId: "blocplay-a9417",
+
+    storageBucket: "blocplay-a9417.firebasestorage.app",
+
+    messagingSenderId: "540161549188",
+
+    appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const functions =
+    getFunctions(app);
+
+
+const listUsers =
+    httpsCallable(
+        functions,
+        "listAdminUsers"
+    );
+
+
+const changeRole =
+    httpsCallable(
+        functions,
+        "changeUserRole"
+    );
+
+
+const banUser =
+    httpsCallable(
+        functions,
+        "setUserBanned"
+    );
+
+
+const resetPassword =
+    httpsCallable(
+        functions,
+        "resetUserPassword"
+    );
+
+
+const userList =
+    document.getElementById("userList");
+
+
+const search =
+    document.getElementById("search");
+
+
+let users = [];
+
+let selectedUID = null;
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Redirection
+|--------------------------------------------------------------------------
+*/
+
+function redirect404() {
+
+    window.location.replace(
+        "/error/404"
+    );
+
+}
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Vérification initiale
+|--------------------------------------------------------------------------
+*/
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            redirect404();
+
+            return;
+
+        }
+
+        try {
+
+            /*
+             * Le backend effectue la vraie vérification
+             * du rôle.
+             */
+
+            const result =
+                await listUsers();
+
+            users =
+                result.data.users || [];
+
+            renderUsers();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            redirect404();
+
+        }
+
+    }
+);
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Affichage
+|--------------------------------------------------------------------------
+*/
+
+function renderUsers() {
+
+    const query =
+        search.value
+            .trim()
+            .toLowerCase();
+
+
+    const filtered =
+        users.filter(
+            user => {
+
+                return (
+
+                    (user.email || "")
+                        .toLowerCase()
+                        .includes(query)
+
+                    ||
+
+                    (user.displayName || "")
+                        .toLowerCase()
+                        .includes(query)
+
+                    ||
+
+                    (user.uid || "")
+                        .toLowerCase()
+                        .includes(query)
+
+                );
+
+            }
+        );
+
+
+    userList.innerHTML =
+        "";
+
+
+    if (!filtered.length) {
+
+        userList.innerHTML = `
+            <div class="empty">
+                Aucun utilisateur trouvé.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    for (const user of filtered) {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "user-row";
+
+
+        const avatar =
+            user.photoURL ||
+            `https://ui-avatars.com/api/?name=${
+                encodeURIComponent(
+                    user.displayName ||
+                    user.email ||
+                    "User"
+                )
+            }&background=111&color=fff&rounded=true&size=64`;
+
+
+        const roleClass =
+            user.role === "admin"
+                ? "admin"
+                : user.role.startsWith("staff_")
+                    ? "staff"
+                    : "";
+
+
+        const roleLabel =
+            user.role || "user";
+
+
+        row.innerHTML = `
+
+            <div class="user-main">
+
+                <img
+                    class="avatar"
+                    src="${avatar}"
+                    alt=""
+                >
+
+                <div>
+
+                    <div class="user-name">
+                        ${escapeHTML(
+                            user.displayName ||
+                            "Utilisateur"
+                        )}
+                    </div>
+
+                    <div class="user-uid">
+                        ${escapeHTML(user.uid)}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="email">
+                ${escapeHTML(
+                    user.email ||
+                    "Aucun e-mail"
+                )}
+            </div>
+
+
+            <div>
+                <span class="role ${roleClass}">
+                    ${escapeHTML(roleLabel)}
+                </span>
+            </div>
+
+
+            <div>
+
+                ${
+                    user.disabled
+                    ?
+                    `<span class="status banned">
+                        Banni
+                    </span>`
+                    :
+                    `<span class="status active">
+                        Actif
+                    </span>`
+                }
+
+            </div>
+
+
+            <div class="actions">
+
+                ${
+                    user.role === "admin"
+                    ?
+                    ""
+                    :
+                    `
+                    <button
+                        class="action-button"
+                        data-action="role"
+                        data-uid="${user.uid}"
+                    >
+                        Rôle
+                    </button>
+
+                    <button
+                        class="action-button"
+                        data-action="password"
+                        data-uid="${user.uid}"
+                    >
+                        Mot de passe
+                    </button>
+
+                    <button
+                        class="action-button danger"
+                        data-action="ban"
+                        data-uid="${user.uid}"
+                    >
+                        ${
+                            user.disabled
+                            ? "Débannir"
+                            : "Bannir"
+                        }
+                    </button>
+                    `
+                }
+
+            </div>
+
+        `;
+
+
+        userList.appendChild(row);
+
+    }
+
+}
+
+
+
+search.addEventListener(
+    "input",
+    renderUsers
+);
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Actions
+|--------------------------------------------------------------------------
+*/
+
+userList.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                "[data-action]"
+            );
+
+
+        if (!button) return;
+
+
+        selectedUID =
+            button.dataset.uid;
+
+
+        const action =
+            button.dataset.action;
+
+
+        const user =
+            users.find(
+                item =>
+                    item.uid === selectedUID
+            );
+
+
+        if (!user) return;
+
+
+        if (action === "role") {
+
+            openRoleModal(user);
+
+        }
+
+
+        if (action === "ban") {
+
+            openBanModal(user);
+
+        }
+
+
+        if (action === "password") {
+
+            openPasswordModal(user);
+
+        }
+
+    }
+);
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Rôle
+|--------------------------------------------------------------------------
+*/
+
+const roleModal =
+    document.getElementById("roleModal");
+
+const roleSelect =
+    document.getElementById("roleSelect");
+
+const roleDescription =
+    document.getElementById("roleDescription");
+
+
+function openRoleModal(user) {
+
+    roleDescription.textContent =
+        `Modification du rôle de ${
+            user.displayName ||
+            user.email ||
+            user.uid
+        }.`;
+
+    roleSelect.value =
+        user.role || "user";
+
+    roleModal.classList.add("show");
+
+}
+
+
+document.getElementById("cancelRole")
+    .addEventListener(
+        "click",
+        () => {
+
+            roleModal.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+document.getElementById("saveRole")
+    .addEventListener(
+        "click",
+        async () => {
+
+            if (!selectedUID) return;
+
+
+            const newRole =
+                roleSelect.value;
+
+
+            try {
+
+                await changeRole({
+
+                    uid:
+                        selectedUID,
+
+                    role:
+                        newRole
+
+                });
+
+
+                roleModal.classList.remove(
+                    "show"
+                );
+
+
+                await reloadUsers();
+
+            }
+
+            catch (error) {
+
+                alert(
+                    error.message ||
+                    "Impossible de modifier le rôle."
+                );
+
+            }
+
+        }
+    );
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Bannissement
+|--------------------------------------------------------------------------
+*/
+
+const banModal =
+    document.getElementById("banModal");
+
+const banTitle =
+    document.getElementById("banTitle");
+
+const banDescription =
+    document.getElementById("banDescription");
+
+const confirmBan =
+    document.getElementById("confirmBan");
+
+
+function openBanModal(user) {
+
+    const banning =
+        !user.disabled;
+
+
+    banTitle.textContent =
+        banning
+            ? "Bannir le compte"
+            : "Débannir le compte";
+
+
+    banDescription.textContent =
+        banning
+            ? `Le compte ${
+                user.email ||
+                user.uid
+            } sera désactivé.`
+            : `Le compte ${
+                user.email ||
+                user.uid
+            } sera réactivé.`;
+
+
+    confirmBan.textContent =
+        banning
+            ? "Bannir"
+            : "Débannir";
+
+
+    banModal.classList.add(
+        "show"
+    );
+
+}
+
+
+document.getElementById("cancelBan")
+    .addEventListener(
+        "click",
+        () => {
+
+            banModal.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+confirmBan.addEventListener(
+    "click",
+    async () => {
+
+        if (!selectedUID) return;
+
+
+        const user =
+            users.find(
+                item =>
+                    item.uid === selectedUID
+            );
+
+
+        if (!user) return;
+
+
+        try {
+
+            await banUser({
+
+                uid:
+                    selectedUID,
+
+                banned:
+                    !user.disabled
+
+            });
+
+
+            banModal.classList.remove(
+                "show"
+            );
+
+
+            await reloadUsers();
+
+        }
+
+        catch (error) {
+
+            alert(
+                error.message ||
+                "Impossible de modifier le bannissement."
+            );
+
+        }
+
+    }
+);
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Mot de passe
+|--------------------------------------------------------------------------
+*/
+
+const passwordModal =
+    document.getElementById(
+        "passwordModal"
+    );
+
+const passwordDescription =
+    document.getElementById(
+        "passwordDescription"
+    );
+
+const newPassword =
+    document.getElementById(
+        "newPassword"
+    );
+
+const passwordResult =
+    document.getElementById(
+        "passwordResult"
+    );
+
+const temporaryPassword =
+    document.getElementById(
+        "temporaryPassword"
+    );
+
+
+function openPasswordModal(user) {
+
+    passwordDescription.textContent =
+        `Définis un nouveau mot de passe temporaire pour ${
+            user.email ||
+            user.uid
+        }.`;
+
+    newPassword.value =
+        "";
+
+    passwordResult.style.display =
+        "none";
+
+    temporaryPassword.textContent =
+        "";
+
+    passwordModal.classList.add(
+        "show"
+    );
+
+}
+
+
+document.getElementById("cancelPassword")
+    .addEventListener(
+        "click",
+        () => {
+
+            passwordModal.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+document.getElementById("confirmPassword")
+    .addEventListener(
+        "click",
+        async () => {
+
+            if (!selectedUID) return;
+
+
+            const password =
+                newPassword.value;
+
+
+            if (password.length < 6) {
+
+                alert(
+                    "Le mot de passe doit contenir au moins 6 caractères."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                await resetPassword({
+
+                    uid:
+                        selectedUID,
+
+                    password:
+                        password
+
+                });
+
+
+                temporaryPassword.textContent =
+                    password;
+
+
+                passwordResult.style.display =
+                    "block";
+
+            }
+
+            catch (error) {
+
+                alert(
+                    error.message ||
+                    "Impossible de réinitialiser le mot de passe."
+                );
+
+            }
+
+        }
+    );
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Rechargement
+|--------------------------------------------------------------------------
+*/
+
+async function reloadUsers() {
+
+    const result =
+        await listUsers();
+
+    users =
+        result.data.users || [];
+
+    renderUsers();
+
+}
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Sécurité HTML
+|--------------------------------------------------------------------------
+*/
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+</script>
+
+</body>
+
+</html>
