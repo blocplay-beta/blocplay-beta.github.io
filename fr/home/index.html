@@ -17,7 +17,7 @@
 <style>
 
 /* ========================= */
-/* SECTIONS HOME */
+/* SECTIONS */
 /* ========================= */
 
 .home-section {
@@ -38,11 +38,11 @@
 
 .home-section-header h2 {
     margin: 0;
-    font-size: 22px;
+    font-size: 21px;
 }
 
 /* ========================= */
-/* BOUTON VOIR PLUS */
+/* VOIR PLUS */
 /* ========================= */
 
 .more-btn {
@@ -57,10 +57,7 @@
     font-weight: bold;
     font-size: 14px;
 
-    cursor: pointer;
-
     text-decoration: none;
-
     white-space: nowrap;
 }
 
@@ -69,7 +66,7 @@
 }
 
 /* ========================= */
-/* ÉLÉMENTS */
+/* ELEMENTS */
 /* ========================= */
 
 .home-items {
@@ -78,7 +75,7 @@
 
     overflow-x: auto;
 
-    padding-bottom: 4px;
+    padding-bottom: 3px;
 }
 
 .home-items::-webkit-scrollbar {
@@ -89,10 +86,6 @@
     background: #345;
     border-radius: 10px;
 }
-
-/* ========================= */
-/* CONTACT / JEU / FAVORI */
-/* ========================= */
 
 .home-item {
     flex: 0 0 105px;
@@ -113,13 +106,11 @@
 
     color: white;
 
-    transition: transform 0.2s ease,
-                background 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 .home-item:hover {
     transform: translateY(-3px);
-    background: #173b70;
 }
 
 .home-item img {
@@ -148,22 +139,18 @@
 }
 
 /* ========================= */
-/* MESSAGE VIDE */
+/* MESSAGE VIDE / CHARGEMENT */
 /* ========================= */
 
 .empty-section {
-    min-height: 75px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
     text-align: center;
-
     color: #9fb4d4;
 
-    font-size: 15px;
+    padding: 15px 5px;
+}
+
+.loading {
+    color: #9fb4d4;
 }
 
 /* ========================= */
@@ -178,20 +165,81 @@
     margin-bottom: 0;
 }
 
-@media (max-width: 600px) {
+/* ========================= */
+/* RECHERCHE */
+/* ========================= */
 
-    .home-section {
-        padding: 15px;
-    }
+.search-box {
+    display: flex;
 
-    .home-section-header h2 {
-        font-size: 19px;
-    }
+    width: min(600px, calc(100% - 30px));
 
-    .home-item {
-        flex-basis: 100px;
-    }
+    position: relative;
+}
 
+.search-box input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 50px 14px 16px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #122a4a;
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+.search-close {
+    position: absolute;
+
+    right: 10px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: none;
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+.search-overlay.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-results {
+    width: min(600px, calc(100% - 30px));
+
+    margin-top: 15px;
+}
+
+.search-result {
+    background: #122a4a;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    margin-bottom: 10px;
+}
+
+.search-result h3 {
+    margin-top: 0;
 }
 
 </style>
@@ -200,51 +248,48 @@
 
 <body>
 
+
 <!-- ========================= -->
 <!-- HEADER -->
 <!-- ========================= -->
 
 <header>
 
-    <div class="header-content">
+<div class="header-content">
 
-        <a href="/" class="logo">
-            <img src="/icon.png" alt="BlocPlay">
-        </a>
+    <a href="/" class="logo">
+        <img src="/icon.png" alt="BlocPlay">
+    </a>
 
-        <div class="header-actions">
+    <div style="display:flex;align-items:center;">
 
-            <!-- RECHERCHE -->
+        <button
+            id="searchBtn"
+            class="search-btn"
+            aria-label="Rechercher"
+        >
+            🔍
+        </button>
 
-            <button
-                id="searchBtn"
-                class="header-button"
-                aria-label="Rechercher"
+        <div class="profile-menu">
+
+            <img
+                src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+                class="avatar"
+                id="avatar"
+                alt="Profil"
             >
-                🔍
-            </button>
 
-            <!-- PROFIL -->
-
-            <div class="profile-menu">
-
-                <img
-                    src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-                    class="avatar"
-                    id="avatar"
-                    alt="Profil"
-                >
-
-                <div
-                    class="dropdown"
-                    id="dropdown"
-                ></div>
-
-            </div>
+            <div
+                class="dropdown"
+                id="dropdown"
+            ></div>
 
         </div>
 
     </div>
+
+</div>
 
 </header>
 
@@ -261,9 +306,9 @@
     <div class="search-box">
 
         <input
-            type="text"
             id="searchInput"
-            placeholder="Rechercher sur BlocPlay..."
+            type="text"
+            placeholder="Rechercher..."
             autocomplete="off"
         >
 
@@ -276,10 +321,7 @@
 
     </div>
 
-    <div
-        id="searchResults"
-        class="search-results"
-    ></div>
+    <div id="searchResults" class="search-results"></div>
 
 </div>
 
@@ -291,470 +333,277 @@
 <main class="container">
 
 
-    <!-- ========================= -->
-    <!-- CONTACTS -->
-    <!-- ========================= -->
+<!-- ========================= -->
+<!-- CONTACTS -->
+<!-- ========================= -->
 
-    <section class="home-section">
+<section class="home-section">
 
-        <div class="home-section-header">
+    <div class="home-section-header">
 
-            <h2>Contacts</h2>
+        <h2>Contacts</h2>
 
-            <a
-                href="/contacts"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
+        <a href="/contacts" class="more-btn">
+            Voir plus
+        </a>
 
+    </div>
+
+    <div
+        id="contactsItems"
+        class="home-items"
+    >
+
+        <div class="loading">
+            Chargement...
         </div>
 
-        <div class="home-items">
+    </div>
 
-            <a href="/profile" class="home-item">
+</section>
 
-                <img
-                    src="https://ui-avatars.com/api/?name=Utilisateur&background=111&color=fff"
-                    alt=""
-                >
 
-                <span class="home-item-name">
-                    Utilisateur
-                </span>
+<!-- ========================= -->
+<!-- JOUÉ RÉCEMMENT -->
+<!-- ========================= -->
 
-            </a>
+<section class="home-section">
 
-            <a href="/contacts" class="home-item">
+    <div class="home-section-header">
 
-                <img
-                    src="https://ui-avatars.com/api/?name=Contact&background=111&color=fff"
-                    alt=""
-                >
+        <h2>Joué récemment</h2>
 
-                <span class="home-item-name">
-                    Contact
-                </span>
+        <a href="/games/recent" class="more-btn">
+            Voir plus
+        </a>
 
-            </a>
+    </div>
 
-            <a href="/contacts" class="home-item">
+    <div
+        id="recentGamesItems"
+        class="home-items"
+    >
 
-                <img
-                    src="https://ui-avatars.com/api/?name=Ajouter&background=111&color=fff"
-                    alt=""
-                >
-
-                <span class="home-item-name">
-                    Ajouter
-                </span>
-
-            </a>
-
-            <a href="/contacts" class="home-item">
-
-                <img
-                    src="https://ui-avatars.com/api/?name=Plus&background=111&color=fff"
-                    alt=""
-                >
-
-                <span class="home-item-name">
-                    Plus
-                </span>
-
-            </a>
-
+        <div class="loading">
+            Chargement...
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- ========================= -->
-    <!-- JEUX RÉCENTS -->
-    <!-- ========================= -->
+<!-- ========================= -->
+<!-- FAVORIS -->
+<!-- ========================= -->
 
-    <section class="home-section">
+<section class="home-section">
 
-        <div class="home-section-header">
+    <div class="home-section-header">
 
-            <h2>Jeux récemment</h2>
+        <h2>Favoris</h2>
 
-            <a
-                href="/games/recent"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
+        <a href="/favorites" class="more-btn">
+            Voir plus
+        </a>
 
+    </div>
+
+    <div
+        id="favoritesItems"
+        class="home-items"
+    >
+
+        <div class="loading">
+            Chargement...
         </div>
 
-        <div class="home-items">
+    </div>
 
-            <a
-                href="/game/1"
-                class="home-item"
-            >
+</section>
 
-                <img
-                    src="/icon.png"
-                    alt="Jeu"
-                >
 
-                <span class="home-item-name">
-                    Jeu récent
-                </span>
+<!-- ========================= -->
+<!-- OBTENU RÉCEMMENT -->
+<!-- ========================= -->
 
-            </a>
+<section class="home-section">
 
-            <a
-                href="/games"
-                class="home-item"
-            >
+    <div class="home-section-header">
 
-                <img
-                    src="/icon.png"
-                    alt="Jeu"
-                >
+        <h2>Obtenu récemment</h2>
 
-                <span class="home-item-name">
-                    Jeu
-                </span>
+        <a href="/purchases" class="more-btn">
+            Voir plus
+        </a>
 
-            </a>
+    </div>
 
-            <a
-                href="/games"
-                class="home-item"
-            >
+    <div
+        id="ownedItems"
+        class="home-items"
+    >
 
-                <img
-                    src="/icon.png"
-                    alt="Jeu"
-                >
-
-                <span class="home-item-name">
-                    Jeu
-                </span>
-
-            </a>
-
-            <a
-                href="/games"
-                class="home-item"
-            >
-
-                <img
-                    src="/icon.png"
-                    alt="Jeu"
-                >
-
-                <span class="home-item-name">
-                    Jeu
-                </span>
-
-            </a>
-
+        <div class="loading">
+            Chargement...
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- ========================= -->
-    <!-- FAVORIS -->
-    <!-- ========================= -->
+<!-- ========================= -->
+<!-- TRIBUS -->
+<!-- ========================= -->
 
-    <section class="home-section">
+<section class="home-section">
 
-        <div class="home-section-header">
+    <div class="home-section-header">
 
-            <h2>Favoris</h2>
+        <h2>Tribus</h2>
 
-            <a
-                href="/favorites"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
+        <a href="/tribes" class="more-btn">
+            Voir plus
+        </a>
 
+    </div>
+
+    <div
+        id="tribesItems"
+        class="home-items"
+    >
+
+        <div class="loading">
+            Chargement...
         </div>
 
-        <div class="home-items">
+    </div>
 
-            <a
-                href="/favorites"
-                class="home-item"
-            >
+</section>
 
-                <img
-                    src="/icon.png"
-                    alt="Favori"
-                >
 
-                <span class="home-item-name">
-                    Favori
-                </span>
+<!-- ========================= -->
+<!-- JEUX POPULAIRES -->
+<!-- ========================= -->
 
-            </a>
+<section class="home-section">
 
-            <a
-                href="/favorites"
-                class="home-item"
-            >
+    <div class="home-section-header">
 
-                <img
-                    src="/icon.png"
-                    alt="Favori"
-                >
+        <h2>Jeux populaires</h2>
 
-                <span class="home-item-name">
-                    Favori
-                </span>
+        <a href="/games/popular" class="more-btn">
+            Voir plus
+        </a>
 
-            </a>
+    </div>
 
-            <a
-                href="/favorites"
-                class="home-item"
-            >
+    <div
+        id="popularGamesItems"
+        class="home-items"
+    >
 
-                <img
-                    src="/icon.png"
-                    alt="Favori"
-                >
-
-                <span class="home-item-name">
-                    Favori
-                </span>
-
-            </a>
-
-            <a
-                href="/favorites"
-                class="home-item"
-            >
-
-                <img
-                    src="/icon.png"
-                    alt="Favori"
-                >
-
-                <span class="home-item-name">
-                    Favori
-                </span>
-
-            </a>
-
+        <div class="loading">
+            Chargement...
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- ========================= -->
-    <!-- ACHATS RÉCENTS -->
-    <!-- ========================= -->
+<!-- ========================= -->
+<!-- CONTACTS POPULAIRES -->
+<!-- ========================= -->
 
-    <section class="home-section">
+<section class="home-section">
 
-        <div class="home-section-header">
+    <div class="home-section-header">
 
-            <h2>Obtenu récemment</h2>
+        <h2>Contacts populaires</h2>
 
-            <a
-                href="/purchases"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
+        <a href="/contacts/popular" class="more-btn">
+            Voir plus
+        </a>
 
+    </div>
+
+    <div
+        id="popularContactsItems"
+        class="home-items"
+    >
+
+        <div class="loading">
+            Chargement...
         </div>
 
-        <div class="empty-section">
+    </div>
 
-            <p>
-                Aucun article n'a encore été acheté.
-            </p>
+</section>
 
+
+<!-- ========================= -->
+<!-- ARTICLES POPULAIRES -->
+<!-- ========================= -->
+
+<section class="home-section">
+
+    <div class="home-section-header">
+
+        <h2>Articles populaires</h2>
+
+        <a href="/articles/popular" class="more-btn">
+            Voir plus
+        </a>
+
+    </div>
+
+    <div
+        id="popularArticlesItems"
+        class="home-items"
+    >
+
+        <div class="loading">
+            Chargement...
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- ========================= -->
-    <!-- TRIBUS -->
-    <!-- ========================= -->
+<!-- ========================= -->
+<!-- TRIBUS POPULAIRES -->
+<!-- ========================= -->
 
-    <section class="home-section">
+<section class="home-section">
 
-        <div class="home-section-header">
+    <div class="home-section-header">
 
-            <h2>Tribus</h2>
+        <h2>Tribus populaires</h2>
 
-            <a
-                href="/tribes"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
+        <a href="/tribes/popular" class="more-btn">
+            Voir plus
+        </a>
 
+    </div>
+
+    <div
+        id="popularTribesItems"
+        class="home-items"
+    >
+
+        <div class="loading">
+            Chargement...
         </div>
 
-        <div class="empty-section">
+    </div>
 
-            <p>
-                Aucune tribu n'a encore été rejointe.
-            </p>
+</section>
 
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- JEUX POPULAIRES -->
-    <!-- ========================= -->
-
-    <section class="home-section small-section">
-
-        <div class="home-section-header">
-
-            <h2>Jeux populaires</h2>
-
-            <a
-                href="/games/popular"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- CONTACTS POPULAIRES -->
-    <!-- ========================= -->
-
-    <section class="home-section small-section">
-
-        <div class="home-section-header">
-
-            <h2>Contacts populaires</h2>
-
-            <a
-                href="/contacts/popular"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- ARTICLES POPULAIRES -->
-    <!-- ========================= -->
-
-    <section class="home-section small-section">
-
-        <div class="home-section-header">
-
-            <h2>Articles populaires</h2>
-
-            <a
-                href="/articles/popular"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- TRIBUS POPULAIRES -->
-    <!-- ========================= -->
-
-    <section class="home-section small-section">
-
-        <div class="home-section-header">
-
-            <h2>Tribus populaires</h2>
-
-            <a
-                href="/tribes/popular"
-                class="more-btn"
-            >
-                Voir plus
-            </a>
-
-        </div>
-
-    </section>
 
 </main>
-
-
-<!-- ========================= -->
-<!-- FOOTER -->
-<!-- ========================= -->
-
-<footer class="site-footer">
-
-    <div class="footer-content">
-
-        <div class="footer-column">
-
-            <h3>BlocPlay</h3>
-
-            <p>
-                La plateforme de jeux créée par des gamers
-                pour des gamers.
-            </p>
-
-        </div>
-
-        <div class="footer-column">
-
-            <h3>À propos</h3>
-
-            <a href="/about">
-                À propos
-            </a>
-
-            <a href="/license">
-                Licences
-            </a>
-
-        </div>
-
-        <div class="footer-column">
-
-            <h3>Nous contacter</h3>
-
-            <a href="https://contact.blocplay.eu">
-                BP Contact
-            </a>
-
-            <a href="https://discord.gg/blocplay">
-                Discord
-            </a>
-
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-
-        © BlocPlay Studios™
-
-    </div>
-
-</footer>
 
 
 <!-- ========================= -->
@@ -765,16 +614,30 @@
 
 import {
     initializeApp
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
     getAuth,
     onAuthStateChanged,
     signOut
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+import {
+    getFirestore,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    where,
+    orderBy,
+    limit
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* ========================= */
+/* CONFIG */
+/* ========================= */
 
 const firebaseConfig = {
 
@@ -805,9 +668,12 @@ const app =
 const auth =
     getAuth(app);
 
+const db =
+    getFirestore(app);
+
 
 /* ========================= */
-/* MENU PROFIL */
+/* ELEMENTS */
 /* ========================= */
 
 const avatar =
@@ -817,31 +683,13 @@ const dropdown =
     document.getElementById("dropdown");
 
 
+/* ========================= */
+/* MENU */
+/* ========================= */
+
 function renderMenu(user) {
 
-    if (user) {
-
-        dropdown.innerHTML = `
-
-            <a href="/profile">
-                Profil
-            </a>
-
-            <a href="/settings">
-                Paramètres
-            </a>
-
-            <a href="/rizoplay">
-                RizoPlay
-            </a>
-
-            <a href="#" id="logout">
-                Se déconnecter
-            </a>
-
-        `;
-
-    } else {
+    if (!user) {
 
         dropdown.innerHTML = `
 
@@ -855,32 +703,1109 @@ function renderMenu(user) {
 
         `;
 
+        return;
+    }
+
+
+    dropdown.innerHTML = `
+
+        <a href="/profile">
+            Profil
+        </a>
+
+        <a href="/settings">
+            Paramètres
+        </a>
+
+        <a href="/rizoplay">
+            RizoPlay
+        </a>
+
+        <a href="#" id="logout">
+            Se déconnecter
+        </a>
+
+    `;
+
+}
+
+
+/* ========================= */
+/* OUTILS */
+/* ========================= */
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+function showEmpty(element, text) {
+
+    element.innerHTML = `
+        <div class="empty-section">
+            ${escapeHTML(text)}
+        </div>
+    `;
+
+}
+
+
+function getImage(data, fallbackName) {
+
+    if (data.image) {
+        return data.image;
+    }
+
+    if (data.photoURL) {
+        return data.photoURL;
+    }
+
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        data.name ||
+        data.username ||
+        fallbackName
+    )}&background=111&color=fff`;
+
+}
+
+
+/* ========================= */
+/* CONTACTS */
+/* ========================= */
+
+async function loadContacts(uid) {
+
+    const container =
+        document.getElementById("contactsItems");
+
+    try {
+
+        const q = query(
+            collection(db, "friendships"),
+            where("userId", "==", uid),
+            where("status", "==", "accepted"),
+            limit(20)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Vous n'avez encore aucun contact."
+            );
+
+            return;
+        }
+
+
+        const friends =
+            snapshot.docs.slice(0, 4);
+
+
+        const users =
+            await Promise.all(
+
+                friends.map(async (friendDoc) => {
+
+                    const data =
+                        friendDoc.data();
+
+                    const userSnap =
+                        await getDoc(
+                            doc(
+                                db,
+                                "users",
+                                data.friendId
+                            )
+                        );
+
+                    if (!userSnap.exists()) {
+                        return null;
+                    }
+
+                    return {
+                        id: userSnap.id,
+                        ...userSnap.data()
+                    };
+
+                })
+
+            );
+
+
+        const validUsers =
+            users.filter(Boolean);
+
+
+        if (!validUsers.length) {
+
+            showEmpty(
+                container,
+                "Vous n'avez encore aucun contact."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            validUsers.map(user => `
+
+                <a
+                    href="/profile?id=${encodeURIComponent(user.id)}"
+                    class="home-item"
+                >
+
+                    <img
+                        src="${getImage(user, "Utilisateur")}"
+                        alt=""
+                    >
+
+                    <span class="home-item-name">
+                        ${escapeHTML(user.username || "Utilisateur")}
+                    </span>
+
+                </a>
+
+            `).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur contacts :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les contacts."
+        );
+
     }
 
 }
 
 
 /* ========================= */
-/* AUTH */
+/* JOUÉ RÉCEMMENT */
+/* ========================= */
+
+async function loadRecentGames(uid) {
+
+    const container =
+        document.getElementById("recentGamesItems");
+
+    try {
+
+        const q = query(
+            collection(db, "recentGames"),
+            where("userId", "==", uid),
+            limit(20)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Vous n'avez encore joué à aucun jeu."
+            );
+
+            return;
+        }
+
+
+        const recent =
+            snapshot.docs
+                .map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }))
+                .sort(
+                    (a, b) =>
+                        (b.lastPlayed?.seconds || 0) -
+                        (a.lastPlayed?.seconds || 0)
+                )
+                .slice(0, 4);
+
+
+        const games =
+            await Promise.all(
+
+                recent.map(async item => {
+
+                    const gameSnap =
+                        await getDoc(
+                            doc(
+                                db,
+                                "games",
+                                item.gameId
+                            )
+                        );
+
+                    if (!gameSnap.exists()) {
+                        return null;
+                    }
+
+                    return {
+                        id: gameSnap.id,
+                        ...gameSnap.data()
+                    };
+
+                })
+
+            );
+
+
+        const validGames =
+            games.filter(Boolean);
+
+
+        if (!validGames.length) {
+
+            showEmpty(
+                container,
+                "Vous n'avez encore joué à aucun jeu."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            validGames.map(game => `
+
+                <a
+                    href="/game/${encodeURIComponent(game.id)}"
+                    class="home-item"
+                >
+
+                    <img
+                        src="${getImage(game, "Jeu")}"
+                        alt=""
+                    >
+
+                    <span class="home-item-name">
+                        ${escapeHTML(game.name || "Jeu")}
+                    </span>
+
+                </a>
+
+            `).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur jeux récents :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les jeux récents."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* FAVORIS */
+/* ========================= */
+
+async function loadFavorites(uid) {
+
+    const container =
+        document.getElementById("favoritesItems");
+
+    try {
+
+        const q = query(
+            collection(db, "favorites"),
+            where("userId", "==", uid),
+            limit(20)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Vous n'avez encore aucun favori."
+            );
+
+            return;
+        }
+
+
+        const favorites =
+            snapshot.docs
+                .map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }))
+                .sort(
+                    (a, b) =>
+                        (b.createdAt?.seconds || 0) -
+                        (a.createdAt?.seconds || 0)
+                )
+                .slice(0, 4);
+
+
+        const items =
+            await Promise.all(
+
+                favorites.map(async favorite => {
+
+                    const collectionName =
+                        favorite.type === "article"
+                            ? "articles"
+                            : "games";
+
+                    const itemSnap =
+                        await getDoc(
+                            doc(
+                                db,
+                                collectionName,
+                                favorite.itemId
+                            )
+                        );
+
+                    if (!itemSnap.exists()) {
+                        return null;
+                    }
+
+                    return {
+                        id: itemSnap.id,
+                        type: favorite.type,
+                        ...itemSnap.data()
+                    };
+
+                })
+
+            );
+
+
+        const validItems =
+            items.filter(Boolean);
+
+
+        if (!validItems.length) {
+
+            showEmpty(
+                container,
+                "Vous n'avez encore aucun favori."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            validItems.map(item => {
+
+                const url =
+                    item.type === "article"
+                        ? `/article/${encodeURIComponent(item.id)}`
+                        : `/game/${encodeURIComponent(item.id)}`;
+
+                const name =
+                    item.type === "article"
+                        ? item.title || "Article"
+                        : item.name || "Jeu";
+
+                return `
+
+                    <a
+                        href="${url}"
+                        class="home-item"
+                    >
+
+                        <img
+                            src="${getImage(item, name)}"
+                            alt=""
+                        >
+
+                        <span class="home-item-name">
+                            ${escapeHTML(name)}
+                        </span>
+
+                    </a>
+
+                `;
+
+            }).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur favoris :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les favoris."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* OBTENU RÉCEMMENT */
+/* ========================= */
+
+async function loadOwnedItems(uid) {
+
+    const container =
+        document.getElementById("ownedItems");
+
+    try {
+
+        const q = query(
+            collection(db, "ownedItems"),
+            where("userId", "==", uid),
+            limit(20)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Aucun article n'a encore été obtenu."
+            );
+
+            return;
+        }
+
+
+        const owned =
+            snapshot.docs
+                .map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }))
+                .sort(
+                    (a, b) =>
+                        (b.obtainedAt?.seconds || 0) -
+                        (a.obtainedAt?.seconds || 0)
+                )
+                .slice(0, 4);
+
+
+        const items =
+            await Promise.all(
+
+                owned.map(async item => {
+
+                    const itemSnap =
+                        await getDoc(
+                            doc(
+                                db,
+                                "articles",
+                                item.itemId
+                            )
+                        );
+
+                    if (!itemSnap.exists()) {
+                        return null;
+                    }
+
+                    return {
+                        id: itemSnap.id,
+                        ...itemSnap.data()
+                    };
+
+                })
+
+            );
+
+
+        const validItems =
+            items.filter(Boolean);
+
+
+        if (!validItems.length) {
+
+            showEmpty(
+                container,
+                "Aucun article n'a encore été obtenu."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            validItems.map(item => `
+
+                <a
+                    href="/article/${encodeURIComponent(item.id)}"
+                    class="home-item"
+                >
+
+                    <img
+                        src="${getImage(item, "Article")}"
+                        alt=""
+                    >
+
+                    <span class="home-item-name">
+                        ${escapeHTML(item.title || "Article")}
+                    </span>
+
+                </a>
+
+            `).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur articles obtenus :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les articles."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* TRIBUS */
+/* ========================= */
+
+async function loadTribes(uid) {
+
+    const container =
+        document.getElementById("tribesItems");
+
+    try {
+
+        const q = query(
+            collection(db, "tribeMembers"),
+            where("userId", "==", uid),
+            limit(20)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Vous n'avez rejoint aucune tribu."
+            );
+
+            return;
+        }
+
+
+        const memberships =
+            snapshot.docs.slice(0, 4);
+
+
+        const tribes =
+            await Promise.all(
+
+                memberships.map(async member => {
+
+                    const data =
+                        member.data();
+
+                    const tribeSnap =
+                        await getDoc(
+                            doc(
+                                db,
+                                "tribes",
+                                data.tribeId
+                            )
+                        );
+
+                    if (!tribeSnap.exists()) {
+                        return null;
+                    }
+
+                    return {
+                        id: tribeSnap.id,
+                        ...tribeSnap.data()
+                    };
+
+                })
+
+            );
+
+
+        const validTribes =
+            tribes.filter(Boolean);
+
+
+        if (!validTribes.length) {
+
+            showEmpty(
+                container,
+                "Vous n'avez rejoint aucune tribu."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            validTribes.map(tribe => `
+
+                <a
+                    href="/tribe/${encodeURIComponent(tribe.id)}"
+                    class="home-item"
+                >
+
+                    <img
+                        src="${getImage(tribe, "Tribu")}"
+                        alt=""
+                    >
+
+                    <span class="home-item-name">
+                        ${escapeHTML(tribe.name || "Tribu")}
+                    </span>
+
+                </a>
+
+            `).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur tribus :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les tribus."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* JEUX POPULAIRES */
+/* ========================= */
+
+async function loadPopularGames() {
+
+    const container =
+        document.getElementById("popularGamesItems");
+
+    try {
+
+        const q = query(
+            collection(db, "games"),
+            orderBy("players", "desc"),
+            limit(4)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Aucun jeu populaire pour le moment."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            snapshot.docs.map(gameDoc => {
+
+                const game = {
+                    id: gameDoc.id,
+                    ...gameDoc.data()
+                };
+
+                return `
+
+                    <a
+                        href="/game/${encodeURIComponent(game.id)}"
+                        class="home-item"
+                    >
+
+                        <img
+                            src="${getImage(game, "Jeu")}"
+                            alt=""
+                        >
+
+                        <span class="home-item-name">
+                            ${escapeHTML(game.name || "Jeu")}
+                        </span>
+
+                    </a>
+
+                `;
+
+            }).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur jeux populaires :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les jeux populaires."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* CONTACTS POPULAIRES */
+/* ========================= */
+
+async function loadPopularContacts() {
+
+    const container =
+        document.getElementById("popularContactsItems");
+
+    try {
+
+        const q = query(
+            collection(db, "users"),
+            orderBy("activityScore", "desc"),
+            limit(4)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Aucun contact populaire pour le moment."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            snapshot.docs.map(userDoc => {
+
+                const user = {
+                    id: userDoc.id,
+                    ...userDoc.data()
+                };
+
+                return `
+
+                    <a
+                        href="/profile?id=${encodeURIComponent(user.id)}"
+                        class="home-item"
+                    >
+
+                        <img
+                            src="${getImage(user, "Utilisateur")}"
+                            alt=""
+                        >
+
+                        <span class="home-item-name">
+                            ${escapeHTML(user.username || "Utilisateur")}
+                        </span>
+
+                    </a>
+
+                `;
+
+            }).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur contacts populaires :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les contacts populaires."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* ARTICLES POPULAIRES */
+/* ========================= */
+
+async function loadPopularArticles() {
+
+    const container =
+        document.getElementById("popularArticlesItems");
+
+    try {
+
+        const q = query(
+            collection(db, "articles"),
+            orderBy("purchasesCount", "desc"),
+            limit(4)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Aucun article populaire pour le moment."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            snapshot.docs.map(articleDoc => {
+
+                const article = {
+                    id: articleDoc.id,
+                    ...articleDoc.data()
+                };
+
+                return `
+
+                    <a
+                        href="/article/${encodeURIComponent(article.id)}"
+                        class="home-item"
+                    >
+
+                        <img
+                            src="${getImage(article, "Article")}"
+                            alt=""
+                        >
+
+                        <span class="home-item-name">
+                            ${escapeHTML(article.title || "Article")}
+                        </span>
+
+                    </a>
+
+                `;
+
+            }).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur articles populaires :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les articles populaires."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* TRIBUS POPULAIRES */
+/* ========================= */
+
+async function loadPopularTribes() {
+
+    const container =
+        document.getElementById("popularTribesItems");
+
+    try {
+
+        const q = query(
+            collection(db, "tribes"),
+            orderBy("membersCount", "desc"),
+            limit(4)
+        );
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if (snapshot.empty) {
+
+            showEmpty(
+                container,
+                "Aucune tribu populaire pour le moment."
+            );
+
+            return;
+        }
+
+
+        container.innerHTML =
+            snapshot.docs.map(tribeDoc => {
+
+                const tribe = {
+                    id: tribeDoc.id,
+                    ...tribeDoc.data()
+                };
+
+                return `
+
+                    <a
+                        href="/tribe/${encodeURIComponent(tribe.id)}"
+                        class="home-item"
+                    >
+
+                        <img
+                            src="${getImage(tribe, "Tribu")}"
+                            alt=""
+                        >
+
+                        <span class="home-item-name">
+                            ${escapeHTML(tribe.name || "Tribu")}
+                        </span>
+
+                    </a>
+
+                `;
+
+            }).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Erreur tribus populaires :",
+            error
+        );
+
+        showEmpty(
+            container,
+            "Impossible de charger les tribus populaires."
+        );
+
+    }
+
+}
+
+
+/* ========================= */
+/* AUTH + CHARGEMENT HOME */
 /* ========================= */
 
 onAuthStateChanged(
     auth,
-    (user) => {
+    async (user) => {
 
         renderMenu(user);
+
+
+        if (!user) {
+
+            window.location.href = "/login";
+
+            return;
+        }
+
+
+        /* Avatar Firebase */
+
+        if (user.photoURL) {
+
+            avatar.src =
+                user.photoURL;
+
+        } else {
+
+            avatar.src =
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    user.displayName || "User"
+                )}&background=111&color=fff&rounded=true&size=64`;
+
+        }
+
+
+        /* Chargement des sections */
+
+        await Promise.all([
+
+            loadContacts(user.uid),
+
+            loadRecentGames(user.uid),
+
+            loadFavorites(user.uid),
+
+            loadOwnedItems(user.uid),
+
+            loadTribes(user.uid),
+
+            loadPopularGames(),
+
+            loadPopularContacts(),
+
+            loadPopularArticles(),
+
+            loadPopularTribes()
+
+        ]);
 
     }
 );
 
 
 /* ========================= */
-/* OUVERTURE PROFIL */
+/* MENU PROFIL */
 /* ========================= */
 
 avatar.addEventListener(
     "click",
-    (event) => {
+    event => {
 
         event.stopPropagation();
 
@@ -889,10 +1814,6 @@ avatar.addEventListener(
     }
 );
 
-
-/* ========================= */
-/* FERMETURE PROFIL */
-/* ========================= */
 
 document.addEventListener(
     "click",
@@ -904,13 +1825,9 @@ document.addEventListener(
 );
 
 
-/* ========================= */
-/* LOGOUT */
-/* ========================= */
-
 document.addEventListener(
     "click",
-    async (event) => {
+    async event => {
 
         if (event.target.id === "logout") {
 
@@ -918,7 +1835,7 @@ document.addEventListener(
 
             await signOut(auth);
 
-            window.location.reload();
+            window.location.href = "/login";
 
         }
 
@@ -950,8 +1867,6 @@ const closeSearch =
     document.getElementById("closeSearch");
 
 
-/* OUVRIR */
-
 searchBtn.addEventListener(
     "click",
     () => {
@@ -963,8 +1878,6 @@ searchBtn.addEventListener(
     }
 );
 
-
-/* FERMER */
 
 closeSearch.addEventListener(
     "click",
@@ -980,11 +1893,9 @@ closeSearch.addEventListener(
 );
 
 
-/* RECHERCHE UNIQUEMENT AVEC ENTRÉE */
-
 searchInput.addEventListener(
     "keydown",
-    (event) => {
+    event => {
 
         if (event.key !== "Enter") {
             return;
@@ -997,14 +1908,11 @@ searchInput.addEventListener(
             return;
         }
 
-
         searchResults.innerHTML = `
 
             <div class="search-result">
 
-                <h3>
-                    Résultats de recherche
-                </h3>
+                <h3>Résultats de recherche</h3>
 
                 <p>
                     Recherche pour :
@@ -1021,25 +1929,22 @@ searchInput.addEventListener(
 );
 
 
-/* PROTECTION HTML */
-
 function escapeHTML(text) {
 
     const div =
         document.createElement("div");
 
-    div.textContent = text;
+    div.textContent =
+        text;
 
     return div.innerHTML;
 
 }
 
 
-/* CLIQUER EN DEHORS */
-
 searchOverlay.addEventListener(
     "click",
-    (event) => {
+    event => {
 
         if (event.target === searchOverlay) {
 
