@@ -1064,6 +1064,49 @@ window.addEventListener(
     }
 );
 
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        avatar.src =
+            "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+        return;
+    }
+
+    try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        let photoURL = "";
+
+        if (userSnap.exists()) {
+            const data = userSnap.data();
+            photoURL = data.photoURL || "";
+        }
+
+        // Si aucune photo n'est enregistrée dans Firestore,
+        // on utilise celle de Firebase Auth
+        if (!photoURL) {
+            photoURL = user.photoURL || "";
+        }
+
+        if (photoURL) {
+            avatar.src = photoURL;
+        } else {
+            const name =
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "User";
+
+            avatar.src =
+                "https://ui-avatars.com/api/?name=" +
+                encodeURIComponent(name) +
+                "&background=111&color=fff&rounded=true&size=64";
+        }
+
+    } catch (error) {
+        console.error("Erreur lors du chargement de la photo :", error);
+    }
+});
+
 </script>
 
 
