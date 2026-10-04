@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Accueil - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+
+<style>
+
+/* ========================= */
+/* SECTIONS HOME */
+/* ========================= */
+
+.home-section {
+    background: #122a4a;
+    padding: 18px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.home-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.home-section-header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+/* ========================= */
+/* BOUTON VOIR PLUS */
+/* ========================= */
+
+.more-btn {
+    background: #0e2347;
+    color: white;
+
+    border: none;
+    border-radius: 9px;
+
+    padding: 8px 12px;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.more-btn:hover {
+    background: #173b70;
+}
+
+/* ========================= */
+/* ÉLÉMENTS */
+/* ========================= */
+
+.home-items {
+    display: flex;
+    gap: 12px;
+
+    overflow-x: auto;
+
+    padding-bottom: 4px;
+}
+
+.home-items::-webkit-scrollbar {
+    height: 5px;
+}
+
+.home-items::-webkit-scrollbar-thumb {
+    background: #345;
+    border-radius: 10px;
+}
+
+/* ========================= */
+/* CONTACT / JEU / FAVORI */
+/* ========================= */
+
+.home-item {
+    flex: 0 0 105px;
+
+    min-height: 125px;
+
+    background: #0e2347;
+
+    border-radius: 12px;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    color: white;
+
+    transition: transform 0.2s ease,
+                background 0.2s ease;
+}
+
+.home-item:hover {
+    transform: translateY(-3px);
+    background: #173b70;
+}
+
+.home-item img {
+    width: 65px;
+    height: 65px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    margin-bottom: 8px;
+}
+
+.home-item-name {
+    display: block;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-weight: bold;
+
+    font-size: 14px;
+}
+
+/* ========================= */
+/* MESSAGE VIDE */
+/* ========================= */
+
+.empty-section {
+    min-height: 75px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #9fb4d4;
+
+    font-size: 15px;
+}
+
+/* ========================= */
+/* PETITES SECTIONS */
+/* ========================= */
+
+.small-section {
+    padding: 14px 18px;
+}
+
+.small-section .home-section-header {
+    margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+
+    .home-section {
+        padding: 15px;
+    }
+
+    .home-section-header h2 {
+        font-size: 19px;
+    }
+
+    .home-item {
+        flex-basis: 100px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
+
+<header>
+
+    <div class="header-content">
+
+        <a href="/" class="logo">
+            <img src="/icon.png" alt="BlocPlay">
+        </a>
+
+        <div class="header-actions">
+
+            <!-- RECHERCHE -->
+
+            <button
+                id="searchBtn"
+                class="header-button"
+                aria-label="Rechercher"
+            >
+                🔍
+            </button>
+
+            <!-- PROFIL -->
+
+            <div class="profile-menu">
+
+                <img
+                    src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+                    class="avatar"
+                    id="avatar"
+                    alt="Profil"
+                >
+
+                <div
+                    class="dropdown"
+                    id="dropdown"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
+
+<div
+    id="searchOverlay"
+    class="search-overlay"
+>
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Rechercher sur BlocPlay..."
+            autocomplete="off"
+        >
+
+        <button
+            id="closeSearch"
+            class="search-close"
+        >
+            ✕
+        </button>
+
+    </div>
+
+    <div
+        id="searchResults"
+        class="search-results"
+    ></div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- CONTENU -->
+<!-- ========================= -->
+
+<main class="container">
+
+
+    <!-- ========================= -->
+    <!-- CONTACTS -->
+    <!-- ========================= -->
+
+    <section class="home-section">
+
+        <div class="home-section-header">
+
+            <h2>Contacts</h2>
+
+            <a
+                href="/contacts"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+        <div class="home-items">
+
+            <a href="/profile" class="home-item">
+
+                <img
+                    src="https://ui-avatars.com/api/?name=Utilisateur&background=111&color=fff"
+                    alt=""
+                >
+
+                <span class="home-item-name">
+                    Utilisateur
+                </span>
+
+            </a>
+
+            <a href="/contacts" class="home-item">
+
+                <img
+                    src="https://ui-avatars.com/api/?name=Contact&background=111&color=fff"
+                    alt=""
+                >
+
+                <span class="home-item-name">
+                    Contact
+                </span>
+
+            </a>
+
+            <a href="/contacts" class="home-item">
+
+                <img
+                    src="https://ui-avatars.com/api/?name=Ajouter&background=111&color=fff"
+                    alt=""
+                >
+
+                <span class="home-item-name">
+                    Ajouter
+                </span>
+
+            </a>
+
+            <a href="/contacts" class="home-item">
+
+                <img
+                    src="https://ui-avatars.com/api/?name=Plus&background=111&color=fff"
+                    alt=""
+                >
+
+                <span class="home-item-name">
+                    Plus
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- JEUX RÉCENTS -->
+    <!-- ========================= -->
+
+    <section class="home-section">
+
+        <div class="home-section-header">
+
+            <h2>Jeux récemment</h2>
+
+            <a
+                href="/games/recent"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+        <div class="home-items">
+
+            <a
+                href="/game/1"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Jeu"
+                >
+
+                <span class="home-item-name">
+                    Jeu récent
+                </span>
+
+            </a>
+
+            <a
+                href="/games"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Jeu"
+                >
+
+                <span class="home-item-name">
+                    Jeu
+                </span>
+
+            </a>
+
+            <a
+                href="/games"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Jeu"
+                >
+
+                <span class="home-item-name">
+                    Jeu
+                </span>
+
+            </a>
+
+            <a
+                href="/games"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Jeu"
+                >
+
+                <span class="home-item-name">
+                    Jeu
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- FAVORIS -->
+    <!-- ========================= -->
+
+    <section class="home-section">
+
+        <div class="home-section-header">
+
+            <h2>Favoris</h2>
+
+            <a
+                href="/favorites"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+        <div class="home-items">
+
+            <a
+                href="/favorites"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Favori"
+                >
+
+                <span class="home-item-name">
+                    Favori
+                </span>
+
+            </a>
+
+            <a
+                href="/favorites"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Favori"
+                >
+
+                <span class="home-item-name">
+                    Favori
+                </span>
+
+            </a>
+
+            <a
+                href="/favorites"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Favori"
+                >
+
+                <span class="home-item-name">
+                    Favori
+                </span>
+
+            </a>
+
+            <a
+                href="/favorites"
+                class="home-item"
+            >
+
+                <img
+                    src="/icon.png"
+                    alt="Favori"
+                >
+
+                <span class="home-item-name">
+                    Favori
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- ACHATS RÉCENTS -->
+    <!-- ========================= -->
+
+    <section class="home-section">
+
+        <div class="home-section-header">
+
+            <h2>Obtenu récemment</h2>
+
+            <a
+                href="/purchases"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+        <div class="empty-section">
+
+            <p>
+                Aucun article n'a encore été acheté.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- TRIBUS -->
+    <!-- ========================= -->
+
+    <section class="home-section">
+
+        <div class="home-section-header">
+
+            <h2>Tribus</h2>
+
+            <a
+                href="/tribes"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+        <div class="empty-section">
+
+            <p>
+                Aucune tribu n'a encore été rejointe.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- JEUX POPULAIRES -->
+    <!-- ========================= -->
+
+    <section class="home-section small-section">
+
+        <div class="home-section-header">
+
+            <h2>Jeux populaires</h2>
+
+            <a
+                href="/games/popular"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- CONTACTS POPULAIRES -->
+    <!-- ========================= -->
+
+    <section class="home-section small-section">
+
+        <div class="home-section-header">
+
+            <h2>Contacts populaires</h2>
+
+            <a
+                href="/contacts/popular"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- ARTICLES POPULAIRES -->
+    <!-- ========================= -->
+
+    <section class="home-section small-section">
+
+        <div class="home-section-header">
+
+            <h2>Articles populaires</h2>
+
+            <a
+                href="/articles/popular"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- TRIBUS POPULAIRES -->
+    <!-- ========================= -->
+
+    <section class="home-section small-section">
+
+        <div class="home-section-header">
+
+            <h2>Tribus populaires</h2>
+
+            <a
+                href="/tribes/popular"
+                class="more-btn"
+            >
+                Voir plus
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
+
+<footer class="site-footer">
+
+    <div class="footer-content">
+
+        <div class="footer-column">
+
+            <h3>BlocPlay</h3>
+
+            <p>
+                La plateforme de jeux créée par des gamers
+                pour des gamers.
+            </p>
+
+        </div>
+
+        <div class="footer-column">
+
+            <h3>À propos</h3>
+
+            <a href="/about">
+                À propos
+            </a>
+
+            <a href="/license">
+                Licences
+            </a>
+
+        </div>
+
+        <div class="footer-column">
+
+            <h3>Nous contacter</h3>
+
+            <a href="https://contact.blocplay.eu">
+                BP Contact
+            </a>
+
+            <a href="https://discord.gg/blocplay">
+                Discord
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+        © BlocPlay Studios™
+
+    </div>
+
+</footer>
+
+
+<!-- ========================= -->
+<!-- FIREBASE -->
+<!-- ========================= -->
+
+<script type="module">
+
+import {
+    initializeApp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+    authDomain:
+        "blocplay-a9417.firebaseapp.com",
+
+    projectId:
+        "blocplay-a9417",
+
+    storageBucket:
+        "blocplay-a9417.firebasestorage.app",
+
+    messagingSenderId:
+        "540161549188",
+
+    appId:
+        "1:540161549188:web:e0ec0350bd044de2f333d1"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+
+/* ========================= */
+/* MENU PROFIL */
+/* ========================= */
+
+const avatar =
+    document.getElementById("avatar");
+
+const dropdown =
+    document.getElementById("dropdown");
+
+
+function renderMenu(user) {
+
+    if (user) {
+
+        dropdown.innerHTML = `
+
+            <a href="/profile">
+                Profil
+            </a>
+
+            <a href="/settings">
+                Paramètres
+            </a>
+
+            <a href="/rizoplay">
+                RizoPlay
+            </a>
+
+            <a href="#" id="logout">
+                Se déconnecter
+            </a>
+
+        `;
+
+    } else {
+
+        dropdown.innerHTML = `
+
+            <a href="/login">
+                Se connecter
+            </a>
+
+            <a href="/signup">
+                Créer un compte
+            </a>
+
+        `;
+
+    }
+
+}
+
+
+/* ========================= */
+/* AUTH */
+/* ========================= */
+
+onAuthStateChanged(
+    auth,
+    (user) => {
+
+        renderMenu(user);
+
+    }
+);
+
+
+/* ========================= */
+/* OUVERTURE PROFIL */
+/* ========================= */
+
+avatar.addEventListener(
+    "click",
+    (event) => {
+
+        event.stopPropagation();
+
+        dropdown.classList.toggle("show");
+
+    }
+);
+
+
+/* ========================= */
+/* FERMETURE PROFIL */
+/* ========================= */
+
+document.addEventListener(
+    "click",
+    () => {
+
+        dropdown.classList.remove("show");
+
+    }
+);
+
+
+/* ========================= */
+/* LOGOUT */
+/* ========================= */
+
+document.addEventListener(
+    "click",
+    async (event) => {
+
+        if (event.target.id === "logout") {
+
+            event.preventDefault();
+
+            await signOut(auth);
+
+            window.location.reload();
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
+
+<script>
+
+const searchBtn =
+    document.getElementById("searchBtn");
+
+const searchOverlay =
+    document.getElementById("searchOverlay");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const searchResults =
+    document.getElementById("searchResults");
+
+const closeSearch =
+    document.getElementById("closeSearch");
+
+
+/* OUVRIR */
+
+searchBtn.addEventListener(
+    "click",
+    () => {
+
+        searchOverlay.classList.add("show");
+
+        searchInput.focus();
+
+    }
+);
+
+
+/* FERMER */
+
+closeSearch.addEventListener(
+    "click",
+    () => {
+
+        searchOverlay.classList.remove("show");
+
+        searchInput.value = "";
+
+        searchResults.innerHTML = "";
+
+    }
+);
+
+
+/* RECHERCHE UNIQUEMENT AVEC ENTRÉE */
+
+searchInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (event.key !== "Enter") {
+            return;
+        }
+
+        const query =
+            searchInput.value.trim();
+
+        if (!query) {
+            return;
+        }
+
+
+        searchResults.innerHTML = `
+
+            <div class="search-result">
+
+                <h3>
+                    Résultats de recherche
+                </h3>
+
+                <p>
+                    Recherche pour :
+                    <strong>
+                        ${escapeHTML(query)}
+                    </strong>
+                </p>
+
+            </div>
+
+        `;
+
+    }
+);
+
+
+/* PROTECTION HTML */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* CLIQUER EN DEHORS */
+
+searchOverlay.addEventListener(
+    "click",
+    (event) => {
+
+        if (event.target === searchOverlay) {
+
+            searchOverlay.classList.remove("show");
+
+            searchInput.value = "";
+
+            searchResults.innerHTML = "";
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- ========================= -->
+<!-- SERVICE WORKER -->
+<!-- ========================= -->
+
+<script>
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker.register(
+                "/service-worker.js"
+            );
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+</html>
