@@ -884,73 +884,42 @@ async function loadProfile(
 /* AUTH */
 /* ========================= */
 
-onAuthStateChanged(auth, async (user) => {
-
-    const hash = window.location.hash.substring(1).trim();
-
-    // =========================
-    // MON PROFIL
-    // =========================
-
-    if (!hash) {
+onAuthStateChanged(
+    auth,
+    async (user) => {
 
         if (!user) {
-            window.location.href = "/login";
+
+            window.location.href =
+                "/login";
+
             return;
+
         }
+
 
         renderMenu(user);
 
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
 
-        if (!docSnap.exists()) {
-            document.getElementById("username").textContent =
-                "Utilisateur introuvable";
-            return;
+        try {
+
+            await loadProfile(
+                user
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Erreur chargement profil :",
+                error
+            );
+
+            showNotFound();
+
         }
 
-        afficherProfil(docSnap.data(), true);
-        return;
     }
-
-
-    // =========================
-    // PROFIL AVEC ID
-    // =========================
-
-    if (!user) {
-        window.location.href = "/login";
-        return;
-    }
-
-    renderMenu(user);
-
-    const customID = Number(hash);
-
-    if (Number.isNaN(customID)) {
-        document.getElementById("username").textContent =
-            "Utilisateur introuvable";
-        return;
-    }
-
-    const q = query(
-        collection(db, "users"),
-        where("id", "==", customID),
-        limit(1)
-    );
-
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-        document.getElementById("username").textContent =
-            "Utilisateur introuvable";
-        return;
-    }
-
-    afficherProfil(snapshot.docs[0].data(), false);
-
-});
+);
 
 
 /* ========================= */
