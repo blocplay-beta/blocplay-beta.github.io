@@ -35,10 +35,6 @@
 
     <style>
 
-        /* ============================== */
-        /* BARRE DE RECHERCHE */
-        /* ============================== */
-
         .search-page-card {
             margin-bottom: 20px;
         }
@@ -93,6 +89,7 @@
             font-size: 18px;
 
             background: #5865f2;
+
             color: white;
 
             transition:
@@ -107,18 +104,10 @@
         }
 
 
-        /* ============================== */
-        /* INFORMATIONS */
-        /* ============================== */
-
         .search-query {
             opacity: 0.7;
         }
 
-
-        /* ============================== */
-        /* GROUPES */
-        /* ============================== */
 
         .search-group {
             margin-bottom: 20px;
@@ -135,20 +124,12 @@
         }
 
 
-        /* ============================== */
-        /* LISTE */
-        /* ============================== */
-
         .search-result-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-
-        /* ============================== */
-        /* RÉSULTAT */
-        /* ============================== */
 
         .search-result {
             display: flex;
@@ -163,6 +144,7 @@
             background: rgba(255, 255, 255, 0.045);
 
             color: inherit;
+
             text-decoration: none;
 
             transition:
@@ -178,10 +160,6 @@
                 translateY(-1px);
         }
 
-
-        /* ============================== */
-        /* IMAGE */
-        /* ============================== */
 
         .search-result-image,
         .search-result-icon {
@@ -208,10 +186,6 @@
             font-size: 25px;
         }
 
-
-        /* ============================== */
-        /* TEXTE */
-        /* ============================== */
 
         .search-result-content {
             flex: 1;
@@ -267,10 +241,6 @@
         }
 
 
-        /* ============================== */
-        /* CHARGEMENT */
-        /* ============================== */
-
         .search-loading {
             text-align: center;
 
@@ -279,10 +249,6 @@
             padding: 20px;
         }
 
-
-        /* ============================== */
-        /* AUCUN RÉSULTAT */
-        /* ============================== */
 
         .search-empty {
             text-align: center;
@@ -298,9 +264,14 @@
         }
 
 
-        /* ============================== */
-        /* MOBILE */
-        /* ============================== */
+        .search-error {
+            text-align: center;
+
+            padding: 20px;
+
+            color: #ff7777;
+        }
+
 
         @media (max-width: 600px) {
 
@@ -321,10 +292,12 @@
 
             .search-result-image,
             .search-result-icon {
+
                 width: 46px;
                 height: 46px;
 
                 min-width: 46px;
+
             }
 
 
@@ -341,10 +314,6 @@
 
 <body>
 
-
-<!-- ================================== -->
-<!-- HEADER -->
-<!-- ================================== -->
 
 <header>
 
@@ -367,8 +336,6 @@
         <div class="header-actions">
 
 
-            <!-- RECHERCHE -->
-
             <button
                 id="searchBtn"
                 class="header-button"
@@ -378,9 +345,8 @@
             </button>
 
 
-            <!-- PROFIL -->
-
             <div class="profile-menu">
+
 
                 <img
                     src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
@@ -395,25 +361,20 @@
                     id="dropdown"
                 ></div>
 
+
             </div>
 
+
         </div>
+
 
     </div>
 
 </header>
 
 
-<!-- ================================== -->
-<!-- CONTENU -->
-<!-- ================================== -->
-
 <main class="container">
 
-
-    <!-- ================================== -->
-    <!-- BARRE DE RECHERCHE -->
-    <!-- ================================== -->
 
     <div class="card search-page-card">
 
@@ -450,9 +411,7 @@
                 class="search-page-button"
                 aria-label="Rechercher"
             >
-
                 🔍
-
             </button>
 
 
@@ -461,10 +420,6 @@
 
     </div>
 
-
-    <!-- ================================== -->
-    <!-- INFORMATIONS -->
-    <!-- ================================== -->
 
     <div
         id="searchInfo"
@@ -478,10 +433,6 @@
     </div>
 
 
-    <!-- ================================== -->
-    <!-- RÉSULTATS -->
-    <!-- ================================== -->
-
     <div
         id="resultsContainer"
     ></div>
@@ -489,10 +440,6 @@
 
 </main>
 
-
-<!-- ================================== -->
-<!-- FOOTER -->
-<!-- ================================== -->
 
 <footer class="site-footer">
 
@@ -576,155 +523,195 @@
 </footer>
 
 
-<!-- ================================== -->
-<!-- FIREBASE -->
-<!-- ================================== -->
-
 <script type="module">
 
 
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+
 import {
+
     initializeApp
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
 import {
+
     getAuth,
+
     onAuthStateChanged,
+
     signOut
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
+
     getFirestore,
-    doc,
-    getDoc,
+
     collection,
-    getDocs
+
+    getDocs,
+
+    doc,
+
+    getDoc
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
-/* ================================== */
-/* CONFIGURATION FIREBASE */
-/* ================================== */
 
 const firebaseConfig = {
 
 
     apiKey:
+
         "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwEtMmEtUkn04",
 
 
     authDomain:
+
         "blocplay-a9417.firebaseapp.com",
 
 
     projectId:
+
         "blocplay-a9417",
 
 
     storageBucket:
+
         "blocplay-a9417.firebasestorage.app",
 
 
     messagingSenderId:
+
         "540161549188",
 
 
     appId:
+
         "1:540161549188:web:e0ec0350bd044de2f333d1"
 
 };
 
 
 const app =
+
     initializeApp(
         firebaseConfig
     );
 
 
 const auth =
+
     getAuth(
         app
     );
 
 
 const db =
+
     getFirestore(
         app
     );
 
 
-/* ================================== */
-/* ÉLÉMENTS */
-/* ================================== */
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 
 const avatar =
+
     document.getElementById(
         "avatar"
     );
 
 
 const dropdown =
+
     document.getElementById(
         "dropdown"
     );
 
 
 const searchBtn =
+
     document.getElementById(
         "searchBtn"
     );
 
 
 const searchForm =
+
     document.getElementById(
         "searchForm"
     );
 
 
 const pageSearchInput =
+
     document.getElementById(
         "pageSearchInput"
     );
 
 
 const searchInfo =
+
     document.getElementById(
         "searchInfo"
     );
 
 
 const resultsContainer =
+
     document.getElementById(
         "resultsContainer"
     );
 
 
-/* ================================== */
-/* BOUTON RECHERCHE HEADER */
-/* ================================== */
+
+/* =========================================================
+   BOUTON RECHERCHE DU HEADER
+========================================================= */
+
 
 searchBtn.addEventListener(
+
     "click",
+
     () => {
 
         window.location.href =
             "/fr/search/";
 
     }
+
 );
 
 
-/* ================================== */
-/* MENU PROFIL */
-/* ================================== */
+
+/* =========================================================
+   MENU PROFIL
+========================================================= */
+
 
 async function renderMenu(
     user
@@ -759,8 +746,11 @@ async function renderMenu(
 
 
         const name =
+
             user.displayName ||
+
             user.email?.split("@")[0] ||
+
             "User";
 
 
@@ -771,6 +761,7 @@ async function renderMenu(
 
 
             const userRef =
+
                 doc(
                     db,
                     "users",
@@ -779,6 +770,7 @@ async function renderMenu(
 
 
             const userSnap =
+
                 await getDoc(
                     userRef
                 );
@@ -790,25 +782,33 @@ async function renderMenu(
 
 
                 const data =
+
                     userSnap.data();
 
 
                 photoURL =
+
                     data.photoURL ||
+
                     data.avatar ||
+
                     "";
 
             }
 
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
 
             console.warn(
-                "Erreur chargement photo :",
-                error
-            );
 
+                "Impossible de récupérer le profil Firebase :",
+
+                error
+
+            );
 
         }
 
@@ -817,7 +817,9 @@ async function renderMenu(
 
 
             photoURL =
+
                 user.photoURL ||
+
                 "";
 
         }
@@ -830,20 +832,27 @@ async function renderMenu(
                 photoURL;
 
 
-        } else {
+        }
+
+        else {
 
 
             avatar.src =
+
                 "https://ui-avatars.com/api/?name=" +
+
                 encodeURIComponent(
                     name
                 ) +
+
                 "&background=111&color=fff&rounded=true&size=64";
 
         }
 
 
-    } else {
+    }
+
+    else {
 
 
         dropdown.innerHTML = `
@@ -860,6 +869,7 @@ async function renderMenu(
 
 
         avatar.src =
+
             "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
 
     }
@@ -867,12 +877,11 @@ async function renderMenu(
 }
 
 
-/* ================================== */
-/* AUTHENTIFICATION */
-/* ================================== */
 
 onAuthStateChanged(
+
     auth,
+
     user => {
 
         renderMenu(
@@ -880,16 +889,17 @@ onAuthStateChanged(
         );
 
     }
+
 );
 
 
-/* ================================== */
-/* OUVERTURE MENU PROFIL */
-/* ================================== */
 
 avatar.addEventListener(
+
     "click",
+
     event => {
+
 
         event.stopPropagation();
 
@@ -899,15 +909,15 @@ avatar.addEventListener(
         );
 
     }
+
 );
 
 
-/* ================================== */
-/* FERMETURE MENU PROFIL */
-/* ================================== */
 
 document.addEventListener(
+
     "click",
+
     () => {
 
         dropdown.classList.remove(
@@ -915,15 +925,15 @@ document.addEventListener(
         );
 
     }
+
 );
 
 
-/* ================================== */
-/* DÉCONNEXION */
-/* ================================== */
 
 document.addEventListener(
+
     "click",
+
     async event => {
 
 
@@ -938,18 +948,26 @@ document.addEventListener(
 
             try {
 
+
                 await signOut(
                     auth
                 );
 
+
                 window.location.reload();
 
 
-            } catch (error) {
+            }
+
+            catch (error) {
+
 
                 console.error(
+
                     "Erreur déconnexion :",
+
                     error
+
                 );
 
             }
@@ -957,12 +975,15 @@ document.addEventListener(
         }
 
     }
+
 );
 
 
-/* ================================== */
-/* NORMALISATION */
-/* ================================== */
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
 
 function normalizeText(
     value
@@ -972,22 +993,23 @@ function normalizeText(
     return String(
         value || ""
     )
-    .normalize(
-        "NFD"
-    )
-    .replace(
-        /[\u0300-\u036f]/g,
-        ""
-    )
-    .toLowerCase()
-    .trim();
+
+        .normalize(
+            "NFD"
+        )
+
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+
+        .toLowerCase()
+
+        .trim();
 
 }
 
 
-/* ================================== */
-/* PROTECTION HTML */
-/* ================================== */
 
 function escapeHTML(
     value
@@ -995,6 +1017,7 @@ function escapeHTML(
 
 
     const div =
+
         document.createElement(
             "div"
         );
@@ -1009,9 +1032,30 @@ function escapeHTML(
 }
 
 
-/* ================================== */
-/* IMAGE */
-/* ================================== */
+
+function getName(
+    data,
+    fallback
+) {
+
+
+    return (
+
+        data?.displayName ||
+
+        data?.username ||
+
+        data?.name ||
+
+        data?.title ||
+
+        fallback
+
+    );
+
+}
+
+
 
 function getImage(
     data
@@ -1039,36 +1083,6 @@ function getImage(
 }
 
 
-/* ================================== */
-/* NOM */
-/* ================================== */
-
-function getName(
-    data,
-    fallback
-) {
-
-
-    return (
-
-        data?.displayName ||
-
-        data?.username ||
-
-        data?.name ||
-
-        data?.title ||
-
-        fallback
-
-    );
-
-}
-
-
-/* ================================== */
-/* RÉCUPÉRER LE HASH */
-/* ================================== */
 
 function getSearchQuery() {
 
@@ -1091,8 +1105,9 @@ function getSearchQuery() {
             hash.substring(1)
         );
 
+    }
 
-    } catch {
+    catch {
 
 
         return hash.substring(1);
@@ -1102,9 +1117,11 @@ function getSearchQuery() {
 }
 
 
-/* ================================== */
-/* CRÉER UNE ICÔNE */
-/* ================================== */
+
+/* =========================================================
+   ICÔNE PAR DÉFAUT
+========================================================= */
+
 
 function createIcon(
     icon
@@ -1112,6 +1129,7 @@ function createIcon(
 
 
     const element =
+
         document.createElement(
             "div"
         );
@@ -1130,9 +1148,11 @@ function createIcon(
 }
 
 
-/* ================================== */
-/* CRÉER UN RÉSULTAT */
-/* ================================== */
+
+/* =========================================================
+   CRÉATION D'UN RÉSULTAT
+========================================================= */
+
 
 function createResult(
     type,
@@ -1145,6 +1165,7 @@ function createResult(
 
 
     const result =
+
         document.createElement(
             "a"
         );
@@ -1158,14 +1179,11 @@ function createResult(
         "search-result";
 
 
-    /* ============================== */
-    /* IMAGE */
-    /* ============================== */
-
     if (image) {
 
 
         const imageElement =
+
             document.createElement(
                 "img"
             );
@@ -1184,6 +1202,7 @@ function createResult(
 
 
         imageElement.onerror =
+
             () => {
 
                 imageElement.replaceWith(
@@ -1199,8 +1218,9 @@ function createResult(
             imageElement
         );
 
+    }
 
-    } else {
+    else {
 
 
         result.appendChild(
@@ -1212,11 +1232,9 @@ function createResult(
     }
 
 
-    /* ============================== */
-    /* TEXTE */
-    /* ============================== */
 
     const content =
+
         document.createElement(
             "div"
         );
@@ -1248,11 +1266,9 @@ function createResult(
     );
 
 
-    /* ============================== */
-    /* FLÈCHE */
-    /* ============================== */
 
     const arrow =
+
         document.createElement(
             "span"
         );
@@ -1276,9 +1292,11 @@ function createResult(
 }
 
 
-/* ================================== */
-/* CRÉER UN GROUPE */
-/* ================================== */
+
+/* =========================================================
+   GROUPE DE RÉSULTATS
+========================================================= */
+
 
 function createGroup(
     title,
@@ -1296,6 +1314,7 @@ function createGroup(
 
 
     const card =
+
         document.createElement(
             "div"
         );
@@ -1306,6 +1325,7 @@ function createGroup(
 
 
     const heading =
+
         document.createElement(
             "h2"
         );
@@ -1324,7 +1344,9 @@ function createGroup(
     );
 
 
+
     const list =
+
         document.createElement(
             "div"
         );
@@ -1335,8 +1357,8 @@ function createGroup(
 
 
     results.forEach(
-        result => {
 
+        result => {
 
             list.appendChild(
 
@@ -1359,6 +1381,7 @@ function createGroup(
             );
 
         }
+
     );
 
 
@@ -1372,9 +1395,11 @@ function createGroup(
 }
 
 
-/* ================================== */
-/* RECHERCHE UTILISATEURS */
-/* ================================== */
+
+/* =========================================================
+   RECHERCHE UTILISATEURS
+========================================================= */
+
 
 async function searchUsers(
     query
@@ -1388,57 +1413,86 @@ async function searchUsers(
 
 
         const snapshot =
+
             await getDocs(
+
                 collection(
                     db,
-                    "publicUsers"
+                    "users"
                 )
+
             );
 
 
         const normalized =
+
             normalizeText(
                 query
             );
 
 
         snapshot.forEach(
+
             documentSnapshot => {
 
 
                 const data =
+
                     documentSnapshot.data();
 
 
                 const displayName =
+
                     normalizeText(
                         data.displayName
                     );
 
 
                 const username =
+
                     normalizeText(
                         data.username
                     );
 
 
+                const email =
+
+                    normalizeText(
+                        data.email
+                    );
+
+
                 if (
+
 
                     displayName.includes(
                         normalized
                     )
 
+
                     ||
+
 
                     username.includes(
                         normalized
                     )
 
+
+                    ||
+
+
+                    email.includes(
+                        normalized
+                    )
+
+
                 ) {
 
 
                     const profileID =
+
                         data.id ??
+
                         documentSnapshot.id;
 
 
@@ -1453,6 +1507,7 @@ async function searchUsers(
 
 
                         title:
+
                             getName(
                                 data,
                                 "Utilisateur"
@@ -1470,6 +1525,8 @@ async function searchUsers(
 
                                 :
 
+                                data.email ||
+
                                 "Utilisateur BlocPlay",
 
 
@@ -1483,6 +1540,7 @@ async function searchUsers(
 
 
                         image:
+
                             getImage(
                                 data
                             )
@@ -1492,17 +1550,22 @@ async function searchUsers(
                 }
 
             }
+
         );
 
+    }
 
-    } catch (error) {
+
+    catch (error) {
 
 
-        console.warn(
-            "Recherche utilisateurs indisponible :",
+        console.error(
+
+            "Erreur recherche utilisateurs :",
+
             error
-        );
 
+        );
 
     }
 
@@ -1515,9 +1578,11 @@ async function searchUsers(
 }
 
 
-/* ================================== */
-/* RECHERCHE JEUX */
-/* ================================== */
+
+/* =========================================================
+   RECHERCHE JEUX
+========================================================= */
+
 
 async function searchGames(
     query
@@ -1531,29 +1596,36 @@ async function searchGames(
 
 
         const snapshot =
+
             await getDocs(
+
                 collection(
                     db,
                     "games"
                 )
+
             );
 
 
         const normalized =
+
             normalizeText(
                 query
             );
 
 
         snapshot.forEach(
+
             documentSnapshot => {
 
 
                 const data =
+
                     documentSnapshot.data();
 
 
                 const name =
+
                     normalizeText(
 
                         data.name ||
@@ -1566,6 +1638,7 @@ async function searchGames(
 
 
                 const description =
+
                     normalizeText(
                         data.description
                     );
@@ -1573,15 +1646,19 @@ async function searchGames(
 
                 if (
 
+
                     name.includes(
                         normalized
                     )
 
+
                     ||
+
 
                     description.includes(
                         normalized
                     )
+
 
                 ) {
 
@@ -1597,6 +1674,7 @@ async function searchGames(
 
 
                         title:
+
                             getName(
                                 data,
                                 "Jeu"
@@ -1620,6 +1698,7 @@ async function searchGames(
 
 
                         image:
+
                             getImage(
                                 data
                             )
@@ -1629,17 +1708,22 @@ async function searchGames(
                 }
 
             }
+
         );
 
+    }
 
-    } catch (error) {
+
+    catch (error) {
 
 
-        console.warn(
-            "Recherche jeux indisponible :",
+        console.error(
+
+            "Erreur recherche jeux :",
+
             error
-        );
 
+        );
 
     }
 
@@ -1652,9 +1736,11 @@ async function searchGames(
 }
 
 
-/* ================================== */
-/* RECHERCHE TRIBUS */
-/* ================================== */
+
+/* =========================================================
+   RECHERCHE TRIBUS
+========================================================= */
+
 
 async function searchTribes(
     query
@@ -1668,29 +1754,36 @@ async function searchTribes(
 
 
         const snapshot =
+
             await getDocs(
+
                 collection(
                     db,
                     "tribes"
                 )
+
             );
 
 
         const normalized =
+
             normalizeText(
                 query
             );
 
 
         snapshot.forEach(
+
             documentSnapshot => {
 
 
                 const data =
+
                     documentSnapshot.data();
 
 
                 const name =
+
                     normalizeText(
 
                         data.name ||
@@ -1703,6 +1796,7 @@ async function searchTribes(
 
 
                 const description =
+
                     normalizeText(
                         data.description
                     );
@@ -1710,15 +1804,19 @@ async function searchTribes(
 
                 if (
 
+
                     name.includes(
                         normalized
                     )
 
+
                     ||
+
 
                     description.includes(
                         normalized
                     )
+
 
                 ) {
 
@@ -1734,6 +1832,7 @@ async function searchTribes(
 
 
                         title:
+
                             getName(
                                 data,
                                 "Tribu"
@@ -1757,6 +1856,7 @@ async function searchTribes(
 
 
                         image:
+
                             getImage(
                                 data
                             )
@@ -1766,17 +1866,22 @@ async function searchTribes(
                 }
 
             }
+
         );
 
+    }
 
-    } catch (error) {
+
+    catch (error) {
 
 
-        console.warn(
-            "Recherche tribus indisponible :",
+        console.error(
+
+            "Erreur recherche tribus :",
+
             error
-        );
 
+        );
 
     }
 
@@ -1789,9 +1894,11 @@ async function searchTribes(
 }
 
 
-/* ================================== */
-/* RECHERCHE ARTICLES */
-/* ================================== */
+
+/* =========================================================
+   RECHERCHE ARTICLES
+========================================================= */
+
 
 async function searchArticles(
     query
@@ -1805,29 +1912,36 @@ async function searchArticles(
 
 
         const snapshot =
+
             await getDocs(
+
                 collection(
                     db,
                     "articles"
                 )
+
             );
 
 
         const normalized =
+
             normalizeText(
                 query
             );
 
 
         snapshot.forEach(
+
             documentSnapshot => {
 
 
                 const data =
+
                     documentSnapshot.data();
 
 
                 const title =
+
                     normalizeText(
 
                         data.title ||
@@ -1838,6 +1952,7 @@ async function searchArticles(
 
 
                 const description =
+
                     normalizeText(
 
                         data.description ||
@@ -1849,15 +1964,19 @@ async function searchArticles(
 
                 if (
 
+
                     title.includes(
                         normalized
                     )
 
+
                     ||
+
 
                     description.includes(
                         normalized
                     )
+
 
                 ) {
 
@@ -1873,6 +1992,7 @@ async function searchArticles(
 
 
                         title:
+
                             getName(
                                 data,
                                 "Article"
@@ -1898,6 +2018,7 @@ async function searchArticles(
 
 
                         image:
+
                             getImage(
                                 data
                             )
@@ -1907,17 +2028,22 @@ async function searchArticles(
                 }
 
             }
+
         );
 
+    }
 
-    } catch (error) {
+
+    catch (error) {
 
 
-        console.warn(
-            "Recherche articles indisponible :",
+        console.error(
+
+            "Erreur recherche articles :",
+
             error
-        );
 
+        );
 
     }
 
@@ -1930,14 +2056,17 @@ async function searchArticles(
 }
 
 
-/* ================================== */
-/* EFFECTUER LA RECHERCHE */
-/* ================================== */
+
+/* =========================================================
+   LANCER LA RECHERCHE
+========================================================= */
+
 
 async function performSearch() {
 
 
     const query =
+
         getSearchQuery();
 
 
@@ -1945,9 +2074,6 @@ async function performSearch() {
         query;
 
 
-    /* ============================== */
-    /* AUCUNE RECHERCHE */
-    /* ============================== */
 
     if (!query) {
 
@@ -1955,9 +2081,11 @@ async function performSearch() {
         searchInfo.innerHTML = `
 
             <p>
+
                 Entrez une recherche ci-dessus
                 pour trouver des utilisateurs,
                 jeux, tribus ou articles.
+
             </p>
 
         `;
@@ -1972,9 +2100,6 @@ async function performSearch() {
     }
 
 
-    /* ============================== */
-    /* INFOS */
-    /* ============================== */
 
     searchInfo.innerHTML = `
 
@@ -1993,9 +2118,6 @@ async function performSearch() {
     `;
 
 
-    /* ============================== */
-    /* CHARGEMENT */
-    /* ============================== */
 
     resultsContainer.innerHTML = `
 
@@ -2003,7 +2125,7 @@ async function performSearch() {
 
             <div class="search-loading">
 
-                Recherche en cours...
+                🔎 Recherche en cours...
 
             </div>
 
@@ -2012,48 +2134,23 @@ async function performSearch() {
     `;
 
 
-    /* ============================== */
-    /* RECHERCHES INDÉPENDANTES */
-    /* ============================== */
 
-    const [
-
-        users,
-
-        games,
-
-        tribes,
-
-        articles
-
-    ] = await Promise.all([
+    const users =
+        await searchUsers(query);
 
 
-        searchUsers(
-            query
-        ),
+    const games =
+        await searchGames(query);
 
 
-        searchGames(
-            query
-        ),
+    const tribes =
+        await searchTribes(query);
 
 
-        searchTribes(
-            query
-        ),
+    const articles =
+        await searchArticles(query);
 
 
-        searchArticles(
-            query
-        )
-
-    ]);
-
-
-    /* ============================== */
-    /* TOTAL */
-    /* ============================== */
 
     const total =
 
@@ -2066,13 +2163,11 @@ async function performSearch() {
         articles.length;
 
 
+
     resultsContainer.innerHTML =
         "";
 
 
-    /* ============================== */
-    /* AUCUN RÉSULTAT */
-    /* ============================== */
 
     if (
         total === 0
@@ -2085,16 +2180,13 @@ async function performSearch() {
 
                 <div class="search-empty">
 
-
                     <div class="search-empty-icon">
                         🔎
                     </div>
 
-
                     <h2>
                         Aucun résultat trouvé
                     </h2>
-
 
                     <p>
 
@@ -2106,7 +2198,6 @@ async function performSearch() {
                         </strong>.
 
                     </p>
-
 
                 </div>
 
@@ -2120,41 +2211,51 @@ async function performSearch() {
     }
 
 
-    /* ============================== */
-    /* GROUPES */
-    /* ============================== */
 
     const groups = [
 
 
         createGroup(
+
             "👤 Utilisateurs",
+
             users
+
         ),
 
 
         createGroup(
+
             "🎮 Jeux",
+
             games
+
         ),
 
 
         createGroup(
+
             "🏠 Tribus",
+
             tribes
+
         ),
 
 
         createGroup(
-            "📰 Articles",
-            articles
-        )
 
+            "📰 Articles",
+
+            articles
+
+        )
 
     ];
 
 
+
     groups.forEach(
+
         group => {
 
 
@@ -2165,21 +2266,25 @@ async function performSearch() {
                     group
                 );
 
-
             }
 
         }
+
     );
 
 }
 
 
-/* ================================== */
-/* FORMULAIRE */
-/* ================================== */
+
+/* =========================================================
+   FORMULAIRE
+========================================================= */
+
 
 searchForm.addEventListener(
+
     "submit",
+
     event => {
 
 
@@ -2187,6 +2292,7 @@ searchForm.addEventListener(
 
 
         const query =
+
             pageSearchInput.value.trim();
 
 
@@ -2210,33 +2316,39 @@ searchForm.addEventListener(
             );
 
     }
+
 );
 
 
-/* ================================== */
-/* CHANGEMENT HASH */
-/* ================================== */
+
+/* =========================================================
+   CHANGEMENT DU HASH
+========================================================= */
+
 
 window.addEventListener(
+
     "hashchange",
+
     performSearch
+
 );
 
 
-/* ================================== */
-/* LANCEMENT */
-/* ================================== */
+
+/* =========================================================
+   LANCEMENT INITIAL
+========================================================= */
+
 
 performSearch();
+
 
 </script>
 
 
-<!-- ================================== -->
-<!-- SERVICE WORKER -->
-<!-- ================================== -->
-
 <script>
+
 
 if (
     "serviceWorker" in navigator
@@ -2244,20 +2356,24 @@ if (
 
 
     window.addEventListener(
+
         "load",
+
         () => {
 
 
             navigator.serviceWorker.register(
+
                 "/service-worker.js"
+
             );
 
-
         }
+
     );
 
-
 }
+
 
 </script>
 
