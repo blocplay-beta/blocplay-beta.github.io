@@ -59,6 +59,12 @@ header {
     -webkit-tap-highlight-color: transparent;
 }
 
+.header-button img {
+    max-height: 100%;         /* L'image ne dépassera jamais du bouton */
+    width: auto;
+    object-fit: contain;
+}
+
 .header-button:hover {
     background: rgba(255,255,255,0.1);
 }
