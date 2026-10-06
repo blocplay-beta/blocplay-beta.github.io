@@ -1,4 +1,3 @@
-<!-- Please read COPYRIGHT.md -->
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -15,153 +14,327 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b0f1a">
 
+
 <style>
 
+/* ========================= */
+/* PAGE INSCRIPTION */
+/* ========================= */
+
 .signup-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 40px auto;
-  box-sizing: border-box;
-}
 
-.signup-card {
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+    min-height: calc(100vh - 160px);
 
-.signup-card h1 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
+    display: flex;
 
-.signup-subtitle {
-  color: #9ca3af;
-  margin-top: 0;
-  margin-bottom: 28px;
-}
+    justify-content: center;
 
-.signup-field {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 18px;
-  box-sizing: border-box;
-}
+    align-items: center;
 
-.signup-field label {
-  display: block;
-  margin-bottom: 7px;
-  font-weight: bold;
-}
-
-.signup-field input {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-
-  padding: 13px 14px;
-
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  background: #0d1424;
-  color: white;
-
-  outline: none;
-  font-size: 15px;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-.signup-field input::placeholder {
-  color: #64748b;
-}
-
-.signup-field input:focus {
-  border-color: #22d3ee;
-  background: #101a2d;
-
-  box-shadow:
-    0 0 0 3px rgba(34, 211, 238, 0.12);
-}
-
-.signup-button {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin-top: 5px;
-}
-
-.signup-status {
-  display: none;
-
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-
-  margin-top: 18px;
-  padding: 12px 14px;
-
-  border-radius: 10px;
-
-  font-size: 14px;
-  line-height: 1.4;
-
-  overflow-wrap: anywhere;
-}
-
-.signup-login {
-  display: block;
-  margin-top: 20px;
-
-  text-align: center;
-
-  color: #22d3ee;
-  text-decoration: none;
-}
-
-.signup-login:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-
-  .signup-container {
-    width: 100%;
-    max-width: 100%;
-
-    margin: 20px auto;
-
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 30px 15px;
 
     box-sizing: border-box;
-  }
-
-  .signup-card {
-    width: 100%;
-    max-width: 100%;
-  }
 
 }
 
-@media (max-width: 380px) {
 
-  .signup-container {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
+/* ========================= */
+/* CARTE */
+/* ========================= */
 
-  .signup-field input {
+.signup-card {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    padding: 30px;
+
+    border-radius: 16px;
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.25);
+
+}
+
+
+/* ========================= */
+/* LOGO */
+/* ========================= */
+
+.signup-logo {
+
+    width: 90px;
+
+    height: 90px;
+
+    object-fit: contain;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* ========================= */
+/* TITRE */
+/* ========================= */
+
+.signup-card h1 {
+
+    margin: 0 0 10px 0;
+
+}
+
+
+.signup-description {
+
+    margin: 0 0 25px 0;
+
+    opacity: 0.7;
+
     font-size: 14px;
-    padding: 12px;
-  }
+
+}
+
+
+/* ========================= */
+/* CHAMPS */
+/* ========================= */
+
+.signup-field {
+
+    width: 100%;
+
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    margin-bottom: 16px;
+
+    text-align: left;
+
+}
+
+
+.signup-field label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.signup-field input {
+
+    display: block;
+
+    width: 100%;
+
+    max-width: 100%;
+
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    border-radius: 9px;
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    outline: none;
+
+    background: #111827;
+
+    color: white;
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.signup-field input:focus {
+
+    border-color: #5865f2;
+
+    box-shadow:
+        0 0 0 3px rgba(88,101,242,0.15);
+
+    transform: scale(1.015);
+
+}
+
+
+.signup-field input::placeholder {
+
+    color: #7f8ca1;
+
+}
+
+
+/* ========================= */
+/* BOUTON */
+/* ========================= */
+
+.signup-button {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: none;
+
+    border-radius: 9px;
+
+    padding: 13px 18px;
+
+    margin-top: 5px;
+
+    background: linear-gradient(
+        135deg,
+        #5865f2,
+        #7289da
+    );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.signup-button:hover {
+
+    opacity: 0.9;
+
+}
+
+
+.signup-button:active {
+
+    transform: scale(0.98);
+
+}
+
+
+.signup-button:disabled {
+
+    opacity: 0.6;
+
+    cursor: default;
+
+    transform: none;
+
+}
+
+
+/* ========================= */
+/* STATUT */
+/* ========================= */
+
+#status {
+
+    min-height: 20px;
+
+    margin-top: 15px;
+
+    font-size: 14px;
+
+}
+
+
+#status-txt {
+
+    opacity: 0.75;
+
+    font-size: 13px;
+
+    min-height: 18px;
+
+}
+
+
+#color-status {
+
+    display: none;
+
+}
+
+
+/* ========================= */
+/* CONNEXION */
+/* ========================= */
+
+.signup-login {
+
+    margin-top: 22px;
+
+    font-size: 14px;
+
+    opacity: 0.8;
+
+}
+
+
+.signup-login a {
+
+    color: #7289da;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+}
+
+
+.signup-login a:hover {
+
+    text-decoration: underline;
+
+}
+
+
+/* ========================= */
+/* FOOTER */
+/* ========================= */
+
+.signup-footer {
+
+    text-align: center;
+
+    padding: 20px;
+
+    color: #7f8ca1;
+
+    font-size: 13px;
 
 }
 
@@ -179,132 +352,235 @@
 
 <header>
 
-  <div class="header-content">
+    <div class="header-content">
 
-    <a href="/" class="logo">
-      <img src="/icon.png" alt="BlocPlay">
-    </a>
+        <a href="/" class="logo">
 
-    <div class="header-actions">
+            <img
+                src="/icon.png"
+                alt="BlocPlay"
+            >
 
-      <a href="/search" class="header-button">
-        <img
-          src="/img/searching.png"
-          alt="Recherche"
-        >
-      </a>
+        </a>
 
-      <div class="profile-menu">
 
-        <img
-          src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-          class="avatar"
-          id="avatar"
-          alt="Profil"
-        >
+        <div class="header-actions">
 
-        <div
-          class="dropdown"
-          id="dropdown"
-        ></div>
+            <button
+                id="searchBtn"
+                class="header-button"
+                aria-label="Rechercher"
+            >
+                🔍
+            </button>
 
-      </div>
+
+            <div class="profile-menu">
+
+                <img
+                    src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+                    class="avatar"
+                    id="avatar"
+                    alt="Profil"
+                >
+
+
+                <div
+                    class="dropdown"
+                    id="dropdown"
+                ></div>
+
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
-
 </header>
+
+
+<!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
+
+<div
+    id="searchOverlay"
+    class="search-overlay"
+>
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Rechercher sur BlocPlay..."
+            autocomplete="off"
+        >
+
+
+        <button
+            id="closeSearch"
+            class="search-close"
+        >
+            ✕
+        </button>
+
+    </div>
+
+
+    <div
+        id="searchResults"
+        class="search-results"
+    ></div>
+
+</div>
 
 
 <!-- ========================= -->
 <!-- INSCRIPTION -->
 <!-- ========================= -->
 
-<main class="container signup-container">
+<main class="signup-container">
 
-  <div class="card signup-card">
+    <div class="signup-card">
 
-    <h1>
-      Créer un compte
-    </h1>
-
-    <p class="signup-subtitle">
-      Rejoins BlocPlay et commence ton aventure.
-    </p>
+        <img
+            src="/icon.png"
+            class="signup-logo"
+            alt="BlocPlay"
+        >
 
 
-    <div class="signup-field">
+        <h1>
+            Créer un compte
+        </h1>
 
-      <label for="username">
-        Pseudo
-      </label>
 
-      <input
-        type="text"
-        id="username"
-        placeholder="Ton pseudo"
-        autocomplete="username"
-        maxlength="30"
-      >
+        <p class="signup-description">
+            Rejoins BlocPlay et profite de la plateforme.
+        </p>
+
+
+        <!-- ========================= -->
+        <!-- NOM D'UTILISATEUR -->
+        <!-- ========================= -->
+
+        <div class="signup-field">
+
+            <label for="username">
+                Nom d'utilisateur
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Ton nom d'utilisateur"
+                autocomplete="username"
+                maxlength="30"
+            >
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- EMAIL -->
+        <!-- ========================= -->
+
+        <div class="signup-field">
+
+            <label for="email">
+                Adresse e-mail
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="ton@email.com"
+                autocomplete="email"
+            >
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- MOT DE PASSE -->
+        <!-- ========================= -->
+
+        <div class="signup-field">
+
+            <label for="password">
+                Mot de passe
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Ton mot de passe"
+                autocomplete="new-password"
+            >
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- CONFIRMATION -->
+        <!-- ========================= -->
+
+        <div class="signup-field">
+
+            <label for="passwordConfirm">
+                Confirmer le mot de passe
+            </label>
+
+            <input
+                type="password"
+                id="passwordConfirm"
+                placeholder="Confirme ton mot de passe"
+                autocomplete="new-password"
+            >
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- BOUTON -->
+        <!-- ========================= -->
+
+        <button
+            id="signupButton"
+            class="signup-button"
+            type="button"
+        >
+            Créer mon compte
+        </button>
+
+
+        <!-- ========================= -->
+        <!-- STATUT -->
+        <!-- ========================= -->
+
+        <div id="status"></div>
+
+        <div id="status-txt"></div>
+
+        <div id="color-status"></div>
+
+
+        <!-- ========================= -->
+        <!-- CONNEXION -->
+        <!-- ========================= -->
+
+        <div class="signup-login">
+
+            Déjà un compte ?
+
+            <a href="/login">
+                Se connecter
+            </a>
+
+        </div>
 
     </div>
-
-
-    <div class="signup-field">
-
-      <label for="email">
-        Email
-      </label>
-
-      <input
-        type="email"
-        id="email"
-        placeholder="ton@email.com"
-        autocomplete="email"
-      >
-
-    </div>
-
-
-    <div class="signup-field">
-
-      <label for="password">
-        Mot de passe
-      </label>
-
-      <input
-        type="password"
-        id="password"
-        placeholder="Ton mot de passe"
-        autocomplete="new-password"
-      >
-
-    </div>
-
-
-    <button
-      id="signupButton"
-      class="btn btn-gradient signup-button"
-    >
-      Créer mon compte
-    </button>
-
-
-    <div
-      id="signupStatus"
-      class="signup-status"
-    ></div>
-
-
-    <a
-      href="/login"
-      class="signup-login"
-    >
-      Déjà un compte ? Se connecter
-    </a>
-
-  </div>
 
 </main>
 
@@ -313,146 +589,79 @@
 <!-- FOOTER -->
 <!-- ========================= -->
 
-<footer class="site-footer">
+<footer class="signup-footer">
 
-  <div class="footer-content">
-
-    <div class="footer-column">
-
-      <h3>
-        BlocPlay
-      </h3>
-
-      <p>
-        La plateforme de jeux créée par et pour les gamers.
-      </p>
-
-    </div>
-
-
-    <div class="footer-column">
-
-      <h3>
-        À propos
-      </h3>
-
-      <a href="/about">
-        À propos de BlocPlay
-      </a>
-
-      <a href="/license">
-        Licences
-      </a>
-
-    </div>
-
-
-    <div class="footer-column">
-
-      <h3>
-        Nous contacter
-      </h3>
-
-      <a href="mailto:blocplaystudios@gmail.com">
-        E-Mail
-      </a>
-
-      <a href="https://discord.gg/QfreSq3t7E">
-        Discord
-      </a>
-
-    </div>
-
-  </div>
-
-
-  <div class="footer-bottom">
     © BlocPlay Studios™
-  </div>
 
 </footer>
 
 
 <!-- ========================= -->
-<!-- FIREBASE + PROFIL -->
+<!-- FIREBASE -->
 <!-- ========================= -->
 
 <script type="module">
 
-/* ========================= */
-/* FIREBASE 12.19.0 */
-/* ========================= */
-
 import {
-  initializeApp
+    initializeApp
 }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
 import {
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-  createUserWithEmailAndPassword,
-  updateProfile
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+    createUserWithEmailAndPassword,
+    updateProfile
 }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
 }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 /* ========================= */
-/* CONFIGURATION FIREBASE */
+/* FIREBASE */
 /* ========================= */
 
 const firebaseConfig = {
 
-  apiKey:
-    "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwEtMmEtUkn04",
+    apiKey:
+        "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwEtMmEtUkn04",
 
-  authDomain:
-    "blocplay-a9417.firebaseapp.com",
+    authDomain:
+        "blocplay-a9417.firebaseapp.com",
 
-  databaseURL:
-    "https://blocplay-a9417-default-rtdb.firebaseio.com",
-
-  projectId:
-    "blocplay-a9417",
-
-  storageBucket:
-    "blocplay-a9417.firebasestorage.app",
-
-  messagingSenderId:
-    "540161549188",
-
-  appId:
-    "1:540161549188:web:e0ec0350bd044de2f333d1"
+    projectId:
+        "blocplay-a9417"
 
 };
 
 
-/* ========================= */
-/* INITIALISATION */
-/* ========================= */
-
 const app =
-  initializeApp(firebaseConfig);
+    initializeApp(
+        firebaseConfig
+    );
 
 
 const auth =
-  getAuth(app);
+    getAuth(
+        app
+    );
 
 
 const db =
-  getFirestore(app);
+    getFirestore(
+        app
+    );
 
 
 /* ========================= */
@@ -460,175 +669,233 @@ const db =
 /* ========================= */
 
 const avatar =
-  document.getElementById("avatar");
+    document.getElementById(
+        "avatar"
+    );
+
 
 const dropdown =
-  document.getElementById("dropdown");
+    document.getElementById(
+        "dropdown"
+    );
+
+
+const usernameInput =
+    document.getElementById(
+        "username"
+    );
+
+
+const emailInput =
+    document.getElementById(
+        "email"
+    );
+
+
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
+
+
+const passwordConfirmInput =
+    document.getElementById(
+        "passwordConfirm"
+    );
+
+
+const signupButton =
+    document.getElementById(
+        "signupButton"
+    );
+
+
+const status =
+    document.getElementById(
+        "status"
+    );
+
+
+const statusTxt =
+    document.getElementById(
+        "status-txt"
+    );
 
 
 /* ========================= */
 /* MENU PROFIL */
 /* ========================= */
 
-async function renderMenu(user) {
+async function renderMenu(
+    user
+) {
 
-  if (user) {
+    if (user) {
 
-    dropdown.innerHTML = `
+        dropdown.innerHTML = `
 
-      <a href="/profile">
-        Profil
-      </a>
+            <a href="/profile">
+                Profil
+            </a>
 
-      <a href="/settings">
-        Paramètres
-      </a>
+            <a href="/settings">
+                Paramètres
+            </a>
 
-      <a href="/rizoplay">
-        RizoPlay
-      </a>
+            <a href="/rizoplay">
+                RizoPlay
+            </a>
 
-      <a href="#" id="logout">
-        Se déconnecter
-      </a>
+            <a href="#" id="logout">
+                Se déconnecter
+            </a>
 
-    `;
-
-
-    const name =
-      user.displayName ||
-      user.email?.split("@")[0] ||
-      "User";
+        `;
 
 
-    let photoURL = "";
+        const name =
+            user.displayName ||
+            user.email?.split("@")[0] ||
+            "User";
 
 
-    try {
-
-      const userRef =
-        doc(
-          db,
-          "users",
-          user.uid
-        );
+        let photoURL = "";
 
 
-      const userSnap =
-        await getDoc(userRef);
+        try {
+
+            const userRef =
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                );
 
 
-      if (userSnap.exists()) {
-
-        const data =
-          userSnap.data();
-
-
-        photoURL =
-          data.photoURL ||
-          data.avatar ||
-          "";
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Erreur chargement photo Firestore :",
-        error
-      );
-
-    }
+            const userSnap =
+                await getDoc(
+                    userRef
+                );
 
 
-    if (!photoURL) {
+            if (
+                userSnap.exists()
+            ) {
 
-      photoURL =
-        user.photoURL ||
-        "";
-
-    }
+                const data =
+                    userSnap.data();
 
 
-    if (photoURL) {
+                photoURL =
+                    data.photoURL ||
+                    data.avatar ||
+                    "";
 
-      avatar.src =
-        photoURL;
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erreur chargement photo Firestore :",
+                error
+            );
+
+        }
+
+
+        if (!photoURL) {
+
+            photoURL =
+                user.photoURL ||
+                "";
+
+        }
+
+
+        if (photoURL) {
+
+            avatar.src =
+                photoURL;
+
+        } else {
+
+            avatar.src =
+                "https://ui-avatars.com/api/?name=" +
+                encodeURIComponent(name) +
+                "&background=111&color=fff&rounded=true&size=64";
+
+        }
 
     } else {
 
-      avatar.src =
-        "https://ui-avatars.com/api/?name=" +
-        encodeURIComponent(name) +
-        "&background=111&color=fff&rounded=true&size=64";
+        dropdown.innerHTML = `
+
+            <a href="/login">
+                Se connecter
+            </a>
+
+            <a href="/signup">
+                Créer un compte
+            </a>
+
+        `;
+
+
+        avatar.src =
+            "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
 
     }
-
-
-  } else {
-
-    dropdown.innerHTML = `
-
-      <a href="/login">
-        Se connecter
-      </a>
-
-      <a href="/signup">
-        Créer un compte
-      </a>
-
-    `;
-
-
-    avatar.src =
-      "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
-
-  }
 
 }
 
 
 /* ========================= */
-/* AUTH */
+/* AUTH DU MENU */
 /* ========================= */
 
 onAuthStateChanged(
-  auth,
-  (user) => {
+    auth,
+    (user) => {
 
-    renderMenu(user);
+        renderMenu(
+            user
+        );
 
-  }
+    }
 );
 
 
 /* ========================= */
-/* MENU PROFIL */
+/* OUVERTURE MENU */
 /* ========================= */
 
 avatar.addEventListener(
-  "click",
-  (event) => {
+    "click",
+    (event) => {
 
-    event.stopPropagation();
+        event.stopPropagation();
 
-    dropdown.classList.toggle(
-      "show"
-    );
+        dropdown.classList.toggle(
+            "show"
+        );
 
-  }
+    }
 );
 
 
+/* ========================= */
+/* FERMETURE MENU */
+/* ========================= */
+
 document.addEventListener(
-  "click",
-  () => {
+    "click",
+    () => {
 
-    dropdown.classList.remove(
-      "show"
-    );
+        dropdown.classList.remove(
+            "show"
+        );
 
-  }
+    }
 );
 
 
@@ -637,23 +904,25 @@ document.addEventListener(
 /* ========================= */
 
 document.addEventListener(
-  "click",
-  async (event) => {
+    "click",
+    async (event) => {
 
-    if (
-      event.target.id ===
-      "logout"
-    ) {
+        if (
+            event.target.id ===
+            "logout"
+        ) {
 
-      event.preventDefault();
+            event.preventDefault();
 
-      await signOut(auth);
+            await signOut(
+                auth
+            );
 
-      window.location.reload();
+            window.location.reload();
+
+        }
 
     }
-
-  }
 );
 
 
@@ -661,313 +930,471 @@ document.addEventListener(
 /* INSCRIPTION */
 /* ========================= */
 
-const signupButton =
-  document.getElementById("signupButton");
+signupButton.addEventListener(
+    "click",
+    async () => {
 
-const signupStatus =
-  document.getElementById("signupStatus");
+        const username =
+            usernameInput.value.trim();
 
 
-function showStatus(
-  text,
-  background
+        const email =
+            emailInput.value.trim();
+
+
+        const password =
+            passwordInput.value;
+
+
+        const passwordConfirm =
+            passwordConfirmInput.value;
+
+
+        /* ========================= */
+        /* RESET STATUT */
+        /* ========================= */
+
+        status.textContent =
+            "";
+
+
+        statusTxt.textContent =
+            "";
+
+
+        /* ========================= */
+        /* VALIDATION NOM */
+        /* ========================= */
+
+        if (!username) {
+
+            status.textContent =
+                "Veuillez entrer un nom d'utilisateur.";
+
+            return;
+
+        }
+
+
+        if (username.length < 3) {
+
+            status.textContent =
+                "Le nom d'utilisateur doit contenir au moins 3 caractères.";
+
+            return;
+
+        }
+
+
+        /* ========================= */
+        /* VALIDATION EMAIL */
+        /* ========================= */
+
+        if (!email) {
+
+            status.textContent =
+                "Veuillez entrer une adresse e-mail.";
+
+            return;
+
+        }
+
+
+        /* ========================= */
+        /* VALIDATION MOT DE PASSE */
+        /* ========================= */
+
+        if (!password) {
+
+            status.textContent =
+                "Veuillez entrer un mot de passe.";
+
+            return;
+
+        }
+
+
+        if (password.length < 6) {
+
+            status.textContent =
+                "Le mot de passe doit contenir au moins 6 caractères.";
+
+            return;
+
+        }
+
+
+        if (
+            password !==
+            passwordConfirm
+        ) {
+
+            status.textContent =
+                "Les mots de passe ne correspondent pas.";
+
+            return;
+
+        }
+
+
+        /* ========================= */
+        /* CHARGEMENT */
+        /* ========================= */
+
+        signupButton.disabled =
+            true;
+
+
+        signupButton.textContent =
+            "Création du compte...";
+
+
+        status.textContent =
+            "";
+
+
+        statusTxt.textContent =
+            "Veuillez patienter...";
+
+
+        try {
+
+            /* ========================= */
+            /* CRÉER LE COMPTE FIREBASE */
+            /* ========================= */
+
+            const userCredential =
+                await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            const user =
+                userCredential.user;
+
+
+            /* ========================= */
+            /* NOM FIREBASE AUTH */
+            /* ========================= */
+
+            await updateProfile(
+                user,
+                {
+                    displayName:
+                        username
+                }
+            );
+
+
+            /* ========================= */
+            /* PROFIL FIRESTORE */
+            /* ========================= */
+
+            await setDoc(
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                ),
+                {
+
+                    id:
+                        Math.floor(
+                            Math.random() *
+                            100000000
+                        ),
+
+                    displayName:
+                        username,
+
+                    username:
+                        username,
+
+                    email:
+                        email,
+
+                    photoURL:
+                        "",
+
+                    rizoplay:
+                        false,
+
+                    friendsCount:
+                        0,
+
+                    role:
+                        "user",
+
+                    banned:
+                        false,
+
+                    createdAt:
+                        serverTimestamp()
+
+                }
+            );
+
+
+            /* ========================= */
+            /* SUCCÈS */
+            /* ========================= */
+
+            status.textContent =
+                "Compte créé avec succès !";
+
+
+            statusTxt.textContent =
+                "Redirection vers votre profil...";
+
+
+            signupButton.textContent =
+                "Compte créé";
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "/profile";
+
+                },
+                800
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Erreur inscription Firebase :",
+                error
+            );
+
+
+            /* ========================= */
+            /* MESSAGES FIREBASE */
+            /* ========================= */
+
+            if (
+                error.code ===
+                "auth/email-already-in-use"
+            ) {
+
+                status.textContent =
+                    "Cette adresse e-mail est déjà utilisée.";
+
+            } else if (
+                error.code ===
+                "auth/invalid-email"
+            ) {
+
+                status.textContent =
+                    "Cette adresse e-mail n'est pas valide.";
+
+            } else if (
+                error.code ===
+                "auth/weak-password"
+            ) {
+
+                status.textContent =
+                    "Le mot de passe est trop faible.";
+
+            } else if (
+                error.code ===
+                "auth/operation-not-allowed"
+            ) {
+
+                status.textContent =
+                    "La création de comptes par e-mail n'est pas activée dans Firebase.";
+
+            } else if (
+                error.code ===
+                "auth/api-key-not-valid"
+            ) {
+
+                status.textContent =
+                    "Erreur de configuration Firebase : clé API invalide.";
+
+            } else {
+
+                status.textContent =
+                    "Impossible de créer le compte.";
+
+            }
+
+
+            statusTxt.textContent =
+                "";
+
+
+            signupButton.disabled =
+                false;
+
+
+            signupButton.textContent =
+                "Créer mon compte";
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- ========================= -->
+<!-- RECHERCHE -->
+<!-- ========================= -->
+
+<script>
+
+const searchBtn =
+    document.getElementById(
+        "searchBtn"
+    );
+
+
+const searchOverlay =
+    document.getElementById(
+        "searchOverlay"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+const searchResults =
+    document.getElementById(
+        "searchResults"
+    );
+
+
+const closeSearch =
+    document.getElementById(
+        "closeSearch"
+    );
+
+
+searchBtn.addEventListener(
+    "click",
+    () => {
+
+        searchOverlay.classList.add(
+            "show"
+        );
+
+        searchInput.focus();
+
+    }
+);
+
+
+closeSearch.addEventListener(
+    "click",
+    () => {
+
+        searchOverlay.classList.remove(
+            "show"
+        );
+
+        searchInput.value = "";
+
+        searchResults.innerHTML = "";
+
+    }
+);
+
+
+searchInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key !==
+            "Enter"
+        ) {
+
+            return;
+
+        }
+
+
+        const query =
+            searchInput.value.trim();
+
+
+        if (!query) {
+
+            return;
+
+        }
+
+
+        searchResults.innerHTML = `
+
+            <div class="search-result">
+
+                <h3>
+                    Résultats de recherche
+                </h3>
+
+                <p>
+                    Recherche pour :
+                    <strong>
+                        ${escapeHTML(query)}
+                    </strong>
+                </p>
+
+            </div>
+
+        `;
+
+    }
+);
+
+
+function escapeHTML(
+    text
 ) {
 
-  signupStatus.style.display =
-    "block";
+    const div =
+        document.createElement(
+            "div"
+        );
 
-  signupStatus.style.backgroundColor =
-    background;
 
-  signupStatus.textContent =
-    text;
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
 
 }
 
 
-/* ========================= */
-/* CRÉATION DU COMPTE */
-/* ========================= */
+searchOverlay.addEventListener(
+    "click",
+    (event) => {
 
-signupButton.addEventListener(
-  "click",
-  async () => {
+        if (
+            event.target ===
+            searchOverlay
+        ) {
 
-    const username =
-      document
-        .getElementById("username")
-        .value
-        .trim();
+            searchOverlay.classList.remove(
+                "show"
+            );
 
+            searchInput.value = "";
 
-    const email =
-      document
-        .getElementById("email")
-        .value
-        .trim();
-
-
-    const password =
-      document
-        .getElementById("password")
-        .value;
-
-
-    /* ========================= */
-    /* VALIDATION */
-    /* ========================= */
-
-    if (
-      !username ||
-      !email ||
-      !password
-    ) {
-
-      showStatus(
-        "Remplis tous les champs !",
-        "#ff7f00"
-      );
-
-      return;
-
-    }
-
-
-    if (
-      username.length < 3
-    ) {
-
-      showStatus(
-        "Le pseudo doit contenir au moins 3 caractères.",
-        "#ff7f00"
-      );
-
-      return;
-
-    }
-
-
-    if (
-      password.length < 6
-    ) {
-
-      showStatus(
-        "Le mot de passe doit contenir au moins 6 caractères.",
-        "#ff7f00"
-      );
-
-      return;
-
-    }
-
-
-    signupButton.disabled =
-      true;
-
-    signupButton.textContent =
-      "Création du compte...";
-
-
-    try {
-
-      /* ========================= */
-      /* FIREBASE AUTH */
-      /* ========================= */
-
-      const userCredential =
-        await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-
-
-      const user =
-        userCredential.user;
-
-
-      /* ========================= */
-      /* PSEUDO FIREBASE */
-      /* ========================= */
-
-      await updateProfile(
-        user,
-        {
-          displayName:
-            username
-        }
-      );
-
-
-      /* ========================= */
-      /* PROFIL FIRESTORE */
-      /* ========================= */
-
-      await setDoc(
-        doc(
-          db,
-          "users",
-          user.uid
-        ),
-        {
-
-          id:
-            Math.floor(
-              Math.random() *
-              100000000
-            ),
-
-          displayName:
-            username,
-
-          username:
-            username,
-
-          email:
-            email,
-
-          photoURL:
-            "",
-
-          rizoplay:
-            false,
-
-          friendsCount:
-            0,
-
-          role:
-            "user",
-
-          banned:
-            false,
-
-          createdAt:
-            serverTimestamp()
+            searchResults.innerHTML = "";
 
         }
-      );
-
-
-      /* ========================= */
-      /* SUCCÈS */
-      /* ========================= */
-
-      showStatus(
-        "Compte créé ! Redirection...",
-        "#00c853"
-      );
-
-
-      signupButton.textContent =
-        "Compte créé";
-
-
-      setTimeout(
-        () => {
-
-          window.location.href =
-            "/login";
-
-        },
-        1000
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "Erreur inscription :",
-        error
-      );
-
-
-      let message =
-        "Une erreur est survenue.";
-
-
-      if (
-        error.code ===
-        "auth/weak-password"
-      ) {
-
-        message =
-          "Le mot de passe doit contenir au moins 6 caractères.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/email-already-in-use"
-      ) {
-
-        message =
-          "Cet email est déjà utilisé.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/invalid-email"
-      ) {
-
-        message =
-          "Adresse email invalide.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/operation-not-allowed"
-      ) {
-
-        message =
-          "L'inscription par email n'est pas activée dans Firebase.";
-
-      }
-
-      else if (
-        error.code ===
-        "auth/api-key-not-valid"
-      ) {
-
-        message =
-          "La clé API Firebase est invalide.";
-
-      }
-
-      else if (
-        error.code ===
-        "permission-denied"
-      ) {
-
-        message =
-          "Impossible de créer le profil dans Firebase.";
-
-      }
-
-      else {
-
-        message =
-          error.message;
-
-      }
-
-
-      showStatus(
-        message,
-        "#ff1744"
-      );
-
-
-      signupButton.disabled =
-        false;
-
-      signupButton.textContent =
-        "Créer mon compte";
 
     }
-
-  }
 );
 
 </script>
@@ -980,19 +1407,20 @@ signupButton.addEventListener(
 <script>
 
 if (
-  "serviceWorker" in navigator
+    "serviceWorker" in
+    navigator
 ) {
 
-  window.addEventListener(
-    "load",
-    () => {
+    window.addEventListener(
+        "load",
+        () => {
 
-      navigator.serviceWorker.register(
-        "/service-worker.js"
-      );
+            navigator.serviceWorker.register(
+                "/service-worker.js"
+            );
 
-    }
-  );
+        }
+    );
 
 }
 
