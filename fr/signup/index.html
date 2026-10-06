@@ -22,12 +22,16 @@
 /* ========================= */
 
 .signup-container {
+  width: 100%;
   max-width: 600px;
   margin: 40px auto;
+  box-sizing: border-box;
 }
 
 .signup-card {
   width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .signup-card h1 {
@@ -41,8 +45,16 @@
   margin-bottom: 28px;
 }
 
+
+/* ========================= */
+/* CHAMPS */
+/* ========================= */
+
 .signup-field {
+  width: 100%;
+  max-width: 100%;
   margin-bottom: 18px;
+  box-sizing: border-box;
 }
 
 .signup-field label {
@@ -52,13 +64,23 @@
 }
 
 .signup-field input {
+  display: block;
+
   width: 100%;
+  max-width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
   padding: 13px 14px;
 
   border-radius: 10px;
+
   border: 1px solid rgba(255, 255, 255, 0.08);
 
   background: #0d1424;
+
   color: white;
 
   outline: none;
@@ -84,13 +106,34 @@
     0 0 0 3px rgba(34, 211, 238, 0.12);
 }
 
+
+/* ========================= */
+/* BOUTON */
+/* ========================= */
+
 .signup-button {
+  display: block;
+
   width: 100%;
+  max-width: 100%;
+
+  box-sizing: border-box;
+
   margin-top: 5px;
 }
 
+
+/* ========================= */
+/* MESSAGE */
+/* ========================= */
+
 .signup-status {
   display: none;
+
+  width: 100%;
+  max-width: 100%;
+
+  box-sizing: border-box;
 
   margin-top: 18px;
 
@@ -101,7 +144,14 @@
   font-size: 14px;
 
   line-height: 1.4;
+
+  overflow-wrap: anywhere;
 }
+
+
+/* ========================= */
+/* CONNEXION */
+/* ========================= */
 
 .signup-login {
   display: block;
@@ -119,10 +169,47 @@
   text-decoration: underline;
 }
 
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
 @media (max-width: 600px) {
 
   .signup-container {
+    width: 100%;
+    max-width: 100%;
+
     margin: 20px auto;
+
+    padding-left: 12px;
+    padding-right: 12px;
+
+    box-sizing: border-box;
+  }
+
+  .signup-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+}
+
+
+/* ========================= */
+/* TRÈS PETITS ÉCRANS */
+/* ========================= */
+
+@media (max-width: 380px) {
+
+  .signup-container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .signup-field input {
+    font-size: 14px;
+    padding: 12px;
   }
 
 }
@@ -149,19 +236,12 @@
 
     <div class="header-actions">
 
-      <!-- RECHERCHE -->
-
       <a href="/search" class="header-button">
-
         <img
           src="/img/searching.png"
           alt="Recherche"
         >
-
       </a>
-
-
-      <!-- PROFIL -->
 
       <div class="profile-menu">
 
@@ -187,28 +267,23 @@
 
 
 <!-- ========================= -->
-<!-- CONTENU -->
+<!-- INSCRIPTION -->
 <!-- ========================= -->
 
 <main class="container signup-container">
 
-
   <div class="card signup-card">
-
 
     <h1>
       Créer un compte
     </h1>
-
 
     <p class="signup-subtitle">
       Rejoins BlocPlay et commence ton aventure.
     </p>
 
 
-    <!-- ========================= -->
     <!-- PSEUDO -->
-    <!-- ========================= -->
 
     <div class="signup-field">
 
@@ -227,9 +302,7 @@
     </div>
 
 
-    <!-- ========================= -->
     <!-- EMAIL -->
-    <!-- ========================= -->
 
     <div class="signup-field">
 
@@ -247,9 +320,7 @@
     </div>
 
 
-    <!-- ========================= -->
     <!-- MOT DE PASSE -->
-    <!-- ========================= -->
 
     <div class="signup-field">
 
@@ -267,9 +338,7 @@
     </div>
 
 
-    <!-- ========================= -->
     <!-- BOUTON -->
-    <!-- ========================= -->
 
     <button
       id="signupButton"
@@ -279,21 +348,15 @@
     </button>
 
 
-    <!-- ========================= -->
     <!-- STATUS -->
-    <!-- ========================= -->
 
     <div
       id="signupStatus"
       class="signup-status"
-    >
-      Chargement...
-    </div>
+    ></div>
 
 
-    <!-- ========================= -->
-    <!-- CONNEXION -->
-    <!-- ========================= -->
+    <!-- LOGIN -->
 
     <a
       href="/login"
@@ -301,7 +364,6 @@
     >
       Déjà un compte ? Se connecter
     </a>
-
 
   </div>
 
@@ -315,7 +377,6 @@
 <footer class="site-footer">
 
   <div class="footer-content">
-
 
     <div class="footer-column">
 
@@ -362,7 +423,6 @@
       </a>
 
     </div>
-
 
   </div>
 
@@ -494,10 +554,6 @@ async function renderMenu(user) {
     let photoURL = "";
 
 
-    /* ========================= */
-    /* PHOTO FIRESTORE */
-    /* ========================= */
-
     try {
 
       const userRef =
@@ -535,10 +591,6 @@ async function renderMenu(user) {
     }
 
 
-    /* ========================= */
-    /* PHOTO FIREBASE AUTH */
-    /* ========================= */
-
     if (!photoURL) {
 
       photoURL =
@@ -547,10 +599,6 @@ async function renderMenu(user) {
 
     }
 
-
-    /* ========================= */
-    /* AFFICHER LA PHOTO */
-    /* ========================= */
 
     if (photoURL) {
 
@@ -605,7 +653,7 @@ onAuthStateChanged(
 
 
 /* ========================= */
-/* OUVERTURE DU MENU */
+/* MENU PROFIL */
 /* ========================= */
 
 avatar.addEventListener(
@@ -621,10 +669,6 @@ avatar.addEventListener(
   }
 );
 
-
-/* ========================= */
-/* FERMETURE */
-/* ========================= */
 
 document.addEventListener(
   "click",
@@ -674,20 +718,16 @@ const signupStatus =
   document.getElementById("signupStatus");
 
 
-/* ========================= */
-/* STATUS */
-/* ========================= */
-
 function showStatus(
   text,
-  color
+  background
 ) {
 
   signupStatus.style.display =
     "block";
 
   signupStatus.style.backgroundColor =
-    color;
+    background;
 
   signupStatus.textContent =
     text;
@@ -696,7 +736,7 @@ function showStatus(
 
 
 /* ========================= */
-/* SIGNUP */
+/* CRÉATION DU COMPTE */
 /* ========================= */
 
 signupButton.addEventListener(
@@ -723,9 +763,7 @@ signupButton.addEventListener(
         .value;
 
 
-    /* ========================= */
     /* VALIDATION */
-    /* ========================= */
 
     if (
       !username ||
@@ -780,9 +818,8 @@ signupButton.addEventListener(
 
     try {
 
-
       /* ========================= */
-      /* CRÉATION AUTH */
+      /* FIREBASE AUTH */
       /* ========================= */
 
       const userCredential =
@@ -798,7 +835,7 @@ signupButton.addEventListener(
 
 
       /* ========================= */
-      /* DISPLAY NAME */
+      /* PSEUDO FIREBASE */
       /* ========================= */
 
       await updateProfile(
@@ -811,7 +848,7 @@ signupButton.addEventListener(
 
 
       /* ========================= */
-      /* CRÉATION PROFIL FIRESTORE */
+      /* PROFIL FIRESTORE */
       /* ========================= */
 
       await setDoc(
@@ -822,88 +859,35 @@ signupButton.addEventListener(
         ),
         {
 
-          /*
-           * Identifiant BlocPlay.
-           */
-
           id:
             Math.floor(
               Math.random() *
               100000000
             ),
 
-
-          /*
-           * Pseudo affiché.
-           */
-
           displayName:
             username,
-
-
-          /*
-           * Pseudo pour les recherches.
-           */
 
           username:
             username,
 
-
-          /*
-           * Email du compte.
-           */
-
           email:
             email,
-
-
-          /*
-           * Avatar.
-           */
 
           photoURL:
             "",
 
-
-          /*
-           * RizoPlay.
-           */
-
           rizoplay:
             false,
-
-
-          /*
-           * Nombre d'amis.
-           */
 
           friendsCount:
             0,
 
-
-          /*
-           * Rôle par défaut.
-           *
-           * Requis par les règles Firestore.
-           */
-
           role:
             "user",
 
-
-          /*
-           * Nouveau compte non banni.
-           *
-           * Requis par les règles Firestore.
-           */
-
           banned:
             false,
-
-
-          /*
-           * Date de création.
-           */
 
           createdAt:
             serverTimestamp()
@@ -938,7 +922,6 @@ signupButton.addEventListener(
 
 
     } catch (error) {
-
 
       console.error(
         "Erreur inscription :",
@@ -987,6 +970,16 @@ signupButton.addEventListener(
 
         message =
           "L'inscription par email n'est pas activée dans Firebase.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/api-key-not-valid"
+      ) {
+
+        message =
+          "La clé API Firebase est invalide.";
 
       }
 
