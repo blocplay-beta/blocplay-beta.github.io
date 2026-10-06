@@ -1,0 +1,1058 @@
+<!-- Please read COPYRIGHT.md -->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Créer un compte - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/logo.ico">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+
+<style>
+
+/* ========================= */
+/* INSCRIPTION */
+/* ========================= */
+
+.signup-container {
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.signup-card {
+  width: 100%;
+}
+
+.signup-card h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.signup-subtitle {
+  color: #9ca3af;
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+
+.signup-field {
+  margin-bottom: 18px;
+}
+
+.signup-field label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+}
+
+.signup-field input {
+  width: 100%;
+  padding: 13px 14px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: #0d1424;
+  color: white;
+
+  outline: none;
+
+  font-size: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.signup-field input::placeholder {
+  color: #64748b;
+}
+
+.signup-field input:focus {
+  border-color: #22d3ee;
+
+  background: #101a2d;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 211, 238, 0.12);
+}
+
+.signup-button {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.signup-status {
+  display: none;
+
+  margin-top: 18px;
+
+  padding: 12px 14px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+}
+
+.signup-login {
+  display: block;
+
+  margin-top: 20px;
+
+  text-align: center;
+
+  color: #22d3ee;
+
+  text-decoration: none;
+}
+
+.signup-login:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+
+  .signup-container {
+    margin: 20px auto;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
+
+<header>
+
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/icon.png" alt="BlocPlay">
+    </a>
+
+    <div class="header-actions">
+
+      <!-- RECHERCHE -->
+
+      <a href="/search" class="header-button">
+
+        <img
+          src="/img/searching.png"
+          alt="Recherche"
+        >
+
+      </a>
+
+
+      <!-- PROFIL -->
+
+      <div class="profile-menu">
+
+        <img
+          src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+          class="avatar"
+          id="avatar"
+          alt="Profil"
+        >
+
+        <div
+          class="dropdown"
+          id="dropdown"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- ========================= -->
+<!-- CONTENU -->
+<!-- ========================= -->
+
+<main class="container signup-container">
+
+
+  <div class="card signup-card">
+
+
+    <h1>
+      Créer un compte
+    </h1>
+
+
+    <p class="signup-subtitle">
+      Rejoins BlocPlay et commence ton aventure.
+    </p>
+
+
+    <!-- ========================= -->
+    <!-- PSEUDO -->
+    <!-- ========================= -->
+
+    <div class="signup-field">
+
+      <label for="username">
+        Pseudo
+      </label>
+
+      <input
+        type="text"
+        id="username"
+        placeholder="Ton pseudo"
+        autocomplete="username"
+        maxlength="30"
+      >
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- EMAIL -->
+    <!-- ========================= -->
+
+    <div class="signup-field">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="ton@email.com"
+        autocomplete="email"
+      >
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MOT DE PASSE -->
+    <!-- ========================= -->
+
+    <div class="signup-field">
+
+      <label for="password">
+        Mot de passe
+      </label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Ton mot de passe"
+        autocomplete="new-password"
+      >
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- BOUTON -->
+    <!-- ========================= -->
+
+    <button
+      id="signupButton"
+      class="btn btn-gradient signup-button"
+    >
+      Créer mon compte
+    </button>
+
+
+    <!-- ========================= -->
+    <!-- STATUS -->
+    <!-- ========================= -->
+
+    <div
+      id="signupStatus"
+      class="signup-status"
+    >
+      Chargement...
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- CONNEXION -->
+    <!-- ========================= -->
+
+    <a
+      href="/login"
+      class="signup-login"
+    >
+      Déjà un compte ? Se connecter
+    </a>
+
+
+  </div>
+
+</main>
+
+
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
+
+<footer class="site-footer">
+
+  <div class="footer-content">
+
+
+    <div class="footer-column">
+
+      <h3>
+        BlocPlay
+      </h3>
+
+      <p>
+        La plateforme de jeux créée par et pour les gamers.
+      </p>
+
+    </div>
+
+
+    <div class="footer-column">
+
+      <h3>
+        À propos
+      </h3>
+
+      <a href="/about">
+        À propos de BlocPlay
+      </a>
+
+      <a href="/license">
+        Licences
+      </a>
+
+    </div>
+
+
+    <div class="footer-column">
+
+      <h3>
+        Nous contacter
+      </h3>
+
+      <a href="mailto:blocplaystudios@gmail.com">
+        E-Mail
+      </a>
+
+      <a href="https://discord.gg/QfreSq3t7E">
+        Discord
+      </a>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="footer-bottom">
+    © BlocPlay Studios™
+  </div>
+
+</footer>
+
+
+<!-- ========================= -->
+<!-- FIREBASE + PROFIL -->
+<!-- ========================= -->
+
+<script type="module">
+
+import {
+  initializeApp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  createUserWithEmailAndPassword,
+  updateProfile
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* ========================= */
+/* FIREBASE */
+/* ========================= */
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwEtMmEtUkn04",
+
+  authDomain:
+    "blocplay-a9417.firebaseapp.com",
+
+  projectId:
+    "blocplay-a9417",
+
+  storageBucket:
+    "blocplay-a9417.firebasestorage.app",
+
+  messagingSenderId:
+    "540161549188",
+
+  appId:
+    "1:540161549188:web:e0ec0350bd044de2f333d1"
+
+};
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+
+const auth =
+  getAuth(app);
+
+
+const db =
+  getFirestore(app);
+
+
+/* ========================= */
+/* ELEMENTS */
+/* ========================= */
+
+const avatar =
+  document.getElementById("avatar");
+
+const dropdown =
+  document.getElementById("dropdown");
+
+
+/* ========================= */
+/* MENU PROFIL */
+/* ========================= */
+
+async function renderMenu(user) {
+
+  if (user) {
+
+    dropdown.innerHTML = `
+
+      <a href="/profile">
+        Profil
+      </a>
+
+      <a href="/settings">
+        Paramètres
+      </a>
+
+      <a href="/rizoplay">
+        RizoPlay
+      </a>
+
+      <a href="#" id="logout">
+        Se déconnecter
+      </a>
+
+    `;
+
+
+    const name =
+      user.displayName ||
+      user.email?.split("@")[0] ||
+      "User";
+
+
+    let photoURL = "";
+
+
+    /* ========================= */
+    /* PHOTO FIRESTORE */
+    /* ========================= */
+
+    try {
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+
+      const userSnap =
+        await getDoc(userRef);
+
+
+      if (userSnap.exists()) {
+
+        const data =
+          userSnap.data();
+
+
+        photoURL =
+          data.photoURL ||
+          data.avatar ||
+          "";
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Erreur chargement photo Firestore :",
+        error
+      );
+
+    }
+
+
+    /* ========================= */
+    /* PHOTO FIREBASE AUTH */
+    /* ========================= */
+
+    if (!photoURL) {
+
+      photoURL =
+        user.photoURL ||
+        "";
+
+    }
+
+
+    /* ========================= */
+    /* AFFICHER LA PHOTO */
+    /* ========================= */
+
+    if (photoURL) {
+
+      avatar.src =
+        photoURL;
+
+    } else {
+
+      avatar.src =
+        "https://ui-avatars.com/api/?name=" +
+        encodeURIComponent(name) +
+        "&background=111&color=fff&rounded=true&size=64";
+
+    }
+
+
+  } else {
+
+    dropdown.innerHTML = `
+
+      <a href="/login">
+        Se connecter
+      </a>
+
+      <a href="/signup">
+        Créer un compte
+      </a>
+
+    `;
+
+
+    avatar.src =
+      "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+
+  }
+
+}
+
+
+/* ========================= */
+/* AUTH */
+/* ========================= */
+
+onAuthStateChanged(
+  auth,
+  (user) => {
+
+    renderMenu(user);
+
+  }
+);
+
+
+/* ========================= */
+/* OUVERTURE DU MENU */
+/* ========================= */
+
+avatar.addEventListener(
+  "click",
+  (event) => {
+
+    event.stopPropagation();
+
+    dropdown.classList.toggle(
+      "show"
+    );
+
+  }
+);
+
+
+/* ========================= */
+/* FERMETURE */
+/* ========================= */
+
+document.addEventListener(
+  "click",
+  () => {
+
+    dropdown.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* ========================= */
+/* DÉCONNEXION */
+/* ========================= */
+
+document.addEventListener(
+  "click",
+  async (event) => {
+
+    if (
+      event.target.id ===
+      "logout"
+    ) {
+
+      event.preventDefault();
+
+      await signOut(auth);
+
+      window.location.reload();
+
+    }
+
+  }
+);
+
+
+/* ========================= */
+/* INSCRIPTION */
+/* ========================= */
+
+const signupButton =
+  document.getElementById("signupButton");
+
+const signupStatus =
+  document.getElementById("signupStatus");
+
+
+/* ========================= */
+/* STATUS */
+/* ========================= */
+
+function showStatus(
+  text,
+  color
+) {
+
+  signupStatus.style.display =
+    "block";
+
+  signupStatus.style.backgroundColor =
+    color;
+
+  signupStatus.textContent =
+    text;
+
+}
+
+
+/* ========================= */
+/* SIGNUP */
+/* ========================= */
+
+signupButton.addEventListener(
+  "click",
+  async () => {
+
+    const username =
+      document
+        .getElementById("username")
+        .value
+        .trim();
+
+
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    /* ========================= */
+    /* VALIDATION */
+    /* ========================= */
+
+    if (
+      !username ||
+      !email ||
+      !password
+    ) {
+
+      showStatus(
+        "Remplis tous les champs !",
+        "#ff7f00"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      username.length < 3
+    ) {
+
+      showStatus(
+        "Le pseudo doit contenir au moins 3 caractères.",
+        "#ff7f00"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      password.length < 6
+    ) {
+
+      showStatus(
+        "Le mot de passe doit contenir au moins 6 caractères.",
+        "#ff7f00"
+      );
+
+      return;
+
+    }
+
+
+    signupButton.disabled =
+      true;
+
+    signupButton.textContent =
+      "Création du compte...";
+
+
+    try {
+
+
+      /* ========================= */
+      /* CRÉATION AUTH */
+      /* ========================= */
+
+      const userCredential =
+        await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+
+      const user =
+        userCredential.user;
+
+
+      /* ========================= */
+      /* DISPLAY NAME */
+      /* ========================= */
+
+      await updateProfile(
+        user,
+        {
+          displayName:
+            username
+        }
+      );
+
+
+      /* ========================= */
+      /* CRÉATION PROFIL FIRESTORE */
+      /* ========================= */
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+
+          /*
+           * Identifiant BlocPlay.
+           */
+
+          id:
+            Math.floor(
+              Math.random() *
+              100000000
+            ),
+
+
+          /*
+           * Pseudo affiché.
+           */
+
+          displayName:
+            username,
+
+
+          /*
+           * Pseudo pour les recherches.
+           */
+
+          username:
+            username,
+
+
+          /*
+           * Email du compte.
+           */
+
+          email:
+            email,
+
+
+          /*
+           * Avatar.
+           */
+
+          photoURL:
+            "",
+
+
+          /*
+           * RizoPlay.
+           */
+
+          rizoplay:
+            false,
+
+
+          /*
+           * Nombre d'amis.
+           */
+
+          friendsCount:
+            0,
+
+
+          /*
+           * Rôle par défaut.
+           *
+           * Requis par les règles Firestore.
+           */
+
+          role:
+            "user",
+
+
+          /*
+           * Nouveau compte non banni.
+           *
+           * Requis par les règles Firestore.
+           */
+
+          banned:
+            false,
+
+
+          /*
+           * Date de création.
+           */
+
+          createdAt:
+            serverTimestamp()
+
+        }
+      );
+
+
+      /* ========================= */
+      /* SUCCÈS */
+      /* ========================= */
+
+      showStatus(
+        "Compte créé ! Redirection...",
+        "#00c853"
+      );
+
+
+      signupButton.textContent =
+        "Compte créé";
+
+
+      setTimeout(
+        () => {
+
+          window.location.href =
+            "/login";
+
+        },
+        1000
+      );
+
+
+    } catch (error) {
+
+
+      console.error(
+        "Erreur inscription :",
+        error
+      );
+
+
+      let message =
+        "Une erreur est survenue.";
+
+
+      if (
+        error.code ===
+        "auth/weak-password"
+      ) {
+
+        message =
+          "Le mot de passe doit contenir au moins 6 caractères.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/email-already-in-use"
+      ) {
+
+        message =
+          "Cet email est déjà utilisé.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/invalid-email"
+      ) {
+
+        message =
+          "Adresse email invalide.";
+
+      }
+
+      else if (
+        error.code ===
+        "auth/operation-not-allowed"
+      ) {
+
+        message =
+          "L'inscription par email n'est pas activée dans Firebase.";
+
+      }
+
+      else if (
+        error.code ===
+        "permission-denied"
+      ) {
+
+        message =
+          "Impossible de créer le profil dans Firebase.";
+
+      }
+
+      else {
+
+        message =
+          error.message;
+
+      }
+
+
+      showStatus(
+        message,
+        "#ff1744"
+      );
+
+
+      signupButton.disabled =
+        false;
+
+      signupButton.textContent =
+        "Créer mon compte";
+
+    }
+
+  }
+);
+
+</script>
+
+
+<!-- ========================= -->
+<!-- SERVICE WORKER -->
+<!-- ========================= -->
+
+<script>
+
+if (
+  "serviceWorker" in navigator
+) {
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker.register(
+        "/service-worker.js"
+      );
+
+    }
+  );
+
+}
+
+</script>
+
+
+</body>
+</html>
