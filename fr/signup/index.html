@@ -17,10 +17,6 @@
 
 <style>
 
-/* ========================= */
-/* INSCRIPTION */
-/* ========================= */
-
 .signup-container {
   width: 100%;
   max-width: 600px;
@@ -45,11 +41,6 @@
   margin-bottom: 28px;
 }
 
-
-/* ========================= */
-/* CHAMPS */
-/* ========================= */
-
 .signup-field {
   width: 100%;
   max-width: 100%;
@@ -65,26 +56,20 @@
 
 .signup-field input {
   display: block;
-
   width: 100%;
   max-width: 100%;
-
   min-width: 0;
-
   box-sizing: border-box;
 
   padding: 13px 14px;
 
   border-radius: 10px;
-
   border: 1px solid rgba(255, 255, 255, 0.08);
 
   background: #0d1424;
-
   color: white;
 
   outline: none;
-
   font-size: 15px;
 
   transition:
@@ -99,80 +84,51 @@
 
 .signup-field input:focus {
   border-color: #22d3ee;
-
   background: #101a2d;
 
   box-shadow:
     0 0 0 3px rgba(34, 211, 238, 0.12);
 }
 
-
-/* ========================= */
-/* BOUTON */
-/* ========================= */
-
 .signup-button {
   display: block;
-
   width: 100%;
   max-width: 100%;
-
   box-sizing: border-box;
-
   margin-top: 5px;
 }
-
-
-/* ========================= */
-/* MESSAGE */
-/* ========================= */
 
 .signup-status {
   display: none;
 
   width: 100%;
   max-width: 100%;
-
   box-sizing: border-box;
 
   margin-top: 18px;
-
   padding: 12px 14px;
 
   border-radius: 10px;
 
   font-size: 14px;
-
   line-height: 1.4;
 
   overflow-wrap: anywhere;
 }
 
-
-/* ========================= */
-/* CONNEXION */
-/* ========================= */
-
 .signup-login {
   display: block;
-
   margin-top: 20px;
 
   text-align: center;
 
   color: #22d3ee;
-
   text-decoration: none;
 }
 
 .signup-login:hover {
   text-decoration: underline;
 }
-
-
-/* ========================= */
-/* MOBILE */
-/* ========================= */
 
 @media (max-width: 600px) {
 
@@ -194,11 +150,6 @@
   }
 
 }
-
-
-/* ========================= */
-/* TRÈS PETITS ÉCRANS */
-/* ========================= */
 
 @media (max-width: 380px) {
 
@@ -283,8 +234,6 @@
     </p>
 
 
-    <!-- PSEUDO -->
-
     <div class="signup-field">
 
       <label for="username">
@@ -302,8 +251,6 @@
     </div>
 
 
-    <!-- EMAIL -->
-
     <div class="signup-field">
 
       <label for="email">
@@ -319,8 +266,6 @@
 
     </div>
 
-
-    <!-- MOT DE PASSE -->
 
     <div class="signup-field">
 
@@ -338,8 +283,6 @@
     </div>
 
 
-    <!-- BOUTON -->
-
     <button
       id="signupButton"
       class="btn btn-gradient signup-button"
@@ -348,15 +291,11 @@
     </button>
 
 
-    <!-- STATUS -->
-
     <div
       id="signupStatus"
       class="signup-status"
     ></div>
 
-
-    <!-- LOGIN -->
 
     <a
       href="/login"
@@ -440,10 +379,14 @@
 
 <script type="module">
 
+/* ========================= */
+/* FIREBASE 12.19.0 */
+/* ========================= */
+
 import {
   initializeApp
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
 
 import {
@@ -453,7 +396,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 
 import {
@@ -463,11 +406,11 @@ import {
   setDoc,
   serverTimestamp
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
 /* ========================= */
-/* FIREBASE */
+/* CONFIGURATION FIREBASE */
 /* ========================= */
 
 const firebaseConfig = {
@@ -477,6 +420,9 @@ const firebaseConfig = {
 
   authDomain:
     "blocplay-a9417.firebaseapp.com",
+
+  databaseURL:
+    "https://blocplay-a9417-default-rtdb.firebaseio.com",
 
   projectId:
     "blocplay-a9417",
@@ -492,6 +438,10 @@ const firebaseConfig = {
 
 };
 
+
+/* ========================= */
+/* INITIALISATION */
+/* ========================= */
 
 const app =
   initializeApp(firebaseConfig);
@@ -763,7 +713,9 @@ signupButton.addEventListener(
         .value;
 
 
+    /* ========================= */
     /* VALIDATION */
+    /* ========================= */
 
     if (
       !username ||
