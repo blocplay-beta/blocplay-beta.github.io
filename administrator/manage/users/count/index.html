@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Count - BlocPlay</title>
+
+    <link rel="icon" href="/logo.ico">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #0b0f1a;
+            color: white;
+
+            font-family: Arial, sans-serif;
+        }
+
+        .counter {
+            text-align: center;
+        }
+
+        .number {
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .label {
+            margin-top: 15px;
+            font-size: 20px;
+            color: #aeb7c7;
+        }
+
+        .loading {
+            font-size: 40px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="counter">
+
+        <div id="number" class="loading">
+            ...
+        </div>
+
+    </div>
+
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        import {
+            getFirestore,
+            collection,
+            getCountFromServer
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+            authDomain: "blocplay-a9417.firebaseapp.com",
+            projectId: "blocplay-a9417"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+
+        const db = getFirestore(app);
+
+
+        async function loadAccountCount() {
+
+            const number = document.getElementById("number");
+
+            try {
+
+                const usersRef = collection(db, "publicUsers");
+
+                const snapshot =
+                    await getCountFromServer(usersRef);
+
+                const count = snapshot.data().count;
+
+                number.textContent =
+                    count.toLocaleString("fr-FR");
+
+            } catch (error) {
+
+                console.error(error);
+
+                number.textContent = "—";
+
+            }
+
+        }
+
+
+        loadAccountCount();
+
+    </script>
+
+</body>
+</html>
