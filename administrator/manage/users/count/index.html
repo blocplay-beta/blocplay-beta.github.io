@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Count - BlocPlay</title>
 
-    <link rel="icon" href="/logo.ico">
+    <link
+        rel="icon"
+        href="/logo.ico"
+    >
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -25,6 +33,7 @@
 
         body {
             min-height: 100vh;
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -39,7 +48,7 @@
             text-align: center;
         }
 
-        .number {
+        #number {
             font-size: 72px;
             font-weight: 700;
             line-height: 1;
@@ -47,22 +56,22 @@
 
         .label {
             margin-top: 15px;
+
             font-size: 20px;
+
             color: #aeb7c7;
         }
 
-        .loading {
-            font-size: 40px;
-            font-weight: 700;
-        }
     </style>
+
 </head>
+
 
 <body>
 
     <div class="counter">
 
-        <div id="number" class="loading">
+        <div id="number">
             ...
         </div>
 
@@ -75,55 +84,131 @@
             initializeApp
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
+
+        import {
+            getAuth,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
         import {
             getFirestore,
+            doc,
+            getDoc,
             collection,
             getCountFromServer
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-            authDomain: "blocplay-a9417.firebaseapp.com",
-            projectId: "blocplay-a9417"
+
+            apiKey:
+                "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+
+            authDomain:
+                "blocplay-a9417.firebaseapp.com",
+
+            projectId:
+                "blocplay-a9417"
+
         };
 
 
-        const app = initializeApp(firebaseConfig);
+        const app =
+            initializeApp(firebaseConfig);
 
-        const db = getFirestore(app);
+
+        const auth =
+            getAuth(app);
 
 
-        async function loadAccountCount() {
+        const db =
+            getFirestore(app);
 
-            const number = document.getElementById("number");
 
-            try {
+        onAuthStateChanged(
+            auth,
+            async (user) => {
 
-                const usersRef = collection(db, "publicUsers");
+                const number =
+                    document.getElementById("number");
 
-                const snapshot =
-                    await getCountFromServer(usersRef);
 
-                const count = snapshot.data().count;
+                if (!user) {
 
-                number.textContent =
-                    count.toLocaleString("fr-FR");
+                    number.textContent = "—";
 
-            } catch (error) {
+                    return;
 
-                console.error(error);
+                }
 
-                number.textContent = "—";
+
+                try {
+
+                    const userRef =
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        );
+
+
+                    const userSnapshot =
+                        await getDoc(userRef);
+
+
+                    if (
+                        !userSnapshot.exists()
+                        ||
+                        userSnapshot.data().role !== "admin"
+                    ) {
+
+                        number.textContent = "—";
+
+                        return;
+
+                    }
+
+
+                    const usersRef =
+                        collection(
+                            db,
+                            "users"
+                        );
+
+
+                    const result =
+                        await getCountFromServer(
+                            usersRef
+                        );
+
+
+                    const count =
+                        result.data().count;
+
+
+                    number.textContent =
+                        count.toLocaleString("fr-FR");
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Erreur compteur :",
+                        error
+                    );
+
+
+                    number.textContent =
+                        "—";
+
+                }
 
             }
-
-        }
-
-
-        loadAccountCount();
+        );
 
     </script>
 
 </body>
+
 </html>
