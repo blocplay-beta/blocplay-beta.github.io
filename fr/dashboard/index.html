@@ -1,114 +1,1100 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0f1a">
-<title>BlocPlay Dashboard</title><link rel="icon" href="/logo.ico">
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0f1a">
+<title>BlocPlay Dashboard</title>
+<link rel="icon" href="/logo.ico">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
 <style>
-:root{--bg:#0b0f1a;--p:#111827;--p2:#172033;--b:#29364b;--t:#f3f6fc;--m:#94a3b8;--blue:#5865f2}*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--t);font:13px Arial,sans-serif}button,input,select{font:inherit}button{border:1px solid var(--b);background:var(--p2);color:var(--t);padding:7px 9px;border-radius:6px;cursor:pointer}button:hover{border-color:#858eff}button:disabled{opacity:.4}.primary{background:var(--blue);border-color:var(--blue)}.top{height:52px;display:flex;align-items:center;gap:9px;padding:0 10px;background:#0d1320;border-bottom:1px solid var(--b)}.brand{display:flex;align-items:center;gap:6px;color:white;text-decoration:none;font-weight:bold;white-space:nowrap}.brand img{width:27px;height:27px}.brand b{color:#929cff}.pname{width:160px;min-width:65px;background:#0b1220;color:white;border:1px solid var(--b);border-radius:5px;padding:7px}.actions{margin-left:auto;display:flex;align-items:center;gap:5px}.status{font-size:11px;color:var(--m);max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.work{height:calc(100dvh - 52px);display:grid;grid-template-columns:195px minmax(0,1fr) 245px}.panel{background:var(--p);min-width:0;min-height:0;overflow:auto;scrollbar-width:thin}.left{border-right:1px solid var(--b)}.right{border-left:1px solid var(--b)}.heading{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 9px;border-bottom:1px solid var(--b);font-weight:bold;position:sticky;top:0;background:var(--p);z-index:2}.content{padding:9px}.section{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--m);margin:13px 0 7px}.obj{display:flex;align-items:center;gap:6px;padding:8px 6px;border:1px solid transparent;border-radius:5px;cursor:pointer}.obj:hover{background:#202c41}.obj.sel{background:#283b69;border-color:#455fba}.objname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.eye{padding:0;border:0;background:none;color:#9ba8bc}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.asset{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 3px;font-size:11px}.asset b{font-size:20px}.full{width:100%;margin:3px 0}.center{display:flex;flex-direction:column;min-width:0;min-height:0;background:#090e18}.tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:6px;background:var(--p);border-bottom:1px solid var(--b)}.tools button{padding:6px 7px;font-size:12px}.tools .active{background:#34468a;border-color:#7284ff}.sep{height:21px;width:1px;background:var(--b);margin:0 2px}.view{position:relative;flex:1;min-height:150px;overflow:hidden}canvas{width:100%;height:100%;display:block;touch-action:none;outline:none}.badge,.help,.playbadge{position:absolute;background:#0b0f1add;border:1px solid var(--b);border-radius:5px;padding:7px;pointer-events:none}.badge{top:9px;left:9px;font-size:10px;letter-spacing:.5px}.help{bottom:8px;left:8px;font-size:10px;color:#aab7ca;max-width:85%}.viewbuttons{position:absolute;right:8px;top:8px;display:flex;gap:4px}.playbadge{display:none;right:8px;top:45px;background:#146c43}.playing .playbadge{display:block}.bottom{height:25px;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 9px;border-top:1px solid var(--b);font-size:10px;color:var(--m)}.field{margin:0 0 10px}.field>label{display:block;color:#aab7ca;margin-bottom:5px;font-size:11px}.field input:not([type=color]),.field select{width:100%;min-width:0;background:#0b1220;color:white;border:1px solid var(--b);border-radius:5px;padding:7px}.xyz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.xyz label{display:block;font-size:9px;color:#8795ab;margin-bottom:3px}.xyz input{width:100%;min-width:0;background:#0b1220;color:white;border:1px solid var(--b);border-radius:4px;padding:6px 2px;font-size:11px}.colorrow{display:flex;align-items:center;gap:8px}.colorrow input{width:42px;height:31px;padding:2px;background:#0b1220;border:1px solid var(--b);border-radius:4px}.empty{color:var(--m);padding:12px 3px;text-align:center;line-height:1.5;font-size:11px}.subtle{font-size:10px;color:var(--m)}.projectbtn{width:100%;margin:3px 0;text-align:left;white-space:normal;overflow-wrap:anywhere}.auth{position:fixed;inset:0;z-index:20;background:#080d18f5;display:flex;align-items:center;justify-content:center;padding:20px}.authcard{width:min(390px,100%);background:var(--p);border:1px solid var(--b);border-radius:12px;padding:24px;text-align:center}.authcard img{width:54px;height:54px}.authcard p{color:var(--m);line-height:1.5}.error{color:#ff9292;font-size:12px;min-height:16px}.modal{display:none;position:fixed;inset:0;z-index:15;background:#0009;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modalbox{width:min(450px,100%);background:var(--p);border:1px solid var(--b);border-radius:10px;padding:16px}.shortcuts{display:grid;grid-template-columns:1fr auto;gap:10px}.kbd{font-family:monospace;border:1px solid var(--b);padding:3px 6px;border-radius:4px}.toast{display:none;position:fixed;z-index:30;bottom:35px;left:50%;transform:translateX(-50%);background:#1a263a;border:1px solid #3a4a67;border-radius:8px;padding:10px 14px;max-width:90vw}
-@media(max-width:850px){.work{grid-template-columns:145px minmax(0,1fr);grid-template-rows:minmax(180px,1fr) auto}.left{grid-row:1}.center{grid-row:1}.right{grid-column:1/-1;grid-row:2;border-left:0;border-top:1px solid var(--b);max-height:34dvh}.status{display:none}.pname{width:100px}}
-@media(max-width:500px){.top{gap:4px;padding:0 5px}.brand{font-size:11px;gap:3px}.brand img{width:22px;height:22px}.pname{width:72px;padding:6px 3px;font-size:11px}.actions{gap:3px}.actions button{font-size:10px;padding:6px 4px}.work{grid-template-columns:108px minmax(0,1fr)}.content{padding:6px}.tools{gap:3px;padding:4px}.tools button{font-size:10px;padding:6px 4px}.obj{font-size:10px;padding:7px 3px}.help{font-size:9px}}
+:root{--bg:#0b0f1a;--p:#111827;--p2:#172033;--b:#29364b;--t:#f3f6fc;--m:#94a3b8;--blue:#5865f2}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--t);font:13px Arial,sans-serif}
+button,input,select{font:inherit}
+button{border:1px solid var(--b);background:var(--p2);color:var(--t);padding:7px 9px;border-radius:6px;cursor:pointer}
+button:hover{border-color:#858eff}
+button:disabled{opacity:.4}
+.primary{background:var(--blue);border-color:var(--blue)}
+.top{height:52px;display:flex;align-items:center;gap:9px;padding:0 10px;background:#0d1320;border-bottom:1px solid var(--b)}
+.brand{display:flex;align-items:center;gap:6px;color:white;text-decoration:none;font-weight:bold;white-space:nowrap}
+.brand img{width:27px;height:27px}
+.brand b{color:#929cff}
+.pname{width:160px;min-width:65px;background:#0b1220;color:white;border:1px solid var(--b);border-radius:5px;padding:7px}
+.actions{margin-left:auto;display:flex;align-items:center;gap:5px}
+.status{font-size:11px;color:var(--m);max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.work{height:calc(100dvh - 52px);display:grid;grid-template-columns:195px minmax(0,1fr) 245px}
+.panel{background:var(--p);min-width:0;min-height:0;overflow:auto;scrollbar-width:thin}
+.left{border-right:1px solid var(--b)}
+.right{border-left:1px solid var(--b)}
+.heading{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 9px;border-bottom:1px solid var(--b);font-weight:bold;position:sticky;top:0;background:var(--p);z-index:2}
+.content{padding:9px}
+.section{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--m);margin:13px 0 7px}
+.obj{display:flex;align-items:center;gap:6px;padding:8px 6px;border:1px solid transparent;border-radius:5px;cursor:pointer}
+.obj:hover{background:#202c41}
+.obj.sel{background:#283b69;border-color:#455fba}
+.objname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eye{padding:0;border:0;background:none;color:#9ba8bc}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+.asset{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 3px;font-size:11px}
+.asset b{font-size:20px}
+.full{width:100%;margin:3px 0}
+.center{display:flex;flex-direction:column;min-width:0;min-height:0;background:#090e18}
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:6px;background:var(--p);border-bottom:1px solid var(--b)}
+.tools button{padding:6px 7px;font-size:12px}
+.tools .active{background:#34468a;border-color:#7284ff}
+.sep{height:21px;width:1px;background:var(--b);margin:0 2px}
+.view{position:relative;flex:1;min-height:150px;overflow:hidden}
+canvas{width:100%;height:100%;display:block;touch-action:none;outline:none}
+.badge,.help,.playbadge{position:absolute;background:#0b0f1add;border:1px solid var(--b);border-radius:5px;padding:7px;pointer-events:none}
+.badge{top:9px;left:9px;font-size:10px;letter-spacing:.5px}
+.help{bottom:8px;left:8px;font-size:10px;color:#aab7ca;max-width:85%}
+.viewbuttons{position:absolute;right:8px;top:8px;display:flex;gap:4px}
+.playbadge{display:none;right:8px;top:45px;background:#146c43}
+.playing .playbadge{display:block}
+.bottom{height:25px;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 9px;border-top:1px solid var(--b);font-size:10px;color:var(--m)}
+.field{margin:0 0 10px}
+.field>label{display:block;color:#aab7ca;margin-bottom:5px;font-size:11px}
+.field input:not([type=color]),.field select{width:100%;min-width:0;background:#0b1220;color:white;border:1px solid var(--b);border-radius:5px;padding:7px}
+.xyz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.xyz label{display:block;font-size:9px;color:#8795ab;margin-bottom:3px}
+.xyz input{width:100%;min-width:0;background:#0b1220;color:white;border:1px solid var(--b);border-radius:4px;padding:6px 2px;font-size:11px}
+.colorrow{display:flex;align-items:center;gap:8px}
+.colorrow input{width:42px;height:31px;padding:2px;background:#0b1220;border:1px solid var(--b);border-radius:4px}
+.empty{color:var(--m);padding:12px 3px;text-align:center;line-height:1.5;font-size:11px}
+.subtle{font-size:10px;color:var(--m)}
+.projectbtn{width:100%;margin:3px 0;text-align:left;white-space:normal;overflow-wrap:anywhere}
+.auth{position:fixed;inset:0;z-index:20;background:#080d18f5;display:flex;align-items:center;justify-content:center;padding:20px}
+.authcard{width:min(390px,100%);background:var(--p);border:1px solid var(--b);border-radius:12px;padding:24px;text-align:center}
+.authcard img{width:54px;height:54px}
+.authcard p{color:var(--m);line-height:1.5}
+.error{color:#ff9292;font-size:12px;min-height:16px}
+.modal{display:none;position:fixed;inset:0;z-index:15;background:#0009;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modalbox{width:min(450px,100%);background:var(--p);border:1px solid var(--b);border-radius:10px;padding:16px}
+.shortcuts{display:grid;grid-template-columns:1fr auto;gap:10px}
+.kbd{font-family:monospace;border:1px solid var(--b);padding:3px 6px;border-radius:4px}
+.toast{display:none;position:fixed;z-index:30;bottom:35px;left:50%;transform:translateX(-50%);background:#1a263a;border:1px solid #3a4a67;border-radius:8px;padding:10px 14px;max-width:90vw}
+@media(max-width:850px){
+.work{grid-template-columns:145px minmax(0,1fr);grid-template-rows:minmax(180px,1fr) auto}
+.left{grid-row:1}
+.center{grid-row:1}
+.right{grid-column:1/-1;grid-row:2;border-left:0;border-top:1px solid var(--b);max-height:34dvh}
+.status{display:none}
+.pname{width:100px}
+}
+@media(max-width:500px){
+.top{gap:4px;padding:0 5px}
+.brand{font-size:11px;gap:3px}
+.brand img{width:22px;height:22px}
+.pname{width:72px;padding:6px 3px;font-size:11px}
+.actions{gap:3px}
+.actions button{font-size:10px;padding:6px 4px}
+.work{grid-template-columns:108px minmax(0,1fr)}
+.content{padding:6px}
+.tools{gap:3px;padding:4px}
+.tools button{font-size:10px;padding:6px 4px}
+.obj{font-size:10px;padding:7px 3px}
+.help{font-size:9px}
+}
 </style>
 </head>
 <body>
 <header class="top">
 <a class="brand" href="/"><img src="/icon.png" alt=""><b>BlocPlay</b> Dashboard</a>
 <input id="projectName" class="pname" value="Mon premier jeu" maxlength="80" aria-label="Nom du projet">
-<div class="actions"><span id="status" class="status">Initialisation…</span><button id="save" class="primary" disabled>☁ Enregistrer</button><button id="export">Exporter</button><button id="play" style="background:#146c43">▶ Play</button></div>
-</header>
-<div class="work">
-<aside class="panel left"><div class="heading">☷ Explorateur <button id="addMenu" title="Ajouter">＋</button></div><div class="content">
-<div class="section">Hiérarchie</div><div id="objects"></div>
-<div class="section">Ajouter un objet</div><div class="grid2">
-<button class="asset" data-add="Cube"><b>🧊</b>Cube</button><button class="asset" data-add="Sphere"><b>⚪</b>Sphère</button><button class="asset" data-add="Floor"><b>▰</b>Sol</button><button class="asset" data-add="Cylinder"><b>🛢️</b>Cylindre</button><button class="asset" data-add="Cone"><b>🔺</b>Cône</button><button class="asset" data-add="PointLight"><b>💡</b>Lumière</button>
+<div class="actions">
+<span id="status" class="status">Initialisation…</span>
+<button id="save" class="primary" disabled>☁ Enregistrer</button>
+<button id="export">Exporter</button>
+<button id="play" style="background:#146c43">▶ Play</button>
 </div>
-<div class="section">Projets Firebase</div><button id="new" class="full">＋ Nouveau projet</button><button id="reload" class="full">↻ Actualiser</button><div id="projects"><div class="empty">Connexion requise pour voir tes projets.</div></div>
-<div class="section">Fichier</div><button id="import" class="full">📂 Importer un projet</button><input id="file" type="file" accept=".json,application/json" hidden>
-</div></aside>
+</header>
+
+<div class="work">
+<aside class="panel left">
+<div class="heading">☷ Explorateur <button id="addMenu" title="Ajouter">＋</button></div>
+<div class="content">
+<div class="section">Hiérarchie</div>
+<div id="objects"></div>
+<div class="section">Ajouter un objet</div>
+<div class="grid2">
+<button class="asset" data-add="Cube"><b>🧊</b>Cube</button>
+<button class="asset" data-add="Sphere"><b>⚪</b>Sphère</button>
+<button class="asset" data-add="Floor"><b>▰</b>Sol</button>
+<button class="asset" data-add="Cylinder"><b>🛢️</b>Cylindre</button>
+<button class="asset" data-add="Cone"><b>🔺</b>Cône</button>
+<button class="asset" data-add="PointLight"><b>💡</b>Lumière</button>
+</div>
+<div class="section">Projets Firebase</div>
+<button id="new" class="full">＋ Nouveau projet</button>
+<button id="reload" class="full">↻ Actualiser</button>
+<div id="projects"><div class="empty">Connexion requise pour voir tes projets.</div></div>
+<div class="section">Fichier</div>
+<button id="import" class="full">📂 Importer un projet</button>
+<input id="file" type="file" accept=".json,application/json" hidden>
+</div>
+</aside>
+
 <main class="center">
 <div class="tools">
-<button id="toolSelect" class="active" title="Q">↖ Sélection</button><button id="toolMove" title="W">↔ Déplacer</button><button id="toolRotate" title="E">⟳ Rotation</button><button id="toolScale" title="R">⤢ Échelle</button><span class="sep"></span><button id="undo" disabled title="Ctrl+Z">↶</button><button id="redo" disabled title="Ctrl+Y">↷</button><span class="sep"></span><button id="gridBtn" class="active">▦ Grille</button><button id="snapBtn">Snap OFF</button><button id="duplicate">⧉</button><button id="delete" title="Suppr">🗑</button><button id="help">?</button>
+<button id="toolSelect" class="active" title="Q">↖ Sélection</button>
+<button id="toolMove" title="W">↔ Déplacer</button>
+<button id="toolRotate" title="E">⟳ Rotation</button>
+<button id="toolScale" title="R">⤢ Échelle</button>
+<span class="sep"></span>
+<button id="undo" disabled title="Ctrl+Z">↶</button>
+<button id="redo" disabled title="Ctrl+Y">↷</button>
+<span class="sep"></span>
+<button id="gridBtn" class="active">▦ Grille</button>
+<button id="snapBtn">Snap OFF</button>
+<button id="duplicate">⧉</button>
+<button id="delete" title="Suppr">🗑</button>
+<button id="help">?</button>
 </div>
-<div class="view" id="view"><canvas id="canvas" tabindex="0"></canvas><div class="badge">ÉDITEUR 3D · BLOCPLAY DASHBOARD</div><div class="viewbuttons"><button id="resetCamera">◎ Vue</button><button id="focus">⌖ Focus</button></div><div class="help">Glisser : orbiter · molette : zoom · clic : sélectionner · Q/W/E/R : outils</div><div class="playbadge">▶ Mode Play — prévisualisation</div></div>
+<div class="view" id="view">
+<canvas id="canvas" tabindex="0"></canvas>
+<div class="badge">ÉDITEUR 3D · BLOCPLAY DASHBOARD</div>
+<div class="viewbuttons"><button id="resetCamera">◎ Vue</button><button id="focus">⌖ Focus</button></div>
+<div class="help">Glisser : orbiter · molette : zoom · clic : sélectionner · Q/W/E/R : outils</div>
+<div class="playbadge">▶ Mode Play — prévisualisation</div>
+</div>
 <div class="bottom"><span id="sceneInfo">Initialisation…</span><span id="account">Non connecté</span></div>
 </main>
-<aside class="panel right"><div class="heading">⚙ Propriétés <small id="type">Aucun objet</small></div><div class="content" id="inspector"><div class="empty">Sélectionne un objet pour modifier ses propriétés.</div></div></aside>
+
+<aside class="panel right">
+<div class="heading">⚙ Propriétés <small id="type">Aucun objet</small></div>
+<div class="content" id="inspector"><div class="empty">Sélectionne un objet pour modifier ses propriétés.</div></div>
+</aside>
 </div>
-<div id="auth" class="auth" style="display:none"><div class="authcard"><img src="/icon.png" alt="BlocPlay"><h2>BlocPlay Dashboard</h2><p id="authText">Connecte-toi à ton compte BlocPlay pour enregistrer tes projets dans Firebase.</p><button id="login" class="primary">Se connecter</button><button id="signup">Créer un compte</button><p id="authError" class="error"></p><a href="/" style="color:#a9b1ff">Retour à BlocPlay</a></div></div>
-<div id="helpModal" class="modal"><div class="modalbox"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Raccourcis clavier</h3><button id="closeHelp">✕</button></div><div class="shortcuts"><span>Sélection</span><span class="kbd">Q</span><span>Déplacer</span><span class="kbd">W</span><span>Rotation</span><span class="kbd">E</span><span>Échelle</span><span class="kbd">R</span><span>Supprimer</span><span class="kbd">Suppr</span><span>Annuler</span><span class="kbd">Ctrl+Z</span><span>Rétablir</span><span class="kbd">Ctrl+Y</span><span>Enregistrer</span><span class="kbd">Ctrl+S</span><span>Dupliquer</span><span class="kbd">Ctrl+D</span><span>Play / Stop</span><span class="kbd">F5</span></div></div></div>
+
+<div id="auth" class="auth" style="display:none">
+<div class="authcard">
+<img src="/icon.png" alt="BlocPlay">
+<h2>BlocPlay Dashboard</h2>
+<p id="authText">Connecte-toi avec les identifiants de ton compte BlocPlay.</p>
+<form id="loginForm">
+<div class="field"><label for="authEmail">Adresse e-mail</label><input id="authEmail" type="email" autocomplete="username" required placeholder="toi@exemple.com"></div>
+<div class="field"><label for="authPassword">Mot de passe</label><input id="authPassword" type="password" autocomplete="current-password" required placeholder="Mot de passe BlocPlay"></div>
+<button id="login" class="primary full" type="submit">Se connecter</button>
+</form>
+<button id="signup" class="full" type="button">Créer un compte BlocPlay</button>
+<p id="authError" class="error" role="alert"></p>
+<a href="/" style="color:#a9b1ff">Retour à BlocPlay</a>
+</div>
+</div>
+
+<div id="helpModal" class="modal">
+<div class="modalbox">
+<div style="display:flex;justify-content:space-between;align-items:center"><h3>Raccourcis clavier</h3><button id="closeHelp">✕</button></div>
+<div class="shortcuts">
+<span>Sélection</span><span class="kbd">Q</span>
+<span>Déplacer</span><span class="kbd">W</span>
+<span>Rotation</span><span class="kbd">E</span>
+<span>Échelle</span><span class="kbd">R</span>
+<span>Supprimer</span><span class="kbd">Suppr</span>
+<span>Annuler</span><span class="kbd">Ctrl+Z</span>
+<span>Rétablir</span><span class="kbd">Ctrl+Y</span>
+<span>Enregistrer</span><span class="kbd">Ctrl+S</span>
+<span>Dupliquer</span><span class="kbd">Ctrl+D</span>
+<span>Play / Stop</span><span class="kbd">F5</span>
+</div>
+</div>
+</div>
 <div id="toast" class="toast"></div>
+
 <script type="module">
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 import {TransformControls} from "three/addons/controls/TransformControls.js";
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,setPersistence,browserLocalPersistence} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getFirestore,collection,doc,getDocs,setDoc,serverTimestamp,deleteDoc} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig={apiKey:"AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwEtMmEtUkn04",authDomain:"blocplay-a9417.firebaseapp.com",projectId:"blocplay-a9417"};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
-const canvas=$("canvas"),view=$("view");
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.setClearColor("#090e18");
-const scene=new THREE.Scene();scene.background=new THREE.Color("#090e18");
-const camera=new THREE.PerspectiveCamera(55,1,.1,1000),cameraStart=new THREE.Vector3(8,6,8);camera.position.copy(cameraStart);
-const orbit=new OrbitControls(camera,canvas);orbit.target.set(0,.5,0);orbit.enableDamping=true;orbit.update();
-scene.add(new THREE.HemisphereLight(0xffffff,0x29354b,2));const sun=new THREE.DirectionalLight(0xffffff,2.2);sun.position.set(5,10,7);scene.add(sun);
-const grid=new THREE.GridHelper(100,100,0x354360,0x202c40);scene.add(grid);
-const gizmo=new TransformControls(camera,canvas);scene.add(gizmo.getHelper());gizmo.addEventListener("dragging-changed",e=>{orbit.enabled=!e.value;if(!e.value){changed();checkpoint();}});gizmo.addEventListener("objectChange",syncInspector);
-new ResizeObserver(()=>{let w=Math.max(1,view.clientWidth),h=Math.max(1,view.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}).observe(view);
-let user=null,items=[],selected=null,projectId=null,projects=[],playing=false,snap=false,tool="select",history=[],hi=-1,historyBusy=false;
-function setStatus(s){$("status").textContent=s}
-function toast(s){let t=$("toast");t.textContent=s;t.style.display="block";clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.style.display="none",2300)}
-function changed(){setStatus("Modifications non enregistrées")}
-function icon(type){return ({Cube:"🧊",Sphere:"⚪",Floor:"▰",Cylinder:"🛢️",Cone:"🔺",PointLight:"💡"})[type]||"◇"}
-function make(type,name,props={}){
- let geo,color=props.color, obj;
- if(type==="PointLight"){obj=new THREE.PointLight(color||"#ffe7b0",props.intensity??25,props.distance??18);obj.userData.savedIntensity=props.intensity??25;let marker=new THREE.Mesh(new THREE.SphereGeometry(.13,12,8),new THREE.MeshBasicMaterial({color:color||"#ffe7b0"}));obj.add(marker);}
- else {switch(type){case"Sphere":geo=new THREE.SphereGeometry(.65,32,24);color=color||"#41b7e8";break;case"Floor":geo=new THREE.BoxGeometry(8,.2,8);color=color||"#68748a";break;case"Cylinder":geo=new THREE.CylinderGeometry(.55,.55,1.2,32);color=color||"#e3a44d";break;case"Cone":geo=new THREE.ConeGeometry(.65,1.3,32);color=color||"#d76bc8";break;default:type="Cube";geo=new THREE.BoxGeometry(1,1,1);color=color||"#5865f2";}
- obj=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color,roughness:props.roughness??.7,metalness:props.metalness??.05}));}
- obj.name=name||`${type} ${items.length+1}`;obj.userData.objectType=type;obj.userData.editorObject=true;
- obj.position.fromArray(props.position||[0,type==="Floor"?-.1:.5,0]);if(props.rotation)obj.rotation.fromArray(props.rotation);obj.scale.fromArray(props.scale||[1,1,1]);obj.visible=props.visible!==false;scene.add(obj);items.push(obj);select(obj);return obj;
+const firebaseConfig={
+  apiKey:"AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain:"blocplay-a9417.firebaseapp.com",
+  databaseURL:"https://blocplay-a9417-default-rtdb.firebaseio.com",
+  projectId:"blocplay-a9417",
+  storageBucket:"blocplay-a9417.firebasestorage.app",
+  messagingSenderId:"540161549188",
+  appId:"1:540161549188:web:e0ec0350bd044de2f333d1"
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const $=id=>document.getElementById(id);
+
+try{
+  await setPersistence(auth,browserLocalPersistence);
+}catch(e){
+  console.warn("Auth persistence warning:",e);
 }
-function data(){return {format:"BlocPlayDashboard",version:1,name:$("projectName").value.trim()||"Mon jeu",objects:items.map(o=>({name:o.name,type:o.userData.objectType,position:o.position.toArray(),rotation:o.rotation.toArray(),scale:o.scale.toArray(),color:o.isPointLight?"#"+o.color.getHexString():"#"+o.material.color.getHexString(),visible:o.visible,roughness:o.material?.roughness??.7,metalness:o.material?.metalness??0,intensity:o.userData.savedIntensity??25,distance:o.distance??18}))}}
-function destroy(o){scene.remove(o);if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose();o.children.forEach(c=>{c.geometry?.dispose();if(c.material)c.material.dispose()})}
-function clearScene(){gizmo.detach();items.forEach(destroy);items=[];selected=null}
-function apply(d,id=null,resetHistory=true){if(!d||!Array.isArray(d.objects))throw Error("Projet invalide");clearScene();$("projectName").value=d.name||"Mon jeu";projectId=id;d.objects.forEach(o=>make(o.type||"Cube",o.name||"Objet",o));select(null);drawList();renderInspector();if(resetHistory){history=[];hi=-1;checkpoint()}setStatus("Projet chargé")}
-function select(o){if(selected?.material?.emissive){selected.material.emissive.set("#000000");selected.material.emissiveIntensity=0}selected=o;if(selected?.material?.emissive){selected.material.emissive.set("#29336b");selected.material.emissiveIntensity=.22}if(selected&&tool!=="select"&&!playing)gizmo.attach(selected);else gizmo.detach();drawList();renderInspector()}
-function drawList(){let root=$("objects");root.replaceChildren();if(!items.length){let e=document.createElement("div");e.className="empty";e.textContent="Scène vide. Ajoute un objet.";root.append(e)}items.forEach(o=>{let row=document.createElement("div");row.className="obj"+(o===selected?" sel":"");let i=document.createElement("span");i.textContent=icon(o.userData.objectType);let n=document.createElement("span");n.className="objname";n.textContent=o.name;let eye=document.createElement("button");eye.className="eye";eye.textContent=o.visible?"◉":"○";eye.title="Afficher / masquer";eye.onclick=e=>{e.stopPropagation();o.visible=!o.visible;if(o.isPointLight)o.intensity=o.visible?o.userData.savedIntensity:0;changed();drawList()};row.append(i,n,eye);row.onclick=()=>select(o);root.append(row)});$("sceneInfo").textContent=`${items.length} objet${items.length===1?"":"s"} · ${playing?"Mode Play":"Mode édition"}${snap?" · Snap ON":""}`;$("undo").disabled=hi<=0||playing;$("redo").disabled=hi>=history.length-1||playing}
-function vectorEditor(parent,title,vec,prop){let f=document.createElement("div");f.className="field";let l=document.createElement("label");l.textContent=title;f.append(l);let xyz=document.createElement("div");xyz.className="xyz";["x","y","z"].forEach(axis=>{let cell=document.createElement("div"),lab=document.createElement("label"),inp=document.createElement("input");lab.textContent=axis.toUpperCase();inp.type="number";inp.step=".1";inp.value=Number(vec[axis]).toFixed(2);inp.disabled=playing;inp.dataset.prop=prop;inp.dataset.axis=axis;inp.onchange=()=>{if(!selected)return;let n=Number(inp.value);if(!Number.isFinite(n))return;selected[prop][axis]=prop==="scale"?Math.max(.05,Math.min(100,n)):Math.max(-10000,Math.min(10000,n));changed();checkpoint()};cell.append(lab,inp);xyz.append(cell)});f.append(xyz);parent.append(f)}
-function numericField(parent,title,val,callback,step=".05"){let f=document.createElement("div");f.className="field";let l=document.createElement("label");l.textContent=title;let i=document.createElement("input");i.type="number";i.step=step;i.value=Number(val).toFixed(2);i.disabled=playing;i.onchange=()=>{let n=Number(i.value);if(Number.isFinite(n)){callback(n);changed();checkpoint()}};f.append(l,i);parent.append(f)}
-function renderInspector(){let p=$("inspector");p.replaceChildren();$("type").textContent=selected?selected.userData.objectType:"Aucun objet";if(!selected){let e=document.createElement("div");e.className="empty";e.textContent="Sélectionne un objet pour modifier ses propriétés.";p.append(e);return}
- let f=document.createElement("div");f.className="field";let l=document.createElement("label");l.textContent="Nom";let i=document.createElement("input");i.value=selected.name;i.maxLength=80;i.disabled=playing;i.onchange=()=>{selected.name=i.value.trim()||"Objet";drawList();changed();checkpoint()};f.append(l,i);p.append(f);
- vectorEditor(p,"Position",selected.position,"position");vectorEditor(p,"Rotation",selected.rotation,"rotation");vectorEditor(p,"Échelle",selected.scale,"scale");
- let cf=document.createElement("div");cf.className="field";let cl=document.createElement("label");cl.textContent="Couleur";let cr=document.createElement("div");cr.className="colorrow";let c=document.createElement("input");c.type="color";c.value=selected.isPointLight?"#"+selected.color.getHexString():"#"+selected.material.color.getHexString();c.disabled=playing;let ct=document.createElement("span");ct.className="subtle";ct.textContent=c.value;c.oninput=()=>{if(selected.isPointLight){selected.color.set(c.value);selected.children[0]?.material.color.set(c.value)}else selected.material.color.set(c.value);ct.textContent=c.value;changed()};c.onchange=checkpoint;cr.append(c,ct);cf.append(cl,cr);p.append(cf);
- if(selected.material){numericField(p,"Rugosité (0–1)",selected.material.roughness,n=>selected.material.roughness=Math.max(0,Math.min(1,n)));numericField(p,"Métallicité (0–1)",selected.material.metalness,n=>selected.material.metalness=Math.max(0,Math.min(1,n)))}
- if(selected.isPointLight){numericField(p,"Intensité",selected.userData.savedIntensity,n=>{selected.userData.savedIntensity=Math.max(0,Math.min(200,n));selected.intensity=selected.visible?selected.userData.savedIntensity:0},"1");numericField(p,"Portée",selected.distance,n=>selected.distance=Math.max(1,Math.min(100,n)),"1")}
- let dup=document.createElement("button");dup.className="full";dup.textContent="⧉ Dupliquer (Ctrl+D)";dup.disabled=playing;dup.onclick=duplicate;p.append(dup);let del=document.createElement("button");del.className="full";del.textContent="🗑 Supprimer";del.disabled=playing;del.onclick=removeSelected;p.append(del)}
-function syncInspector(){if(!selected)return;document.querySelectorAll("#inspector input[data-prop]").forEach(i=>i.value=Number(selected[i.dataset.prop][i.dataset.axis]).toFixed(2))}
-function removeSelected(){if(!selected||playing)return;let o=selected;gizmo.detach();destroy(o);items=items.filter(x=>x!==o);selected=null;drawList();renderInspector();changed();checkpoint()}
-function duplicate(){if(!selected||playing)return;let o=selected;let props={position:o.position.toArray().map((v,i)=>v+(i===0?1:0)),rotation:o.rotation.toArray(),scale:o.scale.toArray(),color:o.isPointLight?"#"+o.color.getHexString():"#"+o.material.color.getHexString(),roughness:o.material?.roughness,metalness:o.material?.metalness,intensity:o.userData.savedIntensity,distance:o.distance};make(o.userData.objectType,o.name+" copie",props);changed();checkpoint()}
-function checkpoint(){if(historyBusy||playing)return;let s=JSON.stringify(data());if(history[hi]===s)return;history=history.slice(0,hi+1);history.push(s);if(history.length>35)history.shift();hi=history.length-1;drawList()}
-function travelHistory(index){if(index<0||index>=history.length)return;historyBusy=true;try{apply(JSON.parse(history[index]),projectId,false);hi=index;setStatus("Historique restauré")}catch(e){console.error(e)}finally{historyBusy=false;drawList()}}
-async function save(){if(!user){showAuth("Connecte-toi pour enregistrer dans Firebase.");return}let btn=$("save");btn.disabled=true;setStatus("Enregistrement Firebase…");try{let d=data();if(!projectId)projectId="bp_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);let existed=projects.some(p=>p.id===projectId);await setDoc(doc(db,"users",user.uid,"dashboardProjects",projectId),{...d,ownerUid:user.uid,updatedAt:serverTimestamp(),...(existed?{}:{createdAt:serverTimestamp()})},{merge:true});setStatus("Sauvegardé dans Firebase ✓");toast("Projet sauvegardé dans Firebase");await loadProjects()}catch(e){console.error("Firebase save error:",e);setStatus("Erreur Firebase");toast("Échec de sauvegarde. Vérifie les règles Firestore.")}finally{btn.disabled=!user}}
-async function loadProjects(){if(!user)return;let root=$("projects");root.replaceChildren();setStatus("Chargement Firebase…");try{let snap=await getDocs(collection(db,"users",user.uid,"dashboardProjects"));projects=[];snap.forEach(d=>projects.push({id:d.id,...d.data()}));projects.sort((a,b)=>(b.updatedAt?.seconds||0)-(a.updatedAt?.seconds||0));if(!projects.length){let e=document.createElement("div");e.className="empty";e.textContent="Aucun projet sauvegardé. Clique sur Enregistrer.";root.append(e)}projects.forEach(p=>{let b=document.createElement("button");b.className="projectbtn";b.textContent="📁 "+(p.name||"Projet sans nom");b.onclick=()=>{try{apply(p,p.id);toast("Projet chargé depuis Firebase")}catch(e){toast("Projet invalide")}};root.append(b);let del=document.createElement("button");del.className="full";del.textContent="Supprimer";del.onclick=async()=>{if(!confirm(`Supprimer « ${p.name||"ce projet"} » ?`))return;try{await deleteDoc(doc(db,"users",user.uid,"dashboardProjects",p.id));if(projectId===p.id)projectId=null;await loadProjects();toast("Projet supprimé")}catch(e){console.error(e);toast("Suppression refusée par Firebase")}};root.append(del)});setStatus("Firebase connecté ✓");$("account").textContent=user.email||"Compte BlocPlay"}catch(e){console.error("Firebase read error:",e);setStatus("Erreur Firebase");let er=document.createElement("div");er.className="empty";er.textContent="Lecture impossible : vérifie les règles Firestore.";root.append(er)}}
-function exportFile(){let d=data(),blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(d.name.replace(/[^a-z0-9_-]/gi,"_")||"mon-jeu")+".blocplay.json";a.click();URL.revokeObjectURL(url);toast("Projet exporté")}
-function toolMode(t){tool=t;["toolSelect","toolMove","toolRotate","toolScale"].forEach(id=>$(id).classList.remove("active"));let ids={select:"toolSelect",translate:"toolMove",rotate:"toolRotate",scale:"toolScale"};$(ids[t]).classList.add("active");if(t==="select"||playing)gizmo.detach();else{gizmo.setMode(t);if(selected)gizmo.attach(selected)}canvas.focus()}
-function togglePlay(){playing=!playing;$("play").textContent=playing?"■ Stop":"▶ Play";$("play").classList.toggle("primary",playing);$("play").style.background=playing?"#5865f2":"#146c43";orbit.enabled=!playing;gizmo.enabled=!playing;if(playing)gizmo.detach();else if(tool!=="select"&&selected){gizmo.setMode(tool);gizmo.attach(selected)}renderInspector();drawList();setStatus(playing?"Mode Play — prévisualisation":"Mode édition")}
-function showAuth(msg){$("auth").style.display="flex";$("authText").textContent=msg}
-$("login").onclick=()=>location.href="/login";$("signup").onclick=()=>location.href="/signup";$("save").onclick=save;$("reload").onclick=loadProjects;$("export").onclick=exportFile;$("delete").onclick=removeSelected;$("duplicate").onclick=duplicate;$("play").onclick=togglePlay;
-$("new").onclick=()=>{if(!confirm("Créer une nouvelle scène ? Enregistre d'abord les modifications à garder."))return;clearScene();projectId=null;$("projectName").value="Mon premier jeu";make("Floor","Sol");make("Cube","Cube 1");changed();checkpoint()};
-$("import").onclick=()=>$("file").click();$("file").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.objects))throw Error("invalid");apply(d,null);checkpoint();toast("Projet importé")}catch(err){console.error(err);alert("Ce fichier n'est pas un projet BlocPlay valide.")}e.target.value=""};
-$("resetCamera").onclick=()=>{camera.position.copy(cameraStart);orbit.target.set(0,.5,0);orbit.update()};$("focus").onclick=()=>{if(!selected)return;orbit.target.copy(selected.position);camera.position.copy(selected.position.clone().add(new THREE.Vector3(5,4,5)));orbit.update()};
-$("toolSelect").onclick=()=>toolMode("select");$("toolMove").onclick=()=>toolMode("translate");$("toolRotate").onclick=()=>toolMode("rotate");$("toolScale").onclick=()=>toolMode("scale");
-$("undo").onclick=()=>travelHistory(hi-1);$("redo").onclick=()=>travelHistory(hi+1);$("gridBtn").onclick=()=>{grid.visible=!grid.visible;$("gridBtn").classList.toggle("active",grid.visible)};$("snapBtn").onclick=()=>{snap=!snap;gizmo.setTranslationSnap(snap?.5:null);gizmo.setRotationSnap(snap?Math.PI/12:null);gizmo.setScaleSnap(snap?.25:null);$("snapBtn").textContent=snap?"Snap ON":"Snap OFF";$("snapBtn").classList.toggle("active",snap)};
-$("addMenu").onclick=()=>{let t=prompt("Objet à ajouter : Cube, Sphere, Floor, Cylinder, Cone ou PointLight","Cube");if(t){let found=["Cube","Sphere","Floor","Cylinder","Cone","PointLight"].find(x=>x.toLowerCase()===t.toLowerCase());if(found){make(found);changed();checkpoint()}else toast("Type d'objet inconnu")}};
-document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{if(!playing){make(b.dataset.add);changed();checkpoint()}});
-$("projectName").onchange=()=>{changed();checkpoint()};
-$("help").onclick=()=>$("helpModal").classList.add("open");$("closeHelp").onclick=()=>$("helpModal").classList.remove("open");$("helpModal").onclick=e=>{if(e.target===$("helpModal"))$("helpModal").classList.remove("open")};
-canvas.addEventListener("pointerdown",e=>{if(playing||gizmo.dragging)return;let r=canvas.getBoundingClientRect(),p=new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),ray=new THREE.Raycaster();ray.setFromCamera(p,camera);let pick=items.filter(o=>o.visible).map(o=>o.isPointLight?o.children[0]:o),hits=ray.intersectObjects(pick,false);if(hits.length){let o=hits[0].object.parent?.isPointLight?hits[0].object.parent:hits[0].object;if(items.includes(o))select(o)}});
-window.addEventListener("keydown",e=>{if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement?.tagName))return;if(e.ctrlKey&&e.key.toLowerCase()==="s"){e.preventDefault();save()}else if(e.ctrlKey&&e.key.toLowerCase()==="z"){e.preventDefault();travelHistory(hi-1)}else if(e.ctrlKey&&e.key.toLowerCase()==="y"){e.preventDefault();travelHistory(hi+1)}else if(e.ctrlKey&&e.key.toLowerCase()==="d"){e.preventDefault();duplicate()}else if(e.key==="Delete"||e.key==="Backspace")removeSelected();else if(e.key.toLowerCase()==="q")toolMode("select");else if(e.key.toLowerCase()==="w")toolMode("translate");else if(e.key.toLowerCase()==="e")toolMode("rotate");else if(e.key.toLowerCase()==="r")toolMode("scale");else if(e.key==="F5"){e.preventDefault();togglePlay()}});
+
+const canvas=$("canvas");
+const view=$("view");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.setClearColor("#090e18");
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color("#090e18");
+const camera=new THREE.PerspectiveCamera(55,1,.1,1000);
+const cameraStart=new THREE.Vector3(8,6,8);
+camera.position.copy(cameraStart);
+
+const orbit=new OrbitControls(camera,canvas);
+orbit.target.set(0,.5,0);
+orbit.enableDamping=true;
+orbit.update();
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x29354b,2));
+const sun=new THREE.DirectionalLight(0xffffff,2.2);
+sun.position.set(5,10,7);
+scene.add(sun);
+
+const grid=new THREE.GridHelper(100,100,0x354360,0x202c40);
+scene.add(grid);
+
+const gizmo=new TransformControls(camera,canvas);
+scene.add(gizmo.getHelper());
+gizmo.addEventListener("dragging-changed",e=>{
+  orbit.enabled=!e.value;
+  if(!e.value){
+    changed();
+    checkpoint();
+  }
+});
+gizmo.addEventListener("objectChange",syncInspector);
+
+new ResizeObserver(()=>{
+  let w=Math.max(1,view.clientWidth);
+  let h=Math.max(1,view.clientHeight);
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h;
+  camera.updateProjectionMatrix();
+}).observe(view);
+
+let user=null,items=[],selected=null,projectId=null,projects=[],playing=false,snap=false,tool="select",history=[],hi=-1,historyBusy=false;
+
+function setStatus(s){
+  $("status").textContent=s;
+}
+
+function toast(s){
+  let t=$("toast");
+  t.textContent=s;
+  t.style.display="block";
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>t.style.display="none",2300);
+}
+
+function changed(){
+  setStatus("Modifications non enregistrées");
+}
+
+function icon(type){
+  return ({Cube:"🧊",Sphere:"⚪",Floor:"▰",Cylinder:"🛢️",Cone:"🔺",PointLight:"💡"})[type]||"◇";
+}
+
+function make(type,name,props={}){
+  let geo,color=props.color,obj;
+
+  if(type==="PointLight"){
+    obj=new THREE.PointLight(color||"#ffe7b0",props.intensity??25,props.distance??18);
+    obj.userData.savedIntensity=props.intensity??25;
+    let marker=new THREE.Mesh(
+      new THREE.SphereGeometry(.13,12,8),
+      new THREE.MeshBasicMaterial({color:color||"#ffe7b0"})
+    );
+    obj.add(marker);
+  }else{
+    switch(type){
+      case"Sphere":
+        geo=new THREE.SphereGeometry(.65,32,24);
+        color=color||"#41b7e8";
+        break;
+      case"Floor":
+        geo=new THREE.BoxGeometry(8,.2,8);
+        color=color||"#68748a";
+        break;
+      case"Cylinder":
+        geo=new THREE.CylinderGeometry(.55,.55,1.2,32);
+        color=color||"#e3a44d";
+        break;
+      case"Cone":
+        geo=new THREE.ConeGeometry(.65,1.3,32);
+        color=color||"#d76bc8";
+        break;
+      default:
+        type="Cube";
+        geo=new THREE.BoxGeometry(1,1,1);
+        color=color||"#5865f2";
+    }
+    obj=new THREE.Mesh(
+      geo,
+      new THREE.MeshStandardMaterial({
+        color,
+        roughness:props.roughness??.7,
+        metalness:props.metalness??.05
+      })
+    );
+  }
+
+  obj.name=name||`${type} ${items.length+1}`;
+  obj.userData.objectType=type;
+  obj.userData.editorObject=true;
+  obj.position.fromArray(props.position||[0,type==="Floor"?-.1:.5,0]);
+  if(props.rotation)obj.rotation.fromArray(props.rotation);
+  obj.scale.fromArray(props.scale||[1,1,1]);
+  obj.visible=props.visible!==false;
+  scene.add(obj);
+  items.push(obj);
+  select(obj);
+  return obj;
+}
+
+function data(){
+  return {
+    format:"BlocPlayDashboard",
+    version:1,
+    name:$("projectName").value.trim()||"Mon jeu",
+    objects:items.map(o=>({
+      name:o.name,
+      type:o.userData.objectType,
+      position:o.position.toArray(),
+      rotation:o.rotation.toArray(),
+      scale:o.scale.toArray(),
+      color:o.isPointLight?"#"+o.color.getHexString():"#"+o.material.color.getHexString(),
+      visible:o.visible,
+      roughness:o.material?.roughness??.7,
+      metalness:o.material?.metalness??0,
+      intensity:o.userData.savedIntensity??25,
+      distance:o.distance??18
+    }))
+  };
+}
+
+function destroy(o){
+  scene.remove(o);
+  if(o.geometry)o.geometry.dispose();
+  if(o.material)o.material.dispose();
+  o.children.forEach(c=>{
+    c.geometry?.dispose();
+    if(c.material)c.material.dispose();
+  });
+}
+
+function clearScene(){
+  gizmo.detach();
+  items.forEach(destroy);
+  items=[];
+  selected=null;
+}
+
+function apply(d,id=null,resetHistory=true){
+  if(!d||!Array.isArray(d.objects))throw Error("Projet invalide");
+  clearScene();
+  $("projectName").value=d.name||"Mon jeu";
+  projectId=id;
+  d.objects.forEach(o=>make(o.type||"Cube",o.name||"Objet",o));
+  select(null);
+  drawList();
+  renderInspector();
+  if(resetHistory){
+    history=[];
+    hi=-1;
+    checkpoint();
+  }
+  setStatus("Projet chargé");
+}
+
+function select(o){
+  if(selected?.material?.emissive){
+    selected.material.emissive.set("#000000");
+    selected.material.emissiveIntensity=0;
+  }
+  selected=o;
+  if(selected?.material?.emissive){
+    selected.material.emissive.set("#29336b");
+    selected.material.emissiveIntensity=.22;
+  }
+  if(selected&&tool!=="select"&&!playing)gizmo.attach(selected);
+  else gizmo.detach();
+  drawList();
+  renderInspector();
+}
+
+function drawList(){
+  let root=$("objects");
+  root.replaceChildren();
+
+  if(!items.length){
+    let e=document.createElement("div");
+    e.className="empty";
+    e.textContent="Scène vide. Ajoute un objet.";
+    root.append(e);
+  }
+
+  items.forEach(o=>{
+    let row=document.createElement("div");
+    row.className="obj"+(o===selected?" sel":"");
+
+    let i=document.createElement("span");
+    i.textContent=icon(o.userData.objectType);
+
+    let n=document.createElement("span");
+    n.className="objname";
+    n.textContent=o.name;
+
+    let eye=document.createElement("button");
+    eye.className="eye";
+    eye.textContent=o.visible?"◉":"○";
+    eye.title="Afficher / masquer";
+    eye.onclick=e=>{
+      e.stopPropagation();
+      o.visible=!o.visible;
+      if(o.isPointLight)o.intensity=o.visible?o.userData.savedIntensity:0;
+      changed();
+      drawList();
+    };
+
+    row.append(i,n,eye);
+    row.onclick=()=>select(o);
+    root.append(row);
+  });
+
+  $("sceneInfo").textContent=
+    `${items.length} objet${items.length===1?"":"s"} · ${playing?"Mode Play":"Mode édition"}${snap?" · Snap ON":""}`;
+
+  $("undo").disabled=hi<=0||playing;
+  $("redo").disabled=hi>=history.length-1||playing;
+}
+
+function vectorEditor(parent,title,vec,prop){
+  let f=document.createElement("div");
+  f.className="field";
+
+  let l=document.createElement("label");
+  l.textContent=title;
+  f.append(l);
+
+  let xyz=document.createElement("div");
+  xyz.className="xyz";
+
+  ["x","y","z"].forEach(axis=>{
+    let cell=document.createElement("div");
+    let lab=document.createElement("label");
+    let inp=document.createElement("input");
+
+    lab.textContent=axis.toUpperCase();
+    inp.type="number";
+    inp.step=".1";
+    inp.value=Number(vec[axis]).toFixed(2);
+    inp.disabled=playing;
+    inp.dataset.prop=prop;
+    inp.dataset.axis=axis;
+
+    inp.onchange=()=>{
+      if(!selected)return;
+      let n=Number(inp.value);
+      if(!Number.isFinite(n))return;
+      selected[prop][axis]=prop==="scale"
+        ?Math.max(.05,Math.min(100,n))
+        :Math.max(-10000,Math.min(10000,n));
+      changed();
+      checkpoint();
+    };
+
+    cell.append(lab,inp);
+    xyz.append(cell);
+  });
+
+  f.append(xyz);
+  parent.append(f);
+}
+
+function numericField(parent,title,val,callback,step=".05"){
+  let f=document.createElement("div");
+  f.className="field";
+  let l=document.createElement("label");
+  l.textContent=title;
+
+  let i=document.createElement("input");
+  i.type="number";
+  i.step=step;
+  i.value=Number(val).toFixed(2);
+  i.disabled=playing;
+  i.onchange=()=>{
+    let n=Number(i.value);
+    if(Number.isFinite(n)){
+      callback(n);
+      changed();
+      checkpoint();
+    }
+  };
+
+  f.append(l,i);
+  parent.append(f);
+}
+
+function renderInspector(){
+  let p=$("inspector");
+  p.replaceChildren();
+  $("type").textContent=selected?selected.userData.objectType:"Aucun objet";
+
+  if(!selected){
+    let e=document.createElement("div");
+    e.className="empty";
+    e.textContent="Sélectionne un objet pour modifier ses propriétés.";
+    p.append(e);
+    return;
+  }
+
+  let f=document.createElement("div");
+  f.className="field";
+  let l=document.createElement("label");
+  l.textContent="Nom";
+  let i=document.createElement("input");
+  i.value=selected.name;
+  i.maxLength=80;
+  i.disabled=playing;
+  i.onchange=()=>{
+    selected.name=i.value.trim()||"Objet";
+    drawList();
+    changed();
+    checkpoint();
+  };
+  f.append(l,i);
+  p.append(f);
+
+  vectorEditor(p,"Position",selected.position,"position");
+  vectorEditor(p,"Rotation",selected.rotation,"rotation");
+  vectorEditor(p,"Échelle",selected.scale,"scale");
+
+  let cf=document.createElement("div");
+  cf.className="field";
+  let cl=document.createElement("label");
+  cl.textContent="Couleur";
+  let cr=document.createElement("div");
+  cr.className="colorrow";
+  let c=document.createElement("input");
+  c.type="color";
+  c.value=selected.isPointLight
+    ?"#"+selected.color.getHexString()
+    :"#"+selected.material.color.getHexString();
+  c.disabled=playing;
+
+  let ct=document.createElement("span");
+  ct.className="subtle";
+  ct.textContent=c.value;
+
+  c.oninput=()=>{
+    if(selected.isPointLight){
+      selected.color.set(c.value);
+      selected.children[0]?.material.color.set(c.value);
+    }else{
+      selected.material.color.set(c.value);
+    }
+    ct.textContent=c.value;
+    changed();
+  };
+  c.onchange=checkpoint;
+
+  cr.append(c,ct);
+  cf.append(cl,cr);
+  p.append(cf);
+
+  if(selected.material){
+    numericField(p,"Rugosité (0–1)",selected.material.roughness,n=>selected.material.roughness=Math.max(0,Math.min(1,n)));
+    numericField(p,"Métallicité (0–1)",selected.material.metalness,n=>selected.material.metalness=Math.max(0,Math.min(1,n)));
+  }
+
+  if(selected.isPointLight){
+    numericField(p,"Intensité",selected.userData.savedIntensity,n=>{
+      selected.userData.savedIntensity=Math.max(0,Math.min(200,n));
+      selected.intensity=selected.visible?selected.userData.savedIntensity:0;
+    },"1");
+    numericField(p,"Portée",selected.distance,n=>selected.distance=Math.max(1,Math.min(100,n)),"1");
+  }
+
+  let dup=document.createElement("button");
+  dup.className="full";
+  dup.textContent="⧉ Dupliquer (Ctrl+D)";
+  dup.disabled=playing;
+  dup.onclick=duplicate;
+  p.append(dup);
+
+  let del=document.createElement("button");
+  del.className="full";
+  del.textContent="🗑 Supprimer";
+  del.disabled=playing;
+  del.onclick=removeSelected;
+  p.append(del);
+}
+
+function syncInspector(){
+  if(!selected)return;
+  document.querySelectorAll("#inspector input[data-prop]").forEach(i=>{
+    i.value=Number(selected[i.dataset.prop][i.dataset.axis]).toFixed(2);
+  });
+}
+
+function removeSelected(){
+  if(!selected||playing)return;
+  let o=selected;
+  gizmo.detach();
+  destroy(o);
+  items=items.filter(x=>x!==o);
+  selected=null;
+  drawList();
+  renderInspector();
+  changed();
+  checkpoint();
+}
+
+function duplicate(){
+  if(!selected||playing)return;
+  let o=selected;
+  let props={
+    position:o.position.toArray().map((v,i)=>v+(i===0?1:0)),
+    rotation:o.rotation.toArray(),
+    scale:o.scale.toArray(),
+    color:o.isPointLight?"#"+o.color.getHexString():"#"+o.material.color.getHexString(),
+    roughness:o.material?.roughness,
+    metalness:o.material?.metalness,
+    intensity:o.userData.savedIntensity,
+    distance:o.distance
+  };
+  make(o.userData.objectType,o.name+" copie",props);
+  changed();
+  checkpoint();
+}
+
+function checkpoint(){
+  if(historyBusy||playing)return;
+  let s=JSON.stringify(data());
+  if(history[hi]===s)return;
+  history=history.slice(0,hi+1);
+  history.push(s);
+  if(history.length>35)history.shift();
+  hi=history.length-1;
+  drawList();
+}
+
+function travelHistory(index){
+  if(index<0||index>=history.length)return;
+  historyBusy=true;
+  try{
+    apply(JSON.parse(history[index]),projectId,false);
+    hi=index;
+    setStatus("Historique restauré");
+  }catch(e){
+    console.error(e);
+  }finally{
+    historyBusy=false;
+    drawList();
+  }
+}
+
+async function save(){
+  if(!user){
+    showAuth("Connecte-toi pour enregistrer dans Firebase.");
+    return;
+  }
+
+  let btn=$("save");
+  btn.disabled=true;
+  setStatus("Enregistrement Firebase…");
+
+  try{
+    let d=data();
+    if(!projectId){
+      projectId="bp_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);
+    }
+
+    let existed=projects.some(p=>p.id===projectId);
+
+    await setDoc(
+      doc(db,"users",user.uid,"dashboardProjects",projectId),
+      {
+        ...d,
+        ownerUid:user.uid,
+        updatedAt:serverTimestamp(),
+        ...(existed?{}:{createdAt:serverTimestamp()})
+      },
+      {merge:true}
+    );
+
+    setStatus("Sauvegardé dans Firebase ✓");
+    toast("Projet sauvegardé dans Firebase");
+    await loadProjects();
+  }catch(e){
+    console.error("Firebase save error:",e);
+    setStatus("Erreur Firebase");
+    toast("Échec de sauvegarde. Vérifie les règles Firestore.");
+  }finally{
+    btn.disabled=!user;
+  }
+}
+
+async function loadProjects(){
+  if(!user)return;
+
+  let root=$("projects");
+  root.replaceChildren();
+  setStatus("Chargement Firebase…");
+
+  try{
+    let snap=await getDocs(collection(db,"users",user.uid,"dashboardProjects"));
+    projects=[];
+    snap.forEach(d=>projects.push({id:d.id,...d.data()}));
+    projects.sort((a,b)=>(b.updatedAt?.seconds||0)-(a.updatedAt?.seconds||0));
+
+    if(!projects.length){
+      let e=document.createElement("div");
+      e.className="empty";
+      e.textContent="Aucun projet sauvegardé. Clique sur Enregistrer.";
+      root.append(e);
+    }
+
+    projects.forEach(p=>{
+      let b=document.createElement("button");
+      b.className="projectbtn";
+      b.textContent="📁 "+(p.name||"Projet sans nom");
+      b.onclick=()=>{
+        try{
+          apply(p,p.id);
+          toast("Projet chargé depuis Firebase");
+        }catch(e){
+          toast("Projet invalide");
+        }
+      };
+      root.append(b);
+
+      let del=document.createElement("button");
+      del.className="full";
+      del.textContent="Supprimer";
+      del.onclick=async()=>{
+        if(!confirm(`Supprimer « ${p.name||"ce projet"} » ?`))return;
+        try{
+          await deleteDoc(doc(db,"users",user.uid,"dashboardProjects",p.id));
+          if(projectId===p.id)projectId=null;
+          await loadProjects();
+          toast("Projet supprimé");
+        }catch(e){
+          console.error(e);
+          toast("Suppression refusée par Firebase");
+        }
+      };
+      root.append(del);
+    });
+
+    setStatus("Firebase connecté ✓");
+    $("account").textContent=user.email||"Compte BlocPlay";
+  }catch(e){
+    console.error("Firebase read error:",e);
+    setStatus("Erreur Firebase");
+    let er=document.createElement("div");
+    er.className="empty";
+    er.textContent="Lecture impossible : vérifie les règles Firestore.";
+    root.append(er);
+  }
+}
+
+function exportFile(){
+  let d=data();
+  let blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement("a");
+  a.href=url;
+  a.download=(d.name.replace(/[^a-z0-9_-]/gi,"_")||"mon-jeu")+".blocplay.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("Projet exporté");
+}
+
+function toolMode(t){
+  tool=t;
+  ["toolSelect","toolMove","toolRotate","toolScale"].forEach(id=>$(id).classList.remove("active"));
+  let ids={select:"toolSelect",translate:"toolMove",rotate:"toolRotate",scale:"toolScale"};
+  $(ids[t]).classList.add("active");
+
+  if(t==="select"||playing){
+    gizmo.detach();
+  }else{
+    gizmo.setMode(t);
+    if(selected)gizmo.attach(selected);
+  }
+  canvas.focus();
+}
+
+function togglePlay(){
+  playing=!playing;
+  $("play").textContent=playing?"■ Stop":"▶ Play";
+  $("play").classList.toggle("primary",playing);
+  $("play").style.background=playing?"#5865f2":"#146c43";
+  orbit.enabled=!playing;
+  gizmo.enabled=!playing;
+
+  if(playing){
+    gizmo.detach();
+  }else if(tool!=="select"&&selected){
+    gizmo.setMode(tool);
+    gizmo.attach(selected);
+  }
+
+  renderInspector();
+  drawList();
+  setStatus(playing?"Mode Play — prévisualisation":"Mode édition");
+}
+
+function showAuth(msg){
+  $("auth").style.display="flex";
+  $("authText").textContent=msg;
+}
+
+function authMessage(e){
+  const code=e?.code||"";
+
+  if(code.includes("invalid-credential")||code.includes("wrong-password")||code.includes("user-not-found"))
+    return "Adresse e-mail ou mot de passe incorrect.";
+
+  if(code.includes("invalid-email"))
+    return "L'adresse e-mail n'est pas valide.";
+
+  if(code.includes("too-many-requests"))
+    return "Trop de tentatives. Réessaie plus tard.";
+
+  if(code.includes("unauthorized-domain"))
+    return "Domaine non autorisé dans Firebase Authentication. Ajoute blocplay-beta.github.io dans les domaines autorisés.";
+
+  if(code.includes("network-request-failed"))
+    return "Connexion réseau impossible. Vérifie Internet puis réessaie.";
+
+  return "Connexion impossible ("+(code||e?.message||"erreur inconnue")+"). Vérifie Firebase Authentication.";
+}
+
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=$("login");
+  const email=$("authEmail").value.trim();
+  const password=$("authPassword").value;
+
+  btn.disabled=true;
+  btn.textContent="Connexion…";
+  $("authError").textContent="";
+
+  try{
+    await signInWithEmailAndPassword(auth,email,password);
+    $("auth").style.display="none";
+    $("authPassword").value="";
+  }catch(err){
+    console.error("BlocPlay Dashboard sign-in error:",err);
+    $("authError").textContent=authMessage(err);
+  }finally{
+    btn.disabled=false;
+    btn.textContent="Se connecter";
+  }
+});
+
+$("signup").onclick=()=>location.href="/signup/";
+$("save").onclick=save;
+$("reload").onclick=loadProjects;
+$("export").onclick=exportFile;
+$("delete").onclick=removeSelected;
+$("duplicate").onclick=duplicate;
+$("play").onclick=togglePlay;
+
+$("new").onclick=()=>{
+  if(!confirm("Créer une nouvelle scène ? Enregistre d'abord les modifications à garder."))return;
+  clearScene();
+  projectId=null;
+  $("projectName").value="Mon premier jeu";
+  make("Floor","Sol");
+  make("Cube","Cube 1");
+  changed();
+  checkpoint();
+};
+
+$("import").onclick=()=>$("file").click();
+
+$("file").onchange=async e=>{
+  let f=e.target.files[0];
+  if(!f)return;
+
+  try{
+    let d=JSON.parse(await f.text());
+    if(!Array.isArray(d.objects))throw Error("invalid");
+    apply(d,null);
+    checkpoint();
+    toast("Projet importé");
+  }catch(err){
+    console.error(err);
+    alert("Ce fichier n'est pas un projet BlocPlay valide.");
+  }
+
+  e.target.value="";
+};
+
+$("resetCamera").onclick=()=>{
+  camera.position.copy(cameraStart);
+  orbit.target.set(0,.5,0);
+  orbit.update();
+};
+
+$("focus").onclick=()=>{
+  if(!selected)return;
+  orbit.target.copy(selected.position);
+  camera.position.copy(selected.position.clone().add(new THREE.Vector3(5,4,5)));
+  orbit.update();
+};
+
+$("toolSelect").onclick=()=>toolMode("select");
+$("toolMove").onclick=()=>toolMode("translate");
+$("toolRotate").onclick=()=>toolMode("rotate");
+$("toolScale").onclick=()=>toolMode("scale");
+
+$("undo").onclick=()=>travelHistory(hi-1);
+$("redo").onclick=()=>travelHistory(hi+1);
+
+$("gridBtn").onclick=()=>{
+  grid.visible=!grid.visible;
+  $("gridBtn").classList.toggle("active",grid.visible);
+};
+
+$("snapBtn").onclick=()=>{
+  snap=!snap;
+  gizmo.setTranslationSnap(snap?0.5:null);
+  gizmo.setRotationSnap(snap?Math.PI/12:null);
+  gizmo.setScaleSnap(snap?0.25:null);
+  $("snapBtn").textContent=snap?"Snap ON":"Snap OFF";
+  $("snapBtn").classList.toggle("active",snap);
+};
+
+$("addMenu").onclick=()=>{
+  let t=prompt("Objet à ajouter : Cube, Sphere, Floor, Cylinder, Cone ou PointLight","Cube");
+
+  if(t){
+    let found=["Cube","Sphere","Floor","Cylinder","Cone","PointLight"].find(x=>x.toLowerCase()===t.toLowerCase());
+
+    if(found){
+      make(found);
+      changed();
+      checkpoint();
+    }else{
+      toast("Type d'objet inconnu");
+    }
+  }
+};
+
+document.querySelectorAll("[data-add]").forEach(b=>{
+  b.onclick=()=>{
+    if(!playing){
+      make(b.dataset.add);
+      changed();
+      checkpoint();
+    }
+  };
+});
+
+$("projectName").onchange=()=>{
+  changed();
+  checkpoint();
+};
+
+$("help").onclick=()=>$("helpModal").classList.add("open");
+$("closeHelp").onclick=()=>$("helpModal").classList.remove("open");
+$("helpModal").onclick=e=>{
+  if(e.target===$("helpModal"))$("helpModal").classList.remove("open");
+};
+
+canvas.addEventListener("pointerdown",e=>{
+  if(playing||gizmo.dragging)return;
+
+  let r=canvas.getBoundingClientRect();
+  let p=new THREE.Vector2(
+    (e.clientX-r.left)/r.width*2-1,
+    -(e.clientY-r.top)/r.height*2+1
+  );
+
+  let ray=new THREE.Raycaster();
+  ray.setFromCamera(p,camera);
+
+  let pick=items.filter(o=>o.visible).map(o=>o.isPointLight?o.children[0]:o);
+  let hits=ray.intersectObjects(pick,false);
+
+  if(hits.length){
+    let o=hits[0].object.parent?.isPointLight?hits[0].object.parent:hits[0].object;
+    if(items.includes(o))select(o);
+  }
+});
+
+window.addEventListener("keydown",e=>{
+  if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement?.tagName))return;
+
+  if(e.ctrlKey&&e.key.toLowerCase()==="s"){
+    e.preventDefault();
+    save();
+  }else if(e.ctrlKey&&e.key.toLowerCase()==="z"){
+    e.preventDefault();
+    travelHistory(hi-1);
+  }else if(e.ctrlKey&&e.key.toLowerCase()==="y"){
+    e.preventDefault();
+    travelHistory(hi+1);
+  }else if(e.ctrlKey&&e.key.toLowerCase()==="d"){
+    e.preventDefault();
+    duplicate();
+  }else if(e.key==="Delete"||e.key==="Backspace"){
+    removeSelected();
+  }else if(e.key.toLowerCase()==="q"){
+    toolMode("select");
+  }else if(e.key.toLowerCase()==="w"){
+    toolMode("translate");
+  }else if(e.key.toLowerCase()==="e"){
+    toolMode("rotate");
+  }else if(e.key.toLowerCase()==="r"){
+    toolMode("scale");
+  }else if(e.key==="F5"){
+    e.preventDefault();
+    togglePlay();
+  }
+});
+
 $("projectName").addEventListener("input",()=>setStatus("Nom modifié — non enregistré"));
-onAuthStateChanged(auth,async u=>{user=u;if(!u){$("save").disabled=true;$("account").textContent="Connexion requise";setStatus("Connexion requise");showAuth("Connecte-toi à ton compte BlocPlay pour enregistrer et retrouver tes projets dans Firebase.");return}$("auth").style.display="none";$("save").disabled=false;$("account").textContent=u.email||"Compte BlocPlay";await loadProjects();if(!items.length){make("Floor","Sol");make("Cube","Cube 1");checkpoint()}});
-function animate(){requestAnimationFrame(animate);orbit.update();renderer.render(scene,camera)}animate();
+
+onAuthStateChanged(auth,async u=>{
+  user=u;
+
+  if(!u){
+    // Redirection conservée : une session Firebase valide est requise.
+    window.location.replace("/login");
+    return;
+  }
+
+  $("auth").style.display="none";
+  $("save").disabled=false;
+  $("account").textContent=u.email||"Compte BlocPlay";
+
+  await loadProjects();
+
+  if(!items.length){
+    make("Floor","Sol");
+    make("Cube","Cube 1");
+    checkpoint();
+  }
+});
+
+function animate(){
+  requestAnimationFrame(animate);
+  orbit.update();
+  renderer.render(scene,camera);
+}
+animate();
 </script>
-</body></html>
+</body>
+</html>
