@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b0f1a">
-<title>BlocPlay Studio</title>
+<title>BlocPlay Dashboard</title>
 <link rel="icon" href="/logo.ico">
 <script type="importmap">
 {
@@ -23,12 +23,14 @@
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="/"><img src="/icon.png" alt="BlocPlay"><span>BlocPlay</span> Studio</a>
+  <a class="brand" href="/"><img src="/icon.png" alt="BlocPlay"><span>BlocPlay</span>Dashboard</a>
   <input id="projectName" class="project-name" value="Mon premier jeu" aria-label="Nom du projet">
   <div class="actions">
     <span id="status" class="status">Connexion à Firebase…</span>
     <button id="saveBtn" class="primary" disabled>☁ Enregistrer</button>
     <button id="exportBtn">Exporter</button>
+    <button id="importBtn">Importer</button>
+    <input id="importFile" type="file" accept=".json,.blocplay.json,application/json" hidden>
     <button id="playBtn">▶ Play</button>
   </div>
 </header>
@@ -39,14 +41,12 @@
     <div class="content">
       <div class="section">Objets de la scène</div>
       <div id="objectList"></div>
-
       <div class="section">Ajouter un objet</div>
       <div class="grid">
         <button class="asset" data-add="Cube"><b>🧊</b>Cube</button>
         <button class="asset" data-add="Sphere"><b>⚪</b>Sphère</button>
         <button class="asset" data-add="Floor"><b>▰</b>Sol</button>
       </div>
-
       <div class="section">Mes projets</div>
       <button id="newBtn" class="full">＋ Nouveau projet</button>
       <button id="loadBtn" class="full">📂 Charger mes projets</button>
@@ -57,6 +57,9 @@
   <main class="center">
     <div class="toolbar">
       <button id="cameraBtn">◎ Recentrer la vue</button>
+      <button id="moveBtn" class="primary">↔ Déplacer</button>
+      <button id="rotateBtn">⟳ Tourner</button>
+      <button id="scaleBtn">⤢ Échelle</button>
       <button data-add="Cube">＋ Cube</button>
       <button data-add="Sphere">＋ Sphère</button>
       <button data-add="Floor">＋ Sol</button>
@@ -138,7 +141,8 @@ try {
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -148,7 +152,7 @@ const firebaseConfig = {
   projectId: "blocplay-a9417"
 };
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const $ = id => document.getElementById(id);
@@ -171,6 +175,17 @@ const controls = new OrbitControls(camera,canvas);
 controls.target.set(0,.5,0);
 controls.enableDamping = true;
 controls.update();
+
+const transform = new TransformControls(camera,renderer.domElement);
+scene.add(transform.getHelper());
+transform.setMode("translate");
+transform.addEventListener("dragging-changed",event=>{
+  controls.enabled = !event.value;
+});
+transform.addEventListener("objectChange",()=>{
+  renderInspector();
+  status("Modifications non enregistrées");
+});
 
 scene.add(new THREE.HemisphereLight(0xffffff,0x29354b,2));
 
@@ -229,7 +244,9 @@ function addObject(type,name,props={}) {
   mesh.userData.objectType = type;
   mesh.position.fromArray(props.position || [0,type === "Floor" ? -.1 : .5,0]);
 
-  if(props.rotation) mesh.rotation.fromArray(props.rotation);
+  if(props.rotation) {
+    mesh.rotation.fromArray(props.rotation);
+  }
 
   mesh.scale.fromArray(props.scale || [1,1,1]);
   scene.add(mesh);
@@ -278,6 +295,14 @@ function selectObject(o) {
   if(selected) {
     selected.material.emissive.set("#29336b");
     selected.material.emissiveIntensity = .25;
+
+    if(!playing) {
+      transform.attach(selected);
+    } else {
+      transform.detach();
+    }
+  } else {
+    transform.detach();
   }
 
   refreshList();
@@ -443,6 +468,8 @@ function projectData() {
 }
 
 function clearScene() {
+  transform.detach();
+
   for(const o of objects) {
     scene.remove(o);
     o.geometry.dispose();
@@ -484,7 +511,9 @@ async function saveProject() {
   try {
     const data = projectData();
 
-    if(!currentProjectId) currentProjectId = newId();
+    if(!currentProjectId) {
+      currentProjectId = newId();
+    }
 
     await setDoc(
       doc(db,"users",user.uid,"studioProjects",currentProjectId),
@@ -500,9 +529,15 @@ async function saveProject() {
     status("Enregistré dans Firebase ✓");
     await loadProjects();
   } catch(e) {
-    console.error(e);
-    status("Erreur Firebase");
-    alert("Impossible d'enregistrer le projet dans Firebase.\nVérifie les règles Firestore indiquées sous le code.");
+    console.error("Erreur Firestore lors de l’enregistrement:",e);
+    status("Erreur Firebase: "+(e.code||e.message||"inconnue"));
+
+    alert(
+      "Échec de l’enregistrement Firebase.\n" +
+      "Code : "+(e.code||"inconnu")+"\n" +
+      "Détail : "+(e.message||"aucun détail")+"\n\n" +
+      "Si le code est permission-denied, les règles Firestore doivent autoriser l’utilisateur connecté à accéder à users/UID/studioProjects."
+    );
   } finally {
     btn.disabled = false;
   }
@@ -516,7 +551,7 @@ async function loadProjects() {
   status("Chargement des projets…");
 
   try {
-    const snap = await getDocs(collection(db,"users",user.uid,"studioProjects"));
+    const snap = await getDocs(collection(db,user.uid,"studioProjects"));
     projectList = [];
 
     snap.forEach(d=>projectList.push({id:d.id,...d.data()}));
@@ -533,7 +568,7 @@ async function loadProjects() {
     projectList.forEach(p=>{
       const b = document.createElement("button");
       b.className = "full";
-      b.textContent = "📁 " + (p.name || "Projet sans nom");
+      b.textContent = "📁 "+(p.name || "Projet sans nom");
 
       b.onclick = ()=>{
         try {
@@ -568,6 +603,58 @@ $("loginBtn").onclick = ()=>location.href = "/login";
 $("signupBtn").onclick = ()=>location.href = "/signup";
 $("saveBtn").onclick = saveProject;
 $("loadBtn").onclick = loadProjects;
+
+$("moveBtn").onclick = ()=>{
+  transform.setMode("translate");
+  $("moveBtn").classList.add("primary");
+  $("rotateBtn").classList.remove("primary");
+  $("scaleBtn").classList.remove("primary");
+};
+
+$("rotateBtn").onclick = ()=>{
+  transform.setMode("rotate");
+  $("rotateBtn").classList.add("primary");
+  $("moveBtn").classList.remove("primary");
+  $("scaleBtn").classList.remove("primary");
+};
+
+$("scaleBtn").onclick = ()=>{
+  transform.setMode("scale");
+  $("scaleBtn").classList.add("primary");
+  $("moveBtn").classList.remove("primary");
+  $("rotateBtn").classList.remove("primary");
+};
+
+$("importBtn").onclick = ()=>$("importFile").click();
+
+$("importFile").addEventListener("change",async event=>{
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+
+  try {
+    const parsed = JSON.parse(await file.text());
+    const data = parsed.project && Array.isArray(parsed.project.objects)
+      ? parsed.project
+      : parsed;
+
+    if(!data || !Array.isArray(data.objects) ||
+       data.objects.some(o=>!o || !["Cube","Sphere","Floor"].includes(o.type||"Cube"))) {
+      throw new Error("Ce fichier ne contient pas un projet BlocPlay Studio valide.");
+    }
+
+    if(!confirm("Importer « "+(data.name||file.name)+" » ? La scène actuelle sera remplacée.")) {
+      return;
+    }
+
+    applyProject(data,null);
+    status("Projet importé — pense à l’enregistrer");
+  } catch(error) {
+    console.error(error);
+    alert("Import impossible : "+(error.message||"fichier invalide")+". Sélectionne un fichier JSON exporté depuis BlocPlay Studio.");
+  } finally {
+    event.target.value = "";
+  }
+});
 
 $("newBtn").onclick = ()=>{
   if(!confirm("Créer un nouveau projet ? Enregistre d'abord les modifications à garder.")) return;
@@ -622,7 +709,7 @@ $("playBtn").onclick = ()=>{
 };
 
 canvas.addEventListener("pointerdown",e=>{
-  if(playing) return;
+  if(playing || transform.dragging) return;
 
   const r = canvas.getBoundingClientRect();
   const p = new THREE.Vector2(
@@ -642,6 +729,7 @@ onAuthStateChanged(auth,async u=>{
 
   if(!u) {
     $("saveBtn").disabled = true;
+    transform.detach();
     showAuth("Connecte-toi à ton compte BlocPlay pour enregistrer et retrouver tes projets avec Firebase.");
     status("Connexion requise");
     return;
@@ -662,9 +750,12 @@ function animate() {
   requestAnimationFrame(animate);
 
   if(playing) {
+    transform.detach();
     objects.forEach(o=>{
       if(o.userData.objectType !== "Floor") o.rotation.y += .008;
     });
+  } else if(selected) {
+    transform.attach(selected);
   }
 
   controls.update();
