@@ -323,6 +323,28 @@ header {
     );
 }
 
+.btn-settings {
+  background: #ff5722; /* Couleur de fond (ex: un beau orange) */
+  color: white;        /* Couleur du texte */
+  padding: 12px 24px;  /* Espace à l'intérieur du bouton (haut/bas et gauche/droite) */
+  border-radius: 12px; /* Arrondi des coins */
+  font-weight: bold;   /* Texte en gras */
+  text-decoration: none; /* Enlève le soulignement si c'est un lien */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease; /* Rend l'effet fluide */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Petite ombre portée */
+}
+
+/* Effet quand la souris passe sur le bouton */
+.btn-settings:hover {
+  background: #e64a19; /* Change un peu de couleur au survol */
+  transform: translateY(-2px); /* Fait légèrement monter le bouton */
+}
+
 /* ========================= */
 /* RESSOURCES */
 /* ========================= */
