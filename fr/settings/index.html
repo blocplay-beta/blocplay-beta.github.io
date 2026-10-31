@@ -1,366 +1,133 @@
-<!-- Please read COPYRIGHT.md -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres</title>
+  
+  <!-- CSS DES POPUPS -->
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.78);
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      box-sizing: border-box;
+    }
 
-<title>Paramètres - BlocPlay</title>
+    .modal.show {
+      display: flex !important;
+    }
 
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" href="/logo.ico">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0b0f1a">
+    .modal-box {
+      background: #122a4a;
+      padding: 25px;
+      border-radius: 12px;
+      width: min(400px, calc(100% - 40px));
+      box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+      color: white;
+      box-sizing: border-box;
+    }
 
-<style>
-.modal{
-    position:fixed;
-    inset:0;
-    display:none;
-    justify-content:center;
-    align-items:center;
-    background:rgba(0,0,0,0.6);
-    backdrop-filter:blur(6px);
-}
+    .modal-box h2 {
+      margin-top: 0;
+      color: white;
+    }
 
-.modal.show{ display:flex; }
-
-.modal-box{
-    background:linear-gradient(145deg,#0b0f1a,#0f172a);
-    border:1px solid #3b82f6;
-    padding:22px;
-    border-radius:14px;
-    color:white;
-    min-width:280px;
-    text-align:center;
-    box-shadow:0 0 25px rgba(59,130,246,0.35);
-    animation:pop .18s ease-out;
-}
-
-@keyframes pop{
-    from{transform:scale(0.9);opacity:0;}
-    to{transform:scale(1);opacity:1;}
-}
-
-.modal-box button{
-    margin-top:10px;
-    background:#3b82f6;
-    border:none;
-    padding:8px 14px;
-    border-radius:8px;
-    color:white;
-    cursor:pointer;
-}
-
-.modal-box button:hover{ background:#2563eb; }
-
-/* Style de base de la fenêtre modale (fond sombre transparent) */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-
-/* Classe pour afficher la modale */
-.modal.show {
-  display: flex;
-}
-
-/* La boîte au milieu */
-.modal-box {
-  background: #122a4a;
-  padding: 25px;
-  border-radius: 14px;
-  width: min(400px, calc(100% - 40px));
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  color: white;
-  box-sizing: border-box;
-}
-
-.modal-box h2 {
-  margin-top: 0;
-}
-
-.modal-box input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  background: #0b1b3a;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  color: white;
-  box-sizing: border-box;
-}
-
-</style>
-
+    .modal-box input {
+      width: 100%;
+      padding: 10px;
+      background: #0b1b3a;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: white;
+      box-sizing: border-box;
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-  <div class="header-content">
-    <a href="/" class="logo">
-      <img src="/icon.png">
-    </a>
+  <!-- BOUTONS -->
+  <button class="btn btn-settings" onclick="openProfileModal()">Modifier le profil</button>
+  <br><br>
+  <button class="btn btn-settings" onclick="openUsernameModal()">Modifier le pseudo</button>
+  <br><br>
+  <button class="btn btn-settings" onclick="openEmailModal()">Modifier l'email</button>
+  <br><br>
+  <button class="btn btn-settings" onclick="openPasswordModal()">Modifier le mot de passe</button>
 
-    <div class="profile-menu">
-      <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-           class="avatar" id="avatar">
-      <div class="dropdown" id="dropdown"></div>
+  <!-- MODALE PROFIL -->
+  <div id="profileModal" class="modal">
+    <div class="modal-box">
+      <h2>Modifier la photo</h2>
+      <input type="file" id="fileInput" accept="image/*">
+      <br><br>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn btn-dark" onclick="closeProfileModal()">Annuler</button>
+        <button class="btn btn-gradient" onclick="saveProfilePic()">Enregistrer</button>
+      </div>
     </div>
   </div>
-</header>
 
-<div class="container">
-  <div class="card">
-
-    <h1>Paramètres</h1>
-
-    <button class="btn btn-settings" onclick="openModal('profileModal')">
-      Modifier le profil
-    </button>
-
-    <br><br>
-
-    <button class="btn btn-settings" onclick="openModal('usernameModal')">
-      Modifier le pseudo
-    </button>
-
-    <br><br>
-
-    <button class="btn btn-settings" onclick="openModal('emailModal')">
-      Modifier l'email
-    </button>
-
-    <br><br>
-
-    <button class="btn btn-settings" onclick="openModal('passwordModal')">
-      Modifier le mot de passe
-    </button>
-
-    <br><br>
-
-    <button class="btn btn-settings" onclick="window.location.href='/dashboard'">
-      Dasboard
-    </button>
-
-  </div>
-</div>
-
-<!-- POPUP UNIQUE -->
-<div id="notif" class="modal">
-  <div class="modal-box">
-    <p id="notifText"></p>
-    <button onclick="closeNotif()">OK</button>
-  </div>
-</div>
-
-<!-- MODAL MODIFIER LE PROFIL (PHOTO) -->
-<div id="profileModal" class="modal">
-  <div class="modal-box">
-    <h2>Modifier la photo de profil</h2>
-    <input type="file" id="fileInput" accept="image/*">
-    <br><br>
-    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-      <button class="btn btn-dark" onclick="closeModal('profileModal')">Annuler</button>
-      <button class="btn btn-settings" onclick="saveProfilePic()">Enregistrer</button>
+  <!-- MODALE PSEUDO -->
+  <div id="usernameModal" class="modal">
+    <div class="modal-box">
+      <h2>Modifier le pseudo</h2>
+      <input type="text" id="newUsername" placeholder="Nouveau pseudo">
+      <br><br>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn btn-dark" onclick="closeUsernameModal()">Annuler</button>
+        <button class="btn btn-gradient" onclick="saveUsername()">Enregistrer</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- MODAL MODIFIER LE PSEUDO -->
-<div id="usernameModal" class="modal">
-  <div class="modal-box">
-    <h2>Modifier le pseudo</h2>
-    <input type="text" id="newUsername" placeholder="Nouveau pseudo">
-    <br><br>
-    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-      <button class="btn btn-dark" onclick="closeModal('usernameModal')">Annuler</button>
-      <button class="btn btn-settings" onclick="saveUsername()">Enregistrer</button>
+  <!-- MODALE EMAIL -->
+  <div id="emailModal" class="modal">
+    <div class="modal-box">
+      <h2>Modifier l'email</h2>
+      <input type="email" id="newEmail" placeholder="Nouvel email">
+      <br><br>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn btn-dark" onclick="closeEmailModal()">Annuler</button>
+        <button class="btn btn-gradient" onclick="saveEmail()">Enregistrer</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- MODAL MODIFIER L'EMAIL -->
-<div id="emailModal" class="modal">
-  <div class="modal-box">
-    <h2>Modifier l'email</h2>
-    <input type="email" id="newEmail" placeholder="Nouvel email">
-    <br><br>
-    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-      <button class="btn btn-dark" onclick="closeModal('emailModal')">Annuler</button>
-      <button class="btn btn-settings" onclick="saveEmail()">Enregistrer</button>
+  <!-- MODALE MOT DE PASSE -->
+  <div id="passwordModal" class="modal">
+    <div class="modal-box">
+      <h2>Modifier le mot de passe</h2>
+      <input type="password" id="newPassword" placeholder="Nouveau mot de passe">
+      <br><br>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn btn-dark" onclick="closePasswordModal()">Annuler</button>
+        <button class="btn btn-gradient" onclick="savePassword()">Enregistrer</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- MODAL MODIFIER LE MOT DE PASSE -->
-<div id="passwordModal" class="modal">
-  <div class="modal-box">
-    <h2>Modifier le mot de passe</h2>
-    <input type="password" id="oldPassword" placeholder="Ancien mot de passe" style="margin-bottom: 10px;">
-    <input type="password" id="newPassword" placeholder="Nouveau mot de passe">
-    <br><br>
-    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-      <button class="btn btn-dark" onclick="closeModal('passwordModal')">Annuler</button>
-      <button class="btn btn-settings" onclick="savePassword()">Enregistrer</button>
-    </div>
-  </div>
-</div>
+  <!-- JAVASCRIPT -->
+  <script>
+    function openProfileModal() { document.getElementById('profileModal').classList.add('show'); }
+    function closeProfileModal() { document.getElementById('profileModal').classList.remove('show'); }
 
-<!-- POPUP NOTIFICATION UNIQUE -->
-<div id="notif" class="modal">
-  <div class="modal-box" style="text-align: center;">
-    <p id="notifText" style="margin-bottom: 20px;"></p>
-    <button class="btn btn-setings" onclick="closeNotif()">OK</button>
-  </div>
-</div>
+    function openUsernameModal() { document.getElementById('usernameModal').classList.add('show'); }
+    function closeUsernameModal() { document.getElementById('usernameModal').classList.remove('show'); }
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-  updateProfile,
-  updateEmail,
-  updatePassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    function openEmailModal() { document.getElementById('emailModal').classList.add('show'); }
+    function closeEmailModal() { document.getElementById('emailModal').classList.remove('show'); }
 
-import {
-  getFirestore,
-  doc,
-  setDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-  authDomain: "blocplay-a9417.firebaseapp.com",
-  projectId: "blocplay-a9417",
-  storageBucket: "blocplay-a9417.firebasestorage.app",
-  messagingSenderId: "540161549188",
-  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* MENU */
-const avatar = document.getElementById("avatar");
-const dropdown = document.getElementById("dropdown");
-
-function renderMenu(user){
-  dropdown.innerHTML = user ? `
-    <a href="/profile">Profil</a>
-    <a href="/settings">Paramètres</a>
-    <a href="#" id="logout">Se déconnecter</a>
-  ` : `
-    <a href="/login">Connexion</a>
-    <a href="/signup">Inscription</a>
-  `;
-}
-
-onAuthStateChanged(auth, renderMenu);
-
-avatar.onclick = (e)=>{
-  e.stopPropagation();
-  dropdown.classList.toggle("show");
-};
-
-document.addEventListener("click", ()=>dropdown.classList.remove("show"));
-
-document.addEventListener("click", async (e)=>{
-  if(e.target.id==="logout") await signOut(auth);
-});
-
-/* POPUP UNIFIÉ (PLUS AUCUN ALERT) */
-window.showNotif = (msg)=>{
-  document.getElementById("notifText").innerText = msg;
-  document.getElementById("notif").classList.add("show");
-};
-
-window.closeNotif = ()=>{
-  document.getElementById("notif").classList.remove("show");
-};
-
-/* MODALS TEXT */
-window.openModal = async (type)=>{
-  const value = prompt("Nouvelle valeur");
-  if(!value) return;
-
-  const user = auth.currentUser;
-  if(!user) return showNotif("Non connecté");
-
-  try{
-    if(type==="username") await updateProfile(user,{displayName:value});
-    if(type==="email") await updateEmail(user,value);
-    if(type==="password") await updatePassword(user,value);
-
-    await setDoc(doc(db,"users",user.uid),{
-      displayName:user.displayName,
-      email:user.email
-    },{merge:true});
-
-    showNotif("Mis à jour !");
-  }catch(e){
-    showNotif(e.message);
-  }
-};
-
-/* PROFIL */
-window.openProfileModal = ()=>{
-  document.getElementById("profileModal").classList.add("show");
-};
-
-window.closeProfileModal = ()=>{
-  document.getElementById("profileModal").classList.remove("show");
-};
-
-window.saveProfilePic = async ()=>{
-  const file = document.getElementById("fileInput").files[0];
-  if(!file) return showNotif("Aucune image");
-
-  const user = auth.currentUser;
-  if(!user) return showNotif("Non connecté");
-
-  const reader = new FileReader();
-
-  reader.onload = async ()=>{
-    const img = new Image();
-    img.src = reader.result;
-
-    img.onload = async ()=>{
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = 300;
-      canvas.height = 300;
-
-      ctx.drawImage(img,0,0,300,300);
-
-      const base64 = canvas.toDataURL("image/jpeg",0.8);
-
-      await setDoc(doc(db,"users",user.uid),{
-        photoURL:base64
-      },{merge:true});
-
-      showNotif("Photo mise à jour !");
-      closeProfileModal();
-    };
-  };
-
-  reader.readAsDataURL(file);
-};
-</script>
+    function openPasswordModal() { document.getElementById('passwordModal').classList.add('show'); }
+    function closePasswordModal() { document.getElementById('passwordModal').classList.remove('show'); }
+  </script>
 
 </body>
 </html>
