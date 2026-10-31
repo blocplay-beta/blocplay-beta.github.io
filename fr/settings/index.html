@@ -145,7 +145,7 @@
 <div id="usernameModal" class="modal">
   <div class="modal-box">
     <h2>Modifier le pseudo</h2>
-    <input type="text" id="usernameInput" placeholder="Nouveau pseudo">
+    <input type="text" id="usernameInput" placeholder="Nouveau pseudo" autocomplete="off">
     <br><br>
     <button onclick="saveUsername()">Enregistrer</button>
     <button onclick="closeModal('username')">Annuler</button>
@@ -156,7 +156,7 @@
 <div id="emailModal" class="modal">
   <div class="modal-box">
     <h2>Modifier l'email</h2>
-    <input type="email" id="emailInput" placeholder="Nouvel email">
+    <input type="email" id="emailInput" placeholder="Nouvel email" autocomplete="off">
     <br><br>
     <button onclick="saveEmail()">Enregistrer</button>
     <button onclick="closeModal('email')">Annuler</button>
@@ -167,7 +167,7 @@
 <div id="passwordModal" class="modal">
   <div class="modal-box">
     <h2>Modifier le mot de passe</h2>
-    <input type="password" id="passwordInput" placeholder="Nouveau mot de passe">
+    <input type="password" id="passwordInput" placeholder="Nouveau mot de passe" autocomplete="new-password">
     <br><br>
     <button onclick="savePassword()">Enregistrer</button>
     <button onclick="closeModal('password')">Annuler</button>
@@ -242,11 +242,20 @@ window.closeNotif = ()=>{
   document.getElementById("notif").classList.remove("show");
 };
 
-/* OUVERTURE DES MODALS DE TEXTE */
+/* OUVERTURE DES MODALS DE TEXTE (VIDE LES CHAMPS À CHAQUE OUVERTURE) */
 window.openModal = (type)=>{
-  if(type === "username") document.getElementById("usernameModal").classList.add("show");
-  if(type === "email") document.getElementById("emailModal").classList.add("show");
-  if(type === "password") document.getElementById("passwordModal").classList.add("show");
+  if(type === "username") {
+    document.getElementById("usernameInput").value = "";
+    document.getElementById("usernameModal").classList.add("show");
+  }
+  if(type === "email") {
+    document.getElementById("emailInput").value = "";
+    document.getElementById("emailModal").classList.add("show");
+  }
+  if(type === "password") {
+    document.getElementById("passwordInput").value = "";
+    document.getElementById("passwordModal").classList.add("show");
+  }
 };
 
 window.closeModal = (type)=>{
@@ -318,6 +327,7 @@ window.savePassword = async ()=>{
 
 /* PROFIL */
 window.openProfileModal = ()=>{
+  document.getElementById("fileInput").value = ""; // Réinitialise l'input fichier
   document.getElementById("profileModal").classList.add("show");
 };
 
