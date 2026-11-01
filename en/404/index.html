@@ -170,10 +170,10 @@ const dropdown = document.getElementById("dropdown");
 async function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
-            <a href="/profile">Profil</a>
-            <a href="/settings">Paramètres</a>
+            <a href="/profile">Profile</a>
+            <a href="/settings">Settings</a>
             <a href="/rizoplay">RizoPlay</a>
-            <a href="#" id="logout">Se déconnecter</a>
+            <a href="#" id="logout">Log out</a>
         `;
 
         const name = user.displayName || user.email?.split("@")[0] || "User";
