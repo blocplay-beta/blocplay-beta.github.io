@@ -5,12 +5,15 @@
 
 <script>
   (function() {
-    const userLang = (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
-    const targetLang = (userLang === 'fr') ? 'fr' : 'en';
     const currentPath = window.location.pathname;
-
-    if (!currentPath.startsWith('/' + targetLang)) {
-      window.location.replace('/' + targetLang);
+    const userLang = navigator.language || navigator.userLanguage;
+    const isFrench = userLang.toLowerCase().startsWith('fr');
+      
+    const targetLang = isFrench ? 'fr' : 'en';
+    const targetUrl = `/${targetLang}/404`;
+      
+    if (!currentPath.startsWith(`/${targetLang}/`)) {
+      window.location.replace(targetUrl);
     }
   })();
 </script>
@@ -30,49 +33,62 @@
 
 <body>
 
+<!-- ========================= -->
+<!-- HEADER -->
+-- ========================= -->
+
 <header>
   <div class="header-content">
 
     <a href="/" class="logo">
-      <img src="/img/icon.png">
+      <img src="/img/icon.png" alt="BlocPlay">
     </a>
 
-      <!-- RECHERCHE -->
+    <div class="header-actions">
+
+      <!-- RECHERCHE (Redirection directe vers /search) -->
       <a href="/search" class="header-button">
         <img src="/img/searching.png" alt="Recherche">
       </a>
 
       <!-- PROFIL -->
       <div class="profile-menu">
-
         <img
           src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
           class="avatar"
           id="avatar"
           alt="Profil"
         >
+        <div class="dropdown" id="dropdown"></div>
+      </div>
 
-      <div class="dropdown" id="dropdown"></div>
     </div>
 
   </div>
 </header>
 
-<div class="container">
 
+<!-- ========================= -->
+<!-- CONTENU 404 -->
+<!-- ========================= -->
+
+<div class="container">
   <div class="card">
     <h1>404</h1>
     <p>Cette page n'existe pas.</p>
-
     <a href="/" class="btn btn-gradient">Retour à l'accueil</a>
   </div>
-
 </div>
+
+
+<!-- ========================= -->
+<!-- FIREBASE + PROFIL -->
+<!-- ========================= -->
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
@@ -85,11 +101,12 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
-function renderMenu(user) {
+async function renderMenu(user) {
     if (user) {
         dropdown.innerHTML = `
             <a href="/profile">Profil</a>
@@ -97,11 +114,37 @@ function renderMenu(user) {
             <a href="/rizoplay">RizoPlay</a>
             <a href="#" id="logout">Se déconnecter</a>
         `;
+
+        const name = user.displayName || user.email?.split("@")[0] || "User";
+        let photoURL = "";
+
+        try {
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                photoURL = data.photoURL || data.avatar || "";
+            }
+        } catch (error) {
+            console.error("Erreur chargement photo Firestore :", error);
+        }
+
+        if (!photoURL) {
+            photoURL = user.photoURL || "";
+        }
+
+        if (photoURL) {
+            avatar.src = photoURL;
+        } else {
+            avatar.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(name) + "&background=111&color=fff&rounded=true&size=64";
+        }
+
     } else {
         dropdown.innerHTML = `
             <a href="/login">Se connecter</a>
             <a href="/signup">Créer un compte</a>
         `;
+        avatar.src = "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
     }
 }
 
@@ -120,18 +163,25 @@ document.addEventListener("click", () => {
 
 document.addEventListener("click", async (e) => {
     if (e.target.id === "logout") {
+        e.preventDefault();
         await signOut(auth);
+        window.location.reload();
     }
 });
 </script>
 
+
+<!-- ========================= -->
+<!-- SERVICE WORKER -->
+<!-- ========================= -->
+
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js");
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js");
+  });
 }
 </script>
-
-<script type="module" src="/login/firebase-auth.js"></script>
 
 </body>
 </html>
