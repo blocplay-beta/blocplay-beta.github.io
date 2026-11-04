@@ -1,4 +1,3 @@
-<!-- Please read COPYRIGHT.md -->
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -15,7 +14,6 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b0f1a">
 
-
 <style>
 
 /* ========================= */
@@ -27,7 +25,6 @@
     display: inline-block;
 }
 
-
 /* ========================= */
 /* PHOTO PROFIL */
 /* ========================= */
@@ -35,18 +32,12 @@
 .profile-pic {
     width: 110px;
     height: 110px;
-
     border-radius: 50%;
-
     object-fit: cover;
-
     display: block;
-
     background: #111;
-
     border: 3px solid rgba(255,255,255,0.08);
 }
-
 
 /* ========================= */
 /* BADGE RIZOPLAY */
@@ -54,19 +45,13 @@
 
 .rizo-badge {
     position: absolute;
-
     top: 4px;
     right: 4px;
-
     width: 22px;
     height: 22px;
-
     border-radius: 50%;
-
-    box-shadow:
-        0 0 7px rgba(255,120,0,0.7);
+    box-shadow: 0 0 7px rgba(255,120,0,0.7);
 }
-
 
 /* ========================= */
 /* PROFIL CARD */
@@ -76,24 +61,19 @@
     text-align: center;
 }
 
-
 .profile-card h1 {
     margin-bottom: 25px;
 }
-
 
 .profile-card h2 {
     margin-top: 15px;
     margin-bottom: 5px;
 }
 
-
 .profile-card p {
     margin-top: 0;
-
     opacity: 0.7;
 }
-
 
 /* ========================= */
 /* ID BLOCPLAY */
@@ -101,12 +81,9 @@
 
 .profile-id {
     margin-top: 10px;
-
     color: #7f8ca1;
-
     font-size: 13px;
 }
-
 
 /* ========================= */
 /* DATE DE CRÉATION */
@@ -114,12 +91,9 @@
 
 .profile-created {
     margin-top: 5px;
-
     color: #7f8ca1;
-
     font-size: 13px;
 }
-
 
 /* ========================= */
 /* DEMANDE D'AMI */
@@ -127,59 +101,69 @@
 
 .friend-request-container {
     margin-top: 20px;
-
     display: flex;
-
     justify-content: center;
 }
 
-
 .friend-request-button {
     border: none;
-
     border-radius: 8px;
-
     padding: 10px 18px;
-
     background: #5865f2;
-
     color: white;
-
     font-size: 14px;
-
     font-weight: 600;
-
     cursor: pointer;
-
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
-
 
 .friend-request-button:hover {
     opacity: 0.9;
 }
 
-
 .friend-request-button:active {
     transform: scale(0.97);
 }
-
 
 .friend-request-button.cancel {
     background: #333b4d;
 }
 
-
 .friend-request-button:disabled {
     opacity: 0.6;
-
     cursor: default;
-
     transform: none;
 }
 
+/* ========================= */
+/* COPIER LE LIEN */
+/* ========================= */
+
+.copy-profile-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.copy-profile-button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    background: #5865f2;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.copy-profile-button:hover {
+    opacity: 0.9;
+}
+
+.copy-profile-button:active {
+    transform: scale(0.97);
+}
 
 /* ========================= */
 /* ERREUR */
@@ -187,15 +171,12 @@
 
 .profile-error {
     text-align: center;
-
     padding: 25px;
 }
-
 
 .profile-error h1 {
     margin-bottom: 10px;
 }
-
 
 .profile-error p {
     opacity: 0.7;
@@ -205,9 +186,7 @@
 
 </head>
 
-
 <body>
-
 
 <!-- ========================= -->
 <!-- HEADER -->
@@ -218,25 +197,14 @@
   <div class="header-content">
 
     <a href="/" class="logo">
-
-      <img
-        src="/icon.png"
-        alt="BlocPlay"
-      >
-
+      <img src="/icon.png" alt="BlocPlay">
     </a>
 
-
-    <div class="header-actions">
-
-      <button
-        id="searchBtn"
+    <div 
         class="header-button"
-        aria-label="Rechercher"
       >
         🔍
       </button>
-
 
       <div class="profile-menu">
 
@@ -246,7 +214,6 @@
           id="avatar"
           alt="Profil"
         >
-
 
         <div
           class="dropdown"
@@ -261,50 +228,11 @@
 
 </header>
 
-
-<!-- ========================= -->
-<!-- RECHERCHE -->
-<!-- ========================= -->
-
-<div
-  id="searchOverlay"
-  class="search-overlay"
->
-
-  <div class="search-box">
-
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Rechercher sur BlocPlay..."
-      autocomplete="off"
-    >
-
-
-    <button
-      id="closeSearch"
-      class="search-close"
-    >
-      ✕
-    </button>
-
-  </div>
-
-
-  <div
-    id="searchResults"
-    class="search-results"
-  ></div>
-
-</div>
-
-
 <!-- ========================= -->
 <!-- CONTENU -->
 <!-- ========================= -->
 
 <div class="container">
-
 
   <div
     class="card profile-card"
@@ -315,7 +243,6 @@
       Mon profil
     </h1>
 
-
     <div class="profile-container">
 
       <img
@@ -324,7 +251,6 @@
         src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=256"
         alt="Photo de profil"
       >
-
 
       <img
         src="/rizo-play.png"
@@ -336,26 +262,41 @@
 
     </div>
 
-
     <h2 id="username">
       Chargement...
     </h2>
 
-
     <p id="email"></p>
-
 
     <div
       id="profileId"
       class="profile-id"
     ></div>
 
-
     <div
       id="profileCreated"
       class="profile-created"
     ></div>
 
+    <!-- ========================= -->
+    <!-- COPIER LE LIEN -->
+    <!-- ========================= -->
+
+    <div
+      id="copyProfileContainer"
+      class="copy-profile-container"
+      style="display:none;"
+    >
+
+      <button
+        id="copyProfileButton"
+        class="copy-profile-button"
+        type="button"
+      >
+        🔗 Copier le lien
+      </button>
+
+    </div>
 
     <!-- ========================= -->
     <!-- BOUTON DEMANDE D'AMI -->
@@ -381,7 +322,6 @@
 
 </div>
 
-
 <!-- ========================= -->
 <!-- FIREBASE -->
 <!-- ========================= -->
@@ -393,14 +333,12 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-
 import {
     getAuth,
     onAuthStateChanged,
     signOut
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
 
 import {
     getFirestore,
@@ -416,7 +354,6 @@ import {
     serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 
 /* ========================= */
 /* FIREBASE */
@@ -435,94 +372,60 @@ const firebaseConfig = {
 
 };
 
-
 const app =
     initializeApp(firebaseConfig);
-
 
 const auth =
     getAuth(app);
 
-
 const db =
     getFirestore(app);
-
 
 /* ========================= */
 /* ELEMENTS */
 /* ========================= */
 
 const avatar =
-    document.getElementById(
-        "avatar"
-    );
-
+    document.getElementById("avatar");
 
 const dropdown =
-    document.getElementById(
-        "dropdown"
-    );
-
+    document.getElementById("dropdown");
 
 const profileTitle =
-    document.getElementById(
-        "profileTitle"
-    );
-
+    document.getElementById("profileTitle");
 
 const profilePic =
-    document.getElementById(
-        "profilePic"
-    );
-
+    document.getElementById("profilePic");
 
 const username =
-    document.getElementById(
-        "username"
-    );
-
+    document.getElementById("username");
 
 const email =
-    document.getElementById(
-        "email"
-    );
-
+    document.getElementById("email");
 
 const profileId =
-    document.getElementById(
-        "profileId"
-    );
-
+    document.getElementById("profileId");
 
 const profileCreated =
-    document.getElementById(
-        "profileCreated"
-    );
-
+    document.getElementById("profileCreated");
 
 const rizoBadge =
-    document.getElementById(
-        "rizoBadge"
-    );
-
+    document.getElementById("rizoBadge");
 
 const profileCard =
-    document.getElementById(
-        "profileCard"
-    );
-
+    document.getElementById("profileCard");
 
 const friendRequestContainer =
-    document.getElementById(
-        "friendRequestContainer"
-    );
-
+    document.getElementById("friendRequestContainer");
 
 const friendRequestButton =
-    document.getElementById(
-        "friendRequestButton"
-    );
+    document.getElementById("friendRequestButton");
 
+const copyProfileContainer =
+    document.getElementById("copyProfileContainer");
+
+const copyProfileButton =
+    document.getElementById("copyProfileButton");
 
 /* ========================= */
 /* PROFIL ACTUEL */
@@ -532,9 +435,9 @@ let currentUser = null;
 
 let viewedProfileUID = null;
 
-let friendRequestState =
-    "none";
+let viewedProfileID = null;
 
+let friendRequestState = "none";
 
 /* ========================= */
 /* MENU PROFIL */
@@ -564,39 +467,25 @@ async function renderMenu(user) {
 
         `;
 
-
         const name =
             user.displayName ||
             user.email?.split("@")[0] ||
             "User";
 
-
         let photoURL = "";
-
 
         try {
 
             const userRef =
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                );
-
+                doc(db, "users", user.uid);
 
             const userSnap =
-                await getDoc(
-                    userRef
-                );
+                await getDoc(userRef);
 
-
-            if (
-                userSnap.exists()
-            ) {
+            if (userSnap.exists()) {
 
                 const data =
                     userSnap.data();
-
 
                 photoURL =
                     data.photoURL ||
@@ -614,20 +503,13 @@ async function renderMenu(user) {
 
         }
 
-
         if (!photoURL) {
-
-            photoURL =
-                user.photoURL ||
-                "";
-
+            photoURL = user.photoURL || "";
         }
-
 
         if (photoURL) {
 
-            avatar.src =
-                photoURL;
+            avatar.src = photoURL;
 
         } else {
 
@@ -652,14 +534,12 @@ async function renderMenu(user) {
 
         `;
 
-
         avatar.src =
             "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
 
     }
 
 }
-
 
 /* ========================= */
 /* OUVERTURE MENU */
@@ -671,13 +551,10 @@ avatar.addEventListener(
 
         event.stopPropagation();
 
-        dropdown.classList.toggle(
-            "show"
-        );
+        dropdown.classList.toggle("show");
 
     }
 );
-
 
 /* ========================= */
 /* FERMETURE MENU */
@@ -687,13 +564,10 @@ document.addEventListener(
     "click",
     () => {
 
-        dropdown.classList.remove(
-            "show"
-        );
+        dropdown.classList.remove("show");
 
     }
 );
-
 
 /* ========================= */
 /* DÉCONNEXION */
@@ -703,29 +577,27 @@ document.addEventListener(
     "click",
     async (event) => {
 
-        if (
-            event.target.id ===
-            "logout"
-        ) {
+        if (event.target.id === "logout") {
 
             event.preventDefault();
 
             await signOut(auth);
 
-            window.location.href =
-                "/login";
+            window.location.href = "/login";
 
         }
 
     }
 );
 
-
 /* ========================= */
 /* PROFIL INTROUVABLE */
 /* ========================= */
 
 function showNotFound() {
+
+    copyProfileContainer.style.display = "none";
+    friendRequestContainer.style.display = "none";
 
     profileCard.innerHTML = `
 
@@ -745,45 +617,29 @@ function showNotFound() {
 
 }
 
-
 /* ========================= */
 /* FORMAT DATE */
 /* ========================= */
 
-function formatCreationDate(
-    createdAt
-) {
+function formatCreationDate(createdAt) {
 
     if (!createdAt) {
         return "";
     }
 
-
     let date;
 
+    if (typeof createdAt.toDate === "function") {
 
-    if (
-        typeof createdAt.toDate ===
-        "function"
-    ) {
+        date = createdAt.toDate();
 
-        date =
-            createdAt.toDate();
+    } else if (createdAt instanceof Date) {
 
-    } else if (
-        createdAt instanceof Date
-    ) {
+        date = createdAt;
 
-        date =
-            createdAt;
+    } else if (typeof createdAt === "number") {
 
-    } else if (
-        typeof createdAt ===
-        "number"
-    ) {
-
-        date =
-            new Date(createdAt);
+        date = new Date(createdAt);
 
     } else {
 
@@ -791,17 +647,9 @@ function formatCreationDate(
 
     }
 
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
+    if (Number.isNaN(date.getTime())) {
         return "";
-
     }
-
 
     return date.toLocaleDateString(
         "fr-FR",
@@ -814,15 +662,11 @@ function formatCreationDate(
 
 }
 
-
 /* ========================= */
 /* VÉRIFIER AMITIÉ */
 /* ========================= */
 
-async function areFriends(
-    userUID,
-    otherUID
-) {
+async function areFriends(userUID, otherUID) {
 
     const friendRef =
         doc(
@@ -833,26 +677,18 @@ async function areFriends(
             otherUID
         );
 
-
     const friendSnap =
-        await getDoc(
-            friendRef
-        );
-
+        await getDoc(friendRef);
 
     return friendSnap.exists();
 
 }
 
-
 /* ========================= */
 /* VÉRIFIER DEMANDE */
 /* ========================= */
 
-async function hasFriendRequest(
-    senderUID,
-    recipientUID
-) {
+async function hasFriendRequest(senderUID, recipientUID) {
 
     const requestRef =
         doc(
@@ -863,17 +699,12 @@ async function hasFriendRequest(
             senderUID
         );
 
-
     const requestSnap =
-        await getDoc(
-            requestRef
-        );
-
+        await getDoc(requestRef);
 
     return requestSnap.exists();
 
 }
-
 
 /* ========================= */
 /* METTRE À JOUR BOUTON AMI */
@@ -887,25 +718,17 @@ async function updateFriendButton() {
         currentUser.uid === viewedProfileUID
     ) {
 
-        friendRequestContainer.style.display =
-            "none";
+        friendRequestContainer.style.display = "none";
 
         return;
 
     }
 
+    friendRequestContainer.style.display = "flex";
 
-    friendRequestContainer.style.display =
-        "flex";
+    friendRequestButton.disabled = true;
 
-
-    friendRequestButton.disabled =
-        true;
-
-
-    friendRequestButton.textContent =
-        "Chargement...";
-
+    friendRequestButton.textContent = "Chargement...";
 
     try {
 
@@ -915,16 +738,13 @@ async function updateFriendButton() {
                 viewedProfileUID
             );
 
-
         if (alreadyFriends) {
 
-            friendRequestContainer.style.display =
-                "none";
+            friendRequestContainer.style.display = "none";
 
             return;
 
         }
-
 
         const requestExists =
             await hasFriendRequest(
@@ -932,36 +752,27 @@ async function updateFriendButton() {
                 viewedProfileUID
             );
 
-
         if (requestExists) {
 
-            friendRequestState =
-                "sent";
+            friendRequestState = "sent";
 
             friendRequestButton.textContent =
                 "Annuler la demande d'ami";
 
-            friendRequestButton.classList.add(
-                "cancel"
-            );
+            friendRequestButton.classList.add("cancel");
 
         } else {
 
-            friendRequestState =
-                "none";
+            friendRequestState = "none";
 
             friendRequestButton.textContent =
                 "Faire une demande d'ami";
 
-            friendRequestButton.classList.remove(
-                "cancel"
-            );
+            friendRequestButton.classList.remove("cancel");
 
         }
 
-
-        friendRequestButton.disabled =
-            false;
+        friendRequestButton.disabled = false;
 
     } catch (error) {
 
@@ -970,14 +781,11 @@ async function updateFriendButton() {
             error
         );
 
-
-        friendRequestContainer.style.display =
-            "none";
+        friendRequestContainer.style.display = "none";
 
     }
 
 }
-
 
 /* ========================= */
 /* ENVOYER / ANNULER */
@@ -992,15 +800,10 @@ friendRequestButton.addEventListener(
             !viewedProfileUID ||
             currentUser.uid === viewedProfileUID
         ) {
-
             return;
-
         }
 
-
-        friendRequestButton.disabled =
-            true;
-
+        friendRequestButton.disabled = true;
 
         try {
 
@@ -1008,10 +811,7 @@ friendRequestButton.addEventListener(
             /* ANNULATION */
             /* ========================= */
 
-            if (
-                friendRequestState ===
-                "sent"
-            ) {
+            if (friendRequestState === "sent") {
 
                 const requestRef =
                     doc(
@@ -1022,33 +822,20 @@ friendRequestButton.addEventListener(
                         currentUser.uid
                     );
 
+                await deleteDoc(requestRef);
 
-                await deleteDoc(
-                    requestRef
-                );
-
-
-                friendRequestState =
-                    "none";
-
+                friendRequestState = "none";
 
                 friendRequestButton.textContent =
                     "Faire une demande d'ami";
 
+                friendRequestButton.classList.remove("cancel");
 
-                friendRequestButton.classList.remove(
-                    "cancel"
-                );
-
-
-                friendRequestButton.disabled =
-                    false;
-
+                friendRequestButton.disabled = false;
 
                 return;
 
             }
-
 
             /* ========================= */
             /* NOUVELLE DEMANDE */
@@ -1063,42 +850,29 @@ friendRequestButton.addEventListener(
                     currentUser.uid
                 );
 
-
             await setDoc(
                 requestRef,
                 {
 
-                    senderUid:
-                        currentUser.uid,
+                    senderUid: currentUser.uid,
 
-                    recipientUid:
-                        viewedProfileUID,
+                    recipientUid: viewedProfileUID,
 
-                    status:
-                        "pending",
+                    status: "pending",
 
-                    createdAt:
-                        serverTimestamp()
+                    createdAt: serverTimestamp()
 
                 }
             );
 
-
-            friendRequestState =
-                "sent";
-
+            friendRequestState = "sent";
 
             friendRequestButton.textContent =
                 "Annuler la demande d'ami";
 
+            friendRequestButton.classList.add("cancel");
 
-            friendRequestButton.classList.add(
-                "cancel"
-            );
-
-
-            friendRequestButton.disabled =
-                false;
+            friendRequestButton.disabled = false;
 
         } catch (error) {
 
@@ -1107,35 +881,81 @@ friendRequestButton.addEventListener(
                 error
             );
 
-
             alert(
                 "Impossible de modifier la demande d'ami."
             );
 
-
-            friendRequestButton.disabled =
-                false;
+            friendRequestButton.disabled = false;
 
         }
 
     }
 );
 
+/* ========================= */
+/* COPIER LE LIEN DU PROFIL */
+/* ========================= */
+
+copyProfileButton.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            !currentUser ||
+            !viewedProfileUID
+        ) {
+            return;
+        }
+
+        const profileIdentifier =
+            viewedProfileID || viewedProfileUID;
+
+        const profileLink =
+            window.location.origin +
+            window.location.pathname +
+            "#" +
+            encodeURIComponent(profileIdentifier);
+
+        try {
+
+            await navigator.clipboard.writeText(profileLink);
+
+            copyProfileButton.textContent =
+                "✓ Lien copié !";
+
+            setTimeout(() => {
+
+                copyProfileButton.textContent =
+                    "🔗 Copier le lien";
+
+            }, 2000);
+
+        } catch (error) {
+
+            console.error(
+                "Erreur copie du lien :",
+                error
+            );
+
+            alert(
+                "Impossible de copier le lien du profil."
+            );
+
+        }
+
+    }
+);
 
 /* ========================= */
 /* AFFICHER PROFIL */
 /* ========================= */
 
-async function displayProfile(
-    data,
-    isOwnProfile
-) {
+async function displayProfile(data, isOwnProfile) {
 
     const displayName =
         data.displayName ||
         data.username ||
         "Utilisateur";
-
 
     const photoURL =
         data.photoURL ||
@@ -1146,144 +966,133 @@ async function displayProfile(
             "&background=111&color=fff&rounded=true&size=256"
         );
 
-
     /* ========================= */
     /* TITRE */
     /* ========================= */
 
     if (isOwnProfile) {
 
-        profileTitle.textContent =
-            "Mon profil";
+        profileTitle.textContent = "Mon profil";
 
     } else {
 
-        profileTitle.textContent =
-            "Profil";
+        profileTitle.textContent = "Profil";
 
     }
 
+    /* ========================= */
+    /* BOUTON COPIER LE LIEN */
+    /* ========================= */
+
+    if (isOwnProfile) {
+
+        copyProfileContainer.style.display = "flex";
+
+    } else {
+
+        copyProfileContainer.style.display = "none";
+
+    }
+
+    copyProfileButton.textContent =
+        "🔗 Copier le lien";
 
     /* ========================= */
     /* INFOS */
-/* ========================= */
+    /* ========================= */
 
-    username.textContent =
-        displayName;
+    username.textContent = displayName;
 
-
-    profilePic.src =
-        photoURL;
-
+    profilePic.src = photoURL;
 
     profilePic.alt =
         "Photo de profil de " +
         displayName;
 
-
     /* ========================= */
     /* EMAIL */
-/* ========================= */
+    /* ========================= */
 
     if (isOwnProfile) {
 
-        email.textContent =
-            data.email || "";
+        email.textContent = data.email || "";
 
     } else {
 
-        email.textContent =
-            "";
+        email.textContent = "";
 
     }
-
 
     /* ========================= */
     /* ID */
-/* ========================= */
+    /* ========================= */
 
-    if (
-        data.id !== undefined &&
-        data.id !== null
-    ) {
+    if (data.id !== undefined && data.id !== null) {
 
         profileId.textContent =
-            "ID BlocPlay : " +
-            data.id;
+            "ID BlocPlay : " + data.id;
 
     } else {
 
-        profileId.textContent =
-            "";
+        profileId.textContent = "";
 
     }
 
-
     /* ========================= */
     /* DATE DE CRÉATION */
-/* ========================= */
+    /* ========================= */
 
     const creationDate =
-        formatCreationDate(
-            data.createdAt
-        );
-
+        formatCreationDate(data.createdAt);
 
     if (creationDate) {
 
         profileCreated.textContent =
-            "Compte créé le " +
-            creationDate;
+            "Compte créé le " + creationDate;
 
     } else {
 
-        profileCreated.textContent =
-            "";
+        profileCreated.textContent = "";
 
     }
 
-
     /* ========================= */
     /* RIZOPLAY */
-/* ========================= */
+    /* ========================= */
 
     const isAdmin =
-        data.email ===
-            "blocplaystudios@gmail.com" &&
-        data.displayName ===
-            "BlocPlay Studios";
-
+        data.email === "blocplaystudios@gmail.com" &&
+        data.displayName === "BlocPlay Studios";
 
     const hasRizoPlay =
         data.rizoplay === true ||
         isAdmin;
 
-
     if (hasRizoPlay) {
 
-        rizoBadge.style.display =
-            "block";
+        rizoBadge.style.display = "block";
 
     } else {
 
-        rizoBadge.style.display =
-            "none";
+        rizoBadge.style.display = "none";
 
     }
 
-
     /* ========================= */
     /* DEMANDE D'AMI */
-/* ========================= */
+    /* ========================= */
 
     viewedProfileUID =
         data.uid || null;
 
+    viewedProfileID =
+        data.id !== undefined && data.id !== null
+            ? String(data.id)
+            : data.uid || null;
 
     if (isOwnProfile) {
 
-        friendRequestContainer.style.display =
-            "none";
+        friendRequestContainer.style.display = "none";
 
     } else {
 
@@ -1293,42 +1102,25 @@ async function displayProfile(
 
 }
 
-
 /* ========================= */
 /* RÉCUPÉRER PAR UID */
 /* ========================= */
 
-async function getProfileByUID(
-    uid
-) {
+async function getProfileByUID(uid) {
 
     const profileRef =
-        doc(
-            db,
-            "users",
-            uid
-        );
-
+        doc(db, "users", uid);
 
     const profileSnap =
-        await getDoc(
-            profileRef
-        );
+        await getDoc(profileRef);
 
-
-    if (
-        !profileSnap.exists()
-    ) {
-
+    if (!profileSnap.exists()) {
         return null;
-
     }
-
 
     return {
 
-        uid:
-            uid,
+        uid: uid,
 
         ...profileSnap.data()
 
@@ -1336,68 +1128,42 @@ async function getProfileByUID(
 
 }
 
-
 /* ========================= */
 /* RÉCUPÉRER PAR ID */
 /* ========================= */
 
-async function getProfileByCustomID(
-    customID
-) {
+async function getProfileByCustomID(customID) {
 
     const usersRef =
-        collection(
-            db,
-            "users"
-        );
-
+        collection(db, "users");
 
     const numericID =
         Number(customID);
 
-
-    if (
-        Number.isNaN(numericID)
-    ) {
-
+    if (Number.isNaN(numericID)) {
         return null;
-
     }
-
 
     const q =
         query(
             usersRef,
-            where(
-                "id",
-                "==",
-                numericID
-            ),
+            where("id", "==", numericID),
             limit(1)
         );
-
 
     const snapshot =
         await getDocs(q);
 
-
-    if (
-        snapshot.empty
-    ) {
-
+    if (snapshot.empty) {
         return null;
-
     }
-
 
     const userDoc =
         snapshot.docs[0];
 
-
     return {
 
-        uid:
-            userDoc.id,
+        uid: userDoc.id,
 
         ...userDoc.data()
 
@@ -1405,79 +1171,67 @@ async function getProfileByCustomID(
 
 }
 
-
 /* ========================= */
 /* CHARGEMENT DU PROFIL */
 /* ========================= */
 
-async function loadProfile(
-    user
-) {
+async function loadProfile(user) {
 
     const hash =
-        window.location.hash;
+        decodeURIComponent(
+            window.location.hash.substring(1).trim()
+        );
 
+    let profileData = null;
 
-    const customID =
-        hash
-            .substring(1)
-            .trim();
-
-
-    let profileData =
-        null;
-
-
-    let isOwnProfile =
-        false;
-
+    let isOwnProfile = false;
 
     /* ========================= */
     /* PROFIL PERSONNEL */
-/* ========================= */
+    /* ========================= */
 
-    if (!customID) {
+    if (!hash) {
 
         profileData =
-            await getProfileByUID(
-                user.uid
-            );
+            await getProfileByUID(user.uid);
 
-        isOwnProfile =
-            true;
+        isOwnProfile = true;
 
     }
 
-
     /* ========================= */
     /* PROFIL PAR ID */
-/* ========================= */
+    /* ========================= */
 
     else {
 
         profileData =
-            await getProfileByCustomID(
-                customID
-            );
+            await getProfileByCustomID(hash);
 
+        /* Si aucun ID numérique ne correspond,
+           on essaie de retrouver le profil par UID. */
+
+        if (!profileData) {
+
+            profileData =
+                await getProfileByUID(hash);
+
+        }
 
         if (
             profileData &&
-            profileData.uid ===
-                user.uid
+            profileData.uid === user.uid
         ) {
 
-            isOwnProfile =
-                true;
+            isOwnProfile = true;
 
         }
 
     }
 
-
     /* ========================= */
     /* PROFIL INTROUVABLE */
-/* ========================= */
+    /* ========================= */
 
     if (!profileData) {
 
@@ -1487,14 +1241,12 @@ async function loadProfile(
 
     }
 
-
     await displayProfile(
         profileData,
         isOwnProfile
     );
 
 }
-
 
 /* ========================= */
 /* AUTH */
@@ -1506,28 +1258,19 @@ onAuthStateChanged(
 
         if (!user) {
 
-            window.location.href =
-                "/login";
+            window.location.href = "/login";
 
             return;
 
         }
 
+        currentUser = user;
 
-        currentUser =
-            user;
-
-
-        await renderMenu(
-            user
-        );
-
+        await renderMenu(user);
 
         try {
 
-            await loadProfile(
-                user
-            );
+            await loadProfile(user);
 
         } catch (error) {
 
@@ -1536,14 +1279,12 @@ onAuthStateChanged(
                 error
             );
 
-
             showNotFound();
 
         }
 
     }
 );
-
 
 /* ========================= */
 /* HASH CHANGE */
@@ -1560,7 +1301,6 @@ window.addEventListener(
 
 </script>
 
-
 <!-- ========================= -->
 <!-- RECHERCHE -->
 <!-- ========================= -->
@@ -1568,56 +1308,36 @@ window.addEventListener(
 <script>
 
 const searchBtn =
-    document.getElementById(
-        "searchBtn"
-    );
-
+    document.getElementById("searchBtn");
 
 const searchOverlay =
-    document.getElementById(
-        "searchOverlay"
-    );
-
+    document.getElementById("searchOverlay");
 
 const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
-
+    document.getElementById("searchInput");
 
 const searchResults =
-    document.getElementById(
-        "searchResults"
-    );
-
+    document.getElementById("searchResults");
 
 const closeSearch =
-    document.getElementById(
-        "closeSearch"
-    );
-
+    document.getElementById("closeSearch");
 
 searchBtn.addEventListener(
     "click",
     () => {
 
-        searchOverlay.classList.add(
-            "show"
-        );
+        searchOverlay.classList.add("show");
 
         searchInput.focus();
 
     }
 );
 
-
 closeSearch.addEventListener(
     "click",
     () => {
 
-        searchOverlay.classList.remove(
-            "show"
-        );
+        searchOverlay.classList.remove("show");
 
         searchInput.value = "";
 
@@ -1626,29 +1346,20 @@ closeSearch.addEventListener(
     }
 );
 
-
 searchInput.addEventListener(
     "keydown",
     (event) => {
 
-        if (
-            event.key !==
-            "Enter"
-        ) {
-
+        if (event.key !== "Enter") {
             return;
-
         }
-
 
         const query =
             searchInput.value.trim();
 
-
         if (!query) {
             return;
         }
-
 
         searchResults.innerHTML = `
 
@@ -1672,38 +1383,24 @@ searchInput.addEventListener(
     }
 );
 
-
-function escapeHTML(
-    text
-) {
+function escapeHTML(text) {
 
     const div =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
-
-    div.textContent =
-        text;
-
+    div.textContent = text;
 
     return div.innerHTML;
 
 }
 
-
 searchOverlay.addEventListener(
     "click",
     (event) => {
 
-        if (
-            event.target ===
-            searchOverlay
-        ) {
+        if (event.target === searchOverlay) {
 
-            searchOverlay.classList.remove(
-                "show"
-            );
+            searchOverlay.classList.remove("show");
 
             searchInput.value = "";
 
@@ -1716,17 +1413,13 @@ searchOverlay.addEventListener(
 
 </script>
 
-
 <!-- ========================= -->
 <!-- SERVICE WORKER -->
 <!-- ========================= -->
 
 <script>
 
-if (
-    "serviceWorker" in
-    navigator
-) {
+if ("serviceWorker" in navigator) {
 
     window.addEventListener(
         "load",
@@ -1742,7 +1435,6 @@ if (
 }
 
 </script>
-
 
 </body>
 </html>
