@@ -1,6 +1,248 @@
-# BlocPlay :
-    Website :
-https://blocplay-beta.github.io
+<!DOCTYPE html>
+<html lang="fr">
+<head>
 
-    Discord :
- https://discord.gg/QfreSq3t7E
+<script>
+  (function() {
+    const currentPath = window.location.pathname;
+    const userLang = navigator.language || navigator.userLanguage;
+    const isFrench = userLang.toLowerCase().startsWith('fr');
+      
+    const targetLang = isFrench ? 'fr' : 'en';
+    const targetUrl = `/${targetLang}/404`;
+      
+    if (!currentPath.startsWith(`/${targetLang}/`)) {
+      window.location.replace(targetUrl);
+    }
+  })();
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>404 - BlocPlay</title>
+
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/png" href="/img/icon.png">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+
+</head>
+
+<body>
+
+<!-- ========================= -->
+<!-- HEADER -->
+-- ========================= -->
+
+<header>
+  <div class="header-content">
+
+    <a href="/" class="logo">
+      <img src="/img/icon.png" alt="BlocPlay">
+    </a>
+
+    <div class="header-actions">
+
+      <!-- RECHERCHE (Redirection directe vers /search) -->
+      <a href="/search" class="header-button">
+        <img src="/img/searching.png" alt="Recherche">
+      </a>
+
+      <!-- PROFIL -->
+      <div class="profile-menu">
+        <img
+          src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
+          class="avatar"
+          id="avatar"
+          alt="Profil"
+        >
+        <div class="dropdown" id="dropdown"></div>
+      </div>
+
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ========================= -->
+<!-- CONTENU 404 -->
+<!-- ========================= -->
+
+<div class="container">
+  <div class="card">
+    <h1>BlocPlay</h1>
+    <p>Website : https://blocplay-beta.github.io</p>
+    <p>Discord : https://discord.gg/QfreSq3t7E</p>
+    <a href="/" class="btn btn-gradient">Retour à l'accueil</a>
+  </div>
+</div>
+
+
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
+
+<footer class="site-footer">
+
+  <div class="footer-content">
+
+    <div class="footer-column">
+
+      <h3>BlocPlay</h3>
+
+      <p>
+        La plateforme de jeux créée par et pour les gamers.
+      </p>
+
+    </div>
+
+
+    <div class="footer-column">
+
+      <h3>À propos</h3>
+
+      <a href="/about">
+        À propos de BlocPlay
+      </a>
+
+      <a href="/license">
+        Licences
+      </a>
+
+      <a href="https://fr.trustpilot.com/review/blocplay-beta.github.io">
+        Trustpilot
+      </a>
+
+    </div>
+
+
+    <div class="footer-column">
+
+      <h3>Nous contacter</h3>
+
+      <a href="mailto:blocplaystudios@gmail.com">
+        E-Mail
+      </a>
+
+      <a href="https://discord.gg/QfreSq3t7E">
+        Discord
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © BlocPlay Studios™
+  </div>
+
+</footer>
+
+
+<!-- ========================= -->
+<!-- FIREBASE + PROFIL -->
+<!-- ========================= -->
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417",
+  storageBucket: "blocplay-a9417.firebasestorage.app",
+  messagingSenderId: "540161549188",
+  appId: "1:540161549188:web:e0ec0350bd044de2f333d1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const avatar = document.getElementById("avatar");
+const dropdown = document.getElementById("dropdown");
+
+async function renderMenu(user) {
+    if (user) {
+        dropdown.innerHTML = `
+            <a href="/profile">Profil</a>
+            <a href="/settings">Paramètres</a>
+            <a href="/rizoplay">RizoPlay</a>
+            <a href="#" id="logout">Se déconnecter</a>
+        `;
+
+        const name = user.displayName || user.email?.split("@")[0] || "User";
+        let photoURL = "";
+
+        try {
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                photoURL = data.photoURL || data.avatar || "";
+            }
+        } catch (error) {
+            console.error("Erreur chargement photo Firestore :", error);
+        }
+
+        if (!photoURL) {
+            photoURL = user.photoURL || "";
+        }
+
+        if (photoURL) {
+            avatar.src = photoURL;
+        } else {
+            avatar.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(name) + "&background=111&color=fff&rounded=true&size=64";
+        }
+
+    } else {
+        dropdown.innerHTML = `
+            <a href="/login">Se connecter</a>
+            <a href="/signup">Créer un compte</a>
+        `;
+        avatar.src = "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
+    }
+}
+
+onAuthStateChanged(auth, (user) => {
+    renderMenu(user);
+});
+
+avatar.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+    dropdown.classList.remove("show");
+});
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "logout") {
+        e.preventDefault();
+        await signOut(auth);
+        window.location.reload();
+    }
+});
+</script>
+
+
+<!-- ========================= -->
+<!-- SERVICE WORKER -->
+<!-- ========================= -->
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js");
+  });
+}
+</script>
+
+</body>
+</html>
