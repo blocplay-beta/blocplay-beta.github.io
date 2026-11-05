@@ -32,26 +32,20 @@
 
 <body>
 
-<!-- ========================= -->
-<!-- HEADER -->
--- ========================= -->
-
 <header>
   <div class="header-content">
 
-    <a href="/" class="logo">
+  <a href="/" class="logo">
       <img src="/img/icon.png" alt="BlocPlay">
-    </a>
+  </a>
 
-    <div class="header-actions">
-
-      <!-- RECHERCHE (Redirection directe vers /search) -->
-      <a href="/search" class="header-button">
+  <div class="header-actions">
+    
+  <a href="/search" class="header-button">
         <img src="/img/searching.png" alt="Recherche">
-      </a>
+  </a>
 
-      <!-- PROFIL -->
-      <div class="profile-menu">
+  <div class="profile-menu">
         <img
           src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
           class="avatar"
@@ -59,17 +53,12 @@
           alt="Profil"
         >
         <div class="dropdown" id="dropdown"></div>
-      </div>
-
-    </div>
+  </div>
 
   </div>
+
+</div>
 </header>
-
-
-<!-- ========================= -->
-<!-- CONTENU 404 -->
-<!-- ========================= -->
 
 <div class="container">
   <div class="card">
@@ -80,58 +69,53 @@
   </div>
 </div>
 
-
-<!-- ========================= -->
-<!-- FOOTER -->
-<!-- ========================= -->
-
 <footer class="site-footer">
 
   <div class="footer-content">
 
-    <div class="footer-column">
+  <div class="footer-column">
 
-      <h3>BlocPlay</h3>
+  <h3>BlocPlay</h3>
 
-      <p>
-        La plateforme de jeux créée par et pour les gamers.
-      </p>
+  <p>
+    La plateforme de jeux créée par et pour les gamers.
+  </p>
 
-    </div>
-
-
-    <div class="footer-column">
-
-      <h3>À propos</h3>
-
-      <a href="/about">
-        À propos de BlocPlay
-      </a>
-
-      <a href="/license">
-        Licences
-      </a>
-
-      <a href="https://fr.trustpilot.com/review/blocplay-beta.github.io">
-        Trustpilot
-      </a>
-
-    </div>
+  </div>
 
 
-    <div class="footer-column">
+  <div class="footer-column">
 
-      <h3>Nous contacter</h3>
+  <h3>À propos</h3>
 
-      <a href="mailto:blocplaystudios@gmail.com">
-        E-Mail
-      </a>
+  <a href="/about">
+    À propos de BlocPlay
+  </a>
 
-      <a href="https://discord.gg/QfreSq3t7E">
-        Discord
-      </a>
+  <a href="/license">
+    Licences
+  </a>
 
-    </div>
+  <a href="https://fr.trustpilot.com/review/blocplay-beta.github.io">
+    Trustpilot
+  </a>
+
+  </div>
+
+
+  <div class="footer-column">
+
+  <h3>Nous contacter</h3>
+
+  <a href="mailto:blocplaystudios@gmail.com">
+    E-Mail
+  </a>
+
+  <a href="https://discord.gg/QfreSq3t7E">
+    Discord
+  </a>
+
+  </div>
 
   </div>
 
@@ -140,11 +124,6 @@
   </div>
 
 </footer>
-
-
-<!-- ========================= -->
-<!-- FIREBASE + PROFIL -->
-<!-- ========================= -->
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -230,11 +209,6 @@ document.addEventListener("click", async (e) => {
     }
 });
 </script>
-
-
-<!-- ========================= -->
-<!-- SERVICE WORKER -->
-<!-- ========================= -->
 
 <script>
 if ("serviceWorker" in navigator) {
