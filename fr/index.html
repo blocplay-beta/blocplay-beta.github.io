@@ -1,762 +1,768 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
-<script>
-  (function() {
-    const userLang = (navigator.language || navigator.userLanguage).substring(0, 2).toLowerCase();
-    const targetLang = (userLang === 'fr') ? 'fr' : 'en';
-    const currentPath = window.location.pathname;
-
-    if (!currentPath.startsWith('/' + targetLang)) {
-      window.location.replace('/' + targetLang);
-    }
-  })();
-</script>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BlocPlay</title>
-
-<link rel="stylesheet" href="/style.css">
-<link rel="icon" type="image/png" href="/img/icon.png">
-
-<link rel="manifest" href="/manifest.json">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b0f1a">
-
+<title>BlocPlay Studio</title>
+<link rel="icon" href="/logo.ico">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<style>
+:root{--bg:#0b0f1a;--panel:#111827;--panel2:#172033;--border:#29364b;--text:#f3f6fc;--muted:#94a3b8;--blue:#5865f2}
+*{box-sizing:border-box}body{margin:0;height:100dvh;overflow:hidden;background:var(--bg);color:var(--text);font:13px Arial,sans-serif}button,input{font:inherit}button{border:1px solid var(--border);background:var(--panel2);color:var(--text);padding:8px 10px;border-radius:6px;cursor:pointer}button:hover{border-color:var(--blue)}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--blue);border-color:var(--blue)}.topbar{height:54px;display:flex;align-items:center;gap:10px;padding:0 12px;background:#0d1320;border-bottom:1px solid var(--border)}.brand{display:flex;align-items:center;gap:7px;color:white;text-decoration:none;font-weight:bold;white-space:nowrap}.brand img{width:28px;height:28px;object-fit:contain}.brand span{color:#929cff}.project-name{width:160px;min-width:70px;background:transparent;color:white;border:1px solid var(--border);border-radius:5px;padding:8px}.actions{display:flex;align-items:center;gap:5px;margin-left:auto}.status{color:var(--muted);font-size:11px}.workspace{height:calc(100dvh - 54px);display:grid;grid-template-columns:200px minmax(0,1fr) 240px}.panel{background:var(--panel);min-width:0;min-height:0;overflow:auto}.left{border-right:1px solid var(--border)}.right{border-left:1px solid var(--border)}.heading{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-bottom:1px solid var(--border);font-weight:bold;position:sticky;top:0;background:var(--panel);z-index:2}.content{padding:10px}.muted{color:var(--muted)}.section{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin:12px 0 8px}.object{display:flex;gap:7px;align-items:center;padding:9px 7px;border-radius:5px;cursor:pointer;overflow:hidden}.object:hover{background:#202c41}.object.selected{background:#283b69}.object span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.center{display:flex;flex-direction:column;min-width:0;min-height:0;background:#090e18}.toolbar{display:flex;align-items:center;gap:5px;padding:6px;flex-wrap:wrap;background:var(--panel);border-bottom:1px solid var(--border)}.toolbar button{padding:7px}.viewport{position:relative;flex:1;min-height:180px;overflow:hidden}canvas{width:100%;height:100%;display:block;touch-action:none}.badge{position:absolute;top:10px;left:10px;background:#0b0f1add;border:1px solid var(--border);border-radius:5px;padding:7px;color:#cbd5e1;pointer-events:none}.help{position:absolute;bottom:8px;left:8px;background:#0b0f1add;padding:7px;border-radius:5px;color:#aab7ca;font-size:11px;pointer-events:none}.field{margin:0 0 12px}.field label{display:block;color:#aab7ca;margin-bottom:5px;font-size:12px}.field input{width:100%;background:#0b1220;color:white;border:1px solid var(--border);border-radius:5px;padding:8px}.xyz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.xyz label{font-size:10px}.xyz input{padding:7px 3px}.full{width:100%;margin:3px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.asset{padding:12px 4px;display:flex;flex-direction:column;gap:6px;align-items:center}.asset b{font-size:22px}.empty{color:var(--muted);line-height:1.5;padding:12px 3px;text-align:center}.bottom{padding:8px 10px;border-top:1px solid var(--border);color:var(--muted);font-size:11px}.auth-cover{position:fixed;inset:0;z-index:10;background:#080d18f2;display:flex;align-items:center;justify-content:center;padding:20px}.auth-card{max-width:390px;width:100%;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center}.auth-card img{width:55px;height:55px;object-fit:contain}.auth-card h1{font-size:22px}.auth-card p{color:var(--muted);line-height:1.5}.auth-card button{margin:5px}.auth-card a{color:#9ba5ff}.auth-card .error{color:#ff9292;min-height:18px}
+@media(max-width:800px){.workspace{grid-template-columns:145px minmax(0,1fr);grid-template-rows:minmax(200px,1fr) auto}.left{grid-row:1}.center{grid-row:1}.right{grid-column:1/-1;grid-row:2;border-left:0;border-top:1px solid var(--border);max-height:34dvh}.status{display:none}.project-name{width:100px}}
+@media(max-width:480px){.topbar{gap:5px;padding:0 6px}.brand{font-size:11px;gap:3px}.brand img{width:23px;height:23px}.project-name{width:75px;font-size:11px;padding:7px 4px}.actions{gap:3px}.actions button{padding:7px 5px;font-size:11px}.workspace{grid-template-columns:110px minmax(0,1fr)}.content{padding:6px}.toolbar{gap:3px}.toolbar button{font-size:11px;padding:6px 5px}.object{font-size:11px;padding:8px 4px}}
+</style>
 </head>
-
 <body>
-
-<!-- ========================= -->
-<!-- HEADER -->
-<!-- ========================= -->
-
-<header>
-
-  <div class="header-content">
-
-    <a href="/" class="logo">
-      <img src="/img/icon.png" alt="BlocPlay">
-    </a>
-
-    <div class="header-actions">
-
-      <!-- RECHERCHE --> 
-      <a href="/search" class="header-button">
-        <img src="/img/searching.png" alt="Recherche">
-      </a>
-
-
-      <!-- PROFIL -->
-      <div class="profile-menu">
-
-        <img
-          src="https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64"
-          class="avatar"
-          id="avatar"
-          alt="Profil"
-        >
-
-        <div class="dropdown" id="dropdown"></div>
-
-      </div>
-
-    </div>
-
+<header class="topbar">
+  <a class="brand" href="/"><img src="/icon.png" alt="BlocPlay"><span>BlocPlay</span> Studio</a>
+  <input id="projectName" class="project-name" value="Mon premier jeu" aria-label="Nom du projet">
+  <div class="actions">
+    <span id="status" class="status">Connexion à Firebase…</span>
+    <button id="saveBtn" class="primary" disabled>☁ Enregistrer</button>
+    <button id="exportBtn">Exporter</button>
+    <button id="importBtn">Importer</button>
+    <input id="importFile" type="file" accept=".json,.blocplay.json,application/json" hidden>
+    <button id="playBtn">▶ Play</button>
   </div>
-
 </header>
 
+<div class="workspace">
+  <aside class="panel left">
+    <div class="heading">☷ Hiérarchie <button id="addCubeTop">＋</button></div>
+    <div class="content">
+      <div class="section">Objets de la scène</div>
+      <div id="objectList"></div>
+      <div class="section">Ajouter un objet</div>
+      <div class="grid">
+        <button class="asset" data-add="Cube"><b>🧊</b>Cube</button>
+        <button class="asset" data-add="Sphere"><b>⚪</b>Sphère</button>
+        <button class="asset" data-add="Floor"><b>▰</b>Sol</button>
+      </div>
+      <div class="section">Mes projets</div>
+      <button id="newBtn" class="full">＋ Nouveau projet</button>
+      <button id="loadBtn" class="full">📂 Charger mes projets</button>
+      <div id="projectList"></div>
+    </div>
+  </aside>
 
-<!-- ========================= -->
-<!-- RECHERCHE -->
-<!-- ========================= -->
+  <main class="center">
+    <div class="toolbar">
+      <button id="cameraBtn">◎ Recentrer la vue</button>
+      <button id="moveBtn" class="primary">↔ Déplacer</button>
+      <button id="rotateBtn">⟳ Tourner</button>
+      <button id="scaleBtn">⤢ Échelle</button>
+      <button data-add="Cube">＋ Cube</button>
+      <button data-add="Sphere">＋ Sphère</button>
+      <button data-add="Floor">＋ Sol</button>
+      <button id="deleteBtn">🗑 Supprimer</button>
+    </div>
+    <div class="viewport" id="viewport">
+      <canvas id="scene"></canvas>
+      <div class="badge">SCÈNE 3D · BLOCPLAY</div>
+      <div class="help">Glisse pour tourner · Pince pour zoomer · Sélectionne un objet pour le modifier</div>
+    </div>
+    <div class="bottom" id="sceneInfo">Initialisation de la scène…</div>
+  </main>
 
-<div id="searchOverlay" class="search-overlay">
-
-  <div class="search-box">
-
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Rechercher sur BlocPlay..."
-      autocomplete="off"
-    >
-
-    <button id="closeSearch" class="search-close">
-      ✕
-    </button>
-
-  </div>
-
-  <div id="searchResults" class="search-results"></div>
-
+  <aside class="panel right">
+    <div class="heading">⚙ Inspecteur <span id="typeLabel" class="muted">—</span></div>
+    <div class="content" id="inspector">
+      <div class="empty">Sélectionne un objet pour modifier ses propriétés.</div>
+    </div>
+  </aside>
 </div>
 
-
-<!-- ========================= -->
-<!-- CONTENU -->
-<!-- ========================= -->
-
-<main class="container">
-
-
-  <!-- ========================= -->
-  <!-- TÉLÉCHARGEMENT -->
-  <!-- ========================= -->
-
-  <div class="card">
-
-    <h1>Téléchargez l'application BlocPlay</h1>
-
-    <div class="app-download-grid">
-
-      <div class="app-screenshot">
-        <img src="/bp-app-screenshot.png" alt="Application BlocPlay">
-      </div>
-
-      <div class="app-screenshot">
-        <img src="/bp-app-screenshot-2.png" alt="Application BlocPlay">
-      </div>
-
-      <div class="app-screenshot">
-        <img src="/bp-app-screenshot-3.png" alt="Application BlocPlay">
-      </div>
-
-    </div>
-
-    <div class="download-button-container">
-
-      <a
-        href="https://blocplay-beta.github.io/download-blocplaysetupinstaller-windows/"
-        class="btn btn-gradient"
-        id="downloadBtn"
-      >
-        Télécharger l'application
-      </a>
-
-    </div>
-
+<div id="authCover" class="auth-cover" style="display:none">
+  <div class="auth-card">
+    <img src="/icon.png" alt="BlocPlay">
+    <h1>BlocPlay Studio</h1>
+    <p id="authMessage">Connecte-toi à ton compte BlocPlay pour créer et sauvegarder tes jeux dans Firebase.</p>
+    <button id="loginBtn" class="primary">Se connecter</button>
+    <button id="signupBtn">Créer un compte</button>
+    <p class="error" id="authError"></p>
   </div>
-
-
-  <!-- ========================= -->
-  <!-- RESSOURCES -->
-  <!-- ========================= -->
-
-  <div class="card">
-
-    <h2>Utilisez nos ressources :</h2>
-
-    <div class="resources">
-
-      <a
-        href="/home"
-        class="resource-button"
-      >
-        BlocPlay
-      </a>
-
-      <a
-        href="https://bp-contact.github.io"
-        class="resource-button"
-      >
-        BlocPlay Contact
-      </a>
-
-      <a
-        href="https://bp-discord.github.io"
-        class="resource-button"
-      >
-        BlocPlay Discord
-      </a>
-
-      <a
-        href="https://bp-help.github.io"
-        class="resource-button"
-      >
-        Aide BlocPlay
-      </a>
-
-    </div>
-
-  </div>
-
-
-  <!-- ========================= -->
-  <!-- ACTUALITÉS -->
-  <!-- ========================= -->
-
-  <div class="card">
-
-    <h2>Restez à l'actualité de nos nouveautés</h2>
-
-    <div class="social-links">
-
-      <a
-        href="https://www.youtube.com/@BlocPlayStudios"
-        class="social-button"
-        target="_blank"
-        rel="noopener"
-      >
-        <span>YouTube</span>
-        <span class="social-url">
-          @BlocPlayStudios
-        </span>
-      </a>
-
-      <a
-        href="https://discord.gg/QfreSq3t7E"
-        class="social-button"
-        target="_blank"
-        rel="noopener"
-      >
-        <span>Discord</span>
-        <span class="social-url">
-          discord.gg/QfreSq3t7E
-        </span>
-      </a>
-
-      <a
-        href="https://www.tiktok.com/@blocplaystudios"
-        class="social-button"
-        target="_blank"
-        rel="noopener"
-      >
-        <span>TikTok</span>
-        <span class="social-url">
-          @blocplaystudios
-        </span>
-      </a>
-
-      <a
-        href="https://www.roblox.com/fr/communities/966782400/BlocPlay-Studios#!/about"
-        class="social-button"
-        target="_blank"
-        rel="noopener"
-      >
-        <span>Roblox</span>
-        <span class="social-url">
-          BlocPlay Studios
-        </span>
-      </a>
-
-    </div>
-
-  </div>
-
-</main>
-
-
-<!-- ========================= -->
-<!-- FOOTER -->
-<!-- ========================= -->
-
-<footer class="site-footer">
-
-  <div class="footer-content">
-
-    <div class="footer-column">
-
-      <h3>BlocPlay</h3>
-
-      <p>
-        La plateforme de jeux créée par et pour les gamers.
-      </p>
-
-    </div>
-
-
-    <div class="footer-column">
-
-      <h3>À propos</h3>
-
-      <a href="/about">
-        À propos de BlocPlay
-      </a>
-
-      <a href="/license">
-        Licences
-      </a>
-
-      <a href="https://fr.trustpilot.com/review/blocplay-beta.github.io">
-        Trustpilot
-      </a>
-
-    </div>
-
-
-    <div class="footer-column">
-
-      <h3>Nous contacter</h3>
-
-      <a href="mailto:blocplaystudios@gmail.com">
-        E-Mail
-      </a>
-
-      <a href="https://discord.gg/QfreSq3t7E">
-        Discord
-      </a>
-
-    </div>
-
-  </div>
-
-  <div class="footer-bottom">
-    BlocPlay Studios™
-  </div>
-
-</footer>
-
-
-<!-- ========================= -->
-<!-- FIREBASE + PROFIL -->
-<!-- ========================= -->
+</div>
 
 <script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  getFirestore,
-  doc,
-  getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-/* ========================= */
-/* FIREBASE */
-/* ========================= */
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-
   apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
-
-  authDomain:
-    "blocplay-a9417.firebaseapp.com",
-
-  projectId:
-    "blocplay-a9417",
-
-  storageBucket:
-    "blocplay-a9417.firebasestorage.app",
-
-  messagingSenderId:
-    "540161549188",
-
-  appId:
-    "1:540161549188:web:e0ec0350bd044de2f333d1"
-
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417"
 };
 
+const authApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const authGuard = getAuth(authApp);
+const authStatus = document.getElementById("status");
+const authCover = document.getElementById("authCover");
+const authMessage = document.getElementById("authMessage");
+const authError = document.getElementById("authError");
 
-const app =
-  initializeApp(firebaseConfig);
-
-
-const auth =
-  getAuth(app);
-
-
-const db =
-  getFirestore(app);
-
-
-/* ========================= */
-/* ELEMENTS */
-/* ========================= */
-
-const avatar =
-  document.getElementById("avatar");
-
-const dropdown =
-  document.getElementById("dropdown");
-
-
-/* ========================= */
-/* MENU PROFIL */
-/* ========================= */
-
-async function renderMenu(user) {
-
-  if (user) {
-
-    dropdown.innerHTML = `
-
-      <a href="/profile">
-        Profil
-      </a>
-
-      <a href="/settings">
-        Paramètres
-      </a>
-
-      <a href="/rizoplay">
-        RizoPlay
-      </a>
-
-      <a href="#" id="logout">
-        Se déconnecter
-      </a>
-
-    `;
-
-
-    const name =
-      user.displayName ||
-      user.email?.split("@")[0] ||
-      "User";
-
-
-    let photoURL = "";
-
-
-    /* ========================= */
-    /* PHOTO FIRESTORE */
-    /* ========================= */
-
-    try {
-
-      const userRef =
-        doc(
-          db,
-          "users",
-          user.uid
-        );
-
-
-      const userSnap =
-        await getDoc(userRef);
-
-
-      if (userSnap.exists()) {
-
-        const data =
-          userSnap.data();
-
-
-        photoURL =
-          data.photoURL ||
-          data.avatar ||
-          "";
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Erreur chargement photo Firestore :",
-        error
-      );
-
+try {
+  await setPersistence(authGuard, browserLocalPersistence);
+  onAuthStateChanged(authGuard, user => {
+    if (!user) {
+      if (authStatus) authStatus.textContent = "Redirection vers la connexion…";
+      if (authCover) authCover.style.display = "flex";
+      if (authMessage) authMessage.textContent = "Connecte-toi à ton compte BlocPlay pour accéder à BlocPlay Studio.";
+      window.location.replace("/login");
+      return;
     }
 
-
-    /* ========================= */
-    /* PHOTO FIREBASE AUTH */
-    /* ========================= */
-
-    if (!photoURL) {
-
-      photoURL =
-        user.photoURL ||
-        "";
-
+    if (authStatus && authStatus.textContent === "Initialisation…") {
+      authStatus.textContent = "Connexion détectée — chargement de l’éditeur…";
     }
 
+    const account = document.getElementById("accountEmail");
+    if (account) account.textContent = user.email || "Compte BlocPlay";
+  }, error => {
+    console.error("Erreur Firebase Auth:", error);
+    if (authStatus) authStatus.textContent = "Erreur de connexion Firebase";
+    if (authError) authError.textContent = error.message || "Impossible de vérifier la connexion.";
+  });
+} catch (error) {
+  console.error("Initialisation Firebase Auth impossible:", error);
+  if (authStatus) authStatus.textContent = "Erreur d’initialisation Firebase";
+  if (authError) authError.textContent = error.message || "Impossible d’initialiser Firebase.";
+}
+</script>
 
-    /* ========================= */
-    /* AFFICHER LA PHOTO */
-    /* ========================= */
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    if (photoURL) {
+const firebaseConfig = {
+  apiKey: "AIzaSyAQHLAG_Dvnc-a8LDJ__05oRwMmEtUkn04",
+  authDomain: "blocplay-a9417.firebaseapp.com",
+  projectId: "blocplay-a9417"
+};
 
-      avatar.src =
-        photoURL;
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+const canvas = $("scene");
+const viewport = $("viewport");
 
-    } else {
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1,2));
+renderer.setClearColor("#090e18");
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-      avatar.src =
-        "https://ui-avatars.com/api/?name=" +
-        encodeURIComponent(name) +
-        "&background=111&color=fff&rounded=true&size=64";
+const scene = new THREE.Scene();
+scene.background = new THREE.Color("#090e18");
 
-    }
+const camera = new THREE.PerspectiveCamera(55,1,.1,1000);
+const defaultCamera = new THREE.Vector3(8,6,8);
+camera.position.copy(defaultCamera);
 
+const controls = new OrbitControls(camera,canvas);
+controls.target.set(0,.5,0);
+controls.enableDamping = true;
+controls.update();
 
+const transform = new TransformControls(camera,renderer.domElement);
+scene.add(transform.getHelper());
+transform.setMode("translate");
+transform.addEventListener("dragging-changed",event=>{
+  controls.enabled = !event.value;
+});
+transform.addEventListener("objectChange",()=>{
+  renderInspector();
+  status("Modifications non enregistrées");
+});
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x29354b,2));
+
+const sun = new THREE.DirectionalLight(0xffffff,2.3);
+sun.position.set(5,10,7);
+scene.add(sun);
+
+scene.add(new THREE.GridHelper(40,40,0x354360,0x202c40));
+
+new ResizeObserver(()=>{
+  const w = Math.max(1,viewport.clientWidth);
+  const h = Math.max(1,viewport.clientHeight);
+  renderer.setSize(w,h,false);
+  camera.aspect = w/h;
+  camera.updateProjectionMatrix();
+}).observe(viewport);
+
+let user = null;
+let objects = [];
+let selected = null;
+let playing = false;
+let currentProjectId = null;
+let projectList = [];
+let idCounter = 1;
+
+function status(s) {
+  $("status").textContent = s;
+}
+
+function newId() {
+  return "p_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,8);
+}
+
+function addObject(type,name,props={}) {
+  let geometry,color;
+
+  if(type === "Sphere") {
+    geometry = new THREE.SphereGeometry(.65,32,20);
+    color = "#41b7e8";
+  } else if(type === "Floor") {
+    geometry = new THREE.BoxGeometry(8,.2,8);
+    color = "#68748a";
   } else {
-
-    dropdown.innerHTML = `
-
-      <a href="/login">
-        Se connecter
-      </a>
-
-      <a href="/signup">
-        Créer un compte
-      </a>
-
-    `;
-
-
-    avatar.src =
-      "https://ui-avatars.com/api/?name=User&background=111&color=fff&rounded=true&size=64";
-
+    geometry = new THREE.BoxGeometry(1,1,1);
+    color = "#5865f2";
+    type = "Cube";
   }
 
+  const material = new THREE.MeshStandardMaterial({
+    color:props.color || color,
+    roughness:.7
+  });
+
+  const mesh = new THREE.Mesh(geometry,material);
+  mesh.name = name || `${type} ${idCounter++}`;
+  mesh.userData.objectType = type;
+  mesh.position.fromArray(props.position || [0,type === "Floor" ? -.1 : .5,0]);
+
+  if(props.rotation) {
+    mesh.rotation.fromArray(props.rotation);
+  }
+
+  mesh.scale.fromArray(props.scale || [1,1,1]);
+  scene.add(mesh);
+  objects.push(mesh);
+  selectObject(mesh);
+  return mesh;
 }
 
+function refreshList() {
+  const list = $("objectList");
+  list.replaceChildren();
 
-/* ========================= */
-/* AUTH */
-/* ========================= */
-
-onAuthStateChanged(
-  auth,
-  (user) => {
-
-    renderMenu(user);
-
+  if(!objects.length) {
+    const e = document.createElement("div");
+    e.className = "empty";
+    e.textContent = "Scène vide. Ajoute un objet.";
+    list.append(e);
   }
-);
 
+  objects.forEach(o=>{
+    const row = document.createElement("div");
+    row.className = "object" + (o === selected ? " selected" : "");
 
-/* ========================= */
-/* OUVERTURE DU MENU */
-/* ========================= */
+    const ico = document.createElement("span");
+    ico.textContent = o.userData.objectType === "Sphere" ? "⚪" : o.userData.objectType === "Floor" ? "▰" : "🧊";
 
-avatar.addEventListener(
-  "click",
-  (event) => {
+    const name = document.createElement("span");
+    name.textContent = o.name;
 
-    event.stopPropagation();
+    row.append(ico,name);
+    row.onclick = ()=>selectObject(o);
+    list.append(row);
+  });
 
-    dropdown.classList.toggle(
-      "show"
-    );
+  $("sceneInfo").textContent = `${objects.length} objet${objects.length>1?"s":""} · ${playing?"Mode Play":"Mode édition"}`;
+}
 
+function selectObject(o) {
+  if(selected) {
+    selected.material.emissive.set("#000000");
+    selected.material.emissiveIntensity = 0;
   }
-);
 
+  selected = o;
 
-/* ========================= */
-/* FERMETURE */
-/* ========================= */
+  if(selected) {
+    selected.material.emissive.set("#29336b");
+    selected.material.emissiveIntensity = .25;
 
-document.addEventListener(
-  "click",
-  () => {
-
-    dropdown.classList.remove(
-      "show"
-    );
-
+    if(!playing) {
+      transform.attach(selected);
+    } else {
+      transform.detach();
+    }
+  } else {
+    transform.detach();
   }
-);
 
+  refreshList();
+  renderInspector();
+}
 
-/* ========================= */
-/* DÉCONNEXION */
-/* ========================= */
+function addField(parent,title,value,onChange,step=".1") {
+  const wrap = document.createElement("div");
+  wrap.className = "field";
 
-document.addEventListener(
-  "click",
-  async (event) => {
+  const lab = document.createElement("label");
+  lab.textContent = title;
 
-    if (
-      event.target.id ===
-      "logout"
-    ) {
+  const input = document.createElement("input");
+  input.type = "number";
+  input.step = step;
+  input.value = Number(value).toFixed(2);
+  input.disabled = playing;
 
-      event.preventDefault();
+  input.addEventListener("change",()=>{
+    const n = Number(input.value);
+    if(Number.isFinite(n)) onChange(n);
+  });
 
-      await signOut(auth);
+  wrap.append(lab,input);
+  parent.append(wrap);
+}
 
-      window.location.reload();
+function vectorFields(parent,title,vec,prop) {
+  const wrap = document.createElement("div");
+  wrap.className = "field";
 
+  const lab = document.createElement("label");
+  lab.textContent = title;
+  wrap.append(lab);
+
+  const xyz = document.createElement("div");
+  xyz.className = "xyz";
+
+  ["x","y","z"].forEach(axis=>{
+    const cell = document.createElement("div");
+    const l = document.createElement("label");
+    l.textContent = axis.toUpperCase();
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.step = ".1";
+    input.value = Number(vec[axis]).toFixed(2);
+    input.disabled = playing;
+
+    input.addEventListener("change",()=>{
+      const n = Number(input.value);
+
+      if(Number.isFinite(n)) {
+        selected[prop][axis] = prop === "scale"
+          ? Math.max(.05,Math.min(100,n))
+          : Math.max(-1000,Math.min(1000,n));
+
+        status("Modifications non enregistrées");
+      }
+    });
+
+    cell.append(l,input);
+    xyz.append(cell);
+  });
+
+  wrap.append(xyz);
+  parent.append(wrap);
+}
+
+function renderInspector() {
+  const p = $("inspector");
+  p.replaceChildren();
+  $("typeLabel").textContent = selected ? selected.userData.objectType : "—";
+
+  if(!selected) {
+    const e = document.createElement("div");
+    e.className = "empty";
+    e.textContent = "Sélectionne un objet pour modifier ses propriétés.";
+    p.append(e);
+    return;
+  }
+
+  const nf = document.createElement("div");
+  nf.className = "field";
+
+  const nl = document.createElement("label");
+  nl.textContent = "Nom de l'objet";
+
+  const ni = document.createElement("input");
+  ni.value = selected.name;
+  ni.maxLength = 60;
+  ni.disabled = playing;
+
+  ni.onchange = ()=>{
+    selected.name = ni.value.trim() || "Objet";
+    refreshList();
+    status("Modifications non enregistrées");
+  };
+
+  nf.append(nl,ni);
+  p.append(nf);
+
+  vectorFields(p,"Position",selected.position,"position");
+  vectorFields(p,"Rotation",selected.rotation,"rotation");
+  vectorFields(p,"Échelle",selected.scale,"scale");
+
+  const cf = document.createElement("div");
+  cf.className = "field";
+
+  const cl = document.createElement("label");
+  cl.textContent = "Couleur";
+
+  const ci = document.createElement("input");
+  ci.type = "color";
+  ci.value = "#" + selected.material.color.getHexString();
+  ci.disabled = playing;
+
+  ci.oninput = ()=>{
+    selected.material.color.set(ci.value);
+    status("Modifications non enregistrées");
+  };
+
+  cf.append(cl,ci);
+  p.append(cf);
+
+  const del = document.createElement("button");
+  del.className = "full";
+  del.textContent = "🗑 Supprimer cet objet";
+  del.disabled = playing;
+  del.onclick = deleteSelected;
+  p.append(del);
+}
+
+function deleteSelected() {
+  if(!selected || playing) return;
+
+  scene.remove(selected);
+  selected.geometry.dispose();
+  selected.material.dispose();
+  objects = objects.filter(o=>o !== selected);
+  selected = null;
+
+  refreshList();
+  renderInspector();
+  status("Modifications non enregistrées");
+}
+
+function projectData() {
+  return {
+    format:"BlocPlayStudio",
+    version:1,
+    name:$("projectName").value.trim() || "Mon jeu",
+    objects:objects.map(o=>({
+      name:o.name,
+      type:o.userData.objectType,
+      position:o.position.toArray(),
+      rotation:o.rotation.toArray(),
+      scale:o.scale.toArray(),
+      color:"#"+o.material.color.getHexString()
+    }))
+  };
+}
+
+function clearScene() {
+  transform.detach();
+
+  for(const o of objects) {
+    scene.remove(o);
+    o.geometry.dispose();
+    o.material.dispose();
+  }
+
+  objects = [];
+  selected = null;
+}
+
+function applyProject(data,id=null) {
+  if(!data || !Array.isArray(data.objects)) {
+    throw new Error("Projet invalide");
+  }
+
+  clearScene();
+  $("projectName").value = data.name || "Mon jeu";
+  currentProjectId = id;
+  idCounter = 1;
+
+  data.objects.forEach(o=>addObject(o.type || "Cube",o.name || "Objet",o));
+
+  selectObject(null);
+  refreshList();
+  renderInspector();
+  status("Projet chargé");
+}
+
+async function saveProject() {
+  if(!user) {
+    showAuth("Connecte-toi pour enregistrer ton projet.");
+    return;
+  }
+
+  const btn = $("saveBtn");
+  btn.disabled = true;
+  status("Enregistrement…");
+
+  try {
+    const data = projectData();
+
+    if(!currentProjectId) {
+      currentProjectId = newId();
     }
 
-  }
-);
-
-</script>
-
-
-<!-- ========================= -->
-<!-- RECHERCHE -->
-<!-- ========================= -->
-
-<script>
-
-const searchBtn =
-  document.getElementById("searchBtn");
-
-const searchOverlay =
-  document.getElementById("searchOverlay");
-
-const searchInput =
-  document.getElementById("searchInput");
-
-const searchResults =
-  document.getElementById("searchResults");
-
-const closeSearch =
-  document.getElementById("closeSearch");
-
-
-/* OUVRIR */
-
-searchBtn.addEventListener(
-  "click",
-  () => {
-
-    searchOverlay.classList.add(
-      "show"
+    await setDoc(
+      doc(db,"users",user.uid,"studioProjects",currentProjectId),
+      {
+        ...data,
+        ownerUid:user.uid,
+        updatedAt:serverTimestamp(),
+        createdAt:serverTimestamp()
+      },
+      {merge:true}
     );
 
-    searchInput.focus();
+    status("Enregistré dans Firebase ✓");
+    await loadProjects();
+  } catch(e) {
+    console.error("Erreur Firestore lors de l’enregistrement:",e);
+    status("Erreur Firebase: "+(e.code||e.message||"inconnue"));
 
-  }
-);
-
-
-/* FERMER */
-
-closeSearch.addEventListener(
-  "click",
-  () => {
-
-    searchOverlay.classList.remove(
-      "show"
+    alert(
+      "Échec de l’enregistrement Firebase.\n" +
+      "Code : "+(e.code||"inconnu")+"\n" +
+      "Détail : "+(e.message||"aucun détail")+"\n\n" +
+      "Si le code est permission-denied, les règles Firestore doivent autoriser l’utilisateur connecté à accéder à users/UID/studioProjects."
     );
-
-    searchInput.value = "";
-
-    searchResults.innerHTML = "";
-
+  } finally {
+    btn.disabled = false;
   }
-);
+}
 
+async function loadProjects() {
+  if(!user) return;
 
-/* ENTRÉE UNIQUEMENT */
+  const list = $("projectList");
+  list.replaceChildren();
+  status("Chargement des projets…");
 
-searchInput.addEventListener(
-  "keydown",
-  (event) => {
+  try {
+    const snap = await getDocs(collection(db,user.uid,"studioProjects"));
+    projectList = [];
 
-    if (event.key !== "Enter") {
+    snap.forEach(d=>projectList.push({id:d.id,...d.data()}));
+
+    if(!projectList.length) {
+      const e = document.createElement("div");
+      e.className = "empty";
+      e.textContent = "Aucun projet enregistré.";
+      list.append(e);
+    }
+
+    projectList.sort((a,b)=>(b.updatedAt?.seconds||0)-(a.updatedAt?.seconds||0));
+
+    projectList.forEach(p=>{
+      const b = document.createElement("button");
+      b.className = "full";
+      b.textContent = "📁 "+(p.name || "Projet sans nom");
+
+      b.onclick = ()=>{
+        try {
+          applyProject(p,p.id);
+          status("Projet chargé depuis Firebase");
+        } catch(e) {
+          alert("Projet invalide.");
+        }
+      };
+
+      list.append(b);
+    });
+
+    status("Connecté à Firebase ✓");
+  } catch(e) {
+    console.error(e);
+    status("Erreur de chargement");
+
+    const err = document.createElement("div");
+    err.className = "empty";
+    err.textContent = "Lecture impossible. Vérifie les règles Firestore.";
+    list.append(err);
+  }
+}
+
+function showAuth(message) {
+  $("authCover").style.display = "flex";
+  $("authMessage").textContent = message;
+}
+
+$("loginBtn").onclick = ()=>location.href = "/login";
+$("signupBtn").onclick = ()=>location.href = "/signup";
+$("saveBtn").onclick = saveProject;
+$("loadBtn").onclick = loadProjects;
+
+$("moveBtn").onclick = ()=>{
+  transform.setMode("translate");
+  $("moveBtn").classList.add("primary");
+  $("rotateBtn").classList.remove("primary");
+  $("scaleBtn").classList.remove("primary");
+};
+
+$("rotateBtn").onclick = ()=>{
+  transform.setMode("rotate");
+  $("rotateBtn").classList.add("primary");
+  $("moveBtn").classList.remove("primary");
+  $("scaleBtn").classList.remove("primary");
+};
+
+$("scaleBtn").onclick = ()=>{
+  transform.setMode("scale");
+  $("scaleBtn").classList.add("primary");
+  $("moveBtn").classList.remove("primary");
+  $("rotateBtn").classList.remove("primary");
+};
+
+$("importBtn").onclick = ()=>$("importFile").click();
+
+$("importFile").addEventListener("change",async event=>{
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+
+  try {
+    const parsed = JSON.parse(await file.text());
+    const data = parsed.project && Array.isArray(parsed.project.objects)
+      ? parsed.project
+      : parsed;
+
+    if(!data || !Array.isArray(data.objects) ||
+       data.objects.some(o=>!o || !["Cube","Sphere","Floor"].includes(o.type||"Cube"))) {
+      throw new Error("Ce fichier ne contient pas un projet BlocPlay Studio valide.");
+    }
+
+    if(!confirm("Importer « "+(data.name||file.name)+" » ? La scène actuelle sera remplacée.")) {
       return;
     }
 
-
-    const query =
-      searchInput.value.trim();
-
-
-    if (!query) {
-      return;
-    }
-
-
-    /* Résultats */
-
-    searchResults.innerHTML = `
-
-      <div class="search-result">
-
-        <h3>Résultats de recherche</h3>
-
-        <p>
-          Recherche pour :
-          <strong>
-            ${escapeHTML(query)}
-          </strong>
-        </p>
-
-      </div>
-
-    `;
-
+    applyProject(data,null);
+    status("Projet importé — pense à l’enregistrer");
+  } catch(error) {
+    console.error(error);
+    alert("Import impossible : "+(error.message||"fichier invalide")+". Sélectionne un fichier JSON exporté depuis BlocPlay Studio.");
+  } finally {
+    event.target.value = "";
   }
-);
+});
 
+$("newBtn").onclick = ()=>{
+  if(!confirm("Créer un nouveau projet ? Enregistre d'abord les modifications à garder.")) return;
 
-/* Évite l'injection HTML */
+  clearScene();
+  currentProjectId = null;
+  $("projectName").value = "Mon jeu";
+  addObject("Floor","Sol");
+  addObject("Cube","Cube 1");
+  status("Nouveau projet non enregistré");
+};
 
-function escapeHTML(text) {
-
-  const div =
-    document.createElement("div");
-
-  div.textContent =
-    text;
-
-  return div.innerHTML;
-
-}
-
-
-/* CLIQUER EN DEHORS */
-
-searchOverlay.addEventListener(
-  "click",
-  (event) => {
-
-    if (
-      event.target ===
-      searchOverlay
-    ) {
-
-      searchOverlay.classList.remove(
-        "show"
-      );
-
-      searchInput.value = "";
-
-      searchResults.innerHTML = "";
-
-    }
-
-  }
-);
-
-</script>
-
-
-<!-- ========================= -->
-<!-- SERVICE WORKER -->
-<!-- ========================= -->
-
-<script>
-
-if ("serviceWorker" in navigator) {
-
-  window.addEventListener(
-    "load",
-    () => {
-
-      navigator.serviceWorker.register(
-        "/service-worker.js"
-      );
-
-    }
+$("exportBtn").onclick = ()=>{
+  const blob = new Blob(
+    [JSON.stringify(projectData(),null,2)],
+    {type:"application/json"}
   );
 
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (projectData().name.replace(/[^a-z0-9_-]/gi,"_") || "mon-jeu") + ".blocplay.json";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+$("cameraBtn").onclick = ()=>{
+  camera.position.copy(defaultCamera);
+  controls.target.set(0,.5,0);
+  controls.update();
+};
+
+$("deleteBtn").onclick = deleteSelected;
+$("addCubeTop").onclick = ()=>addObject("Cube");
+
+document.querySelectorAll("[data-add]").forEach(b=>{
+  b.addEventListener("click",()=>{
+    if(!playing) {
+      addObject(b.dataset.add);
+      status("Modifications non enregistrées");
+    }
+  });
+});
+
+$("playBtn").onclick = ()=>{
+  playing = !playing;
+  $("playBtn").textContent = playing ? "■ Stop" : "▶ Play";
+  $("playBtn").classList.toggle("primary",playing);
+  status(playing ? "Mode Play" : "Mode édition");
+  renderInspector();
+  refreshList();
+};
+
+canvas.addEventListener("pointerdown",e=>{
+  if(playing || transform.dragging) return;
+
+  const r = canvas.getBoundingClientRect();
+  const p = new THREE.Vector2(
+    ((e.clientX-r.left)/r.width)*2-1,
+    -((e.clientY-r.top)/r.height)*2+1
+  );
+
+  const ray = new THREE.Raycaster();
+  ray.setFromCamera(p,camera);
+
+  const hits = ray.intersectObjects(objects,false);
+  if(hits.length) selectObject(hits[0].object);
+});
+
+onAuthStateChanged(auth,async u=>{
+  user = u;
+
+  if(!u) {
+    $("saveBtn").disabled = true;
+    transform.detach();
+    showAuth("Connecte-toi à ton compte BlocPlay pour enregistrer et retrouver tes projets avec Firebase.");
+    status("Connexion requise");
+    return;
+  }
+
+  $("authCover").style.display = "none";
+  $("saveBtn").disabled = false;
+
+  await loadProjects();
+
+  if(!objects.length) {
+    addObject("Floor","Sol");
+    addObject("Cube","Cube 1");
+  }
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  if(playing) {
+    transform.detach();
+    objects.forEach(o=>{
+      if(o.userData.objectType !== "Floor") o.rotation.y += .008;
+    });
+  } else if(selected) {
+    transform.attach(selected);
+  }
+
+  controls.update();
+  renderer.render(scene,camera);
 }
 
+animate();
 </script>
-
 </body>
 </html>
